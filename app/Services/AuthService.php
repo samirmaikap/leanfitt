@@ -13,6 +13,7 @@ use App\Validators\UserValidator;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class AuthService implements AuthServiceInterface
@@ -69,16 +70,20 @@ class AuthService implements AuthServiceInterface
 
 
     public function register($data){
+
         $validator=new UserValidator($data,'create');
         if($validator->fails()){
             throw new \Exception($validator->messages()->first());
         }
 
+        DB::beginTransaction();
         $user=$this->repo->create($data);
         if(!$user){
+            DB::rollBack();
             throw new \Exception(config('messages.common_error'));
         }
 
+        DB::commit();
         return $this->repo->logResponse($user);
 
     }
