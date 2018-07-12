@@ -1,0 +1,69 @@
+@extends('layouts.app')
+@section('content')
+
+    <!-- Main container -->
+    <main>
+        <div class="main-content">
+            <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
+                    <div class="card">
+                        <div class="flexbox align-items-center px-20 pt-20">
+                            <label class="toggler toggler-red fs-16">
+                                <input type="checkbox" checked="">
+                                <i class="fa fa-book-open"></i>
+                            </label>
+                            <div class="dropdown">
+                                <a data-toggle="dropdown" href="#" aria-expanded="false"><i
+                                            class="ti-more-alt rotate-90 text-muted"></i></a>
+                                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end"
+                                     style="position: absolute; top: 19px; left: 13px; will-change: top, left;">
+                                    <a class="dropdown-item" href="#"><i class="fa fa-fw fa-user"></i> Quiz</a>
+                                    <a class="dropdown-item" href="#"><i class="fa fa-fw fa-comments"></i> Assessment</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#"><i class="fa fa-fw fa-edit"></i> Edit</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-body text-center pt-1 pb-20">
+                            <a href="#">
+                                <img class="avatar avatar-xxl" src="assets/img/avatar/1.jpg">
+                            </a>
+                            <h5 class="mt-2 mb-0">
+                                <a class="hover-primary" href="{{ url('lean-tools/12') }}">
+                                    Gamba Walk
+                                </a>
+                            </h5>
+                            <span>Short description Short description Short description Short description  Short description </span>
+                            <div class="mt-20">
+                                <span class="badge badge-default">Minimize Waste</span>
+                                <span class="badge badge-default">Better Efficiency</span>
+                                <span class="badge badge-default">Other Feature</span>
+                                <span class="badge badge-default">Other Feature</span>
+                                <span class="badge badge-default">Other Feature</span>
+                            </div>
+                        </div>
+
+                        <footer class="card-footer flexbox">
+                            <div>
+                                <i class="fa fa-map-marker pr-1"></i>
+                                <span>10 Quiz</span>
+                            </div>
+                            <div>
+                                <i class="fa fa-money pr-1"></i>
+                                <span>10 Assessments</span>
+                            </div>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </div><!--/.main-content -->
+    </main>
+    <!-- END Main container -->
+
+    <div class="fab fab-fixed">
+        <a class="btn btn-float btn-primary" href="{{ url('') }}" title="Add Lean Tool">
+            <i class="ti-plus"></i>
+        </a>
+    </div>
+@endsection

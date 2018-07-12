@@ -1,0 +1,57 @@
+@extends("layouts.app")
+@section("content")
+
+    <!-- Main container -->
+    <main>
+        <!-- Page header -->
+        <header class="header mb-0 bg-ui-general">
+            <div class="header-info center-h">
+                <h1 class="header-title text-center">
+                    <strong>Gamba Walk</strong>
+                    <small>Write something nice about this lean tool
+                    </small>
+                </h1>
+            </div>
+        </header><!--/.header -->
+        <!-- END Page header -->
+
+        <div class="main-content">
+            <div class="card">
+
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs nav-justified nav-tabs-info">
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#overview" aria-expanded="false">Overview</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#steps" aria-expanded="true">Steps</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#case-studies" aria-expanded="false">Case Stduies</a>
+                        </li>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div class="tab-pane fade" id="overview" aria-expanded="false">
+                            Globally syndicate resource sucking ideas through interactive networks. Proactively underwhelm technically sound growth strategies after high-payoff customer service. Professionally provide.
+                        </div>
+                        <div class="tab-pane fade active show" id="steps" aria-expanded="true">
+                            Professionally embrace proactive value whereas customized solutions. Monotonectally formulate high standards in e-business with cost effective ideas. Objectively cultivate maintainable.
+                        </div>
+                        <div class="tab-pane fade" id="case-studies" aria-expanded="false">
+                            Globally optimize market positioning experiences with an expanded array of users. Seamlessly underwhelm backward-compatible customer service after extensive web services.
+                        </div>
+                    </div>
+
+                </div>
+        </div>
+    </main>
+    <!-- END Main container -->
+
+    <div class="fab fab-fixed">
+        <a class="btn btn-float btn-primary" href="{{ url('') }}" title="Edit Lean Tool" data-provide="tooltip">
+            <i class="ti-pencil"></i>
+        </a>
+    </div>
+@endsection

@@ -1,0 +1,45 @@
+@extends("layouts.app")
+@section("content")
+    <main>
+        <div class="main-content">
+
+            <div class="card">
+                <h4 class="card-title">All Assessments</h4>
+                <div class="card-body">
+                    <table class="table" data-provide="datatables">
+                        <thead>
+                            <tr>
+                                <th>Lean Tool</th>
+                                <th>Score</th>
+                                <th>Taken By</th>
+                                <th>Taken On</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Gamba Walk</td>
+                                <td>3.67</td>
+                                <td>Debajyoti Das</td>
+                                <td>07/22/2018</td>
+                            </tr>
+                            <tr>
+                                <td>Fishbone</td>
+                                <td>4.67</td>
+                                <td>Samir Maikap</td>
+                                <td>07/22/2018</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+    <div class="fab fab-fixed">
+        <a class="btn btn-float btn-primary" href="/new" title="Take Assessment"
+           data-provide="tooltip" data-toggle="modal">
+            <i class="ti-write"></i>
+        </a>
+    </div>
+@endsection

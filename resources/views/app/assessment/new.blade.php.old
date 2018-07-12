@@ -1,0 +1,89 @@
+@extends("layouts.app")
+@section("content")
+    <main>
+        <!-- Page aside -->
+        <aside class="aside aside-expand-md">
+            <div class="aside-body">
+                <div class="aside-block">
+                    <div class="flexbox mb-1">
+                        <h6 class="aside-title">
+                            <i class="ti-window"></i>
+                            &nbsp;
+                            Lean Tools
+                        </h6>
+                    </div>
+
+                    <ul class="nav nav-pills flex-column">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="">Gamba Walk</a>
+                            <hr>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ url("quiz/new?tool=") }}">Waste Walk</a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ url("quiz/new?tool=") }}">A3</a>
+                        </li>
+                    </ul>
+                </div>
+                <hr>
+            </div>
+
+            <button class="aside-toggler"></button>
+        </aside>
+        <!-- END Page aside -->
+
+        <div class="main-content">
+            <div class="card">
+                <div class="card-body">
+                    <form action="assessments/new" method="post">
+                        {{ csrf_field() }}
+                        {{ method_field('post') }}
+                        <div class="media-list media-list-hover media-list-divided">
+                            <div class="media">
+                                <div class="media-body">
+                                    <p>
+                                        I am well aware of the various techniques for improving my ability to assist
+                                        others in their work tasks.
+                                    </p>
+                                    <div class="mt-10">
+                                        <div class="form-check form-check-inline">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" value="1"> Strongly Disagree
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" value="2"> Disagree
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-inline disabled">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" value="3"> Neutral
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" value="4"> Agree
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-inline disabled">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" value="5"> Strongly Agree
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+                            <div class="col-lg-2 col-sm-4 col-xs-12 pull-right">
+                                <button type="submit" class="btn btn-block btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+@endsection
