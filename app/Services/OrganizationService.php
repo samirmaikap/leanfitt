@@ -9,203 +9,146 @@ use App\Repositories\OrganizationAdminRepository;
 use App\Repositories\OrganizationRepository;
 use App\Repositories\UserRepository;
 use App\Services\Contracts\OrganizationServiceInterface;
+use App\Validators\OrganizationValidator;
 use function auth;
 use function dd;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use function str_slug;
+use Stripe\Stripe;
+use Stripe\Token;
 
 class OrganizationService implements OrganizationServiceInterface
 {
     protected $organizationRepository;
-    protected $adminRepo;
-    protected $orgAdminRepo;
     protected $mediaRepo;
     protected $deleteRepo;
-    
     protected $userRepository;
     
     public function __construct(OrganizationRepository $organizationRepository,
-                                OrganizationAdminRepository $organizationAdminRepository,
-                                AdminRepository $adminRepository,
                                 MediaRepository $mediaRepository,
                                 DeleteRepository $deleteRepository,
                                 UserRepository $userRepository)
     {
-        $this->orgAdminRepo=$organizationAdminRepository;
         $this->organizationRepository=$organizationRepository;
-        $this->adminRepo=$adminRepository;
         $this->mediaRepo=$mediaRepository;
         $this->deleteRepo=$deleteRepository;
-
         $this->userRepository = $userRepository;
     }
 
-    public function all()
-    {
-//        $response=new \stdClass();
-//        $query=$this->organizationRepository->withCount('employees')->withCount('departments')->withCount('project')->get();
-//        if(!empty($query)){
-//            $response->success=true;
-//            $response->data=$query;
-//            $response->message="Organizations found";
-//        }
-//        else{
-//            $response->success=false;
-//            $response->data=null;
-//            $response->message="Organizations not found";
-//        }
-//
-//        return $response;
 
-        return $this->organizationRepository->with(['users', 'subscriptions'])->get();
+    public function create($data)
+    {
+        $subdomain = str_slug($data['organization']['name']);
+        $data['organization']['subdomain'] = $subdomain;
+
+        $validator=new OrganizationValidator($data['organization'],'create');
+        if($validator->fails())
+            throw new \Exception($validator->messages()->first());
+
+        $organization = $this->organizationRepository->create($data['organization']);
+
+//        if(empty(arrayValue($data['subscription'],'number'))){
+//            Stripe::setApiKey(env('STRIPE_KEY'));
+//            $stripe=Token::create(array(
+//                "card" => array(
+//                    "number" => $data['subscription']['number'],
+//                    "exp_month" => $data['subscription']['exp_month'],
+//                    "exp_year" => $data['subscription']['exp_year'],
+//                    "cvc" => $data['subscription']['cvc']
+//                )
+//            ));
+//            $stripe_token=isset($stripe->id) ? $stripe->id : null;
+//        }
+
+        $organization->newSubscription( 'main', $data['subscription']['plan'])
+            ->create($data['subscription']['stripeToken'], [
+                'email' => $organization->email,
+                'description' => $organization->name
+            ]);
+
+        $user = auth()->user();
+
+        $isDefault = $user->organizations->count() ? 0 : 1;
+        $user->organizations()->attach([ $organization->id => ['is_default' => $isDefault]]);
+
+        return $organization;
     }
 
-    public function updateOrganization($request, $org)
+
+    public function all()
     {
-        $response=new \stdClass();
+        $query=$this->organizationRepository->with('subscriptions')->withCount('users')->withCount('departments')->withCount('project')->get();
+        if(!$query)
+            throw new \Exception('Organization not found');
+
+        return $query;
+    }
+
+    public function updateOrganization($data,$image, $org)
+    {
         if(empty($org)){
-            $response->success=false;
-            $response->message="Invalid organization selection";
-            return $response;
+            throw  new \Exception("Organization id is required");
         }
 
-        if(empty($request->all())){
-            $response->success=false;
-            $response->message="Invalid data";
-            return $response;
+        if(empty($data)){
+            throw  new \Exception("Please provide some valid data");
         }
 
         DB::beginTransaction();
-        if($request->file('image') != null)
+        if(!empty($image))
         {
-            $file = $request->file('image');
-            $path=Storage::putFile('public/organizations/'.$org,$file);
+            $path=Storage::putFile('public/organizations/'.$org,$image);
             $url=url(Storage::url($path));
         }
         else{
             $url=null;
         }
 
-        $data=$request->all();
         if(!empty($url)){
             $data['featured_image']=$url;
         }
         $query=$this->organizationRepository->update($org,$data);
-        if($query){
-            DB::commit();
-            $response->success=true;
-            $response->message="Organization has bee updated";
-        }
-        else{
+        if(!$query){
             DB::rollBack();
-            $response->success=false;
-            $response->message="Something went worng, try again later";
+            throw new \Exception(config('messages.common_error'));
         }
 
-        return $response;
+        DB::commit();
+        return;
     }
 
-    public function details($organization)
+    public function show($organization)
     {
-        $response=new \stdClass();
         if(empty($organization)){
-            $response->success=false;
-            $response->data=null;
-            $response->message="Invalid organization selection";
-            return $response;
+            throw new \Exception('Orgnaization field is required');
         }
 
-        $query=$this->organizationRepository->find($organization)->with('employees','project','departments','organizationAdmin.admin')->first();
-        if($query){
-            $response->success=true;
-            $response->data=$query;
-            $response->message="Organization found";
-        }
-        else{
-            $response->success=false;
-            $response->data=null;
-            $response->message="No details available";
+        $query=$this->organizationRepository->with('users','project','departments')->find($organization);
+        if(!$query){
+           throw new \Exception(config('messages.common_error'));
         }
 
-        return $response;
-    }
-
-    public function changeAdmin($employee_id, $org)
-    {
-        $response=new \stdClass();
-        if(empty($org)){
-            $response->success=false;
-            $response->message="organization_id is required";
-            return $response;
-        }
-
-        if(empty($employee_id)){
-            $response->success=false;
-            $response->message="employee_id is required";
-            return $response;
-        }
-
-        DB::beginTransaction();
-        $user_id=$this->adminRepo->getUser($employee_id,'employee');
-        $admin=$this->adminRepo->where('user_id',$user_id)->first();
-        if(count($admin) > 0){
-            $query=$this->orgAdminRepo->where('organization_id',$org)->first()->update(['admin_id'=>$admin->id]);
-        }
-        else{
-            $admin_data['user_id']=$user_id;
-            $admin_re=$this->adminRepo->create($admin_data);
-            $query=$this->orgAdminRepo->where('organization_id',$org)->first()->update(['admin_id'=>$admin_re->id]);
-        }
-
-        if($query){
-            DB::commit();
-            $response->success=true;
-            $response->message="Admin has been changed";
-        }
-        else{
-            DB::rollBack();
-            $response->success=false;
-            $response->message="Something went wrong, tray again later";
-        }
-
-        return $response;
+        return $query;
     }
 
     public function list(){
-        $response=new \stdClass();
-        $query=$this->organizationRepository->get();
-        if($query){
-            $data=$query->map(function($item){
-                return ['id'=>$item['id'],'name'=>$item['name']];
-            });
-            $response->success=true;
-            $response->data=$data;
-            $response->message="Organization found";
-        }
-        else{
-            $response->success=false;
-            $response->data=null;
-            $response->message="Organization not found";
-        }
+        $query=$this->organizationRepository->lists('id','name');
+        if(!$query)
+            throw new \Exception(config('messages.common_error'));
 
-        return $response;
+//        $data=$query->map(function($item){
+//            return ['id'=>$item['id'],'name'=>$item['name']];
+//        });
+        return $query;
     }
 
-    public function removeOrganization($organization_id,$user_id)
+    public function removeOrganization($organization_id)
     {
-        $response=new \stdClass();
-        if(empty($organization_id)){
-            $response->success=false;
-            $response->messge="organization_id is required";
-            return $response;
-        }
 
-//        if(!$this->organizationRepository->isSuperAdmin($user_id) || !$this->organizationRepository->isAdmin($user_id)){
-//            $response->success=false;
-//            $response->messge="You don't have enough permission to delete the organization";
-//            return $response;
-//        }
+        if(empty($organization_id)){
+            throw new \Exception("organization_id is required");
+        }
 
         DB::beginTransaction();
         $proDelCount=0;
@@ -215,10 +158,6 @@ class OrganizationService implements OrganizationServiceInterface
         $pro_actions=count($organization['project'][0]['actionItem']) > 0 ? $organization['project'][0]['actionItem']->map(function($action){
             return $action->id;
         })->toArray() : [];
-
-//        $report_actions=count($organization['report'][0]['actionItem']) > 0 ? $organization['report'][0]['actionItem']->map(function($action){
-//            return $action->id;
-//        })->toArray() : [];
 
         if(count($pro_actions) > 0){
             for ($i=0;$i<count($pro_actions);$i++){
@@ -233,20 +172,12 @@ class OrganizationService implements OrganizationServiceInterface
         }
 
         if($proDelCount > 0 && $organization->forceDelete()){
-            DB::commit();
-            $response->success=false;
-            $response->messge="Organziation has been deleted";
-        }
-        else{
-            DB::rollBack();
-            $response->success=false;
-            $response->messge="Something went wrong, try again later";
+           return;
         }
 
-        return $response;
+        throw new \Exception(config('messages.common_error'));
     }
-    
-    // New methods
+
     
     public function isMember($user, $subdomain)
     {
@@ -262,39 +193,4 @@ class OrganizationService implements OrganizationServiceInterface
         return $organizations;
     }
 
-    // New methods
-
-    public function create($data)
-    {
-//        dd($data);
-//        $validator = new UserValidator($data, 'create');
-//
-//        if($validator->fails()){
-//            throw new \Exception($validator->messages());
-//        }
-
-        // Set subdomain for the Organization
-        $subdomain = str_slug($data['organization']['name']);
-        $data['organization']['subdomain'] = $subdomain;
-
-        $organization = $this->organizationRepository->create($data['organization']);
-
-        // Create subscription
-        //
-        $organization->newSubscription( 'main', $data['subscription']['plan'])
-            ->create($data['subscription']['stripeToken'], [
-            'email' => $organization->email,
-            'description' => $organization->name
-        ]);
-
-        // Logged in User
-        $user = auth()->user();
-
-        //  If user does not belongs to any organization, set this organization as default
-        //
-        $isDefault = $user->organizations->count() ? 0 : 1;
-        $user->organizations()->attach([ $organization->id => ['is_default' => $isDefault]]);
-
-        return $organization;
-    }
 }
