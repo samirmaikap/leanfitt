@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://leanfitt.host'),
+    'url' => env('APP_URL', 'http://leanfitt.dev'),
 
     /*
     |--------------------------------------------------------------------------

@@ -318,75 +318,75 @@ class UserService //implements UserServiceInterface
 //    }
 
    //Added on 7/10 Samir
-//    public function index($request){
-//        $response=new \stdClass();
-//        $organization=$request->get('organization');
-//        $department=$request->get('department');
-//
-//        $users=$this->userRepo->getEmployees();
-//        $admin=$this->userRepo->getAdmin($organization);
-//
-//
-//        if(!empty($organization)){
-//            $query=$users->where('organization_id',$organization);
-//            $invited=$this->inviteRepo->where('organization_id',$organization)->where('is_joined',0)->get();
-//            if($invited){
-//                $invited_col=$invited->map(function($item){
-//                    return  [
-//                        "id"=> null,
-//                        "user_id"=> null,
-//                        "department_id"=> $item['department_id'],
-//                        "designation"=> null,
-//                        "is_archived"=> 0,
-//                        "created_at"=> Carbon::parse($item['created_at'])->format('Y-m-d H:i:s'),
-//                        "updated_at"=> Carbon::parse($item['updated_at'])->format('Y-m-d H:i:s'),
-//                        "organization_id"=> $item['organization_id'],
-//                        "department_name"=> null,
-//                        "first_name"=> $item['first_name'],
-//                        "last_name"=> $item['last_name'],
-//                        "email"=> $item['email'],
-//                        "phone"=> $item['phone'],
-//                        "avatar"=> "https://ui-avatars.com/api/?name=".$item['first_name'],
-//                        "invitaion_id"=>$item['id'],
-//                        "status"=> "Invited"
-//                    ];
-//                });
-//            }
-//            else{
-//                $invited_col=null;
-//            }
-//        }
-//
-//        if(!empty($department)){
-//            $query=$query->where('department_id',$department);
-//        }
-//
-//        $data= $query->orderBy('created_at','desc')->get();
-//        $data=$data->map(function($item){
-//            $item=collect($item);
-//            $return=$item->except('user')->toArray();
-//            $return['status']='Joined';
-//            return $return;
-//        });
-//
-//        dd($data->merge(new Collection($admin)));
-//        if(isset($invited_col) && count($invited_col) > 0){
-//            $data=$data->merge($invited_col->toArray());
-//        }
-//
-//        if($data->count() > 0){
-//            $response->success=true;
-//            $response->data=$data;
-//            $response->message="Employees available";
-//        }
-//        else{
-//            $response->success=false;
-//            $response->data=null;
-//            $response->message="No employees available";
-//        }
-//
-//        return $response;
-//    }
+    public function index($request){
+        $response=new \stdClass();
+        $organization=$request->get('organization');
+        $department=$request->get('department');
+
+        $users=$this->userRepo->getEmployees();
+        $admin=$this->userRepo->getAdmin($organization);
+
+
+        if(!empty($organization)){
+            $query=$users->where('organization_id',$organization);
+            $invited=$this->inviteRepo->where('organization_id',$organization)->where('is_joined',0)->get();
+            if($invited){
+                $invited_col=$invited->map(function($item){
+                    return  [
+                        "id"=> null,
+                        "user_id"=> null,
+                        "department_id"=> $item['department_id'],
+                        "designation"=> null,
+                        "is_archived"=> 0,
+                        "created_at"=> Carbon::parse($item['created_at'])->format('Y-m-d H:i:s'),
+                        "updated_at"=> Carbon::parse($item['updated_at'])->format('Y-m-d H:i:s'),
+                        "organization_id"=> $item['organization_id'],
+                        "department_name"=> null,
+                        "first_name"=> $item['first_name'],
+                        "last_name"=> $item['last_name'],
+                        "email"=> $item['email'],
+                        "phone"=> $item['phone'],
+                        "avatar"=> "https://ui-avatars.com/api/?name=".$item['first_name'],
+                        "invitaion_id"=>$item['id'],
+                        "status"=> "Invited"
+                    ];
+                });
+            }
+            else{
+                $invited_col=null;
+            }
+        }
+
+        if(!empty($department)){
+            $query=$query->where('department_id',$department);
+        }
+
+        $data= $query->orderBy('created_at','desc')->get();
+        $data=$data->map(function($item){
+            $item=collect($item);
+            $return=$item->except('user')->toArray();
+            $return['status']='Joined';
+            return $return;
+        });
+
+        dd($data->merge(new Collection($admin)));
+        if(isset($invited_col) && count($invited_col) > 0){
+            $data=$data->merge($invited_col->toArray());
+        }
+
+        if($data->count() > 0){
+            $response->success=true;
+            $response->data=$data;
+            $response->message="Employees available";
+        }
+        else{
+            $response->success=false;
+            $response->data=null;
+            $response->message="No employees available";
+        }
+
+        return $response;
+    }
 
 
     // New methods

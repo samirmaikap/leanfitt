@@ -50,7 +50,7 @@ class AuthService implements AuthServiceInterface
                 $this->updateDevice($data);
             }
 
-            return $this->loggedUser($user->id);
+            return $this->repo->logResponse($user->id);
         }
         else{
             throw  new AuthenticationException('Email and password does not match');
@@ -75,64 +75,44 @@ class AuthService implements AuthServiceInterface
         }
 
         $user=$this->repo->create($data);
-        if($user)
-            return $this->loggedUser($user);
+        if(!$user){
+            throw new \Exception(config('messages.common_error'));
+        }
 
-        throw new \Exception(config('messages.common_error'));
+        return $this->repo->logResponse($user);
+
     }
 
-    protected function loggedUser($user_id){
-//         $user=$this->repo->with(['organizations'=>function($query){
-//             $query->select(['organizations.id','name','featured_image','subdomain']);
-//         }])->find($user_id);
-         $organization=$this->repo->find($user_id)->organizations->where('is_default',1);
-         return $organization;
+    public function recovery($data)
+    {
+        if(empty(arrayValue($data,'email'))){
+           throw new \Exception('Email field is required');
+        }
+
+        $account=$this->repo->where('email',arrayValue($data,'email'))->first();
+        if(!$account){
+            throw new \Exception(config('messages.not_account'));
+        }
+
+        $recovery['first_name']=$account->first_name;
+        $recovery['email']=arrayValue($data,'email');
+        $recovery['token']=$recovery['request_id']=md5(time());
+        $recovery['code']=random_int(111111,999999).substr(str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ"), -2);
+        $recovery['user_id']=$account->id;
+        $log=$this->recoveryRepo->create($recovery);
+
+        if(!$log){
+            throw new \Exception(config('messages.common_error'));
+        }
+
+        Mail::to(arrayValue($data,'email'))->send(new PasswordResetMail($recovery));
+        return true;
     }
 
-//    public function recovery($request)
-//    {
-//        $response=new \stdClass();
-//        if(empty($request->get('email'))){
-//            $response->success=false;
-//            $response->message="Invalid email address";
-//            return $response;
-//        }
-//
-//        $account=$this->repo->where('email',$request->get('email'))->first();
-//        if($account){
-//            $data['first_name']=$account->first_name;
-//            $data['email']=$request->get('email');
-//            $data['token']=$data['request_id']=md5(time());
-//            $data['code']=random_int(111111,999999).substr(str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ"), -2);
-//            $data['user_id']=$account->id;
-//            $log=$this->recoveryRepo->create($data);
-//            if($log){
-//                Mail::to($request->get('email'))->send(new PasswordResetMail($data));
-//                $response->success=true;
-//                $response->message="An email has been sent to the registered email address";
-//            }
-//            else{
-//                $response->success=false;
-//                $response->message="Something went wrong, try again later";
-//            }
-//
-//        }
-//        else{
-//            $response->success=false;
-//            $response->message="Unable to find your account";
-//        }
-//
-//        return $response;
-//    }
-//
-//
 //    public function checkResetCode($code){
-//        $response=new \stdClass();
+//
 //        if(empty($code)){
-//            $response->success=false;
-//            $response->data=null;
-//            $response->message="Please enter the recovery code";
-//            return $response;
+//           throw new \Exception("Please enter the recovery code");
 //        }
 //
 //        $recovery_log=$this->recoveryRepo->where('code',$code)->first();

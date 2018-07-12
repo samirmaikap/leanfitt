@@ -20,6 +20,10 @@ class OrganizationMiddleware
      */
     public function handle($request, Closure $next)
     {
+//        dd(URL::defaults(['subdomain' => $subDomain]));
+
+        $request->route()->forgetParameter('organization');;
+
         $host = explode('.', $request->getHost());
         $subdomain = $host[0];
         $domain = $host[1];

@@ -50,12 +50,9 @@ class User extends Authenticatable
     protected $appends = [
         'full_name',
         'initials',
-        'department_name',
+//        'department_name',
+//        'department_id',
     ];
-
-    public function getDepartmentNameAttribute(){
-        return isset($this->departments()->name) ? $this->departments()->name : null;
-    }
 
     public function setPasswordAttribute($value)
     {

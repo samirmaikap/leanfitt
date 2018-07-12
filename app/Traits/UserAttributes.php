@@ -28,4 +28,13 @@ trait UserAttributes
         return $value;
     }
 
+//    public function getDepartmentNameAttribute(){
+//        $department=$this->departments->where('organization_id',$this->getOrganizationIdAttribute())->first();
+//        return isset($department->name) ? $department->name : null;
+//    }
+//
+//    public function getDepartmentIdAttribute(){
+//        $department=$this->departments->where('organization_id',$this->getOrganizationIdAttribute())->first();
+//        return isset($department->name) ? $department->id : null;
+//    }
 }

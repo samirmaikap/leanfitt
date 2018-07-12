@@ -30,7 +30,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         })->get();
     }
 
-    /*Added by samie 7/10*/
+    /*Added by samir 7/10*/
     public function getEmployees()
     {
         $query=$this->model()
@@ -48,9 +48,13 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
             ->where('ou.organization_id',$organization_id)
             ->select(['users.*','dep.organization_id','dep.name as department_name'])->first();
         return $query;
-//        ->join('departments as dep','dep.organization_id','=','ou.organization_id')
-//        ->where('dep.organization_id',$organization_id)
-//        ->where('ou.organization_id',$organization_id)
-//        ->select(['users.*','dep.organization_id','dep.name as department_name'])->first();
+    }
+
+    public function logResponse($user_id){
+        $query=$this->model()->with(['organizations'=>function($query){
+            $query->select(['organizations.id','name','featured_image','subdomain']);
+        },'roles.permissions'])->find($user_id);
+
+        return $query;
     }
 }
