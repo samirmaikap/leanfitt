@@ -164,28 +164,8 @@ abstract class BaseRepository implements BaseRepositoryInterface
         return $record->update($data);
     }
 
-//    public function getAdmin($user_id){
-//        $query=Admin::where('user_id',$user_id)->first();
-//        return isset($query) ? $query->id : null;
-//    }
-
-//    public function getEmployee($user_id){
-//        $query=Employee::where('user_id',$user_id)->first();
-//        return isset($query) ? $query->id : null;
-//    }
-
-//    public function getUser($id,$type){
-//        if($type=='employee'){
-//            $query=Employee::find($id);
-//        }
-//        else{
-//            $query=Admin::find($id);
-//        }
-//        return isset($query) ? $query->user_id : null;
-//    }
-
-    public function deletQuery($query){
-        return $query->delete();
+    public function deleteRecord($record){
+        return $record->delete();
     }
 
     public function forceDeleteRecord($record)
@@ -193,11 +173,4 @@ abstract class BaseRepository implements BaseRepositoryInterface
         return $record->forceDelete();
     }
 
-//    public function isAdmin($user_id){
-//        return Admin::where('user_id',$user_id)->exists();
-//    }
-//
-//    public function isSuperAdmin($user_id){
-//        return Admin::where('user_id',$user_id)->where('is_superadmin',1)->exists();
-//    }
 }

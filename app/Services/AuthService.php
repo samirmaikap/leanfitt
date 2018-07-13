@@ -8,7 +8,7 @@ use App\Repositories\DeviceRepository;
 use App\Repositories\OrganizationRepository;
 use App\Repositories\PasswordResetRepository;
 use App\Repositories\UserRepository;
-use App\Services\Contracts\AuthServiceInterface;
+
 use App\Validators\UserValidator;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\Collection;
@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
-class AuthService implements AuthServiceInterface
+class AuthService
 {
     protected $repo;
     protected $deviceRepo;

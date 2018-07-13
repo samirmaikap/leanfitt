@@ -37,11 +37,10 @@ class OrganizationMiddleware
         $organizationRepository = new OrganizationRepository();
         $organization = $organizationRepository->where('subdomain', '=', $subdomain)->first();
 
-//        session(['organization' => $organization]);
+        session(['organization' => $organization]);
 
 //        $request->merge(['current_organization_id'=>$organization->id]);
         $request->request->add(['current_organization_id', $organization->id]);
-
         return $next($request);
     }
 }

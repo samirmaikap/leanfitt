@@ -23,7 +23,6 @@ $factory->define(App\Models\ActionItem::class, function (Faker $faker) {
         'itemable_type'=>'App\Models\Project',
         'itemable_id'=>$faker->randomDigit,
         'position'=>$faker->randomDigit,
-        'created_by'=>$faker->randomDigit
     ];
 });
 
@@ -38,7 +37,7 @@ $factory->define(App\Models\Attachment::class, function (Faker $faker) {
         'attachable_type'=>'App\Models\ActionItem',
         'attachable_id'=>$faker->randomDigit,
         'url'=>$faker->imageUrl(640,480),
-        'created_by'=>$faker->randomDigit,
+        
     ];
 });
 
@@ -72,14 +71,14 @@ $factory->define(App\Models\Comment::class, function (Faker $faker) {
         'comment'=>$faker->text('100'),
         'commentable_type'=>'App\Models\ActionItem',
         'commentable_id'=>$id,
-        'created_by'=>$faker->randomDigit,
+        
     ];
 });
 
 $factory->define(App\Models\Department::class, function (Faker $faker) {
     return [
         'name'=>$faker->jobTitle,
-        'created_by'=>$faker->randomDigit,
+        
     ];
 });
 
@@ -98,7 +97,7 @@ $factory->define(App\Models\KpiChart::class, function (Faker $faker) {
         'y_label'=>'Money',
         'start_date'=>$startDate=Carbon::createFromTimeStamp($faker->dateTimeBetween('-30 days', '+30 days')->getTimestamp()),
         'end_date'=> Carbon::createFromFormat('Y-m-d H:i:s', $startDate)->addDays(30),
-        'created_by'=>$faker->randomDigit,
+        
     ];
 });
 
@@ -106,7 +105,7 @@ $factory->define(App\Models\KpiDataPoint::class, function (Faker $faker) {
     return [
         'x_value'=>$faker->randomDigit,
         'y_value'=>Carbon::createFromTimeStamp($faker->dateTimeBetween('-30 days', '+30 days')->getTimestamp()),
-        'created_by'=>$faker->randomDigit,
+        
     ];
 });
 
@@ -146,7 +145,7 @@ $factory->define(App\Models\LeanTool::class, function (Faker $faker) {
         'steps'=>$faker->text(),
         'quiz'=>json_encode($quiz),
         'assessment'=>json_encode($assessment),
-        'created_by'=>$faker->randomDigit,
+        
     ];
 });
 
@@ -172,7 +171,7 @@ $factory->define(App\Models\Project::class, function (Faker $faker) {
         'end_date'=> Carbon::createFromFormat('Y-m-d H:i:s', $startDate)->addDays(30),
         'note'=>$faker->paragraph,
         'report_date'=>Carbon::createFromFormat('Y-m-d H:i:s', $startDate)->addDays(30),
-        'created_by'=>$faker->randomDigit,
+        
     ];
 });
 

@@ -23,3 +23,13 @@ function successMessage($data,$message_code,$status){
     $response['message']=config('messages.'.$message_code);
    return response()->json($response,$status);
 }
+
+
+function renderCollection($data){
+    if($data instanceof \Illuminate\Database\Eloquent\Collection){
+        return $data;
+    }
+    else{
+        return new \Illuminate\Database\Eloquent\Collection($data);
+    }
+}

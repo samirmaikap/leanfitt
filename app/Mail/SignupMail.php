@@ -29,6 +29,6 @@ class SignupMail extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->view('email.signup');
+        return $this->view('emails.signup');
     }
 }

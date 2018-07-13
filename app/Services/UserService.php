@@ -24,7 +24,7 @@ use function is_integer;
 use function is_null;
 use function session;
 
-class UserService //implements UserServiceInterface
+class UserService
 {
     protected $userRepo;
     protected $organizationRepo;

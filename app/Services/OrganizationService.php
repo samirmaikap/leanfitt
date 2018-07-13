@@ -8,7 +8,6 @@ use App\Repositories\MediaRepository;
 use App\Repositories\OrganizationAdminRepository;
 use App\Repositories\OrganizationRepository;
 use App\Repositories\UserRepository;
-use App\Services\Contracts\OrganizationServiceInterface;
 use App\Validators\OrganizationValidator;
 use function auth;
 use function dd;
@@ -18,7 +17,7 @@ use function str_slug;
 use Stripe\Stripe;
 use Stripe\Token;
 
-class OrganizationService implements OrganizationServiceInterface
+class OrganizationService
 {
     protected $organizationRepository;
     protected $mediaRepo;
