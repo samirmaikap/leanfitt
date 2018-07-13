@@ -6,29 +6,32 @@ namespace App\Repositories;
 use App\Models\AssessmentResult;
 use App\Repositories\Contracts\AssessmentRepositoryInterface;
 
-class AssessmentRepository extends BaseRepository implements AssessmentRepositoryInterface
+class AssessmentRepository extends BaseRepository //implements AssessmentRepositoryInterface
 {
     public function model()
     {
         return new AssessmentResult();
     }
 
-    public function allAssessment()
+    public function allAssessment($organization,$department,$user)
     {
         $query=$this->model()
-            ->join('users as u','u.id','=','assessment_results.user_id')
-            ->join('department_user as du','du.user_id','=','du.user_id')
+            ->join('department_user as du','du.user_id','=','assessment_results.user_id')
+            ->join('organization_user as ou','ou.user_id','=','assessment_results.user_id')
             ->join('departments as dep','dep.id','=','du.department_id')
+            ->join('organizations as org','org.id','=','ou.organization_id')
+            ->where('ou.organization_id',empty($organization) ? '!=':'=',empty($organization) ? null : $organization )
+            ->where('du.department_id',empty($department) ? '!=':'=',empty($department) ? null : $department )
+            ->where('u.id',empty($user) ? '!=':'=',empty($user) ? null : $user )
             ->select([
                 'assessment_results.*',
                 'u.id as user_id',
-                'u.first_name as employee_first_name',
-                'u.last_name as employee_last_name',
-                'u.avatar as employee_avatar',
-                'dep.id as department_id',
-                'dep.name as depart_name',
-                'dep.organization_id'
-                ]);
+                'u.first_name',
+                'u.last_name',
+                'u.avatar',
+                'dep.name as department_name',
+                ])
+            ->distinct()->orderBy('u.first_name')->get();;
 
         return $query;
     }
