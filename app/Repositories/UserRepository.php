@@ -14,7 +14,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 
 
     public function profile($user){
-        $query=$this->model()->with(['employee.department','admin.organizationAdmin.organization'])->withCount('quiz')->withCount('award')->withCount('assignee')->where('id',$user)->first();
+        $query=$this->model()->with(['organizations','subscriptions'])->withCount('quiz')->withCount('award')->withCount('assignee')->where('id',$user)->first();
         return $query;
     }
 
@@ -25,29 +25,9 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 
     public function getUsersByOrganization($organizationId, $with)
     {
-        return $this->model->with($with)->whereHas('organizations' , function($query) use ($organizationId) {
+        return $this->model()->with($with)->whereHas('organizations' , function($query) use ($organizationId) {
             $query->where('organizations.id', '=', $organizationId );
         })->get();
-    }
-
-    /*Added by samir 7/10*/
-    public function getEmployees()
-    {
-        $query=$this->model()
-            ->join('department_user as du','du.user_id','=','users.id')
-            ->join('departments as dep','dep.id','=','du.department_id')
-            ->select(['users.*','dep.organization_id','dep.name as department_name']);
-        return $query;
-    }
-
-    public function getAdmin($organization_id)
-    {
-        $query=$this->model()
-            ->join('organization_user as ou','ou.user_id','=','users.id')
-            ->leftJoin('departments as dep','ou.organization_id','=','dep.organization_id')
-            ->where('ou.organization_id',$organization_id)
-            ->select(['users.*','dep.organization_id','dep.name as department_name'])->first();
-        return $query;
     }
 
     public function logResponse($user_id){
@@ -55,6 +35,24 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
             $query->select(['organizations.id','name','featured_image','subdomain']);
         },'roles.permissions'])->find($user_id);
 
+        return $query;
+    }
+
+    public function getRelated($user_id){
+        $query=$this->model()->join('organization_user as ou','ou.user_id','users.id')
+            ->join('organizations as o','o.id','=','ou.organization_id')
+            ->where('users.id',$user_id)
+            ->select(['o.id','o.name','o.featured_image','o.subdomain'])->get();
+        return $query;
+    }
+
+
+    public function listUsers($organization,$department){
+        $query=$this->model()->join('organization_user as ou','ou.user_id','users.id')
+            ->join('department_user as du','du.user_id','=','users.id')
+            ->where('du.department_id',empty($department) ? '!=' : '=',empty($department) ? null : $department )
+            ->where('ou.organization_id',empty($organization) ? '!=' : '=',empty($organization) ? null : $organization )
+            ->select(['users.id','users.first_name','users.last_name'])->distinct()->orderBy('users.first_name')->get();
         return $query;
     }
 }

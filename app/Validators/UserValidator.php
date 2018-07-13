@@ -14,6 +14,8 @@ class UserValidator extends BaseValidator
         ],
         "update" => [
             'password' => 'confirmed|min:6',
+            'email'=>'unique:users',
+            'phone'=>'unique:users'
         ],
 
     ];

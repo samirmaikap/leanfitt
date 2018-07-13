@@ -18,7 +18,6 @@ class CreateCommentsTable extends Migration
             $table->longText('comment');
             $table->integer('user_id')->unsigned();
             $table->morphs("commentable");
-            $table->integer('created_by');
             $table->timestamps();
             $table->foreign('user_id')
                 ->references('id')->on('users')

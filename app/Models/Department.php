@@ -10,7 +10,6 @@ class Department extends Model
         'name',
         'organization_id',
         'is_archived',
-        'created_by'
     ];
 
     public function organization()

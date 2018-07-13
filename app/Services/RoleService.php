@@ -41,6 +41,7 @@ class RoleService
 
     public function all()
     {
+//        if(isset())
         $organization = session('organization');
         return $organization->roles()
             ->withCount(['users'])
@@ -52,7 +53,6 @@ class RoleService
 
     public function create($data)
     {
-//        return $this->createPermissions();
 
         $permissions = $data['permissions'] ? $data['permissions'] : $this->getDefaultPermissions();
 

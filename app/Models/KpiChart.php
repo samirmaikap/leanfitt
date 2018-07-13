@@ -14,7 +14,6 @@ class KpiChart extends Model
         'y_label',
         'start_date',
         'end_date',
-        'created_by'
     ];
 
     public function project(){

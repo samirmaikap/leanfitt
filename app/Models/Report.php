@@ -9,7 +9,6 @@ class Report extends Model
     protected $fillable=[
         'report_category_id',
         'project_id',
-        'created_by'
     ];
 
     public function category(){

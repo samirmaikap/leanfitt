@@ -18,7 +18,6 @@ class CreateDepartmentsTable extends Migration
             $table->integer('organization_id')->unsigned();
             $table->string('name');
             $table->tinyInteger('is_archived')->default(0);
-            $table->integer('created_by');
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('organization_id')

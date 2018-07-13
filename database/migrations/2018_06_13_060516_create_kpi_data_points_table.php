@@ -18,7 +18,6 @@ class CreateKpiDataPointsTable extends Migration
             $table->integer('kpi_chart_id')->unsigned();
             $table->text('x_value');
             $table->text('y_value');
-            $table->integer('created_by');
             $table->timestamps();
             $table->foreign('kpi_chart_id')
                 ->references('id')->on('kpi_charts')

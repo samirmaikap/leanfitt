@@ -49,20 +49,6 @@ class Organization extends Model
         return $this->belongsToMany(Role::class, 'organization_role', 'organization_id', 'role_id');
     }
 
-//    public function employees()
-//    {
-//        return $this->hasManyThrough(Employee::class, Department::class);
-//    }
-
-//    public function admins()
-//    {
-//        return $this->belongsToMany(Admin::class,'');
-//    }
-
-    public function organizationAdmin(){
-        return $this->hasOne(OrganizationAdmin::class,'organization_id','id');
-    }
-
     public function project(){
         return $this->hasMany(Project::class);
     }

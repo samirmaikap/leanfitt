@@ -17,8 +17,6 @@ class CreateReportsTable extends Migration
             $table->increments('id')->unsigned()->index();
             $table->integer('report_category_id');
             $table->integer('project_id')->unsigned();
-//            $table->date('report_date')->nullable();
-            $table->integer('created_by');
             $table->timestamps();
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
         });

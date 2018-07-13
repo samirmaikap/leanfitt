@@ -18,7 +18,6 @@ class CreateAttachmentsTable extends Migration
             $table->morphs('attachable');
             $table->text('url');
             $table->text('path');
-            $table->integer('created_by');
             $table->timestamps();
         });
     }

@@ -21,7 +21,6 @@ class CreateKpiChartsTable extends Migration
             $table->string('y_label');
             $table->date('start_date');
             $table->date('end_date');
-            $table->integer('created_by');
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('project_id')

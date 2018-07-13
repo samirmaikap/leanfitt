@@ -23,7 +23,6 @@ class CreateActionItemsTable extends Migration
             $table->date('due_date');
             $table->tinyInteger('is_archived')->default(0);
             $table->text('description')->nullable();
-            $table->integer('created_by');
             $table->timestamps();
             $table->softDeletes();
         });

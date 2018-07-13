@@ -16,9 +16,10 @@ use Illuminate\Http\Request;
 //Auth::routes();
 Route::post('login', 'API\AuthController@login');
 Route::post('register', 'API\AuthController@register');
-Route::group(['namespace' => 'API'], function () {
+Route::group(['namespace' => 'API','middleware'=>'auth:api'], function () {
     Route::get('test/check', function(Request $request){
-        return $request;
+        $users=new \App\Repositories\UserRepository();
+         return response()->json($users->listUsers(4,''));
     });
 });
 

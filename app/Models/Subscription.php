@@ -6,13 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Subscription extends Model
 {
-    protected $fillable=[
-        'user_id',
-        'gateway_id',
-        'is_active'
-    ];
+    protected $table='subscriptions';
 
-    public function employee(){
-        return $this->belongsTo(User::class);
-    }
 }

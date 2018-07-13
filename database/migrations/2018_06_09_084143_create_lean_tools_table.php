@@ -22,7 +22,6 @@ class CreateLeanToolsTable extends Migration
             $table->longText('case_studies')->nullable();
             $table->longText('quiz')->nullable();
             $table->longText('assessment')->nullable();
-            $table->integer('created_by');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -18,7 +18,6 @@ class Project extends Model
         'note',
         'is_archived',
         'is_completed',
-        'created_by'
     ];
 
     public function leaderData(){

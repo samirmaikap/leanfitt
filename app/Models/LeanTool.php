@@ -14,7 +14,6 @@ class LeanTool extends Model
         'case_studies',
         'quiz',
         'assessment',
-        'created_by'
     ];
 
     public function item(){

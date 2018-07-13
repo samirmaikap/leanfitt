@@ -39,16 +39,16 @@ class OrganizationService implements OrganizationServiceInterface
 
     public function create($data)
     {
-        $subdomain = str_slug($data['organization']['name']);
+        $subdomain = str_slug(arrayValue($data['organization']),'name');
         $data['organization']['subdomain'] = $subdomain;
 
-        $validator=new OrganizationValidator($data['organization'],'create');
+        $validator=new OrganizationValidator(arrayValue($data,'organization'),'create');
         if($validator->fails())
             throw new \Exception($validator->messages()->first());
 
-        $organization = $this->organizationRepository->create($data['organization']);
+        $organization = $this->organizationRepository->create(arrayValue($data,'organization'));
 
-//        if(empty(arrayValue($data['subscription'],'number'))){
+//        if(!empty(arrayValue($data['subscription'],'number'))){
 //            Stripe::setApiKey(env('STRIPE_KEY'));
 //            $stripe=Token::create(array(
 //                "card" => array(
@@ -61,11 +61,13 @@ class OrganizationService implements OrganizationServiceInterface
 //            $stripe_token=isset($stripe->id) ? $stripe->id : null;
 //        }
 
-        $organization->newSubscription( 'main', $data['subscription']['plan'])
-            ->create($data['subscription']['stripeToken'], [
+        $organization->newSubscription( 'main', arrayValue($data['subscription'],'plan'))
+            ->create(arrayValue($data['subscription'],'stripeToken'), [
                 'email' => $organization->email,
                 'description' => $organization->name
             ]);
+
+        /*Create invoice*/
 
         $user = auth()->user();
 
@@ -81,7 +83,6 @@ class OrganizationService implements OrganizationServiceInterface
         $query=$this->organizationRepository->with('subscriptions')->withCount('users')->withCount('departments')->withCount('project')->get();
         if(!$query)
             throw new \Exception('Organization not found');
-
         return $query;
     }
 
@@ -155,7 +156,8 @@ class OrganizationService implements OrganizationServiceInterface
 
         $organization=$this->organizationRepository->with('project.actionItem')->where('id',$organization_id)->first();
 
-        $pro_actions=count($organization['project'][0]['actionItem']) > 0 ? $organization['project'][0]['actionItem']->map(function($action){
+        $actonitems=isset($organization['project'][0]['actionItem']) ? $organization['project'][0]['actionItem'] : null;
+        $pro_actions=count($actonitems) > 0 ? $actonitems->map(function($action){
             return $action->id;
         })->toArray() : [];
 
@@ -192,5 +194,6 @@ class OrganizationService implements OrganizationServiceInterface
 
         return $organizations;
     }
+
 
 }

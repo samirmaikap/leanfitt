@@ -9,7 +9,6 @@ class ActionItem extends Model
     protected $hidden=[
         'itemable_id',
         'itemable_type',
-        'created_by'
     ];
     protected $fillable=[
         'name',
@@ -19,7 +18,6 @@ class ActionItem extends Model
         'due_date',
         'is_archived',
         'description',
-        'created_by',
         'itemable_id',
         'itemable_type',
     ];
