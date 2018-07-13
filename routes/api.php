@@ -18,16 +18,8 @@ Route::post('login', 'API\AuthController@login');
 Route::post('register', 'API\AuthController@register');
 Route::group(['namespace' => 'API','middleware'=>'auth:api'], function () {
     Route::get('test/check', function(Request $request){
-        $repo=new \App\Repositories\LeantoolRepository();
-        $query=$repo->all();
-        $query=$query->map(function($item){
-            return [
-                'id'=>$item['id'],
-                'name'=>$item['name'],
-                'quiz_count'=>count(json_decode($item['quiz'])),
-            ];
-        });
-        return response()->json(renderCollection($query));
+        $repo=new \App\Repositories\DepartmentRepository();
+        return response()->json($repo->getDepartments(4));
     });
 });
 
