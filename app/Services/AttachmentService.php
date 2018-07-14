@@ -89,15 +89,15 @@ class AttachmentService implements AttachmentServiceInterface
             DB::beginTransaction();
 //            $file_delete=Storage::disk('local')->delete($attachment->path);
 //            if($file_delete){
-//                $query=$this->attachmentRepo->forceDeleteRecord($attachment);
-//                if($query){
-//                    DB::commit();
-//                    return "Attachment has been removed";
-//                }
-//                else{
-//                    DB::rollBack();
-//                    throw new \Exception("Something went wrong, try again later");
-//                }
+                $query=$this->attachmentRepo->deleteRecord($attachment);
+                if($query){
+                    DB::commit();
+                    return "Attachment has been removed";
+                }
+                else{
+                    DB::rollBack();
+                    throw new \Exception(config('messages.common_error'));
+                }
 //            }
 //            else{
 //                DB::rollBack();

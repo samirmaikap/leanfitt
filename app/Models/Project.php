@@ -55,4 +55,8 @@ class Project extends Model
     public function reports(){
         return $this->hasMany(Report::class);
     }
+
+    public function member(){
+        return $this->hasMany(ProjectMember::class);
+    }
 }
