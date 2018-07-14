@@ -6,7 +6,7 @@ use App\Models\KpiChart;
 use App\Repositories\Contracts\KPIRepositoryInterface;
 use Illuminate\Support\Collection;
 
-class KPIRespository extends BaseRepository implements KPIRepositoryInterface
+class KPIRespository extends BaseRepository //implements KPIRepositoryInterface
 {
 
     public function model()
@@ -14,9 +14,13 @@ class KPIRespository extends BaseRepository implements KPIRepositoryInterface
         return new KpiChart();
     }
 
-    public function allKpi()
+    public function allKpi($project,$organization)
     {
-        $query=$this->model()->join('projects as p','p.id','kpi_charts.project_id')->select(['kpi_charts.*','p.organization_id']);
+        $query=$this->model()
+            ->join('projects as p','p.id','kpi_charts.project_id')
+            ->where('kpi_charts',empty($project) ? '!=':'=',empty($project) ? null : $project)
+            ->where('p.organization_id',empty($organization) ? '!=':'=',empty($organization) ? null : $organization)
+            ->select('kpi_charts.*')->get();
         return $query;
     }
 }
