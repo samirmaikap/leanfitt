@@ -29,6 +29,6 @@ class SubscriptionMail extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->view('email.subscription');
+        return $this->subject(ucfirst(config('app.name')).' Subscription')->view('emails.subscription');
     }
 }

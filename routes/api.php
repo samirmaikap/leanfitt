@@ -18,9 +18,21 @@ Route::post('login', 'API\AuthController@login');
 Route::post('register', 'API\AuthController@register');
 Route::group(['namespace' => 'API','middleware'=>'auth:api'], function () {
     Route::get('test/check', function(Request $request){
-       $repo=new \App\Repositories\OrganizationRepository();
-       $organization=$repo->find(17);
-       return response()->json($organization->asStripeCustomer());
+        $repo=new \App\Repositories\OrganizationRepository();
+        $organization=$repo->find(17);
+        $customer=$organization->asStripeCustomer();
+        $data['data']['currency']=$customer->currency;
+        $data['data']['email']=$customer->email;
+        $data['data']['contact_person']=$organization->contact_person;
+        $data['data']['organization_name']=$organization->name;
+        $data['data']['card_end']=$customer['sources']->data[0]['last4'];
+        $data['data']['billing']=$customer['subscriptions']->data[0]['billing'];
+        $data['data']['current_period_end']=$customer['subscriptions']->data[0]['current_period_end'];
+        $data['data']['plan_name']=$customer['subscriptions']->data[0]['plan']->id;
+        $data['data']['amount']=$customer['subscriptions']->data[0]['plan']->amount;
+        $data['data']['quantity']=$customer['subscriptions']->data[0]['quantity'];
+        $data['data']['status']=$customer['subscriptions']->data[0]['status'];
+        return view('emails.subscription',$data);
     });
     Route::post('stripe', 'OrganizationController@stripe');
 });
