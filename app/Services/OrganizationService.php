@@ -97,7 +97,7 @@ class OrganizationService
         return $query;
     }
 
-    public function updateOrganization($data,$image, $org)
+    public function updateOrganization($data,$image,$org)
     {
         if(empty($org)){
             throw  new \Exception("Organization id is required");

@@ -4,7 +4,7 @@ namespace App\Services;
 
 
 use App\Repositories\DepartmentRepository;
-use App\Services\Contracts\DepartmentServiceInterface;
+//use App\Services\Contracts\DepartmentServiceInterface;
 use App\Validators\DepartmentValidator;
 use function dd;
 
