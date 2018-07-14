@@ -18,9 +18,11 @@ Route::post('login', 'API\AuthController@login');
 Route::post('register', 'API\AuthController@register');
 Route::group(['namespace' => 'API','middleware'=>'auth:api'], function () {
     Route::get('test/check', function(Request $request){
-        $repo=new \App\Repositories\DepartmentRepository();
-        return response()->json($repo->getDepartments(4));
+       $repo=new \App\Repositories\OrganizationRepository();
+       $organization=$repo->find(17);
+       return response()->json($organization->asStripeCustomer());
     });
+    Route::post('stripe', 'OrganizationController@stripe');
 });
 
 

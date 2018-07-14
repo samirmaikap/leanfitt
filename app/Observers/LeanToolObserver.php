@@ -16,7 +16,8 @@ class LeanToolObserver
     public function created(LeanTool $leanTool)
     {
         $data['notification']='A new leantool has been added';
-        $data['recipients']='all';
+        $data['users']='all';
+        $data['title']='New Leantool Added';
         event(New PushNotification($data));
     }
 }

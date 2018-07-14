@@ -9,6 +9,8 @@ class OrganizationValidator extends BaseValidator
         'create'=>[
             'name'=>'required',
             'subdomain'=>'required|unique:organizations',
+            'email'=>'required|email',
+            'contact_person'=>'required|string',
         ]
     ];
 }

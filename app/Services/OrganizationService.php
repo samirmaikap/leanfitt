@@ -8,6 +8,7 @@ use App\Repositories\MediaRepository;
 use App\Repositories\OrganizationAdminRepository;
 use App\Repositories\OrganizationRepository;
 use App\Repositories\UserRepository;
+use App\Validators\CardValidator;
 use App\Validators\OrganizationValidator;
 use function auth;
 use function dd;
@@ -38,41 +39,52 @@ class OrganizationService
 
     public function create($data)
     {
-        $subdomain = str_slug(arrayValue($data['organization']),'name');
+        $subdomain = str_slug(arrayValue($data['organization'],'name'));
         $data['organization']['subdomain'] = $subdomain;
 
-        $validator=new OrganizationValidator(arrayValue($data,'organization'),'create');
-        if($validator->fails())
-            throw new \Exception($validator->messages()->first());
+        $org_validator=new OrganizationValidator(arrayValue($data,'organization'),'create');
+        if($org_validator->fails())
+            throw new \Exception($org_validator->messages()->first());
 
+        $card_validator=new CardValidator(arrayValue($data,'subscription'),'create');
+        if($card_validator->fails())
+            throw new \Exception($card_validator->messages()->first());
+
+        DB::beginTransaction();
         $organization = $this->organizationRepository->create(arrayValue($data,'organization'));
 
-//        if(!empty(arrayValue($data['subscription'],'number'))){
-//            Stripe::setApiKey(env('STRIPE_KEY'));
-//            $stripe=Token::create(array(
-//                "card" => array(
-//                    "number" => $data['subscription']['number'],
-//                    "exp_month" => $data['subscription']['exp_month'],
-//                    "exp_year" => $data['subscription']['exp_year'],
-//                    "cvc" => $data['subscription']['cvc']
-//                )
-//            ));
-//            $stripe_token=isset($stripe->id) ? $stripe->id : null;
-//        }
+        if(!empty(arrayValue($data['subscription'],'number'))){
+            Stripe::setApiKey(env('STRIPE_KEY'));
+            $token=Token::create(array(
+                "card" => array(
+                    "number" => $data['subscription']['number'],
+                    "exp_month" => $data['subscription']['exp_month'],
+                    "exp_year" => $data['subscription']['exp_year'],
+                    "cvc" => $data['subscription']['cvc']
+                )
+            ));
+            $stripe_token=isset($token->id) ? $token->id : null;
+        }
 
-        $organization->newSubscription( 'main', arrayValue($data['subscription'],'plan'))
-            ->create(arrayValue($data['subscription'],'stripeToken'), [
-                'email' => $organization->email,
-                'description' => $organization->name
-            ]);
-
-        /*Create invoice*/
+        if(!empty($stripe_token)){
+            $organization->newSubscription( 'main', arrayValue($data['subscription'],'plan'))
+                ->create($stripe_token, [
+                    'email' => $organization->email,
+                    'description' => $organization->name
+                ]);
+        }
 
         $user = auth()->user();
 
         $isDefault = $user->organizations->count() ? 0 : 1;
-        $user->organizations()->attach([ $organization->id => ['is_default' => $isDefault]]);
+        $result=$user->organizations()->attach([ $organization->id => ['is_default' => $isDefault]]);
 
+        if(!$result){
+            DB::rollBack();
+            throw new \Exception(config("messages.common_error"));
+        }
+
+        DB::commit();
         return $organization;
     }
 
@@ -133,7 +145,7 @@ class OrganizationService
     }
 
     public function list(){
-        $query=$this->organizationRepository->lists('id','name');
+        $query=$this->organizationRepository->get(['id','name']);
         if(!$query)
             throw new \Exception(config('messages.common_error'));
 
