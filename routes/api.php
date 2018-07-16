@@ -20,6 +20,7 @@ Route::group(['namespace' => 'API','middleware'=>'auth:api'], function () {
     Route::get('test/check', function(Request $request){
     });
     Route::post('stripe', 'OrganizationController@stripe');
+    Route::view('test/email', 'emails.welcome');
     Route::post('filecheck', 'TestController@fileCheck');
 });
 
