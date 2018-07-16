@@ -8,7 +8,7 @@ use App\Models\Project;
 use App\Repositories\Contracts\ActionItemRepositoryInterface;
 use Illuminate\Support\Collection;
 
-class ActionItemRepository extends BaseRepository implements ActionItemRepositoryInterface
+class ActionItemRepository extends BaseRepository //implements ActionItemRepositoryInterface
 {
 
     public  function  model()
@@ -16,28 +16,20 @@ class ActionItemRepository extends BaseRepository implements ActionItemRepositor
         return new ActionItem();
     }
 
-    public function allProjectActions(){
-        $query=$this->model()->join('projects as pr','pr.id','=','action_items.itemable_id')
-            ->where('action_items.itemable_type','App\Models\Project')
+    public function allItems($organization,$project,$board){
+        $query=$this->model()->join('projects as pr','pr.id','=','action_items.project_id')
             ->leftJoin('action_item_assignees as ais','action_items.id','=','ais.action_item_id')
-            ->select(['action_items.*','pr.organization_id','ais.id as user_id'])
-            ->withCount('comments')->withCount('member')->withCount('attachments');
-        return $query;
-    }
-
-    public function allReportActions(){
-        $query=$this->model()->join('reports as rep','rep.id','=','action_items.itemable_id')
-            ->join('projects as pr','pr.id','=','rep.project_id')
-            ->where('action_items.itemable_type','App\Models\Report')
-            ->leftJoin('action_item_assignees as ais','action_items.id','=','ais.action_item_id')
-            ->select(['action_items.*','pr.organization_id','ais.id as user_id'])
-            ->withCount('comments')->withCount('member')->withCount('attachments');
+            ->where('pr.organization_id',empty($organization) ? '!=':'=',empty($organization) ? null : $organization)
+            ->where('pr.id',empty($project) ? '!=':'=',empty($project) ? null : $project)
+            ->where('action_items.board_id',empty($project) ? '!=':'=',empty($board) ? null : $board)
+            ->select('action_items.*')
+            ->withCount('comments')->withCount('assignees')->withCount('attachments')->get();
         return $query;
     }
 
     public function getItem($id)
     {
-        $query=$this->model()->with(['assignor','board','member.user','comments.user','attachments'])->where('id',$id)->where('is_archived',0)->first();
+        $query=$this->model()->with(['assignor','board','assignees.user','comments.user','attachments'])->where('id',$id)->where('is_archived',0)->first();
         return $query;
     }
 }

@@ -54,7 +54,7 @@ class ProjectService //implements ProjectServiceInterface
             $data['is_completed']=$query['is_completed'];
             $data['is_archived']=$query['is_archived'];
             $data['action_items']=count($query['actionItem']) > 0 ? $query['actionItem']->map(function($item){
-                return collect($item)->except('member');
+                return collect($item)->except('assignees');
             }) : null ;
             $data['members']=count($query['member']) > 0 ? $query['member']->map(function($ac){
                 return [

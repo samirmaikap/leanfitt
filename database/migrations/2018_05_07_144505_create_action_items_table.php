@@ -16,7 +16,7 @@ class CreateActionItemsTable extends Migration
         Schema::create('action_items', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->morphs('itemable');
+            $table->integer('project_id');
             $table->integer('board_id');
             $table->integer('assignor_id');
             $table->integer('position');

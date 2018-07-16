@@ -10,8 +10,6 @@ class Project extends Model
         'organization_id',
         'name',
         'goal',
-        'leader',
-        'lean_sensie',
         'start_date',
         'end_date',
         'report_date',
@@ -20,20 +18,12 @@ class Project extends Model
         'is_completed',
     ];
 
-    public function leaderData(){
-        return $this->hasOne(User::class,'id','leader');
-    }
-
-    public function sensie(){
-        return $this->hasOne(User::class,'id','lean_sensie');
-    }
-
     public function kpi(){
         return $this->hasMany(KpiChart::class);
     }
 
     public function actionItem(){
-        return $this->morphMany(ActionItem::class,'itemable');
+        return $this->hasMany(ActionItem::class);
     }
 
     public function organization(){

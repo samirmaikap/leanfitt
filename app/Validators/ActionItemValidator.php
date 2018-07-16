@@ -9,6 +9,7 @@ class ActionItemValidator extends BaseValidator
         'create'=>[
             'name'=>'required',
             'board_id'=>'required',
+            'project_id'=>'required',
             'assignor_id'=>'required',
             'position'=>'required',
             'due_date'=>'required',

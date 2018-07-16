@@ -6,20 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class ActionItem extends Model
 {
-    protected $hidden=[
-        'itemable_id',
-        'itemable_type',
-    ];
     protected $fillable=[
         'name',
         'board_id',
         'assignor_id',
+        'project_id',
         'position',
         'due_date',
         'is_archived',
         'description',
-        'itemable_id',
-        'itemable_type',
     ];
 
     public function assignor()
@@ -39,13 +34,13 @@ class ActionItem extends Model
         return $this->hasMany(Label::class);
     }
 
-    public function member(){
+    public function assignees(){
         return $this->hasMany(ActionItemAssignee::class);
     }
 
     public function project()
     {
-        return $this->morphTo(Project::class,'itemable_type','itemable_id');
+        return $this->belongsTo(Project::class,'project_id','id');
     }
 
     public function comments(){
