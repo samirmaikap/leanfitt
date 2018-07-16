@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Events\PushNotification;
 use App\Models\ActionItems;
 
 class ActionItemObserver
@@ -14,7 +15,11 @@ class ActionItemObserver
      */
     public function created(ActionItems $actionItems)
     {
-        $ids=$actionItems->project()->projectMember();
+        $ids=$actionItems->project()->member()->pluck('user_id')->toArray();
+        $data['title']='New action item';
+        $data['notification']=$actionItems->name." has been added";
+        $data['users']=$ids;
+        event(new PushNotification($data));
     }
 
     /**
@@ -25,7 +30,11 @@ class ActionItemObserver
      */
     public function updated(ActionItems $actionItems)
     {
-        //
+        $ids=$actionItems->project()->member()->pluck('user_id')->toArray();
+        $data['title']='Action item updated';
+        $data['notification']=$actionItems->name." has been updated";
+        $data['users']=$ids;
+        event(new PushNotification($data));
     }
 
     /**
