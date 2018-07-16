@@ -19,6 +19,7 @@ class CreateReportDefaultAssignmentsTable extends Migration
             $table->integer('report_default_id')->unsigned();
             $table->integer('level')->default(1);
             $table->timestamps();
+            $table->softDeletes();
             $table->foreign('report_id')->references('id')->on('reports')->onDelete('cascade');
             $table->foreign('report_default_id')->references('id')->on('report_defaults')->onDelete('cascade');
         });

@@ -19,6 +19,7 @@ class CreateReportChartsTable extends Migration
             $table->string('label');
             $table->string('value');
             $table->timestamps();
+            $table->softDeletes();
             $table->foreign('report_id')->references('id')->on('reports')->onDelete('cascade');
         });
     }

@@ -18,6 +18,7 @@ class CreateReportProblemsTable extends Migration
             $table->integer('report_id')->unsigned();
             $table->text('name');
             $table->timestamps();
+            $table->softDeletes();
             $table->foreign('report_id')->references('id')->on('reports')->onDelete('cascade');
         });
     }

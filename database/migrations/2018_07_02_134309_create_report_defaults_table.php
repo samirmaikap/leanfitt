@@ -20,6 +20,7 @@ class CreateReportDefaultsTable extends Migration
             $table->string('label');
             $table->integer('level')->default(1);
             $table->timestamps();
+            $table->softDeletes();
             $table->foreign('report_category_id')->references('id')->on('report_categories')->onDelete('cascade');
         });
     }

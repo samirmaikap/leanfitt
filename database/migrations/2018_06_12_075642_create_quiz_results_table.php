@@ -22,6 +22,7 @@ class CreateQuizResultsTable extends Migration
             $table->integer('incorrect')->default(0);
             $table->tinyInteger('is_completed')->default(0);
             $table->timestamps();
+            $table->softDeletes();
             $table->foreign('lean_tool_id')
                 ->references('id')->on('lean_tools')
                 ->onDelete('cascade');

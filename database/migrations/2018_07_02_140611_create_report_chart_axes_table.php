@@ -19,6 +19,7 @@ class CreateReportChartAxesTable extends Migration
             $table->string('x_axis')->nullable();
             $table->string('y_axis')->nullable();
             $table->timestamps();
+            $table->softDeletes();
             $table->foreign('report_id')->references('id')->on('reports')->onDelete('cascade');
         });
     }

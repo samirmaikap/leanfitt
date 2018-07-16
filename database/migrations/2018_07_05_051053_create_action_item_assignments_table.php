@@ -19,6 +19,7 @@ class CreateActionItemAssignmentsTable extends Migration
             $table->date('target_date');
             $table->text('note')->nullable();
             $table->timestamps();
+            $table->softDeletes();
             $table->foreign('action_item_id')->references('id')->on('action_items')->onDelete('cascade');
         });
     }

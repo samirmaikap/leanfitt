@@ -18,7 +18,7 @@ class DeleteRepository
                    DB::beginTransaction();
                    $delCom = $this->deleteComments('action_item', $item->id);
                    $delAtt = $this->deleteAttachments('action_item', $item->id);
-                   if ($delCom && $delAtt && $item->forceDelete()) {
+                   if ($delCom && $delAtt && $item->delete()) {
                        DB::commit();
                        return true;
                    }
@@ -35,7 +35,7 @@ class DeleteRepository
                    foreach ($items as $item) {
                        $delCom = $this->deleteComments('action_item', $item->id);
                        $delAtt = $this->deleteAttachments('action_item', $item->id);
-                       if ($delCom && $delAtt && $item->forceDelete()) {
+                       if ($delCom && $delAtt && $item->delete()) {
                            $del++;
                        }
                    }
@@ -60,7 +60,7 @@ class DeleteRepository
             $comments=Comment::where('commentable_type',$this->getMorphType($type))->where('commentable_id',$id)->get();
             if(count($comments) > 0){
                 foreach ($comments as $comment){
-                    $delCom=$comment->forceDelete();
+                    $delCom=$comment->delete();
                     if($delCom){
                         $del++;
                     }
@@ -87,7 +87,7 @@ class DeleteRepository
            $attachments=Attachment::where('attachable_type',$this->getMorphType($type))->where('attachable_id',$id)->get();
            if(count($attachments) > 0){
                foreach ($attachments as $attachment){
-                   $delAtch=$attachment->forceDelete();
+                   $delAtch=$attachment->delete();
                    if($delAtch){
                        $del++;
                    }

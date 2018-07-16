@@ -20,6 +20,7 @@ class CreateReportElementAssignmentsTable extends Migration
             $table->integer('report_default_element_id')->unsigned();
             $table->integer('level')->default(1);
             $table->timestamps();
+            $table->softDeletes();
             $table->foreign('report_id')->references('id')->on('reports')->onDelete('cascade');
             $table->foreign('report_default_id')->references('id')->on('report_defaults')->onDelete('cascade');
             $table->foreign('report_default_element_id')->references('id')->on('report_default_elements')->onDelete('cascade');

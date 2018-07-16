@@ -18,6 +18,7 @@ class CreateActionItemAssigneesTable extends Migration
             $table->integer('action_item_id')->unsigned();
             $table->integer('user_id')->unsigned();
             $table->timestamps();
+            $table->softDeletes();
             $table->foreign('action_item_id')
                 ->references('id')->on('action_items')
                 ->onDelete('cascade');

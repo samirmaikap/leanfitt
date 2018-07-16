@@ -19,6 +19,7 @@ class CreateLabelsTable extends Migration
             $table->string('label');
             $table->string('color');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

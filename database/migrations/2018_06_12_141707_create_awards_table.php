@@ -20,7 +20,7 @@ class CreateAwardsTable extends Migration
             $table->string('type');
             $table->string('description')->nullable();
             $table->timestamps();
-
+            $table->softDeletes();
             $table->foreign('user_id')
                 ->references('id')->on('users')
                 ->onDelete('cascade');

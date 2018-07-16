@@ -19,6 +19,7 @@ class CreateReportDefaultElementsTable extends Migration
             $table->string('sort')->nullable();
             $table->text('label');
             $table->timestamps();
+            $table->softDeletes();
             $table->foreign('report_default_id')->references('id')->on('report_defaults')->onDelete('cascade');
         });
     }

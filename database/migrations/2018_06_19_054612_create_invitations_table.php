@@ -25,6 +25,7 @@ class CreateInvitationsTable extends Migration
             $table->string('code');
             $table->tinyInteger('is_joined')->default(0);
             $table->timestamps();
+            $table->softDeletes();
             $table->foreign('organization_id')
                 ->references('id')->on('organizations')
                 ->onDelete('cascade');

@@ -19,6 +19,7 @@ class CreateAttachmentsTable extends Migration
             $table->text('url');
             $table->text('path');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

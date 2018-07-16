@@ -19,6 +19,7 @@ class CreateKpiDataPointsTable extends Migration
             $table->text('x_value');
             $table->text('y_value');
             $table->timestamps();
+            $table->softDeletes();
             $table->foreign('kpi_chart_id')
                 ->references('id')->on('kpi_charts')
                 ->onDelete('cascade');

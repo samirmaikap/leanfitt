@@ -14,7 +14,7 @@ class ActionItemObserver
      */
     public function created(ActionItems $actionItems)
     {
-        //
+        $ids=$actionItems->project()->projectMember();
     }
 
     /**

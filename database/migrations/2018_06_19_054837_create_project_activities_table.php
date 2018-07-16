@@ -19,6 +19,7 @@ class CreateProjectActivitiesTable extends Migration
             $table->integer('added_by');
             $table->text('log');
             $table->timestamps();
+            $table->softDeletes();
             $table->foreign('project_id')
                 ->references('id')->on('projects')
                 ->onDelete('cascade');

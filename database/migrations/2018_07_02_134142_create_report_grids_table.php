@@ -19,6 +19,7 @@ class CreateReportGridsTable extends Migration
             $table->integer('position');
             $table->text('value');
             $table->timestamps();
+            $table->softDeletes();
             $table->foreign('report_id')->references('id')->on('reports')->onDelete('cascade');
         });
     }
