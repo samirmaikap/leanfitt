@@ -24,6 +24,8 @@ Route::group(['namespace' => 'API','middleware'=>'auth:api'], function () {
     Route::post('users', 'UserController@create'); //associated accounts for switch
     Route::get('users/profile', 'UserController@profile');
     Route::get('users/list', 'UserController@list');
+    Route::post('users/invitation', 'UserController@invitation');
+    Route::get('users/{user_id}/invitation/resend', 'UserController@resendInvitation');
     Route::get('users/{user_id}/show', 'UserController@find');
     Route::get('users/{user_id}/organizations', 'UserController@getRelatedOrganization');
     Route::put('users/{user_id}', 'UserController@update');

@@ -87,4 +87,22 @@ class UserController extends Controller
         }
     }
 
+    public function invitation(Request $request){
+        try{
+            $result=$this->service->invitaton($request->all());
+            return renderSuccess($result,'An inviation has been sent',200);
+        }catch(\Exception $e){
+            return renderError($e->getMessage());
+        }
+    }
+
+    public function resendInvitation($user_id){
+        try{
+            $result=$this->service->reInvite($user_id);
+            return renderSuccess($result,'An inviation has been sent',200);
+        }catch(\Exception $e){
+            return renderError($e->getMessage());
+        }
+    }
+
 }

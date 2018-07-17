@@ -10,9 +10,11 @@ use App\Repositories\InvitationRepository;
 use App\Repositories\MediaRepository;
 use App\Repositories\OrganizationAdminRepository;
 use App\Repositories\OrganizationRepository;
+use App\Repositories\OrganizationUserRepository;
 use App\Repositories\UserRepository;
 use App\Services\Contracts\UserServiceInterface;
 use App\Validators\EmployeeValidator;
+use App\Validators\InvitationValidator;
 use App\Validators\UserValidator;
 use function array_values;
 use function dd;
@@ -30,16 +32,16 @@ class UserService
     protected $userRepo;
     protected $organizationRepo;
     protected $mediaRepo;
-    protected $inviteRepo;
+    protected $orgUserRepo;
     public function __construct(UserRepository $userRepository,
                                 OrganizationRepository $organizationRepository,
                                 MediaRepository $mediaRepository,
-                                InvitationRepository $invitationRepository)
+                                OrganizationUserRepository $organizationUserRepository)
     {
         $this->userRepo=$userRepository;
         $this->organizationRepo=$organizationRepository;
         $this->mediaRepo=$mediaRepository;
-        $this->inviteRepo=$invitationRepository;
+        $this->orgUserRepo=$organizationUserRepository;
     }
 
     public function all($data)
@@ -188,6 +190,68 @@ class UserService
         return $user;
     }
 
+    public function invitaton($data){
+        if(empty(arrayValue(session('organization'),'id'))){
+            throw new \Exception('Unable to find your organization');
+        }
+        $data['organization_id']=$orgUser['organization_id']=session('organization')['id'];
+
+        if(empty(arrayValue($data,'email'))){
+            throw new \Exception('Email id is required');
+        }
+
+        $user=$this->userRepo->where('email',arrayValue($data,'email'))->first();
+        $orgUser['is_invited']=1;
+        if($user){
+            $orgUser['user_id']=$user->id;
+        }
+        else{
+            $data['password']=$data['password_confirmation']='password';
+            $validator=new UserValidator($data,'create');
+            if($validator->fails()){
+                throw new \Exception($validator->messages()->first());
+            }
+
+//            $query=$this->userRepo->create($data);
+            $new_user=$this->create($data);
+            if(!$new_user){
+                throw new \Exception(config('messages.common_error'));
+            }
+            $orgUser['user_id']=$new_user;
+        }
+
+        $exists=$this->orgUserRepo->where('user_id',$orgUser['user_id'])->where('organization_id',$orgUser['organization_id'])->exists();
+        if(!$exists){
+            $query=$this->orgUserRepo->create($orgUser);
+            if(!$query){
+                throw new \Exception(config('messages.common_error'));
+            }
+            return;
+        }
+
+        throw new \Exception('The user already invited');
+
+    }
+
+
+    public function reInvite($user_id){
+        if(empty($user_id)){
+            throw new \Exception('User id is required');
+        }
+
+        if(empty(arrayValue(session('organization'),'id'))){
+            throw new \Exception('Unable to find your organization');
+        }
+
+        $organization_id=arrayValue(session('organization'),'id');
+        $user=$this->orgUserRepo->where('organization_id',$organization_id)->where('user_id',$user_id)->first();
+        if($user){
+            $this->orgUserRepo->fillUpdate($user,['invitation_token'=>md5(time()).rand(00000,99999)]);
+            return;
+        }
+
+        throw new \Exception(config('messages.common_error'));
+    }
 
     public function delete($id)
     {

@@ -312,14 +312,14 @@
                                                     <table border="0" cellpadding="0" cellspacing="0">
                                                         <tbody>
                                                         <tr>
-                                                            <td> <a href="{{url('user/inviation/accept?token=').$data['token'] }}" target="_blank">Accept Invitation</a> </td>
+                                                            <td> <a href="{{url('invitaion/accept?token=').$data['token'] }}" target="_blank">Accept Invitation</a> </td>
                                                         </tr>
                                                         </tbody>
                                                     </table>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td><p>Or use this code</p> <h1>{{$data['code']}}</h1> </td>
+                                                <td><p>Please use <b>password</b> as password of your account if you're not an existing member of the {{ucfirst(config('app.name'))}}.<br>We recomend to change the password on your first login</p></td>
                                             </tr>
                                             </tbody>
                                         </table>

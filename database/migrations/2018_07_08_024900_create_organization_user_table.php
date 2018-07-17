@@ -19,6 +19,8 @@ class CreateOrganizationUserTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->tinyInteger('is_suspended')->default(0);
             $table->tinyInteger('is_default')->default(0);
+            $table->tinyInteger('is_invited')->default(0);
+            $table->string('invitation_token')->default(md5(time()).rand(00000,99999));
             $table->foreign('organization_id')->references('id')->on('organizations')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

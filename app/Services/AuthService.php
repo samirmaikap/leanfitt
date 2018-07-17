@@ -6,6 +6,7 @@ namespace App\Services;
 use App\Mail\PasswordResetMail;
 use App\Repositories\DeviceRepository;
 use App\Repositories\OrganizationRepository;
+use App\Repositories\OrganizationUserRepository;
 use App\Repositories\PasswordResetRepository;
 use App\Repositories\UserRepository;
 
@@ -22,15 +23,18 @@ class AuthService
     protected $deviceRepo;
     protected $recoveryRepo;
     protected $organizationRepo;
+    protected $orgUserRepo;
     public function __construct(UserRepository $userRepository,
                                 DeviceRepository $deviceRepository,
                                 PasswordResetRepository $passwordResetRepository,
-                                OrganizationRepository $organizationRepository)
+                                OrganizationRepository $organizationRepository,
+                                OrganizationUserRepository $organizationUserRepository)
     {
         $this->repo=$userRepository;
         $this->deviceRepo=$deviceRepository;
         $this->recoveryRepo=$passwordResetRepository;
         $this->organizationRepo=$organizationRepository;
+        $this->orgUserRepo=$organizationUserRepository;
     }
 
     public function login($data)
@@ -85,6 +89,26 @@ class AuthService
 
         DB::commit();
         return $this->repo->logResponse($user);
+
+    }
+
+    public function checkInvitation($data){
+        if(empty(arrayValue($data,'token'))){
+            throw  new \Exception('Invalid inivation token');
+        }
+
+        $orgUser=$this->orgUserRepo->where('invitation_token',$data['token'])->first();
+        if(!$orgUser){
+            throw  new \Exception('Unable to find your account');
+        }
+
+        $query=$this->orgUserRepo->fillUpdate($orgUser,['is_invited'=>0]);
+        if($query){
+            $this->repo->update($query->user_id,['is_verified'=>1]);
+            return;
+        }
+
+        throw  new \Exception(config('messages.common_error'));
 
     }
 
