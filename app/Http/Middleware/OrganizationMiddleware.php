@@ -42,6 +42,9 @@ class OrganizationMiddleware
         session(['organization' => $organization]);
         $request->route()->setParameter('organization', $organization);
 
+        /*Remove Subdomain from request*/
+        $request->route()->forgetParameter('subdomain');
+
         return $next($request);
     }
 }
