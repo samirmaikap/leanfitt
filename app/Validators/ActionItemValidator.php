@@ -13,7 +13,7 @@ class ActionItemValidator extends BaseValidator
             'assignor_id'=>'required',
             'position'=>'required',
             'due_date'=>'required',
-            'created_by'=>'required',
+
             'type'=>'required',
         ]
     ];

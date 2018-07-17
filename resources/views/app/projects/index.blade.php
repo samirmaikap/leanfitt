@@ -75,7 +75,6 @@
                         {{ method_field('post') }}
 
                         <input type="hidden" name="organization_id" value="1">
-                        <input type="hidden" name="created_by" value="1">
 
                         <div class="form-group">
                             <label>Name</label>

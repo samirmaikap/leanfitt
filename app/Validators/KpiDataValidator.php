@@ -11,7 +11,7 @@ class KpiDataValidator extends BaseValidator
           'x_value'=>'required',
           'y_value'=>'required',
 //          'target_date'=>'required',
-          'created_by'=>'required'
+
       ]
     ];
 }

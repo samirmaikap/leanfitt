@@ -105,7 +105,6 @@
                                                 {{ method_field('post') }}
                                                 {{ csrf_field() }}
                                                 <input type="hidden" name="kpi_chart_id" value="{{ $kpi->id }}">
-                                                <input type="hidden" name="created_by" value="{{ 1 }}">
                                                 <td>1</td>
                                                 <td>
                                                     <input type="text" name="x_value" value="">

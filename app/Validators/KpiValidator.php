@@ -14,7 +14,7 @@ class KpiValidator extends BaseValidator
             'y_label'=>'required',
             'start_date'=>'required',
             'end_date'=>'required',
-            'created_by'=>'required'
+
         ]
     ];
 }

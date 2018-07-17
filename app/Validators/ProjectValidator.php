@@ -14,7 +14,7 @@ class ProjectValidator extends BaseValidator
             'lean_sensie'=>'required',
             'start_date'=>'required',
             'end_date'=>'required',
-            'created_by'=>'required'
+
         ]
     ];
 }

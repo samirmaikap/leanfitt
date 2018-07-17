@@ -54,7 +54,6 @@ class LeanToolController extends Controller
          $data['overview']=$request->get('overview');
          $data['case_studies']=$request->get('case_studies');
          $data['name']=$request->get('name');
-         $data['created_by']=auth()->user()->id;
          $new_request=new Request($data);
          try{
              if(!empty($request->tool_id)){

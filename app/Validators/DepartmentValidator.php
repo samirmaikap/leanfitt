@@ -9,7 +9,7 @@ class DepartmentValidator extends BaseValidator
         'create'=>[
             'name'=>'required',
             'organization_id'=>'required',
-//            'created_by'=>'required'
+//
         ],
         'update'=>[
             'name'=>'required'
