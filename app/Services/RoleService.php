@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Repositories\OrganizationRepository;
 use App\Repositories\RoleRepository;
 use function dd;
 use function session;
@@ -33,15 +34,16 @@ class RoleService
     ];
 
     protected $roleRepository;
+    protected $organizationRepository;
 
-    public function __construct(RoleRepository $roleRepository)
+    public function __construct()
     {
-        $this->roleRepository = $roleRepository;
+        $this->roleRepository = new RoleRepository();
+        $this->organizationRepository = new OrganizationRepository();
     }
 
     public function all()
     {
-//        if(isset())
         $organization = session('organization');
         return $organization->roles()
             ->withCount(['users'])
@@ -51,16 +53,16 @@ class RoleService
             ->get();
     }
 
-    public function create($data)
+    public function create($data, $organizationId)
     {
 
-        $permissions = $data['permissions'] ? $data['permissions'] : $this->getDefaultPermissions();
+        $permissions = isset($data['permissions']) ? $data['permissions'] : $this->getDefaultPermissions();
 
-        $role  = Role::create(['name' => $data['name']]);
-        $role  = $this->roleRepository->create(['name' => $data['name']]);
+        $role = $this->roleRepository->create(['name' => $data['name']]);
         $role->syncPermissions($permissions);
 
-        $organization = session('organization');
+
+        $organization = $this->organizationRepository->with(['roles'])->find($organizationId);
         $organization->roles()->attach($role);
 
         return $role;
@@ -68,7 +70,7 @@ class RoleService
 
     public function update($data, $id)
     {
-        $role = Role::find($id);
+        $role = $this->roleRepository->find($id);
         $role->syncPermissions($data['permissions']);
         $role->fill(['name' => $data['name']])
             ->save();
@@ -77,7 +79,7 @@ class RoleService
 
     public function delete($id)
     {
-        return Role::destroy($id);
+        return $this->roleRepository->delete($id);
     }
 
 

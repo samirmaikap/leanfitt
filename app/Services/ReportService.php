@@ -126,7 +126,7 @@ class ReportService //implements ReportServiceInterface
         }
     }
 
-    public function delete($report_id,$user_id)
+    public function delete($report_id)
     {
         if(empty($report_id)){
             throw new \Exception("Report id field is required");
@@ -338,7 +338,6 @@ class ReportService //implements ReportServiceInterface
 
     public function showDefaultElementData($data, $default_id,$report_id)
     {
-        $response=new \stdClass();
         if(empty($default_id)){
             throw new \Exception("Default id field is required");
         }

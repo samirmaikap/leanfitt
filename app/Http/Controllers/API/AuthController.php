@@ -16,22 +16,18 @@ class AuthController extends Controller
     public function login(Request $request){
         try{
             $result=$this->service->login($request->all());
-            return successMessage($result,'common_fetch',200);
+            return renderSuccess($result,'',200);
         }catch(\Exception $e){
-            return errorMessage($e->getMessage());
+            return renderError($e->getMessage());
         }
     }
 
     public function register(Request $request){
         try{
             $result=$this->service->register($request->all());
-            $response['success']=true;
-            $response['data']=$result;
-            return response()->json($response,201);
+            return renderSuccess($result,'New user added',201);
         }catch(\Exception $e){
-            $response['success']=false;
-            $response['message']=$e->getMessage();
-            return response()->json($response,400);
+            return renderError($e->getMessage());
         }
     }
 }

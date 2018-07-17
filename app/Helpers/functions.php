@@ -10,18 +10,18 @@ function arrayValue($array,$key){
     }
 }
 
-function errorMessage($message){
+function renderError($message){
     $response['success']=false;
     $response['data']=null;
     $response['message']=$message;
     return response()->json($response,400);
 }
 
-function successMessage($data,$message_code,$status){
+function renderSuccess($data,$message,$status){
     $response['success']=true;
     $response['data']=$data;
-    $response['message']=config('messages.'.$message_code);
-   return response()->json($response,$status);
+    $response['message']=$message;
+    return response()->json($response,$status);
 }
 
 
