@@ -37,6 +37,14 @@ class OrganizationService
     }
 
 
+    public function all()
+    {
+        $query=$this->organizationRepository->with('subscriptions')->withCount('users')->withCount('departments')->withCount('project')->get();
+        if(!$query)
+            throw new \Exception('Organization not found');
+        return $query;
+    }
+
     public function create($data)
     {
         $subdomain = str_slug(arrayValue($data['organization'],'name'));
@@ -86,15 +94,6 @@ class OrganizationService
 
         DB::commit();
         return $organization;
-    }
-
-
-    public function all()
-    {
-        $query=$this->organizationRepository->with('subscriptions')->withCount('users')->withCount('departments')->withCount('project')->get();
-        if(!$query)
-            throw new \Exception('Organization not found');
-        return $query;
     }
 
     public function updateOrganization($data,$image,$org)

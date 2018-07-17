@@ -16,6 +16,7 @@ use App\Validators\EmployeeValidator;
 use App\Validators\UserValidator;
 use function array_values;
 use function dd;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -39,6 +40,45 @@ class UserService
         $this->organizationRepo=$organizationRepository;
         $this->mediaRepo=$mediaRepository;
         $this->inviteRepo=$invitationRepository;
+    }
+
+    public function all($data)
+    {
+        $active_organization = session('organization');
+        $organization=isset($data['organization']) ? $data['organization'] : arrayValue($active_organization,'id');
+
+//        return $this->userRepo->getUsersByOrganization($organization['id'], ['departments']);
+        $query=$this->userRepo->getUsers($organization,arrayValue($data['department']));
+        if(!$query){
+            throw new \Exception(config('messages.common_error'));
+        }
+
+        return renderCollection($query);
+    }
+
+    public function find($id)
+    {
+        return $this->userRepo->find($id);
+    }
+
+    public function list($data)
+    {
+        $organization=arrayValue($data,'organization');
+        $department=arrayValue($data,'department');
+
+        $query=$this->userRepo->getUsers($organization,$department);
+        $query=$query->map(function($item){
+            return [
+                'id'=>$item['id'],
+                'first_name'=>$item['first_name'],
+                'last_name'=>$item['last_name']
+            ];
+        });
+        if(!$query){
+            throw  new \Exception(config('messages.common_fetch'));
+        }
+
+        return renderCollection($query);
     }
 
     public function profile()
@@ -119,11 +159,7 @@ class UserService
         return $organizations;
     }
 
-    public function all()
-    {
-        $organization = session('organization');
-        return $this->userRepo->getUsersByOrganization($organization['id'], ['departments']);
-    }
+
 
     public function create($data)
     {
@@ -158,22 +194,6 @@ class UserService
         return $this->userRepo->delete($id);
     }
 
-    public function find($id)
-    {
-        return $this->userRepo->find($id);
-    }
 
-    public function list($data)
-    {
-        $organization=arrayValue($data,'organization');
-        $department=arrayValue($data,'department');
-
-        $query=$this->userRepo->listUsers($organization,$department);
-        if(!$query){
-            throw  new \Exception(config('messages.common_fetch'));
-        }
-
-        return $query;
-    }
 
 }

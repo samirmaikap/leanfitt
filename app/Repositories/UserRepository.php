@@ -47,12 +47,12 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     }
 
 
-    public function listUsers($organization,$department){
+    public function getUsers($organization,$department){
         $query=$this->model()->join('organization_user as ou','ou.user_id','users.id')
             ->join('department_user as du','du.user_id','=','users.id')
             ->where('du.department_id',empty($department) ? '!=' : '=',empty($department) ? null : $department )
             ->where('ou.organization_id',empty($organization) ? '!=' : '=',empty($organization) ? null : $organization )
-            ->select(['users.id','users.first_name','users.last_name'])->distinct()->orderBy('users.first_name')->get();
+            ->select('users.*')->distinct()->orderBy('users.first_name')->get();
         return $query;
     }
 }

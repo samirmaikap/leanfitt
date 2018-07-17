@@ -13,36 +13,37 @@ use Illuminate\Http\Request;
 |
 */
 
-//Auth::routes();
+//Auth;
 Route::post('login', 'API\AuthController@login');
 Route::post('register', 'API\AuthController@register');
 
 Route::group(['namespace' => 'API','middleware'=>'auth:api'], function () {
 
     /*User Services*/
-    Route::get('user/accounts/{user_id}', 'UserController@accounts'); //associated accounts for switch
-    Route::get('user/profile/{user_id}', 'UserController@profile');
-    Route::put('user/profile/{user_id}', 'UserController@update');
-    Route::delete('account/delete/{user_id}', 'UserController@deactivate');
-    Route::post('account/join/employee', 'UserController@joinEmployee'); /*if admin and want to join as employee*/
+    Route::get('users', 'UserController@index'); //associated accounts for switch
+    Route::post('users', 'UserController@create'); //associated accounts for switch
+    Route::get('users/profile', 'UserController@profile');
+    Route::get('users/list', 'UserController@list');
+    Route::get('users/{user_id}/show', 'UserController@find');
+    Route::get('users/{user_id}/organizations', 'UserController@getRelatedOrganization');
+    Route::put('users/{user_id}', 'UserController@update');
+    Route::delete('users/{user_id}', 'UserController@delete');
 
     /*Organization*/
     Route::get('organizations', 'OrganizationController@index');
+    Route::get('organizations', 'OrganizationController@create');
+    Route::get('organizations/list', 'OrganizationController@list'); /*for multi purpose dropdown*/
     Route::get('organizations/{organization_id}', 'OrganizationController@show');
     Route::put('organizations/{organization_id}', 'OrganizationController@update');
-    Route::get('organizations/list/all', 'OrganizationController@list'); /*for multi purpose dropdown*/
-    Route::delete('organizations/{organization_id}/{user_id}', 'OrganizationController@delete');
-    Route::post('organizations/admin/change', 'OrganizationController@changeAdmin');
+    Route::delete('organizations/{organization_id}', 'OrganizationController@delete');
 
     /*Departments*/
     Route::get('departments', 'DepartmentController@index'); /*filter organization*/
     Route::get('departments/list', 'DepartmentController@list'); /*for multi purpose dropdown*/
-    Route::get('departments/show/{department_id}', 'DepartmentController@show');
+    Route::get('departments/{department_id}/show', 'DepartmentController@show');
     Route::post('departments', 'DepartmentController@create');
     Route::put('departments/{department_id}', 'DepartmentController@update');
-    Route::get('departments/archive/{department_id}', 'DepartmentController@archive');
-    Route::get('departments/restore/{department_id}', 'DepartmentController@restore');
-    Route::delete('departments/{department_id}/{user_id}', 'DepartmentController@delete');
+    Route::delete('departments/{department_id}', 'DepartmentController@delete');
 
     /*Lean Tools*/
     Route::get('leantools', 'LeanToolsController@index');

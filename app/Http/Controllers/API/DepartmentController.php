@@ -23,7 +23,7 @@ class DepartmentController extends Controller
         }
     }
 
-    public function departmentList(Request $request){
+    public function list(Request $request){
         try{
             $result=$this->service->list($request->all());
             return renderSuccess($result,'',200);
