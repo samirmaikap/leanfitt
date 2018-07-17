@@ -277,18 +277,18 @@ class ReportService //implements ReportServiceInterface
 
     }
 
-    public function changeChartAxis($data,$report_id)
+    public function changeChartAxis($data)
     {
         if(empty($data)){
             throw new \Exception("Can't add the empty data");
         }
 
-        if(empty($report_id)){
-            throw new \Exception("chart_id is required");
+        if(empty(arrayValue($data,'report_id'))){
+            throw new \Exception("report_id is required");
         }
 
         DB::beginTransaction();
-        $chart=$this->chartAxisRepo->where('report_id',$report_id)->first();
+        $chart=$this->chartAxisRepo->where('report_id',arrayValue($data,'report_id'))->first();
         if(count($chart) > 0){
             $update=$this->chartAxisRepo->fillUpdate($chart,$data);
             if($update){

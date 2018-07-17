@@ -16,25 +16,8 @@ use Illuminate\Http\Request;
 //Auth::routes();
 Route::post('login', 'API\AuthController@login');
 Route::post('register', 'API\AuthController@register');
-Route::group(['namespace' => 'API','middleware'=>'auth:api'], function () {
-    Route::get('test/check', function(Request $request){
-    });
-    Route::post('stripe', 'OrganizationController@stripe');
-    Route::view('test/email', 'emails.welcome');
-    Route::post('filecheck', 'TestController@fileCheck');
-});
-
 
 Route::group(['namespace' => 'API','middleware'=>'auth:api'], function () {
-
-
-
-    /*Auth Services*/
-//    Route::post('account/login', 'AuthController@login'); /*check subscription*/
-    Route::post('account/recovery', 'AuthController@recovery');
-    Route::get('account/recovery/check/{code}', 'AuthController@checkResetCode');
-    Route::post('account/switch', 'AuthController@switchAccount'); /*update session (role)*/
-    Route::post('account/password/update', 'AuthController@updatePassword');
 
     /*User Services*/
     Route::get('user/accounts/{user_id}', 'UserController@accounts'); //associated accounts for switch
@@ -51,20 +34,6 @@ Route::group(['namespace' => 'API','middleware'=>'auth:api'], function () {
     Route::delete('organizations/{organization_id}/{user_id}', 'OrganizationController@delete');
     Route::post('organizations/admin/change', 'OrganizationController@changeAdmin');
 
-    /*Employee*/
-    Route::get('employees', 'EmployeeController@index'); /*organization,department*/
-    Route::get('employees/show/{employee_id}', 'EmployeeController@show');
-    Route::post('employees/department/change', 'EmployeeController@changeDepartment');
-    Route::get('employees/list', 'EmployeeController@list'); /*for multi purpose dropdown use department,orgnization*/
-    Route::post('employees/invite', 'EmployeeController@invite');
-    Route::get('employees/invite/resend/{invitaion_id}', 'EmployeeController@resendInvitation');
-    Route::post('employees/join', 'EmployeeController@join'); /*join invited*/
-    Route::get('employees/archive/{employee_id}', 'EmployeeController@archive');
-    Route::get('employees/restore/{employee_id}', 'EmployeeController@restore');
-    Route::delete('employees/{employee_id}', 'EmployeeController@delete');
-
-    Route::post('employees/subscribe/{employee_id}', 'EmployeeController@subscribe');
-
     /*Departments*/
     Route::get('departments', 'DepartmentController@index'); /*filter organization*/
     Route::get('departments/list', 'DepartmentController@list'); /*for multi purpose dropdown*/
@@ -79,13 +48,13 @@ Route::group(['namespace' => 'API','middleware'=>'auth:api'], function () {
     Route::get('leantools', 'LeanToolsController@index');
     Route::post('leantools', 'LeanToolsController@create');
     Route::put('leantools/{tool_id}', 'LeanToolsController@update');
-    Route::delete('leantools/{tool_id}/{user_id}', 'LeanToolsController@delete');
+    Route::delete('leantools/{tool_id}', 'LeanToolsController@delete');
     Route::get('leantools/{tool_id}', 'LeanToolsController@show');
 
     /*Quiz*/
-    Route::get('quiz/{user_id}', 'QuizController@index');
+    Route::get('quiz', 'QuizController@index');
     Route::get('quiz/taken/list', 'QuizController@taken'); /*use filter for department and organization eg. url?department=1*/
-    Route::get('quiz/take/{tool_id}/{user_id}', 'QuizController@show'); /*display with result, if result then display result page*/
+    Route::get('quiz/{tool_id}/take', 'QuizController@show'); /*display with result, if result then display result page*/
     Route::post('quiz/post/result', 'QuizController@create');
 
     /*Assessment*/
@@ -95,31 +64,31 @@ Route::group(['namespace' => 'API','middleware'=>'auth:api'], function () {
     Route::post('assessment/result', 'AssessmentController@create');
 
     /*Action Items*/
-    Route::get('items/{type}', 'ActionItemController@index'); /*use filter for department and organization eg. url?department=1&type=report*/
-    Route::get('items/find/{item_id}', 'ActionItemController@show'); /*comment,images,assignee*/
+    Route::get('items', 'ActionItemController@index'); /*use filter for department and organization eg. url?department=1&type=report*/
+    Route::get('items/{item_id}/show', 'ActionItemController@show'); /*comment,images,assignee*/
     Route::post('items', 'ActionItemController@create');
     Route::put('items/{item_id}', 'ActionItemController@update');/*update any data name,due date,position,board*/
 
-    Route::post('items/member', 'ActionItemController@addAssignee'); /*item_id*/
-    Route::delete('items/member/{item_id}/{assignee_id}/{user_id}', 'ActionItemController@removeAssignee');
+    Route::post('items/members', 'ActionItemController@addAssignee'); /*item_id*/
+    Route::delete('items/members/{item_id}/{assignee_id}', 'ActionItemController@removeAssignee');
 
     Route::get('items/assignments/all', 'ActionItemController@getAssignment');
     Route::post('items/assignments', 'ActionItemController@addAssignment');
     Route::put('items/assignments/{assignment_id}', 'ActionItemController@updateAssignment');
     Route::delete('items/assignments/{assignment_id}', 'ActionItemController@removeAssignment');
 
-    Route::get('items/archive/{item_id}', 'ActionItemController@archive');
-    Route::get('items/restore/{item_id}', 'ActionItemController@restore');
-    Route::delete('items/delete/{item_id}/{user_id}', 'ActionItemController@delete');
+    Route::get('items/{item_id}/archive', 'ActionItemController@archive');
+    Route::get('items/{item_id}/restore', 'ActionItemController@restore');
+    Route::delete('items/{item_id}/delete', 'ActionItemController@delete');
 
     /*Comment*/
     Route::post('comment', 'CommentController@create'); /*item_id*/
     Route::put('comment/{comment_id}', 'CommentController@update');
-    Route::delete('comment/{comment_id}/{user_id}', 'CommentController@delete');
+    Route::delete('comment/{comment_id}', 'CommentController@delete');
 
     /*Attachment*/
     Route::post('attachment', 'AttachmentController@create'); /*item_id*/
-    Route::delete('attachment/{attachment_id}/{user_id}', 'AttachmentController@delete');
+    Route::delete('attachment/{attachment_id}', 'AttachmentController@delete');
 
     /*Project*/
     Route::get('projects', 'ProjectController@index'); /*filter by organization*/
@@ -127,21 +96,21 @@ Route::group(['namespace' => 'API','middleware'=>'auth:api'], function () {
     Route::post('projects', 'ProjectController@create');
     Route::put('projects/{project_id}', 'ProjectController@update');
 
-    Route::get('projects/archive/{project_id}/{user_id}', 'ProjectController@archive');
-    Route::get('projects/restore/{project_id}/{user_id}', 'ProjectController@restore');
-    Route::get('projects/complete/{project_id}/{user_id}', 'ProjectController@complete');
-    Route::delete('projects/{project_id}/{user_id}', 'ProjectController@delete');
+    Route::get('projects/{project_id}/archive', 'ProjectController@archive');
+    Route::get('projects/{project_id}/restore', 'ProjectController@restore');
+    Route::get('projects/{project_id}/complete', 'ProjectController@complete');
+    Route::delete('projects/{project_id}', 'ProjectController@delete');
 
     /*Kpi*/
     Route::get('kpi', 'KpiController@index'); /*filter by organization,project*/
     Route::get('kpi/{kpi_id}', 'KpiController@show');
     Route::post('kpi', 'KpiController@create');
     Route::put('kpi/{kpi_id}', 'KpiController@update');
-    Route::delete('kpi/{kpi_id}/{user_id}', 'KpiController@delete');
+    Route::delete('kpi/{kpi_id}', 'KpiController@delete');
 
     Route::post('kpi/data', 'KpiController@addDataPoint');
     Route::post('kpi/data/filter', 'KpiController@filterDataPoint'); /*kpi_id,start_date,end_date*/
-    Route::delete('kpi/data/{point_id}/{user_id}', 'KpiController@deleteDataPoint');
+    Route::delete('kpi/data/{point_id}', 'KpiController@deleteDataPoint');
 
     /*Award*/
     Route::get('awards', 'AwardController@index'); /*department,organization,user_id*/
@@ -149,35 +118,34 @@ Route::group(['namespace' => 'API','middleware'=>'auth:api'], function () {
     /*Report*/
     Route::get('reports', 'ReportController@index'); /*all reports filterable organization projects*/
     Route::get('reports/names', 'ReportController@names'); /*all the report name*/
-    Route::get('reports/show/{report_id}', 'ReportController@show'); /*get the report*/
+    Route::get('reports/{report_id}/show', 'ReportController@show'); /*get the report*/
     Route::post('reports', 'ReportController@create'); /*get the report*/
-    Route::delete('reports/delete/{report_id}/{user_id}', 'ReportController@delete'); /*get the report*/
+    Route::delete('reports/{report_id}/delete', 'ReportController@delete'); /*get the report*/
 
-    Route::get('reports/grid/{report_id}', 'ReportController@showGridData'); /*display all the grid data*/
+    Route::get('reports/{report_id}/grid', 'ReportController@showGridData'); /*display all the grid data*/
     Route::post('reports/grid', 'ReportController@createGridData'); /*new grid data*/
     Route::delete('reports/grid/{grid_id}', 'ReportController@deleteGridData'); /*Delete a grid data*/
 
-    Route::get('reports/chart/{report_id}', 'ReportController@showChartData');
+    Route::get('reports/{report_id}/chart', 'ReportController@showChartData');
     Route::post('reports/chart', 'ReportController@createChartData');
     Route::delete('reports/chart/{chart_id}', 'ReportController@deleteChartData');
-    Route::post('reports/chart/axis/{report_id}', 'ReportController@changeChartAxis');
+    Route::post('reports/chart/axis', 'ReportController@changeChartAxis');
 
-    Route::get('reports/default/{report_id}/{level}', 'ReportController@showDefaultData'); /*filter using type*/
-    Route::get('reports/element/{default_id}/{report_id}', 'ReportController@showDefaultElementData'); /*filter using sort*/
+    Route::get('reports/{report_id}/default/{level}', 'ReportController@showDefaultData'); /*filter using type*/
+    Route::get('reports/{report_id}/{default_id}/element', 'ReportController@showDefaultElementData'); /*filter using sort*/
     Route::post('reports/default', 'ReportController@createDefaultData');
     Route::post('reports/element', 'ReportController@createDefaultElementData');
     Route::delete('reports/default/{default_id}', 'ReportController@deleteDefaultData');
     Route::delete('reports/element/{element_id}', 'ReportController@deleteDefaultElementData');
-    Route::get('reports/default/assignments/{report_id}/{level}', 'ReportController@showDefaultAssignments');
-    Route::get('reports/element/assignments/{default_id}/{level}', 'ReportController@showElementAssignments');
+    Route::get('reports/{report_id}/default/assignments/{level}', 'ReportController@showDefaultAssignments');
+    Route::get('reports/{default_id}/element/assignments/{level}', 'ReportController@showElementAssignments');
     Route::post('reports/default/assignments', 'ReportController@createDefaultAssignments');
     Route::post('reports/element/assignments', 'ReportController@createElementAssignments');
     Route::delete('reports/default/assignments/{assignment_id}', 'ReportController@deleteDefaultAssignments');
     Route::delete('reports/element/assignments/{assignment_id}', 'ReportController@deleteElementAssignments');
 
-    Route::get('reports/problem/{report_id}', 'ReportController@showFive');
+    Route::get('reports/{report_id}/problem', 'ReportController@showFive');
     Route::post('reports/problem', 'ReportController@createFive');
-//    Route::get('reports/five/why/{report_id}', 'ReportController@showFiveWhy');
     Route::post('reports/reason', 'ReportController@createFiveWhy');
     Route::delete('reports/problem/{problem_id}', 'ReportController@deleteFive');
     Route::delete('reports/reason/{reason_id}', 'ReportController@deleteFiveWhy');
