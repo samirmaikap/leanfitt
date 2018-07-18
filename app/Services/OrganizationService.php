@@ -85,8 +85,8 @@ class OrganizationService
         $user = auth()->user();
 
         $isDefault = $user->organizations->count() ? 0 : 1;
-        $result=$user->organizations()->attach([ $organization->id => ['is_default' => $isDefault]]);
-        if(!$result){
+        $user->organizations()->attach([ $organization->id => ['is_default' => $isDefault]]);
+        if(!$organization){
             DB::rollBack();
             throw new \Exception(config("messages.common_error"));
         }

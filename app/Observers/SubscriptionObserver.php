@@ -22,7 +22,6 @@ class SubscriptionObserver
             $organization=Organization::find($subscription->organization_id);
             $customer=$organization->asStripeCustomer();
             $data['currency']=$customer->currency;
-            $data['email']=$customer->email;
             $data['contact_person']=$organization->contact_person;
             $data['organization_name']=$organization->name;
             $data['card_end']=$customer['sources']->data[0]['last4'];
@@ -33,7 +32,7 @@ class SubscriptionObserver
             $data['quantity']=$customer['subscriptions']->data[0]['quantity'];
             $data['status']=$customer['subscriptions']->data[0]['status'];
             if($organization){
-                Mail::to($organization->email)->send(new SubscriptionMail($data));
+                Mail::to($customer->email)->send(new SubscriptionMail($data));
             }
         }
 
