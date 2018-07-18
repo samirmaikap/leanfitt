@@ -53,8 +53,11 @@ class LoginController extends Controller
     protected function authenticated(Request $request, $user)
     {
         session(['user' => $user]);
-        $relatedOrganizations = $this->userService->getRelatedOrganization($user);
-//        $defaultOrganization = $this->userService->getDefaultOrganization($user);
+        if(auth()->user()->is_superadmin==1){
+            return redirect(url('dashboard'));
+        }
+
+        $relatedOrganizations = $this->userService->getRelatedOrganization(auth()->user()->id);
 
         if(count($relatedOrganizations))
         {

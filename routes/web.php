@@ -15,93 +15,7 @@
 Auth::routes();
 Route::get('logout', 'Auth\LoginController@logout');
 
-//Route::group(['namespace' => 'Web'], function () {
-
-// Common routes
-//
-
-Route::get('/profile', function () {
-        return view('app.quiz');
-});
-
-Route::get('/awards', function () {
-    return view('app.awards');
-});
-
-Route::get('/performance', function () {
-    return view('app.performance');
-});
-
-
-//Route::get('/', function () {
-////        return view('welcome');
-//    dd(auth()->user());
-//});
-//Route::get('/dashboard', 'Web\DashboardController@index');
-//Route::get('/lean-tools', function () {
-//    return view('app.lean-tools.index');
-//});
-//Route::get('/lean-tools/{id}', function () {
-//    return view('app.lean-tools.show');
-//});
-
-// Super Admin routes
-
-/*
-Route::group(['namespace' => 'Web'], function () {
-
-    Route::get('users', 'UserController@index');
-    Route::post('users', 'UserController@store');
-    Route::get('users/{id}', 'UserController@show');
-    Route::put('users/{id}', 'UserController@update');
-    Route::delete('users/{id}', 'UserController@delete');
-
-    Route::get('departments', 'DepartmentController@index');
-    Route::post('departments', 'DepartmentController@store');
-    Route::get('departments/{id}', 'DepartmentController@show');
-    Route::put('departments/{id}', 'DepartmentController@update');
-    Route::delete('departments/{id}', 'DepartmentController@delete');
-
-    Route::get('organizations', 'OrganizationController@index');
-    Route::get('organizations/create', 'OrganizationController@create');
-    Route::post('organizations/create','OrganizationController@store');
-    Route::put('organizations/{organizationId}', function ($id) {
-        dd('updated');
-    });
-    Route::delete('organizations/{organizationId}', function ($id) {
-        dd('deleted');
-    });
-    Route::get('organizations/{organizationId}/users', function () {
-        return view('app.organizations.users');
-    });
-    Route::get('organizations/{organizationId}/profile', function () {
-
-    });
-    Route::get('organizations/{organizationId}/subscription', function () {
-
-    });
-    Route::get('organizations/{organizationId}/settings', function () {
-
-    });
-
-    Route::get('lean-tools', 'LeanToolController@index');
-    Route::get('lean-tools/view/{tool_id}', 'LeanToolController@show');
-    Route::get('lean-tools/create', 'LeanToolController@create');
-});
-*/
-
-// User routes
 Route::group(['domain' => '{organization}.leanfitt.host', 'namespace' => 'Web', 'middleware' => 'checkDomain'], function () {
-
-    Route::get('/', function ($subdomain) {
-        dd(auth()->user());
-        dd($subdomain);
-        $name = DB::table('users')->where('name', $subdomain)->get();
-    });
-
-    Route::get('/prefix', function () {
-        dd(request()->route()->getPrefix());
-    });
 
     Route::get('/dashboard', 'DashboardController@index');
 
@@ -157,4 +71,8 @@ Route::group(['domain' => '{organization}.leanfitt.host', 'namespace' => 'Web', 
     Route::get('awards', 'AwardController@index');
 });
 
-//});
+Route::group(['namespace' => 'Web'], function () {
+
+    Route::get('/dashboard', 'DashboardController@index');
+
+});

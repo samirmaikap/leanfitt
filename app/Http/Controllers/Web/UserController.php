@@ -62,10 +62,12 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
+        $this->userService->update($request->all(),'',$id);
+        return redirect()->back()->with(['success' => 'Profile has been updated successfully']);
         try
         {
-            $data['organizations'] = $this->userService->update($request->all(), $id);
-            return redirect()->back()->with(['success' => 'Profile has been updated successfully']);
+//            $this->userService->update($request->all(), $id);
+//            return redirect()->back()->with(['success' => 'Profile has been updated successfully']);
         }
         catch(\Exception $e)
         {

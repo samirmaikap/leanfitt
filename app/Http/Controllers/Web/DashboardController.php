@@ -14,7 +14,6 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        return dd(session('organization')->isEmployee);
         return view('app.dashboard');
     }
 }

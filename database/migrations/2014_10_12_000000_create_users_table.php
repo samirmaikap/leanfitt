@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('verification_token', 60)->default(md5(time()));
             $table->tinyInteger('is_verified')->default(0);
+            $table->tinyInteger('is_superadmin')->default(0);
             $table->rememberToken();
             $table->string('api_token',60)->default(bin2hex(random_bytes(16)));
             $table->timestamps();

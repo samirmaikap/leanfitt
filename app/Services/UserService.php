@@ -102,7 +102,12 @@ class UserService
     public function update($data,$image,$id=null)
     {
         $user_id=empty($id) ? auth()->user()->id : $id;
-        $validator=new UserValidator($$data,'update');
+        if (empty(arrayValue($data,'password')))
+        {
+            unset($data['password']);
+        }
+
+        $validator=new UserValidator($data,'update');
         if($validator->fails()){
            throw new \Exception($validator->messages()->first());
         }
@@ -110,7 +115,6 @@ class UserService
         if(empty($user_id)){
             throw new \Exception('User id field is required');
         }
-
 
         DB::beginTransaction();
         if(!empty($image))
@@ -124,11 +128,6 @@ class UserService
 
         if(!empty($url)){
             $data['avatar']=$url;
-        }
-
-        if (empty(arrayValue($data,'password')))
-        {
-            unset($data['password']);
         }
 
         $user = $this->userRepo->find($user_id);

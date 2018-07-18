@@ -49,8 +49,9 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 
     public function getUsers($organization,$department){
         $query=$this->model()->join('organization_user as ou','ou.user_id','users.id')
-            ->leftJoin('department_user as du','users.id','=','du.user_id')
-            ->where('du.department_id',$department )
+            ->leftJoin('department_user as du',function($leftJoin) use($department){
+                $leftJoin->on('users.id','=','du.user_id')->where('du.department_id',empty($department) ? '!=' : '=',empty($department) ? null : $department );
+            })
             ->where('ou.organization_id',empty($organization) ? '!=' : '=',empty($organization) ? null : $organization )
             ->select(['users.id','users.first_name','users.last_name','users.phone','users.avatar','users.email','users.created_at','ou.is_invited','ou.is_suspended'])->distinct()->orderBy('users.first_name')->get();
         return $query;

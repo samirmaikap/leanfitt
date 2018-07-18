@@ -39,7 +39,7 @@
                                 <img class="avatar avatar-sm" src="{{ $user->avatar }}" alt="">
                                 {{ $user->full_name }}
                             </td>
-                            <td>{{ $user->departments->count() ? implode(', ',$user->departments) : 'N/A' }}</td>
+                            <td>{{ $user->departments->count() ? implode(', ',$user->departments->pluck('name')->toArray()) : 'N/A' }}</td>
                             <td>{{ "N/A" }}</td>
                             <td>{{ date('m/d/Y h:i A', strtotime($user->created_at)) }}</td>
                             <td>
@@ -103,11 +103,16 @@
                                                             <div class="form-group col-md-6">
                                                                 <label>Departments</label>
                                                                 <select name="departments[]" id="" data-provide="selectpicker" multiple>
-                                                                    @foreach($departments as $department)
-                                                                        <option value="{{ $department->id }}" {{ in_array($department->name, $user->departments) ? 'selected' : '' }} >
-                                                                            {{ $department->name }}
-                                                                        </option>
-                                                                    @endforeach
+                                                                    @if($departments->count())
+                                                                        @foreach($departments as $department)
+                                                                            <option value="{{ $department->id }}" {{ in_array($department->name, $user->departments->toArray()) ? 'selected' : '' }} >
+                                                                                {{ $department->name }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    @else
+                                                                        <option value="">None</option>
+                                                                    @endif
+
                                                                 </select>
                                                             </div>
                                                             <div class="form-group col-md-6">
