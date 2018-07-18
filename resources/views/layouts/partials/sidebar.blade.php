@@ -21,19 +21,22 @@
                         <img class="avatar" src="https://ui-avatars.com/api/?name=Debajyoti%20Das" alt="...">
                         <h4 class="mb-0">
                             @php $defaultOrganization = session('organization')  @endphp
-                            {{ $defaultOrganization->name }}
+                            {{ isset($defaultOrganization->name) ?$defaultOrganization->name : null }}
                             <i class="fa fa-caret-down"></i>
                         </h4>
                         <p>Admin, Lean Sensei, Manager</p>
                     </div>
                 </span>
                 <div class="dropdown-menu">
-                    @foreach(session('relatedOrganizations') as $organization)
-                    <a class="dropdown-item" href="{{ $organization->url . '/dashboard' }}">
-                        <i class="ti-arrow-right"></i>
-                        {{ $organization->name }}
+                    @php $relatedOrganization=session()->get('relatedOrganizations') @endphp
+                    @if(count($relatedOrganization) > 0))
+                    @foreach($relatedOrganization as $organization)
+                        <a class="dropdown-item" href="{{ $organization->url . '/dashboard' }}">
+                            <i class="ti-arrow-right"></i>
+                            {{ $organization->name }}
+                        </a>
                     @endforeach
-
+                    @endif
                     <div class="dropdown-divider"></div>
 
                     <a class="dropdown-item" href="{{ url(config('app.url') . '/organizations/create' ) }}" target="_blank">

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\OrganizationService;
 use function redirect;
+use function session;
 use function view;
 
 class OrganizationController extends Controller
@@ -34,7 +35,6 @@ class OrganizationController extends Controller
         }
         catch(\Exception $e)
         {
-            dd($e->getMessage(), $e->getTraceAsString());
             return redirect()->back()->withErrors([$e->getMessage()]);
         }
     }
@@ -51,14 +51,14 @@ class OrganizationController extends Controller
 
             $relatedOrganizations = $this->userService->getRelatedOrganization(auth()->user());
 
-//            dd($relatedOrganizations);
-            // Set related organizations for switching between organizations
+            $this->roleService->create(['name' => 'Admin'], $organization->id);
+
+            session()->forget('relatedOrganizations');
             session(['relatedOrganizations' => $relatedOrganizations]);
 
-            // Redirect to newly created organization
-            $url = 'http://' . $organization->subdomain . "." . $request->getHost() . '/dashboard';
+            $url = 'http://' . $organization->subdomain  . config('session.domain') . '/dashboard';
 
-            return redirect($url)->with('success', 'Welcome ' . $organization->name);
+            return redirect()->route($url)->with('success', 'Welcome ' . $organization->name);
 
         }
         catch(\Exception $e)
@@ -69,7 +69,7 @@ class OrganizationController extends Controller
 
     public function update(Request $request,$organization_id){
         try{
-            $result=$this->service->updateOrganization( $request,$organization_id);
+            $result=$this->service->updateOrganization( $request->all(),null,$organization_id);
             return response()->json($result);
         }catch(\Exception $e){
             $response['success']=false;
@@ -81,7 +81,7 @@ class OrganizationController extends Controller
 
     public function show($organization_id){
         try{
-            $result=$this->service->details($organization_id);
+            $result=$this->service->show($organization_id);
             $data['organization'] = $result->data;
             return view('app.organizations.index', $data);
         }
@@ -102,27 +102,12 @@ class OrganizationController extends Controller
         }
     }
 
-    public function changeAdmin(Request $request){
-        $organization_id=$request->get('organization_id');
-        $employee_id=$request->get('employee_id');
-        try{
-            $result=$this->service->changeAdmin($employee_id,$organization_id);
-            return response()->json($result);
-        }catch(\Exception $e){
-            $response['success']=false;
-            $response['message']=$e->getMessage();
-            return response()->json($response);
-        }
-    }
-
-    public function delete($organization_id,$user_id){
-        try{
-            $result=$this->service->removeOrganization($organization_id,$user_id);
-            return response()->json($result);
-        }catch(\Exception $e){
-            $response['success']=false;
-            $response['message']=$e->getMessage();
-            return response()->json($response);
-        }
-    }
+//    public function delete($organization_id){
+//        try{
+//            $result=$this->service->removeOrganization($organization_id);
+//            return response()->json($result);
+//        }catch(\Exception $e){
+//
+//        }
+//    }
 }

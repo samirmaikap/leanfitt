@@ -112,7 +112,7 @@
                                         <br>
                                         <div class="form-group">
                                             <label>Card Number</label>
-                                            <input type="text" class="form-control" name="subscription[card_number]" value="{{ old('subscription.card_number') }}" data-stripe="number" size='20'>
+                                            <input type="text" class="form-control" name="subscription[number]" value="{{ old('subscription.number') }}" size='20'>
                                         </div>
 
                                         <div class="form-group">
@@ -123,17 +123,17 @@
                                         <div class="row">
                                             <div class="form-group col-lg-6">
                                                 <label>CVC Code</label>
-                                                <input class="form-control" type="text" name="subscription[cvc]" value="{{ old('subscription.cvc') }}" data-stripe="cvc" size='4'>
+                                                <input class="form-control" type="text" name="subscription[cvc]" value="{{ old('subscription.cvc') }}" size='4'>
                                             </div>
 
                                             <div class="form-group col-lg-6">
                                                 <label>Expiry Date</label>
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <input type="text" class="form-control" name="subscription[month]" value="{{ old('subscription.month') }}" data-stripe="exp_month" size='2' placeholder="MM">
+                                                        <input type="text" class="form-control" name="subscription[exp_month]" value="{{ old('subscription.exp_month') }}" size='2' maxlength="2" placeholder="MM">
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <input type="text" class="form-control" name="subscription[year]" value="{{ old('subscription.year') }}" data-stripe="exp_year" size='2' placeholder="YY">
+                                                        <input type="text" class="form-control" name="subscription[exp_year]" value="{{ old('subscription.exp_year') }}" size='2' maxlength="2" placeholder="YY">
                                                     </div>
                                                 </div>
                                             </div>
@@ -160,50 +160,50 @@
     </main>
 
 
-    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-    <script type="text/javascript">
+    {{--<script type="text/javascript" src="https://js.stripe.com/v2/"></script>--}}
+    {{--<script type="text/javascript">--}}
 
-        Stripe.setPublishableKey("{{ config('services.stripe.key') }}");
+        {{--Stripe.setPublishableKey("{{ config('services.stripe.key') }}");--}}
 
-        window.onload = function() {
+        {{--window.onload = function() {--}}
 
-            var $form = $('#register-form');
+            {{--var $form = $('#register-form');--}}
 
-            $form.submit(function(event) {
-                // Disable the submit button to prevent repeated clicks:
-                $form.find('button[type="submit"]').prop('disabled', true);
+            {{--$form.submit(function(event) {--}}
+                {{--// Disable the submit button to prevent repeated clicks:--}}
+                {{--$form.find('button[type="submit"]').prop('disabled', true);--}}
 
-                // Request a token from Stripe:
-                Stripe.card.createToken($form, stripeResponseHandler);
+                {{--// Request a token from Stripe:--}}
+                {{--Stripe.card.createToken($form, stripeResponseHandler);--}}
 
-                // Prevent the form from being submitted:
-                return false;
-            });
-        };
+                {{--// Prevent the form from being submitted:--}}
+                {{--return false;--}}
+            {{--});--}}
+        {{--};--}}
 
-        function stripeResponseHandler(status, response) {
-            // Grab the form:
-            var $form = $('#register-form');
+        {{--function stripeResponseHandler(status, response) {--}}
+            {{--// Grab the form:--}}
+            {{--var $form = $('#register-form');--}}
 
-            if (response.error) { // Problem!
+            {{--if (response.error) { // Problem!--}}
 
-                console.log(response.error.message);
+                {{--console.log(response.error.message);--}}
 
-                // Show the errors on the form:
-                $('#errors').show().append("<p>" + response.error.message + "</p>");
-                $form.find('button[type="submit"]').prop('disabled', false); // Re-enable submission
+                {{--// Show the errors on the form:--}}
+                {{--$('#errors').show().append("<p>" + response.error.message + "</p>");--}}
+                {{--$form.find('button[type="submit"]').prop('disabled', false); // Re-enable submission--}}
 
-            } else { // Token was created!
+            {{--} else { // Token was created!--}}
 
-                // Get the token ID:
-                var token = response.id;
+                {{--// Get the token ID:--}}
+                {{--var token = response.id;--}}
 
-                // Insert the token ID into the form so it gets submitted to the server:
-                $form.append($('<input type="hidden" name="subscription[stripeToken]">').val(token));
+                {{--// Insert the token ID into the form so it gets submitted to the server:--}}
+                {{--$form.append($('<input type="hidden" name="subscription[stripeToken]">').val(token));--}}
 
-                // Submit the form:
-                $form.get(0).submit();
-            }
-        };
-    </script>
+                {{--// Submit the form:--}}
+                {{--$form.get(0).submit();--}}
+            {{--}--}}
+        {{--};--}}
+    {{--</script>--}}
 @endsection

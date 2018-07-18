@@ -47,6 +47,7 @@ Route::get('/performance', function () {
 
 // Super Admin routes
 
+/*
 Route::group(['namespace' => 'Web'], function () {
 
     Route::get('users', 'UserController@index');
@@ -87,16 +88,10 @@ Route::group(['namespace' => 'Web'], function () {
     Route::get('lean-tools/view/{tool_id}', 'LeanToolController@show');
     Route::get('lean-tools/create', 'LeanToolController@create');
 });
+*/
 
 // User routes
-Route::group(['domain' => '{organization}.leanfitt.host', 'namespace' => 'Web', 'middleware' => ['organization'] ], function () {
-
-    Route::get('/test/{test}', function ($test) {
-//        dd(auth()->user());
-//        dd($test);
-        dd(session()->all());
-
-    });
+Route::group(['domain' => '{organization}.leanfitt.host', 'namespace' => 'Web', 'middleware' => 'checkDomain'], function () {
 
     Route::get('/', function ($subdomain) {
         dd(auth()->user());

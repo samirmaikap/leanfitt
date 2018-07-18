@@ -26,13 +26,13 @@ class UserController extends Controller
         $this->departmentService = $departmentService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $data['users'] = json_decode(json_encode(UserResource::collection($this->userService->all())));
+
+        $data['users'] = $this->userService->all($request->all());
         $data['departments'] = $this->departmentService->allDepartments();
         $data['roles'] = [];
         return view('app.users.index', $data);
-
 
     }
 

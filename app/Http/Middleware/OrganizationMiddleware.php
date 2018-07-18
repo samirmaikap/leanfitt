@@ -3,11 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Repositories\OrganizationRepository;
-use App\Services\OrganizationService;
-use function auth;
 use Closure;
-use function dd;
-use function session;
 
 class OrganizationMiddleware
 {
@@ -20,8 +16,6 @@ class OrganizationMiddleware
      */
     public function handle($request, Closure $next)
     {
-//        dd(URL::defaults(['subdomain' => $subDomain]));
-
         $request->route()->forgetParameter('organization');;
 
         $host = explode('.', $request->getHost());
@@ -41,9 +35,6 @@ class OrganizationMiddleware
         // Set Organization Identifier for global access
         session(['organization' => $organization]);
         $request->route()->setParameter('organization', $organization);
-
-        /*Remove Subdomain from request*/
-        $request->route()->forgetParameter('subdomain');
 
         return $next($request);
     }

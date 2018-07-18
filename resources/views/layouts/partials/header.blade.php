@@ -76,7 +76,7 @@
                 <div class="dropdown-menu dropdown-menu-right">
                     <a class="dropdown-item" href="#profile-modal" data-toggle="modal"><i class="ti-user"></i> Profile</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{{ url('http://leanfitt.dev/logout') }}"><i class="ti-power-off"></i> Logout</a>
+                    <a class="dropdown-item" href="{{ url('logout') }}"><i class="ti-power-off"></i> Logout</a>
                 </div>
             </li>
         </ul>
