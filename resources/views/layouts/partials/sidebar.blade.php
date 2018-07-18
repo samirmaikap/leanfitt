@@ -13,14 +13,14 @@
     </header>
 
     <nav class="sidebar-navigation">
-        @if(auth()->user() && auth()->user()->organizations()->count())
+        @if(auth()->user() && session()->get('user')->is_superadmin==0 && auth()->user()->organizations()->count())
         <div class="sidebar-profile bg-pale-gray">
             <div class="dropdown">
                 <span class="dropdown-toggle no-caret" data-toggle="dropdown">
                     <div class="profile-info">
-                        <img class="avatar" src="https://ui-avatars.com/api/?name=Debajyoti%20Das" alt="...">
+                        <img class="avatar" src="{{session()->get('user')->avatar}}" alt="...">
                         <h4 class="mb-0">
-                            @php $defaultOrganization = session('organization')  @endphp
+                            @php $defaultOrganization = session()->get('organization')  @endphp
                             {{ isset($defaultOrganization->name) ?$defaultOrganization->name : null }}
                             <i class="fa fa-caret-down"></i>
                         </h4>
@@ -29,7 +29,7 @@
                 </span>
                 <div class="dropdown-menu">
                     @php $relatedOrganization=session()->get('relatedOrganizations') @endphp
-                    @if(count($relatedOrganization) > 0))
+                    @if(count($relatedOrganization) > 0)
                     @foreach($relatedOrganization as $organization)
                         <a class="dropdown-item" href="{{ $organization->url . '/dashboard' }}">
                             <i class="ti-arrow-right"></i>
@@ -48,7 +48,6 @@
         </div>
         @endif
         <ul class="menu">
-            {{--<li class="menu-category">Home</li>--}}
             <li class="menu-item active">
                 <a class="menu-link" href="{{ url("dashboard") }}">
                     <span class="icon fa fa-home"></span>
@@ -56,61 +55,47 @@
                 </a>
             </li>
 
-            {{--<li class="menu-category">Directory</li>--}}
+            @if(session()->get('user')->is_superadmin==1)
+                <li class="menu-item">
+                    <a class="menu-link" href="{{ url('organizations') }}">
+                        <span class="icon fa fa-building"></span>
+                        <span class="title">Organizations</span>
+                    </a>
+                </li>
+            @endif
 
-            {{--<li class="menu-item">--}}
-                {{--<a class="menu-link" href="{{ url('organizations') }}">--}}
-                    {{--<span class="icon fa fa-building"></span>--}}
-                    {{--<span class="title">Organizations</span>--}}
-                    {{--<span class="arrow"></span>--}}
-                {{--</a>--}}
-            {{--</li>--}}
+            @can('read.user')
+                <li class="menu-item">
+                    <a class="menu-link" href="{{ url('users') }}">
+                        <span class="icon fa fa-users"></span>
+                        <span class="title">Users</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" href="{{ url('departments') }}">
+                        <span class="icon fa fa-users"></span>
+                        <span class="title">Departments</span>
+                    </a>
+                </li>
 
-            <li class="menu-item">
-                <a class="menu-link" href="{{ url('users') }}">
-                    <span class="icon fa fa-users"></span>
-                    <span class="title">Users</span>
-                    {{--<span class="arrow"></span>--}}
-                </a>
-            </li>
+                <li class="menu-item">
+                    <a class="menu-link" href="{{ url('roles') }}">
+                        <span class="icon fa fa-users"></span>
+                        <span class="title">Roles</span>
+                    </a>
+                </li>
+            @endcan
 
-            <li class="menu-item">
-                <a class="menu-link" href="{{ url('departments') }}">
-                    <span class="icon fa fa-users"></span>
-                    <span class="title">Departments</span>
-                    {{--<span class="arrow"></span>--}}
-                </a>
-            </li>
-            <li class="menu-item">
-                <a class="menu-link" href="{{ url('roles') }}">
-                    <span class="icon fa fa-users"></span>
-                    <span class="title">Roles</span>
-                    {{--<span class="arrow"></span>--}}
-                </a>
-            </li>
+            @can('read.project')
+                <li class="menu-category">Project</li>
 
-            {{--<li class="menu-item">--}}
-                {{--<a class="menu-link" href="{{ url('organizations') }}">--}}
-                    {{--<span class="icon fa fa-address-card"></span>--}}
-                    {{--<span class="title">Organizations</span>--}}
-                {{--</a>--}}
-            {{--</li>--}}
-
-            {{--@if(empty(session('relatedOrganizations')))--}}
-                {{--<li class="menu-item">--}}
-                    {{--<a class="menu-link" href="{{ url('organizations') }}">--}}
-                        {{--<span class="icon fa fa-address-card"></span>--}}
-                        {{--<span class="title">Organizations</span>--}}
-                    {{--</a>--}}
-                {{--</li>--}}
-            {{--@endif--}}
-            {{--<li class="menu-item">--}}
-                {{--<a class="menu-link" href="{{ url('departments') }}">--}}
-                    {{--<span class="icon ti-layout-tab"></span>--}}
-                    {{--<span class="title">Departments</span>--}}
-                    {{--<span class="arrow"></span>--}}
-                {{--</a>--}}
-            {{--</li>--}}
+                <li class="menu-item">
+                    <a class="menu-link" href="{{ url("projects") }}">
+                        <span class="icon fa fa-home"></span>
+                        <span class="title">Projects</span>
+                    </a>
+                </li>
+            @endcan
 
             <li class="menu-category">LeanFITT</li>
 
@@ -132,56 +117,12 @@
                     <span class="title">Assessments</span>
                 </a>
             </li>
-
-            <li class="menu-category">Project</li>
-
             <li class="menu-item">
-                <a class="menu-link" href="{{ url("projects") }}">
+                <a class="menu-link" href="{{ url("awards") }}">
                     <span class="icon fa fa-home"></span>
-                    <span class="title">My Projects</span>
+                    <span class="title">Awards</span>
                 </a>
             </li>
-            <li class="menu-item">
-                <a class="menu-link" href="{{ url("kpi") }}">
-                    <span class="icon fa fa-home"></span>
-                    <span class="title">KPI</span>
-                </a>
-            </li>
-            <li class="menu-item">
-                <a class="menu-link" href="{{ url("action-items") }}">
-                    <span class="icon fa fa-home"></span>
-                    <span class="title">Action Items</span>
-                </a>
-            </li>
-
-            <li class="menu-item">
-                <a class="menu-link" href="{{ url("reports") }}">
-                    <span class="icon fa fa-home"></span>
-                    <span class="title">Reports</span>
-                </a>
-            </li>
-
-            {{--<li class="menu-category">Account</li>--}}
-
-            {{--<li class="menu-item">--}}
-                {{--<a class="menu-link" href="{{ url("dashboard") }}">--}}
-                    {{--<span class="icon fa fa-home"></span>--}}
-                    {{--<span class="title">Organization Profile</span>--}}
-                {{--</a>--}}
-            {{--</li>--}}
-            {{--<li class="menu-item">--}}
-                {{--<a class="menu-link" href="{{ url("dashboard") }}">--}}
-                    {{--<span class="icon fa fa-home"></span>--}}
-                    {{--<span class="title">Subscription</span>--}}
-                {{--</a>--}}
-            {{--</li>--}}
-            {{--<li class="menu-item">--}}
-                {{--<a class="menu-link" href="{{ url("dashboard") }}">--}}
-                    {{--<span class="icon fa fa-home"></span>--}}
-                    {{--<span class="title">Settings</span>--}}
-                {{--</a>--}}
-            {{--</li>--}}
-
         </ul>
     </nav>
 </aside>

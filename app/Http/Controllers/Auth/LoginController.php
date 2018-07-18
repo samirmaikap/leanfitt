@@ -7,6 +7,7 @@ use App\Services\UserService;
 use function config;
 use function count;
 use function dd;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use function redirect;
@@ -52,8 +53,13 @@ class LoginController extends Controller
     //
     protected function authenticated(Request $request, $user)
     {
-        session(['user' => $user]);
-        if(auth()->user()->is_superadmin==1){
+        $superadmin=auth()->user()->is_superadmin;
+//        session(['user' => $user]);
+        session([
+            'user' =>renderCollection(collect($user)->except(['verification_token','password'])),
+        ]);
+
+        if($superadmin==1){
             return redirect(url('dashboard'));
         }
 

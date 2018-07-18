@@ -50,8 +50,6 @@ class User extends Authenticatable
     protected $appends = [
         'full_name',
         'initials',
-//        'department_name',
-//        'department_id',
     ];
 
     public function setPasswordAttribute($value)

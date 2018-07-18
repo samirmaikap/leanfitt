@@ -20,22 +20,22 @@
                                 <div class="flexbox align-items-center px-20" data-overlay="4">
                                     <div class="flexbox align-items-center mr-auto">
                                         <div class="pl-12 d-none d-md-block">
-                                            <h5 class="mb-0"><a class="hover-primary text-white" href="#">{{ucfirst($tool['name'])}}</a></h5>
-                                            <span>{{$tool['quiz_count']}} Questions</span>
+                                            <h5 class="mb-0"><a class="hover-primary text-white" href="#">{{ucfirst($tool->name)}}</a></h5>
+                                            <span>{{$tool->quiz_count}} Questions</span>
                                         </div>
                                     </div>
 
                                     <ul class="flexbox flex-justified text-center py-20">
                                         @if(session('role')=='employee')
                                             <li class="px-10">
-                                                <a href="{{url('/leantool/view').'/'.$tool['id']}}" class="btn btn-round btn-primary">View</a>
+                                                <a href="{{url('/leantool/view').'/'.$tool->id}}" class="btn btn-round btn-primary">View</a>
                                             </li>
                                         @else
                                             <li class="px-10">
-                                                <a href="{{url('/lean-tools/view').'/'.$tool['id']}}" class="btn btn-round btn-primary">View</a>
+                                                <a href="{{url('/lean-tools/view').'/'.$tool->id}}" class="btn btn-round btn-primary">View</a>
                                             </li>
                                             <li class="px-10">
-                                                <a href="{{url('lean-tools/edit').'/'.$tool['id']}}" class="btn btn-round btn-primary">Edit</a>
+                                                <a href="{{url('lean-tools/edit').'/'.$tool->id}}" class="btn btn-round btn-primary">Edit</a>
                                             </li>
                                         @endif
 

@@ -30,6 +30,6 @@ function renderCollection($data){
         return $data;
     }
     else{
-        return new \Illuminate\Database\Eloquent\Collection($data);
+        return json_decode(json_encode(new \Illuminate\Database\Eloquent\Collection($data)));
     }
 }
