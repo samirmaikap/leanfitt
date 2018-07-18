@@ -16,12 +16,12 @@ class AssessmentRepository extends BaseRepository //implements AssessmentReposit
     public function allAssessment($organization,$department,$user)
     {
         $query=$this->model()
-            ->join('department_user as du','du.user_id','=','assessment_results.user_id')
+            ->leftJoin('department_user as du','assessment_results.user_id','=','du.user_id')
             ->join('organization_user as ou','ou.user_id','=','assessment_results.user_id')
-            ->join('departments as dep','dep.id','=','du.department_id')
+            ->leftJoin('departments as dep','du.department_id','=','dep.id')
             ->join('organizations as org','org.id','=','ou.organization_id')
             ->where('ou.organization_id',empty($organization) ? '!=':'=',empty($organization) ? null : $organization )
-            ->where('du.department_id',empty($department) ? '!=':'=',empty($department) ? null : $department )
+            ->where('du.department_id',$department )
             ->where('u.id',empty($user) ? '!=':'=',empty($user) ? null : $user )
             ->select([
                 'assessment_results.*',
