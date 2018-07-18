@@ -30,6 +30,7 @@ class UserController extends Controller
     {
 
         $data['users'] = $this->userService->all($request->all());
+        dd($data['users']);
         $data['departments'] = $this->departmentService->allDepartments();
         $data['roles'] = [];
         return view('app.users.index', $data);

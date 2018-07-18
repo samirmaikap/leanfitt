@@ -41,7 +41,7 @@
                                 <img class="avatar avatar-sm" src="{{ $user->avatar }}" alt="">
                                 {{ $user->full_name }}
                             </td>
-                            <td>{{ implode(', ', $user->departments) }}</td>
+                            <td>{{ !empty($user->departments) ? $user->departments : 'N/A' }}</td>
                             <td>{{ "N/A" }}</td>
                             <td>{{ date('m/d/Y h:i A', strtotime($user->created_at)) }}</td>
                             <td>
@@ -51,7 +51,7 @@
                                        title="" data-original-title="Edit">
                                         <i class="ti-pencil"></i>
                                     </a>
-                                    @if(session('user')->id != $user->id)
+                                    @if(session()->get('user')->id != $user->id)
                                     <a class="nav-link hover-danger" href="#"
                                        data-provide="tooltip" title="" data-original-title="Delete"
                                        onclick="submitForm('#delete-user{{ $user->id }}-form')">
