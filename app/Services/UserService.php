@@ -46,8 +46,8 @@ class UserService
 
     public function all($data)
     {
-        $active_organization = session('organization');
-        $organization=isset($data['organization']) ? $data['organization'] : arrayValue($active_organization,'id');
+        $active_organization = session()->get('organization');
+        $organization=isset($data['organization']) ? $data['organization'] : $active_organization->id;
 
 //        return $this->userRepo->getUsersByOrganization($organization['id'], ['departments']);
         $query=$this->userRepo->getUsers($organization,arrayValue($data,'department'));
@@ -191,10 +191,10 @@ class UserService
     }
 
     public function invitaton($data){
-        if(empty(arrayValue(session('organization'),'id'))){
+        if(empty(session()->get('organization')->id)){
             throw new \Exception('Unable to find your organization');
         }
-        $data['organization_id']=$orgUser['organization_id']=session('organization')['id'];
+        $data['organization_id']=$orgUser['organization_id']=session()->get('organization')->id;
 
         if(empty(arrayValue($data,'email'))){
             throw new \Exception('Email id is required');
@@ -239,11 +239,11 @@ class UserService
             throw new \Exception('User id is required');
         }
 
-        if(empty(arrayValue(session('organization'),'id'))){
+        if(empty(session()->get('organization')->id)){
             throw new \Exception('Unable to find your organization');
         }
 
-        $organization_id=arrayValue(session('organization'),'id');
+        $organization_id=session()->get('organization')->id;
         $user=$this->orgUserRepo->where('organization_id',$organization_id)->where('user_id',$user_id)->first();
         if($user){
             $this->orgUserRepo->fillUpdate($user,['invitation_token'=>md5(time()).rand(00000,99999)]);
@@ -263,11 +263,11 @@ class UserService
             throw new \Exception('User id is required');
         }
 
-        if(empty(arrayValue(session('organization'),'id'))){
+        if(empty(session()->get('organization')->id)){
             throw new \Exception('Unable to find your organization');
         }
 
-        $organization_id=arrayValue(session('organization'),'id');
+        $organization_id=session()->get('organization')->id;
         $user=$this->orgUserRepo->where('organization_id',$organization_id)->where('user_id',$user_id)->first();
         if(!$user){
             throw new \Exception('User not found');
@@ -286,11 +286,11 @@ class UserService
             throw new \Exception('User id is required');
         }
 
-        if(empty(arrayValue(session('organization'),'id'))){
+        if(empty(session()->get('organization')->id)){
             throw new \Exception('Unable to find your organization');
         }
 
-        $organization_id=arrayValue(session('organization'),'id');
+        $organization_id=session()->get('organization')->id;
         $user=$this->orgUserRepo->where('organization_id',$organization_id)->where('user_id',$user_id)->first();
         if(!$user){
             throw new \Exception('User not found');

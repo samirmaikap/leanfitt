@@ -97,7 +97,7 @@ class ProjectService //implements ProjectServiceInterface
 
     public function create($data)
     {
-        $data['organization_id']=arrayValue(session('organization'),'id');
+        $data['organization_id']=session()->get('organization')->id;
         $validator=new ProjectValidator($data,'create');
         if($validator->fails()){
             throw new \Exception($validator->messages()->first());

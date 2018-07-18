@@ -48,7 +48,7 @@ class DepartmentService //implements DepartmentServiceInterface
 
     public function createDepartment($data)
     {
-        $data['organization_id']=arrayValue(session('organization'),'id');
+        $data['organization_id']=session()->get('organization')->id;
         $validator=new DepartmentValidator($data, 'create');
         
         if($validator->fails())
