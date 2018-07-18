@@ -50,7 +50,7 @@ class UserService
         $organization=isset($data['organization']) ? $data['organization'] : arrayValue($active_organization,'id');
 
 //        return $this->userRepo->getUsersByOrganization($organization['id'], ['departments']);
-        $query=$this->userRepo->getUsers($organization,arrayValue($data['department']));
+        $query=$this->userRepo->getUsers($organization,arrayValue($data,'department'));
         if(!$query){
             throw new \Exception(config('messages.common_error'));
         }
@@ -257,7 +257,4 @@ class UserService
     {
         return $this->userRepo->delete($id);
     }
-
-
-
 }

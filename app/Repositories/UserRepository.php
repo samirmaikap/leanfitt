@@ -52,7 +52,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
             ->join('department_user as du','du.user_id','=','users.id')
             ->where('du.department_id',empty($department) ? '!=' : '=',empty($department) ? null : $department )
             ->where('ou.organization_id',empty($organization) ? '!=' : '=',empty($organization) ? null : $organization )
-            ->select('users.*')->distinct()->orderBy('users.first_name')->get();
+            ->select(['users.*','ou.is_invited','ou.is_suspended'])->distinct()->orderBy('users.first_name')->get();
         return $query;
     }
 }
