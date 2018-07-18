@@ -105,4 +105,21 @@ class UserController extends Controller
         }
     }
 
+    public function suspend($user_id){
+        try{
+            $result=$this->service->suspend($user_id);
+            return renderSuccess($result,'User has been suspended',200);
+        }catch(\Exception $e){
+            return renderError($e->getMessage());
+        }
+    }
+
+    public function restore($user_id){
+        try{
+            $result=$this->service->restore($user_id);
+            return renderSuccess($result,'User has been restored',200);
+        }catch(\Exception $e){
+            return renderError($e->getMessage());
+        }
+    }
 }

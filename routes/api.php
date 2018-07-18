@@ -20,8 +20,8 @@ Route::post('register', 'API\AuthController@register');
 Route::group(['namespace' => 'API','middleware'=>'auth:api'], function () {
 
     /*User Services*/
-    Route::get('users', 'UserController@index'); //associated accounts for switch
-    Route::post('users', 'UserController@create'); //associated accounts for switch
+    Route::get('users', 'UserController@index');
+    Route::post('users', 'UserController@create');
     Route::get('users/profile', 'UserController@profile');
     Route::get('users/list', 'UserController@list');
     Route::post('users/invitation', 'UserController@invitation');
@@ -30,6 +30,8 @@ Route::group(['namespace' => 'API','middleware'=>'auth:api'], function () {
     Route::get('users/{user_id}/organizations', 'UserController@getRelatedOrganization');
     Route::put('users/{user_id}', 'UserController@update');
     Route::delete('users/{user_id}', 'UserController@delete');
+    Route::get('users/{user_id}/suspend', 'UserController@suspend');
+    Route::get('users/{user_id}/restore', 'UserController@restore');
 
     /*Organization*/
     Route::get('organizations', 'OrganizationController@index');

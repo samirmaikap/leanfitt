@@ -257,4 +257,50 @@ class UserService
     {
         return $this->userRepo->delete($id);
     }
+
+    public function suspend($user_id){
+        if(empty($user_id)){
+            throw new \Exception('User id is required');
+        }
+
+        if(empty(arrayValue(session('organization'),'id'))){
+            throw new \Exception('Unable to find your organization');
+        }
+
+        $organization_id=arrayValue(session('organization'),'id');
+        $user=$this->orgUserRepo->where('organization_id',$organization_id)->where('user_id',$user_id)->first();
+        if(!$user){
+            throw new \Exception('User not found');
+        }
+
+        $query=$this->orgUserRepo->fillUpdate($user,['is_suspended'=>1]);
+        if(!$query){
+            throw new \Exception(config('messages.common_error'));
+        }
+
+        return;
+    }
+
+    public function restore($user_id){
+        if(empty($user_id)){
+            throw new \Exception('User id is required');
+        }
+
+        if(empty(arrayValue(session('organization'),'id'))){
+            throw new \Exception('Unable to find your organization');
+        }
+
+        $organization_id=arrayValue(session('organization'),'id');
+        $user=$this->orgUserRepo->where('organization_id',$organization_id)->where('user_id',$user_id)->first();
+        if(!$user){
+            throw new \Exception('User not found');
+        }
+
+        $query=$this->orgUserRepo->fillUpdate($user,['is_suspended'=>0]);
+        if(!$query){
+            throw new \Exception(config('messages.common_error'));
+        }
+
+        return;
+    }
 }
