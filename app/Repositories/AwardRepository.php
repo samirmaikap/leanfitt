@@ -19,10 +19,10 @@ class AwardRepository extends BaseRepository //implements AwardRepositoryInterfa
     public function getAwards($organization,$department,$user){
         $query=$this->model()->join('users as u','u.id','=','awards.user_id')
             ->join('organization_user as ou','ou.user_id','=','awards.user_id')
-            ->join('department_user as du','du.user_id','=','awards.user_id')
-            ->join('departments as dep','dep.id','=','du.department_id')
+            ->leftJoin('department_user as du','awards.user_id','=','du.user_id')
+            ->leftJoin('departments as dep','du.department_id','=','dep.id')
             ->where('ou.organization_id',empty($organization)? '!=' : '=',empty($organization) ? null : $organization)
-            ->where('du.organization_id',empty($department)? '!=' : '=',empty($department) ? null : $department)
+            ->where('du.organization_id',$department)
             ->where('u.id',empty($user)? '!=' : '=',empty($user) ? null : $user)
             ->select(['awards.*','u.first_name','u.last_name','u.avatar','dep.name as department_name'])
             ->distinct()->orderBy('u.first_name')->get();
