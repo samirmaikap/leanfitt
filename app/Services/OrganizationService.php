@@ -49,6 +49,7 @@ class OrganizationService
     {
         $subdomain = str_slug(arrayValue($data['organization'],'name'));
         $data['organization']['subdomain'] = $subdomain;
+        $data['organization']['featured_image']=env('UI_AVATAR').arrayValue($data['organization'],'name');
 
         $org_validator=new OrganizationValidator(arrayValue($data,'organization'),'create');
         if($org_validator->fails())

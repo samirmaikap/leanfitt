@@ -34,14 +34,12 @@
                     <tbody>
 
                     @foreach($users as $user)
-
-                        {{--{{ dd($users) }}--}}
                         <tr>
                             <td class="">
                                 <img class="avatar avatar-sm" src="{{ $user->avatar }}" alt="">
                                 {{ $user->full_name }}
                             </td>
-                            <td>{{ !empty($user->departments) ? $user->departments : 'N/A' }}</td>
+                            <td>{{ $user->departments->count() ? implode(', ',$user->departments) : 'N/A' }}</td>
                             <td>{{ "N/A" }}</td>
                             <td>{{ date('m/d/Y h:i A', strtotime($user->created_at)) }}</td>
                             <td>
