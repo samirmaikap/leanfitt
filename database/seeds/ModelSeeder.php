@@ -12,11 +12,11 @@ class ModelSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Models\User::class,10)->create();
+//        factory(\App\Models\User::class,10)->create();
 
-        factory(\App\Models\Organization::class,10)->create()->each(function ($u) {
-            $dep=$u->departments()->save(factory(\App\Models\Department::class)->make());
-        });
+//        factory(\App\Models\Organization::class,10)->create()->each(function ($u) {
+//            $dep=$u->departments()->save(factory(\App\Models\Department::class)->make());
+//        });
 
         /*LeanTool*/
         factory(\App\Models\LeanTool::class,10)->create();
@@ -25,23 +25,23 @@ class ModelSeeder extends Seeder
         factory(\App\Models\Board::class,10)->create();
 
         /*Project -> (Kpi Chart -> Kpi Data Points, Action Items)*/
-        factory(\App\Models\Project::class,10)->create()->each(function ($u) {
-            $kpi=$u->kpi()->save(factory(\App\Models\KpiChart::class)->make());
-            $kpi->kpiData()->save(factory(\App\Models\KpiDataPoint::class)->make());
-            $u->Actionitem()->save(factory(\App\Models\ActionItem::class)->make());
-        });
+//        factory(\App\Models\Project::class,10)->create()->each(function ($u) {
+//            $kpi=$u->kpi()->save(factory(\App\Models\KpiChart::class)->make());
+//            $kpi->kpiData()->save(factory(\App\Models\KpiDataPoint::class)->make());
+//            $u->Actionitem()->save(factory(\App\Models\ActionItem::class)->make());
+//        });
 
         /*Label*/
-        factory(\App\Models\Label::class,10)->create();
+//        factory(\App\Models\Label::class,10)->create();
 
         /*Comments*/
-        factory(\App\Models\Comment::class,20)->create();
+//        factory(\App\Models\Comment::class,20)->create();
 
         /*Quiz Result*/
-        factory(\App\Models\QuizResult::class,10)->create();
+//        factory(\App\Models\QuizResult::class,10)->create();
 
         /*Award*/
-        factory(\App\Models\Award::class,10)->create();
+//        factory(\App\Models\Award::class,10)->create();
 
         DB::table('report_categories')->insert([
             ['name'=>'Healthcare roadmap/gemba walk'],
