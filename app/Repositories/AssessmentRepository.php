@@ -16,6 +16,7 @@ class AssessmentRepository extends BaseRepository //implements AssessmentReposit
     public function allAssessment($organization,$department,$user)
     {
         $query=$this->model()
+            ->join('users as u','u.id','=','assessment_results.user_id')
             ->leftJoin('department_user as du','assessment_results.user_id','=','du.user_id')
             ->join('organization_user as ou','ou.user_id','=','assessment_results.user_id')
             ->leftJoin('departments as dep','du.department_id','=','dep.id')

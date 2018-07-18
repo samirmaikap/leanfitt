@@ -34,7 +34,9 @@ class OrganizationMiddleware
 
         // Set Organization Identifier for global access
         session(['organization' => $organization]);
-        $request->route()->setParameter('organization', $organization);
+//        $request->route()->setParameter('organization', $organization);
+
+//        $request->route()->forgetParameter('domain');
 
         return $next($request);
     }

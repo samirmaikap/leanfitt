@@ -7,6 +7,7 @@ use App\Services\EmployeeService;
 use App\Services\LeanToolService;
 use App\Services\OrganizationService;
 use App\Services\QuizService;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -16,49 +17,41 @@ class QuizController extends Controller
     protected $orgService;
     protected $depService;
     protected $toolService;
+    protected $userService;
+
     public function __construct(QuizService $quizService,
                                 OrganizationService $organizationService,
                                 DepartmentService $departmentService,
-                                LeanToolService $leanToolService)
+                                LeanToolService $leanToolService,
+                                UserService $userService)
     {
         $this->service=$quizService;
         $this->orgService=$organizationService;
         $this->depService=$departmentService;
         $this->toolService=$leanToolService;
+        $this->userService=$userService;
     }
 
     public function index(Request $request){
-        $req_data=$request->all();
-//        if(session('role')=='admin'){
-//            $req_data['organization']=session('organization_id');
-//        }
-        $req_data['organization']=session('organization')['id'];
-        $request=new Request($req_data);
+
         $data['page']='Quiz';
         $data['organization_id']=$request->get('organization');
         $data['department_id']=$request->get('department');
         $data['user_id']=$request->get('user');
 
 
-        $query=$this->service->taken($request);
-        if($query->success){
-            $data['quizs']=$query->data;
+        $data['quizs']=$this->service->taken($request->all());
 
-        }else{
-            $data['quizs']=null;
-        }
-        $organizations=$this->orgService->list();
-        $data['organizations']=$organizations->success ? $organizations->data : null;
+        $data['organizations']=$this->orgService->list();
         if(!empty($request->get('organization'))){
-            $departments=$this->depService->list($request);
-            $data['departments']=$departments->success ? $departments->data : null;
+            $data['departments']=$this->depService->list($request->all());
         }
         else{
             $data['departments']=null;
         }
+
         if(!empty($request->get('department'))){
-            $users=$this->userService->list($request);
-            $data['users']=$users->success ? $users->data : null;
+            $data['users']=$this->userService->list($request->all());
         }
         else{
             $data['users']=null;
@@ -67,23 +60,21 @@ class QuizController extends Controller
         return view('app.quiz.index',$data);
     }
 
-    public function show($domain,$tool_id){
+    public function show($tool_id){
         $user_id=auth()->user()->id;
         $data['active_tool']=$tool_id;
-        $tools=$this->service->index($user_id);
-        $data['tools']=$tools->success ? $tools->data : null;
-        $query=$this->service->show($tool_id,$user_id);
-        $data['quiz']=$query->success ? $query->data : null;
+        $data['tools']=$this->service->index($user_id);
+        $data['quiz']=$this->service->show($tool_id,$user_id);
+
         return view('app.quiz.view',$data);
     }
 
     public function create(Request $request){
-        $query=$this->service->create($request);
-        if($query->success){
+        try{
+            $query=$this->service->create($request->all());
             return redirect()->back()->with(['success',$query->message]);
-        }
-        else{
-            return redirect()->back()->withErrors($query->message);
+        }catch(\Exception $e){
+            return redirect()->back()->withErrors($e->getMessage());
         }
     }
 }
