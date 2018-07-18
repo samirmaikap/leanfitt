@@ -35,7 +35,7 @@ Route::group(['namespace' => 'API','middleware'=>'auth:api'], function () {
 
     /*Organization*/
     Route::get('organizations', 'OrganizationController@index');
-    Route::get('organizations', 'OrganizationController@create');
+    Route::post('organizations', 'OrganizationController@create');
     Route::get('organizations/list', 'OrganizationController@list'); /*for multi purpose dropdown*/
     Route::get('organizations/{organization_id}', 'OrganizationController@show');
     Route::put('organizations/{organization_id}', 'OrganizationController@update');
