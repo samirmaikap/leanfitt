@@ -22,7 +22,7 @@ class DepartmentService //implements DepartmentServiceInterface
     }
 
     public function list($data){
-        $organization=arrayValue($data,'organization');
+        $organization=empty(arrayValue($data,'organization')) ? session()->get('organization')->id : arrayValue($data,'organization');
 
         $query=$this->departmentRepo->getDepartments($organization);
         if(!$query)

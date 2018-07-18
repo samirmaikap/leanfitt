@@ -7,7 +7,7 @@ use App\Models\LeanTool;
 use App\Repositories\Contracts\LeanToolsRepositoryInterface;
 use Illuminate\Support\Collection;
 
-class LeantoolRepository extends BaseRepository implements LeanToolsRepositoryInterface
+class LeantoolRepository extends BaseRepository //implements LeanToolsRepositoryInterface
 {
 
     public function model()

@@ -165,6 +165,7 @@ class UserService
 
     public function create($data)
     {
+        $data['avatar']=env('UI_AVATAR').arrayValue($data,'first_name').' '.arrayValue($data,'last_name');
         $validator = new UserValidator($data, 'create');
 
         if($validator->fails()){
