@@ -46,12 +46,14 @@ class LeanToolController extends Controller
          $data['name']=$request->get('name');
          try{
              if(!empty($request->tool_id)){
-                 $query=$this->service->update($data,$request->tool_id);
+                 $this->service->update($data,$request->tool_id);
+                 return redirect()->back()->with('success', 'Leantool has been updated');
              }
              else{
-                 $query=$this->service->create($data);
+                 $this->service->create($data);
+                 return redirect()->back()->with('success', 'Leantool hasss been added');
              }
-             return redirect()->back()->with('success', $query->message);
+
          }catch (\Exception $e){
              return redirect()->back()->withErrors([$e->getMessage()]);
          }

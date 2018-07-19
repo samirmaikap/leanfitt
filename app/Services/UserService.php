@@ -83,15 +83,15 @@ class UserService
         return renderCollection($query);
     }
 
-    public function profile()
+    public function profile($user_id=null)
     {
-        $user_id=auth()->user()->id;
+        $user_id=empty($user_id) ? auth()->user()->id : $user_id;
+        $organization=session()->get('organization')->id;
         if(empty($user_id)){
             throw new \Exception('User id field is required');
         }
 
-        $query=$this->userRepo->profile($user_id);
-
+        $query=$this->userRepo->profile($user_id,$organization);
         if(!$query){
             throw  new \Exception(config('messages.common_error'));
         }
@@ -164,12 +164,13 @@ class UserService
 
     public function create($data)
     {
-        $data['avatar']=env('UI_AVATAR').arrayValue($data,'first_name').' '.arrayValue($data,'last_name');
+        $data['avatar']=env('UI_AVATAR').urlencode(arrayValue($data,'first_name').' '.arrayValue($data,'last_name'));
         $validator = new UserValidator($data, 'create');
 
         if($validator->fails()){
             throw new \Exception($validator->messages());
         }
+
         $user = $this->userRepo->create($data);
 
         if(isset($data['organization']))
@@ -200,6 +201,7 @@ class UserService
             throw new \Exception('Email id is required');
         }
 
+        DB::beginTransaction();
         $user=$this->userRepo->where('email',arrayValue($data,'email'))->first();
         $orgUser['is_invited']=1;
         if($user){
@@ -209,26 +211,31 @@ class UserService
             $data['password']=$data['password_confirmation']='password';
             $validator=new UserValidator($data,'create');
             if($validator->fails()){
+                DB::rollBack();
                 throw new \Exception($validator->messages()->first());
             }
 
 //            $query=$this->userRepo->create($data);
             $new_user=$this->create($data);
             if(!$new_user){
+                DB::rollBack();
                 throw new \Exception(config('messages.common_error'));
             }
-            $orgUser['user_id']=$new_user;
+            $orgUser['user_id']=$new_user->id;
         }
 
         $exists=$this->orgUserRepo->where('user_id',$orgUser['user_id'])->where('organization_id',$orgUser['organization_id'])->exists();
         if(!$exists){
             $query=$this->orgUserRepo->create($orgUser);
             if(!$query){
+                DB::rollBack();
                 throw new \Exception(config('messages.common_error'));
             }
+            DB::commit();
             return;
         }
 
+        DB::rollBack();
         throw new \Exception('The user already invited');
 
     }

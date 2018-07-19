@@ -5,7 +5,7 @@ namespace App\Repositories;
 use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryInterface;
 
-class UserRepository extends BaseRepository implements UserRepositoryInterface
+class UserRepository extends BaseRepository //implements UserRepositoryInterface
 {
     public function model()
     {
@@ -13,9 +13,19 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     }
 
 
-    public function profile($user){
-        $query=$this->model()->with(['organizations','subscriptions'])->withCount('quiz')->withCount('award')->withCount('assignee')->where('id',$user)->first();
-        return $query;
+    public function profile($user,$organization){
+        $query=$this->model()
+//            ->with(['roles'=>function($query) use($organization){
+//            if(!empty($organization)){
+//                $query->where('organization_id',$organization)->get();
+//            }
+//        }])
+            ->with(['departments'=>function($query) use($organization){
+            if(!empty($organization)){
+                $query->where('organization_id',$organization)->get();
+            }
+        }])->where('id',$user)->first();
+       return $query;
     }
 
     public function isMemberOf($subdomain)

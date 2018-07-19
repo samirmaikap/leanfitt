@@ -183,21 +183,19 @@
                             return false;
                         }
                     })
-                    {{--@if(session()->has('success') || session('success'))--}}
-                    {{--@if(!empty(session('award')))--}}
-                    {{--firework();--}}
-                    {{--@endif--}}
-                    {{--setTimeout(function () {--}}
-                        {{--showToast('Success', '{{ session('success') }}', 'success');--}}
-                    {{--}, 500);--}}
-                    {{--@endif--}}
-                    {{--@if(isset($errors) && count($errors->all()) > 0 && $timeout = 700)--}}
-                    {{--@foreach ($errors->all() as $key => $error)--}}
-                    {{--setTimeout(function () {--}}
-                        {{--showToast('Error', '{{ $error }}', 'error');--}}
-                    {{--}, {{ $timeout * $key }});--}}
-                    {{--@endforeach--}}
-                    {{--@endif--}}
+
+                    @if(session()->has('success') || session('success'))
+                    setTimeout(function () {
+                        toastr.success('{{ session('success') }}');
+                    }, 500);
+                    @endif
+                    @if(isset($errors) && count($errors->all()) > 0 && $timeout = 700)
+                    @foreach ($errors->all() as $key => $error)
+                    setTimeout(function () {
+                        toastr.error("{{ $error }}");
+                    }, {{ $timeout * $key }});
+                    @endforeach
+                    @endif
                 }
             </script>
         </div>

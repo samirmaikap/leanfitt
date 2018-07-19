@@ -234,18 +234,6 @@
              updateTextContent();
              fillToolName();
 
-
-            {{--@if(session()->has('success') || session('success'))--}}
-                    {{--alert('x');--}}
-            {{--app.toast({{session('success')}});--}}
-            {{--@endif--}}
-
-            {{--@if(isset($errors) && count($errors->all()) > 0 && $timeout = 700)--}}
-            {{--@foreach ($errors->all() as $key => $error)--}}
-            {{--app.toast({{session($error)}});--}}
-            {{--@endforeach--}}
-            {{--@endif--}}
-
              $('#add-assessment').on('click',function(){
                  var type=$('#assessment-editor-type').val();
                  var data_id=$('#assessment-data-id').val();
@@ -341,6 +329,19 @@
                     $this.parent().parent().remove();
                 })
             })
+
+            @if(session()->has('success') || session('success'))
+            setTimeout(function () {
+                toastr.success('{{ session('success') }}');
+            }, 500);
+            @endif
+            @if(isset($errors) && count($errors->all()) > 0 && $timeout = 700)
+            @foreach ($errors->all() as $key => $error)
+            setTimeout(function () {
+                toastr.error("{{ $error }}");
+            }, {{ $timeout * $key }});
+            @endforeach
+            @endif
         }
 
         function fillToolName(){

@@ -40,7 +40,6 @@ class LeanToolsController extends Controller
             return renderError($e->getMessage());
         }
     }
-
     public function show($tool_id){
         try{
             $result=$this->service->show($tool_id);

@@ -64,7 +64,7 @@
                 </li>
             @endif
 
-            @can('read.user')
+            {{--@can('read.user')--}}
                 <li class="menu-item">
                     <a class="menu-link" href="{{ url('users') }}">
                         <span class="icon fa fa-users"></span>
@@ -84,9 +84,9 @@
                         <span class="title">Roles</span>
                     </a>
                 </li>
-            @endcan
+            {{--@endcan--}}
 
-            @can('read.project')
+            {{--@can('read.project')--}}
                 <li class="menu-category">Project</li>
 
                 <li class="menu-item">
@@ -95,7 +95,7 @@
                         <span class="title">Projects</span>
                     </a>
                 </li>
-            @endcan
+            {{--@endcan--}}
 
             <li class="menu-category">LeanFITT</li>
 

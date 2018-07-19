@@ -4,7 +4,7 @@ namespace App\Observers;
 
 use App\Mail\InvitationMail;
 use App\Models\User;
-use App\OrganizationUser;
+use App\Models\OrganizationUser;
 use Illuminate\Support\Facades\Mail;
 
 class OrganizationUserObserver
@@ -12,7 +12,7 @@ class OrganizationUserObserver
     /**
      * Handle to the organization user "created" event.
      *
-     * @param  \App\OrganizationUser  $organizationUser
+     * @param  \App\Models\OrganizationUser  $organizationUser
      * @return void
      */
     public function created(OrganizationUser $organizationUser)
@@ -26,7 +26,7 @@ class OrganizationUserObserver
     /**
      * Handle the organization user "updated" event.
      *
-     * @param  \App\OrganizationUser  $organizationUser
+     * @param  \App\Models\OrganizationUser  $organizationUser
      * @return void
      */
     public function updated(OrganizationUser $organizationUser)
