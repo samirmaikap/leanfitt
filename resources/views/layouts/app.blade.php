@@ -21,6 +21,9 @@
         <link href="{{ asset('assets/css/core.min.css') }}" rel="stylesheet">
         <link href="{{ asset('assets/css/app.css') }}" rel="stylesheet">
         <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+        <link href="{{ asset('style-extended.css') }}" rel="stylesheet">
+        <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/luizbills/feather-icon-font/v4.7.0/dist/feather.css">
 
     </head>
     <body class="#sidebar-folded">
@@ -53,6 +56,7 @@
     <script src="{{ asset('assets/js/app.js') }}"></script>
     <script src="{{ asset('assets/js/script.js') }}"></script>
     <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <script>
         function submitForm(selector, method) {

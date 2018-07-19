@@ -21,32 +21,15 @@ class ProjectController extends Controller
     }
 
     public function index(Request $request){
-        try
-        {
-            $result = $this->projectService->index($request);
-            $data['projects'] = $result->data;
-            return view("app.projects.index", $data);
-        }
-        catch(\Exception $e)
-        {
-            return redirect()->back()->withErrors([$e->getMessage()]);
-        }
+        $data['projects'] = $this->projectService->index($request);
+        return view("app.projects.index", $data);
     }
 
     public function show($project_id)
     {
-        try
-        {
-            $result=$this->projectService->show($project_id);
-            $data['project'] = $result->data;
-
-            return view("app.projects.details", $data);
-        }
-        catch(\Exception $e)
-        {
-            dd($e->getMessage());
-            return redirect()->back()->withErrors([$e->getMessage()]);
-        }
+//        $data['project']=$this->projectService->show($project_id);
+        $data['project']=null;
+        return view("app.projects.details", $data);
     }
 
     public function members($project_id)

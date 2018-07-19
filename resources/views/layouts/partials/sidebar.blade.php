@@ -96,7 +96,7 @@
                     </a>
                 </li>
             @endpermission
-
+            
             <li class="menu-category">LeanFITT</li>
 
             <li class="menu-item">

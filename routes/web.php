@@ -47,7 +47,10 @@ Route::group(['domain' => '{organization}' . config('session.domain'), 'namespac
 
     Route::get('users', 'UserController@index');
     Route::post('users', 'UserController@store');
+    Route::post('users/invitation', 'UserController@invitation');
     Route::get('users/{id}', 'UserController@show');
+    Route::get('users/{id}/profile', 'UserController@profile');
+    Route::get('users/{id}/invitation/resend', 'UserController@reInvitation');
     Route::put('users/{id}', 'UserController@update');
     Route::delete('users/{id}', 'UserController@delete');
 
@@ -69,9 +72,9 @@ Route::group(['domain' => '{organization}' . config('session.domain'), 'namespac
 
     Route::get('/projects', 'ProjectController@index');
     Route::post('/projects', 'ProjectController@create');
-    Route::get('/projects/{projectId}', 'ProjectController@show');
-    Route::get('/projects/{projectId}/details', 'ProjectController@show');
-    Route::get('/projects/{projectId}/kpi', 'ProjectController@kpi');
+    Route::get('/projects/{project_id}', 'ProjectController@show');
+    Route::get('/projects/{project_id}/details', 'ProjectController@show');
+    Route::get('/projects/{project_id}/kpi', 'ProjectController@kpi');
     Route::get('/projects/{projectId}/members', 'ProjectController@members');
     Route::get('/projects/{projectId}/action-items', 'ProjectController@actionItems');
     Route::get('/projects/{projectId}/reports', 'ProjectController@reports');
@@ -100,5 +103,7 @@ Route::group(['domain' => '{organization}' . config('session.domain'), 'namespac
 Route::group(['namespace' => 'Web'], function () {
 
     Route::get('/dashboard', 'DashboardController@index');
+    Route::get('organizations/create', 'OrganizationController@create');
+    Route::post('organizations/create','OrganizationController@store');
 
 });
