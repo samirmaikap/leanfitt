@@ -20,7 +20,7 @@ class UserController extends Controller
 {
     protected $userService;
     protected $departmentService;
-    protected $rolesService;
+    protected $roleService;
     protected $orgService;
 
     public function __construct(UserService $userService,
@@ -36,8 +36,6 @@ class UserController extends Controller
 
     public function index(Request $request, $activeOrganization = null)
     {
-//        dd($activeOrganization);
-
         $organizationId = null;
         $departmentId = null;
         $roleId = null;
@@ -65,11 +63,7 @@ class UserController extends Controller
 
         $data['users'] = $this->userService->all($organizationId, $departmentId, $roleId);
         $data['departments'] = $this->departmentService->allDepartments();
-        $data['roles'] = $this->rolesService->all($organizationId);
-
-//        $data['users'] = $this->userService->all($request->all());
-//        $data['departments'] = $this->departmentService->allDepartments();
-//        $data['roles'] = [];
+        $data['roles'] = $this->roleService->all($organizationId);
 
         $data['page']='Quiz';
         $data['activeorg']=$request->get('organization');
