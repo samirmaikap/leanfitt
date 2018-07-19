@@ -15,9 +15,9 @@ class RoleController extends Controller
         $this->roleService = $roleService;
     }
 
-    public function index(Request $request)
+    public function index(Request $request, $organization = null)
     {
-        $data['roles'] = $this->roleService->all();
+        $data['roles'] = $this->roleService->all($organization);
         return view('app.roles.index', $data);
     }
 
@@ -26,11 +26,11 @@ class RoleController extends Controller
 
     }
 
-    public function store(Request $request)
+    public function store(Request $request, $organization = null)
     {
         try
         {
-            $this->roleService->create($request->all());
+            $this->roleService->create($request->all(), $organization);
             return redirect()->back()->with(['success' => 'Role has been created successfully']);
         }
         catch(\Exception $e)

@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use function config;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Cashier\Billable;
-use Spatie\Permission\Models\Role;
-use function url;
+// use Spatie\Permission\Models\Role;
+//use Laratrust\Models\LaratrustTeam;
 
 class Organization extends Model
 {
@@ -44,10 +43,10 @@ class Organization extends Model
         return $this->belongsToMany(User::class, 'organization_user', 'organization_id', 'user_id')->withPivot('is_suspended');
     }
 
-    public function roles()
-    {
-        return $this->belongsToMany(Role::class, 'organization_role', 'organization_id', 'role_id');
-    }
+     public function roles()
+     {
+          return $this->belongsToMany(Role::class, 'organization_role', 'organization_id', 'role_id');
+     }
 
     public function project(){
         return $this->hasMany(Project::class);

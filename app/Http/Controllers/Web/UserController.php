@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Resources\UserResource;
 use App\Services\DepartmentService;
+use App\Services\RoleService;
 use App\Services\UserService;
 use function auth;
 use function compact;
@@ -20,18 +21,45 @@ class UserController extends Controller
     protected $departmentService;
     protected $rolesService;
 
-    public function __construct(UserService $userService, DepartmentService $departmentService)
+    public function __construct(UserService $userService, DepartmentService $departmentService, RoleService $roleService)
     {
         $this->userService = $userService;
         $this->departmentService = $departmentService;
+        $this->rolesService = $roleService;
     }
 
-    public function index(Request $request)
+    public function index(Request $request, $activeOrganization = null)
     {
+//        dd($activeOrganization);
 
-        $data['users'] = $this->userService->all($request->all());
+        $organizationId = null;
+        $departmentId = null;
+        $roleId = null;
+
+        if($request->query('organization'))
+        {
+            $organizationId = $request->query('organization');
+        }
+        elseif (!empty($activeOrganization))
+        {
+            $organizationId = $activeOrganization->id;
+        }
+
+        if($request->query('department'))
+        {
+            $departmentId = $request->query('department');
+        }
+
+        if($request->query('role'))
+        {
+            $roleId = $request->query('role');
+        }
+
+
+
+        $data['users'] = $this->userService->all($organizationId, $departmentId, $roleId);
         $data['departments'] = $this->departmentService->allDepartments();
-        $data['roles'] = [];
+        $data['roles'] = $this->rolesService->all($organizationId);
         return view('app.users.index', $data);
 
     }

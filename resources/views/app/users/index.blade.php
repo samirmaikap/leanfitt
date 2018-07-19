@@ -40,7 +40,7 @@
                                 {{ $user->full_name }}
                             </td>
                             <td>{{ $user->departments->count() ? implode(', ',$user->departments->pluck('name')->toArray()) : 'N/A' }}</td>
-                            <td>{{ "N/A" }}</td>
+                            <td>{{ $user->roles->count() ? implode(', ',$user->roles->pluck('display_name')->toArray()) : 'N/A' }}</td>
                             <td>{{ date('m/d/Y h:i A', strtotime($user->created_at)) }}</td>
                             <td>
                                 <nav class="nav no-gutters">

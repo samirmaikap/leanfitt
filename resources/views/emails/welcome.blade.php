@@ -1,0 +1,1 @@
+Welcome {{ $organization->name}}

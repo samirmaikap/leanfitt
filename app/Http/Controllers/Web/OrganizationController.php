@@ -4,14 +4,9 @@ namespace App\Http\Controllers\Web;
 
 use App\Services\RoleService;
 use App\Services\UserService;
-use function auth;
-use function dd;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\OrganizationService;
-use function redirect;
-use function session;
-use function view;
 
 class OrganizationController extends Controller
 {
@@ -51,14 +46,15 @@ class OrganizationController extends Controller
 
             $relatedOrganizations = $this->userService->getRelatedOrganization(auth()->user());
 
-            $this->roleService->create(['name' => 'Admin'], $organization->id);
+//            $this->roleService->create(['name' => 'Admin'], $organization->id);
 
             session()->forget('relatedOrganizations');
             session(['relatedOrganizations' => $relatedOrganizations]);
 
             $url = 'http://' . $organization->subdomain  . config('session.domain') . '/dashboard';
 
-            return redirect()->route($url)->with('success', 'Welcome ' . $organization->name);
+//            return redirect()->route($url)->with('success', 'Welcome ' . $organization->name);
+            return redirect($url)->with('success', 'Welcome ' . $organization->name);
 
         }
         catch(\Exception $e)

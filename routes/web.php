@@ -39,6 +39,10 @@ Route::group(['namespace' => 'Web', 'middleware' => 'auth:web'], function () {
 // User routes
 Route::group(['domain' => '{organization}' . config('session.domain'), 'namespace' => 'Web', 'middleware' => 'checkDomain'], function () {
 
+    Route::get('test/{testId}/demo/{demoId}', function ($testId, $demoId, $org) {
+        dd($testId, $demoId, $org);
+    });
+
     Route::get('/dashboard', 'DashboardController@index');
 
     Route::get('users', 'UserController@index');
