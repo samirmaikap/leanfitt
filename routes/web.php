@@ -12,10 +12,32 @@
 */
 
 
+// Common routes
+Route::get('/', function () {
+        return view('landing');
+});
 Auth::routes();
 Route::get('logout', 'Auth\LoginController@logout');
 
-Route::group(['domain' => '{organization}.leanfitt.host', 'namespace' => 'Web', 'middleware' => 'checkDomain'], function () {
+
+// SuperAdmin routes
+Route::group(['namespace' => 'Web', 'middleware' => 'auth:web'], function () {
+
+    Route::get('organizations', 'OrganizationController@index');
+    Route::get('organizations/create', 'OrganizationController@create');
+    Route::post('organizations/create','OrganizationController@store');
+    Route::put('organizations/{organizationId}', function ($id) {
+        dd('updated');
+    });
+    Route::delete('organizations/{organizationId}', function ($id) {
+        dd('deleted');
+    });
+
+});
+
+
+// User routes
+Route::group(['domain' => '{organization}' . config('session.domain'), 'namespace' => 'Web', 'middleware' => 'checkDomain'], function () {
 
     Route::get('/dashboard', 'DashboardController@index');
 
