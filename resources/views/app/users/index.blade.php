@@ -28,19 +28,51 @@
                     <ul class="nav nav-pills flex-column">
                         @if(count($deplist) > 0)
                             @foreach($deplist as $dlist)
-                                <li data-id="{{$dlist['id']}}" class="nav-item {{($activedep == $dlist['id']) ? 'active' : '' }}">
-                                    <a class="nav-link" href="{{url('/users?organization=').$activeorg}}&department={{$dlist['id']}}">{{$dlist['name']}}</a>
+                                <li data-id="{{$dlist->id}}" class="nav-item {{($activedep == $dlist->id) ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{url('/users?organization=').$activeorg}}&department={{$dlist->id}}">{{$dlist->name}}</a>
                                     <a class="nav-action hover-info edit-department" href="#" data-provide="tooltip" data-title="Edit" data-toggle="modal" data-target="#modal-department"><span class="ti-pencil"></span></a>
                                     <a class="nav-action hover-danger delete-department" href="#" data-provide="tooltip" data-title="Remove"><span class="ti-close"></span></a>
                                 </li>
-
+                                <form id="dep-delete-role{{ $dlist->id }}-form" action="{{ url("departments/". $dlist->id ) }}" method="post">
+                                    {{ csrf_field() }}
+                                    {{ method_field('delete') }}
+                                </form>
                             @endforeach
                         @else
                             <li class="nav-item">
                                 <span class="nav-link text-danger">No department found</span>
                             </li>
                         @endif
-                            <li><a class="btn mt-20 mb-20 btn-block btn-info new-department" href="#" data-toggle="modal" data-target="#modal-department">Add New</a></li>
+                            <li><a class="btn mt-20 mb-20 btn-round btn-outline text-success new-department" href="#" data-toggle="modal" data-target="#modal-department"><i class="fe fe-plus"></i></a></li>
+                    </ul>
+                </div>
+                <hr>
+                <div class="aside-block roles-container {{strtolower(session('role'))=='admin' ? 'mt-20' : ''}}">
+                    <div class="flexbox mb-1">
+                        <h6 class="aside-title">Roles ({{count($rolelist)}})</h6>
+                    </div>
+
+                    <ul class="nav nav-pills flex-column">
+                        @if(count($rolelist) > 0)
+                            @foreach($rolelist as $rlist)
+                                <li data-id="{{$rlist->id}}" class="nav-item {{($activedep == $rlist->id) ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{url('/users?organization=').$activeorg}}&department={{$rlist->id}}">{{$rlist->name}}</a>
+                                    <a class="nav-action hover-info edit-department" href="#" data-provide="tooltip" data-title="Edit" data-toggle="modal" data-target="#edit-role{{ $rlist->id }}-modal"><span class="ti-pencil"></span></a>
+                                    <a class="nav-action hover-danger delete-department" href="#" data-provide="tooltip" data-title="Remove" onclick="submitForm('#delete-role{{ $rlist->id }}-form')"><span class="ti-close"></span></a>
+                                </li>
+
+
+                                <form id="delete-role{{ $rlist->id }}-form" action="{{ url("roles/". $rlist->id ) }}" method="post">
+                                    {{ csrf_field() }}
+                                    {{ method_field('delete') }}
+                                </form>
+                            @endforeach
+                        @else
+                            <li class="nav-item">
+                                <span class="nav-link text-danger">No roles found</span>
+                            </li>
+                        @endif
+                        <li><a class="btn mt-20 mb-20 btn-round btn-outline text-success new-role" href="#" data-toggle="modal" data-target="#add-role-modal"><i class="fe fe-plus"></i></a></li>
                     </ul>
                 </div>
             </div>
@@ -69,7 +101,7 @@
                                     <h5 class="mt-3 mb-1">{{$user->full_name}}</h5>
                                     <span class="text-fade d-block ">{{$user->email}}</span>
                                     <span class="text-fade d-block ">{{$user->phone}}</span>
-                                    <span class="text-success d-block ">{{ $user->departments->count() ? implode(', ',$user->departments->pluck('name')->toArray()) : 'No Department' }}</span>
+                                    <span class="text-success d-block ">{{ $user->roles->count()}} Roles</span>
                                     <time>{{$user->is_invited==0 ? 'Joined' : 'Invited'}} {{\Illuminate\Support\Carbon::parse($user->created_at)->format('d F Y')}}</time>
                                 </div>
 
@@ -127,12 +159,11 @@
                                 </div>
                                 <div class="form-group">
                                     <select class="form-control" name="department_id">
+                                        <option value="">None</option>
                                         @if(count($deplist) > 0)
                                             @foreach($deplist as $dlist)
                                                 <option value="{{$dlist['id']}}">{{$dlist['name']}}</option>
                                             @endforeach
-                                        @else
-                                            <option value="">None</option>
                                         @endif
                                     </select>
                                     <label class="label-floated">Department</label>
@@ -159,16 +190,15 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <form id="departmentForm" method="post" action="{{url('department')}}" enctype="multipart/form-data">
+                        <form id="departmentForm" method="post" action="{{url('departments')}}" enctype="multipart/form-data">
                             {{csrf_field()}}
                             <div class="modal-body form-type-material">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" name="name">
+                                    <input type="text" class="form-control department-name" name="name">
                                     <label>Department Name</label>
                                 </div>
                                 <input type="hidden" name="organization_id" value="{{isset($activeorg) ? $activeorg : null}}">
                                 <input type="hidden" id="department-id" name="department_id">
-                                <input type="hidden"  name="created_by" value="{{session()->get('id')}}">
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Cancel</button>
@@ -229,27 +259,115 @@
                 </div>
             </div>
 
-            {{--Action Form--}}
-            <div class="hidden" style="display: none">
-                <form id="empActionForm" method="post" action="{{url('users/action')}}">
-                    {{csrf_field()}}
-                    <input type="hidden" id="emp-action-type" name="type">
-                    <input type="hidden" id="emp-id" name="user_id">
-                    <input type="submit" id="submitEmpAction" value="true">
-                </form>
-                <form id="depActionForm"  method="post" action="{{url('department/action')}}">
-                    {{csrf_field()}}
-                    <input type="hidden" id="dep-action-type" name="type">
-                    <input type="hidden" id="dep-id" name="department_id">
-                    <input type="submit" id="submitDepAction" value="true">
-                </form>
-                <form id="orgActionForm" method="post" action="{{url('organizations/action')}}">
-                    {{csrf_field()}}
-                    <input type="hidden" id="org-action-type" name="type">
-                    <input type="hidden" id="org-id" name="organization_id">
-                    <input type="submit" id="submitOrgAction" value="true">
-                </form>
+            {{--New role modal--}}
+            <div id="add-role-modal" class="modal modal-center fade" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form action="{{ url('roles') }}" method="post">
+                            {{ csrf_field() }}
+                            {{ method_field('post') }}
+
+                            <div class="modal-header bg-primary">
+                                <h5 class="modal-title text-white"> Create Role</h5>
+                                <button type="button" class="close text-white" data-dismiss="modal">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label>Name</label>
+                                    <input class="form-control" type="text" name="name" value="{{ old('name') }}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Description</label>
+                                    <textarea name="description" rows="2" class="form-control">{{ old('description') }}</textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Permissions</label>
+                                </div>
+
+                                <div class="h-200px" style="overflow-x: hidden; overflow-y: scroll">
+                                    @foreach (config('permission.models') as $model)
+                                        <div class="form-group">
+                                            <p>{{ ucfirst($model) }}</p>
+                                            <div class="row">
+                                                <div class="col">
+                                                    @foreach (config('permission.actions') as $action)
+                                                        <label class="custom-control custom-control-primary custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input" name="permissions[]" value="{{ $action . '.' . $model }}">
+                                                            <span class="custom-control-indicator"></span>
+                                                            <span class="custom-control-description">{{ ucfirst($action) }}</span>
+                                                        </label>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                {{--<button type="button" class="btn btn-bold btn-secondary" data-dismiss="modal">Cancel</button>--}}
+                                <button type="submit" class="btn btn-bold btn-block btn-primary" >Create</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
+
+            {{--Edit Role modal--}}
+            @if(count($rolelist))
+                @foreach($rolelist as $rlist)
+                    <div id="edit-role{{ $rlist->id }}-modal" class="modal modal-center fade" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form action="{{ url('roles/' . $rlist->id) }}" method="post">
+                                    {{ csrf_field() }}
+                                    {{ method_field('put') }}
+                                    <div class="modal-header bg-primary">
+                                        <h5 class="modal-title text-white"> Edit Role</h5>
+                                        <button type="button" class="close text-white" data-dismiss="modal">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label>Name</label>
+                                            <input class="form-control" type="text" name="name" value="{{ $rlist->name }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Description</label>
+                                            <textarea name="description" rows="2" class="form-control">{{ $rlist->description }}</textarea>
+                                        </div>
+                                        <div class="h-200px" style="overflow-x: hidden; overflow-y: scroll">
+                                            @foreach (config('permission.models') as $model)
+                                                <div class="form-group">
+                                                    <p>{{ ucfirst($model) }}</p>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            @foreach (config('permission.actions') as $action)
+                                                                <label class="custom-control custom-control-primary custom-checkbox">
+                                                                    <input type="checkbox" class="custom-control-input" name="permissions[]" value="{{ $action . '.' . $model }}" @if($rlist->hasPermission($action . '.' . $model))  {{ 'checked' }} @endif>
+                                                                    <span class="custom-control-indicator"></span>
+                                                                    <span class="custom-control-description">{{ ucfirst($action) }}</span>
+                                                                </label>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        {{--<button type="button" class="btn btn-bold btn-secondary" data-dismiss="modal">Cancel</button>--}}
+                                        <button type="submit" class="btn btn-bold btn-block btn-primary" >Edit</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            @endif
 
             <script data-provide="sweetalert">
                 window.onload=function(){
@@ -257,14 +375,14 @@
                          var id=$(this).parent().data('id');
                          var name=$(this).parent().find('.nav-link').text();
                          $('#modal-department').find('.modal-title').html('Edit Department');
-                         $('#modal-department').find('input[name="name"]').val(name).trigger('click');
+                         $('#modal-department').find('input[name="name"]').val(name)
+                         $('.department-name').trigger('change');
                          $('#modal-department').find('#department-id').val(id);
                     })
                     $('.deplist-container').on('click','.new-department',function(){
                         $('#departmentForm')[0].reset();
                     })
                     $('.deplist-container').on('click','.delete-department',function(){
-
                         var $this=$(this);
                         swal({
                             title: 'Are you sure?',
@@ -276,10 +394,7 @@
                             confirmButtonText: 'Yes, delete it!'
                         }).then(function() {
                             var id=$this.parent().data('id');
-                            var $form=$('#depActionForm');
-                            $form.find('#dep-id').val(id);
-                            $form.find('#dep-action-type').val('delete');
-                            $('#submitDepAction').trigger('click');
+                            submitForm('#dep-delete-role'+id+'-form')
                         })
                     })
                     $('.user-container').on('click','.suspend-user',function(e){
@@ -296,10 +411,7 @@
                             confirmButtonText: 'Yes'
                         }).then(function() {
                             var id=$this.parent().parent().data('id');
-                            var $form=$('#empActionForm');
-                            $form.find('#emp-id').val(id);
-                            $form.find('#emp-action-type').val('archive');
-                            $('#submitEmpAction').trigger('click');
+                            window.location.href="{{url('users')}}/"+id+"/suspend";
                         })
                     })
                     $('.user-container').on('click','.restore-user',function(e){
@@ -316,29 +428,7 @@
                             confirmButtonText: 'Yes'
                         }).then(function() {
                             var id=$this.parent().parent().data('id');
-                            var $form=$('#empActionForm');
-                            $form.find('#emp-id').val(id);
-                            $form.find('#emp-action-type').val('restore');
-                            $('#submitEmpAction').trigger('click');
-                        })
-                    })
-                    $('.main-container').on('click','.delete-organization',function(){
-
-                        var $this=$(this);
-                        swal({
-                            title: 'Are you sure?',
-                            text: "You won't be able to revert this!",
-                            type: 'warning',
-                            showCancelButton: true,
-                            confirmButtonColor: '#3085d6',
-                            cancelButtonColor: '#d33',
-                            confirmButtonText: 'Yes, delete it!'
-                        }).then(function() {
-                            var id=$this.data('id');
-                            var $form=$('#orgActionForm');
-                            $form.find('#org-id').val(id);
-                            $form.find('#org-action-type').val('delete');
-                            $('#submitOrgAction').trigger('click');
+                            window.location.href="{{url('users')}}/"+id+"/restore";
                         })
                     })
 

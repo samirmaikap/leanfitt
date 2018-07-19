@@ -39,10 +39,6 @@ Route::group(['namespace' => 'Web', 'middleware' => 'auth:web'], function () {
 // User routes
 Route::group(['domain' => '{organization}' . config('session.domain'), 'namespace' => 'Web', 'middleware' => 'checkDomain'], function () {
 
-    Route::get('test/{testId}/demo/{demoId}', function ($testId, $demoId, $org) {
-        dd($testId, $demoId, $org);
-    });
-
     Route::get('/dashboard', 'DashboardController@index');
 
     Route::get('users', 'UserController@index');
@@ -50,9 +46,12 @@ Route::group(['domain' => '{organization}' . config('session.domain'), 'namespac
     Route::post('users/invitation', 'UserController@invitation');
     Route::get('users/{id}', 'UserController@show');
     Route::get('users/{id}/profile', 'UserController@profile');
+    Route::get('users/{user_id}/suspend', 'UserController@suspend');
+    Route::get('users/{user_id}/restore', 'UserController@restore');
     Route::get('users/{id}/invitation/resend', 'UserController@reInvitation');
     Route::put('users/{id}', 'UserController@update');
     Route::delete('users/{id}', 'UserController@delete');
+
 
     Route::get('departments', 'DepartmentController@index');
     Route::post('departments', 'DepartmentController@store');

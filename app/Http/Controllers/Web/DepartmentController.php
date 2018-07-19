@@ -31,8 +31,15 @@ class DepartmentController extends Controller
     {
         try
         {
-            $data['organizations'] = $this->departmentService->createDepartment($request->all());
-            return redirect()->back()->with(['success' => 'User has been added successfully']);
+            if(!empty($request->get('department_id'))){
+                $this->departmentService->updateDepartment($request->all(), $request->get('department_id'));
+                return redirect()->back()->with(['success' => 'User has been updated successfully']);
+            }
+            else{
+                $this->departmentService->createDepartment($request->all());
+                return redirect()->back()->with(['success' => 'User has been added successfully']);
+            }
+
         }
         catch(\Exception $e)
         {

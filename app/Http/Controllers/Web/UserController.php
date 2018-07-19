@@ -60,14 +60,13 @@ class UserController extends Controller
         }
 
 
-
         $data['users'] = $this->userService->all($organizationId, $departmentId, $roleId);
-        $data['departments'] = $this->departmentService->allDepartments();
-        $data['roles'] = $this->roleService->all($organizationId);
-
+//        $data['departments'] = $this->departmentService->allDepartments();
+        $data['rolelist'] = $this->roleService->all($organizationId);
         $data['page']='Quiz';
         $data['activeorg']=$request->get('organization');
         $data['activedep']=$request->get('department');
+        $data['activerole']=$request->get('role');
 
         //$data['users']=$this->userService->all($request->all()); //Fetch from the earlier service method
 
@@ -108,11 +107,12 @@ class UserController extends Controller
 
     public function profile(Request $request,$user_id)
     {
+        $organizationId=null;
         $data['Page']='profile';
         $data['user']=$this->userService->profile($user_id);
         $data['departments']=$this->departmentService->list($request->all());
-//        $data['roles']=$this->roleService->all();
-        return view('app.users.view', $data);
+        $data['roles']=$this->roleService->all($organizationId);
+        return view('app.users.profile', $data);
     }
 
     public function reInvitation($user_id){
@@ -151,6 +151,34 @@ class UserController extends Controller
         {
             dd($e->getMessage(), $e->getTraceAsString());
             return redirect()->back()->withInput($request->all())->withErrors([$e->getMessage()]);
+        }
+    }
+
+    public function suspend($user_id)
+    {
+        try
+        {
+            $this->userService->suspend($user_id);
+            return redirect()->back()->with(['success' => 'User has been suspended']);
+        }
+        catch(\Exception $e)
+        {
+            dd($e->getMessage(), $e->getTraceAsString());
+            return redirect()->back()->withErrors([$e->getMessage()]);
+        }
+    }
+
+    public function restore($user_id)
+    {
+        try
+        {
+            $this->userService->restore($user_id);
+            return redirect()->back()->with(['success' => 'User has been restored']);
+        }
+        catch(\Exception $e)
+        {
+            dd($e->getMessage(), $e->getTraceAsString());
+            return redirect()->back()->withErrors([$e->getMessage()]);
         }
     }
 }

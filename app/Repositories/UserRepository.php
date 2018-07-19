@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryInterface;
+use Illuminate\Support\Facades\DB;
 
 class UserRepository extends BaseRepository //implements UserRepositoryInterface
 {
@@ -15,11 +16,16 @@ class UserRepository extends BaseRepository //implements UserRepositoryInterface
 
     public function profile($user,$organization){
         $query=$this->model()
-//            ->with(['roles'=>function($query) use($organization){
-//            if(!empty($organization)){
-//                $query->where('organization_id',$organization)->get();
-//            }
-//        }])
+            ->with(['roles' => function($query) use($organization) {
+                if(!empty($organization))
+                {
+                    $query = $query->join('organization_role', function ($join) use($organization){
+                        $join->on('organization_role.role_id', '=', 'roles.id')
+                            ->where('organization_role.organization_id', '=', $organization);
+                    });
+                }
+                return $query;
+            }])
             ->with(['departments'=>function($query) use($organization){
             if(!empty($organization)){
                 $query->where('organization_id',$organization)->get();

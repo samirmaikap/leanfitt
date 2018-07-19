@@ -1,69 +1,248 @@
 @extends('layouts.app')
 @section('content')
-  <main>
-
-    <!-- Project header -->
-    <header class="header mb-0 bg-ui-general">
-
-
-      <div class="header-action center-h">
-        <nav class="nav">
-          <a class="nav-link active" href="">Profile</a>
-          <a class="nav-link" href="">Awards</a>
-          <a class="nav-link" href="">Performance</a>
-        </nav>
+  <main class="main-container">
+    <header class="header no-border">
+      <div class="header-bar">
+        <h4>Profile</h4>
+        {{--<button class="btn btn-round btn-success">Profile</button>--}}
       </div>
     </header>
-    <!--/.header -->
-
-
-
-    <div class="main-content" >
-
-      <div class="col-12">
-        <div class="col-md-3"></div>
-        <div class="col-md-6">
-          <form class="card">
-            <h4 class="card-title fw-400">Account Settings</h4>
-
-
-
-            <div class="card-body">
-              <button class="btn btn-block btn-round btn-bold btn-primary" type="submit">Save</button>
-            </div>
-
-          </form>
-        </div><!-- End of col-md-6 -->
-        <div class="col-md-3"></div>
-      </div>
-
-
-    </div><!--/.main-content -->
-
-
-    <!-- Footer -->
-    <footer class="site-footer">
+    <div class="main-content">
       <div class="row">
-        <div class="col-md-6">
-          <p class="text-center text-md-left">Copyright © 2017 <a href="http://thetheme.io/theadmin">TheAdmin</a>. All rights reserved.</p>
-        </div>
+        <div class="col-lg-4 col-sm-12">
+          <div class="card">
+            <form method="post" action="{{url('users')}}/{{$user->id}}" enctype="multipart/form-data">
+              {{csrf_field()}}
+              {{method_field('put')}}
+              <div class="card-header pt-20 pb-20">
+                <div class="flexbox gap-items-4">
+                  <img class="avatar avatar-xl" id="user-avatar" src="{{isset($user->avatar) ? $user->avatar : ''}}" alt="...">
+                  <div class="flex-grow">
+                    <h5>{{isset($user->full_name) ? $user->full_name : ''}}</h5>
+                    <div class="d-flex flex-column flex-sm-row gap-items-2 gap-y mt-16">
+                      <div class="file-group file-group-inline">
+                        <button class="btn btn-sm btn-w-lg btn-outline btn-round btn-secondary file-browser" type="button">Change Picture</button>
+                        <input type="file" name="image" id="imgInp" onchange="loadFile(event)">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label class="text-dark">First name</label>
+                    <input class="form-control" name="first_name" value="{{isset($user->first_name) ? $user->first_name : ''}}" type="text">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label class="text-dark">Last name</label>
+                    <input class="form-control" name="last_name" value="{{isset($user->last_name) ? $user->last_name : ''}}" type="text">
+                  </div>
+                </div>
 
-        <div class="col-md-6">
-          <ul class="nav nav-primary nav-dotted nav-dot-separated justify-content-center justify-content-md-end">
-            <li class="nav-item">
-              <a class="nav-link" href="../help/articles.html">Documentation</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="../help/faq.html">FAQ</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="https://themeforest.net/item/theadmin-responsive-bootstrap-4-admin-dashboard-webapp-template/20475359?license=regular&amp;open_purchase_for_item_id=20475359&amp;purchasable=source&amp;ref=thethemeio">Purchase Now</a>
-            </li>
-          </ul>
+                <div class="form-group">
+                  <label class="text-dark">Email</label>
+                  <input class="form-control" type="text" value="{{isset($user->email) ? $user->email : ''}}" disabled="disabled">
+                </div>
+                <div class="form-group">
+                  <label class="text-dark">Phone</label>
+                  <input class="form-control" name="phone" value="{{isset($user->phone) ? $user->phone : ''}}" type="text">
+                </div>
+                <div class="form-group">
+                  <label class="d-block">Departments</label>
+                  <select name="departments[]" id="" data-width="100%" data-provide="selectpicker" multiple >
+                    <option value="">None</option>
+                    @if($departments->count())
+                      @foreach($departments as $department)
+                        <option value="{{ $department->id }}" {{ in_array($department->name, $user->departments->pluck('name')->toArray()) ? 'selected' : '' }} >
+                          {{ $department->name }}
+                        </option>
+                      @endforeach
+                    @endif
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="d-block">Roles</label>
+                  <select name="roles[]" id="" data-width="100%" data-provide="selectpicker" multiple >
+                    <option value="">None</option>
+                    @if(count($roles))
+                      @foreach($roles as $role)
+                        <option value="{{ $role->id }}" {{ in_array($role->name, $user->roles->pluck('name')->toArray()) ? 'selected' : '' }} >
+                          {{ $role->name }}
+                        </option>
+                      @endforeach
+                    @endif
+                  </select>
+                </div>
+
+              </div>
+              <div class="card-footer pb-20 pt-20">
+                <button class="btn btn-block btn-round btn-bold btn-primary" type="submit">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="col-lg-8 col-sm-12">
+          <div class="card card-slided-down">
+            <header class="card-header border-0">
+              <h4 class="card-title"><strong>Statistics</strong></h4>
+              <ul class="card-controls">
+                <li><a class="card-btn-slide" href="#"></a></li>
+              </ul>
+            </header>
+
+            <div class="card-content">
+
+              <div class="card-body">
+
+                <table class="table table-hover">
+                  <thead>
+                  <tr>
+                    <th style="width: 60%";></th>
+                    <th class="content-centered">User</th>
+                    <th>Vs.</th>
+                    <th class="content-centered">Company Avg.</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <th scope="row"># of Action Items Completed:</th>
+                    <td class="content-centered">20</td>
+                    <td></td>
+                    <td class="content-centered">15</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"># of Action Items Incomplete After Due Date:</th>
+                    <td class="content-centered">3</td>
+                    <td></td>
+                    <td class="content-centered">8</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"># of Action Items Outstanding:</th>
+                    <td class="content-centered">8</td>
+                    <td></td>
+                    <td class="content-centered">10</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Team Member of_Projects:</th>
+                    <td class="content-centered">4</td>
+                    <td></td>
+                    <td class="content-centered">5</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="card card-slided-up">
+            <header class="card-header">
+              <h4 class="card-title"><strong>Evaluation</strong></h4>
+              <ul class="card-controls">
+                <li><a class="card-btn-slide" href="#"></a></li>
+              </ul>
+            </header>
+
+            <div class="card-content">
+
+              <div class="card-body">
+
+                <div class="row">
+                  <div class="col-md-4">
+                    <br/>
+                    <h5>Enthusiasm</h5>
+                  </div>
+                  <div class="col-md-8">
+                    <div id="enthu"></div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-4">
+                    <br/>
+                    <h5>Communication</h5>
+                  </div>
+                  <div class="col-md-8">
+                    <div id="comm"></div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-4">
+                    <br/>
+                    <h5>Participation</h5>
+                  </div>
+                  <div class="col-md-8">
+                    <div id="part"></div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-4">
+                    <br/>
+                    <h5>Quality of Work</h5>
+                  </div>
+                  <div class="col-md-8">
+                    <div id="quality"></div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-4">
+                    <br/>
+                    <h5>Dependebility</h5>
+                  </div>
+                  <div class="col-md-8">
+                    <div id="depend"></div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="card card-slided-up">
+            <header class="card-header">
+              <h4 class="card-title"><strong>Comments: </strong></h4>
+              <ul class="card-controls">
+                <li><a class="card-btn-slide" href="#"></a></li>
+              </ul>
+            </header>
+
+            <div class="card-content">
+
+              <div class="card-body">
+
+                <div class="col-md-12 form-type-material">
+                  <div class="form-group">
+                    <textarea class="form-control" rows="6"></textarea>
+                    <label>Add a comment</label>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </footer>
-    <!-- END Footer -->
-
+    </div>
+    <script>
+        window.onload=function(){
+          @if(session()->has('success') || session('success'))
+          setTimeout(function () {
+              toastr.success('{{ session('success') }}');
+          }, 500);
+          @endif
+          @if(isset($errors) && count($errors->all()) > 0 && $timeout = 700)
+          @foreach ($errors->all() as $key => $error)
+          setTimeout(function () {
+              toastr.error("{{ $error }}");
+          }, {{ $timeout * $key }});
+          @endforeach
+          @endif
+        }
+        var loadFile = function(event) {
+            var output = document.getElementById('user-avatar');
+            output.src = URL.createObjectURL(event.target.files[0]);
+        }
+    </script>
   </main>
 @endsection
