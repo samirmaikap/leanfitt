@@ -4,34 +4,33 @@ namespace App\Services;
 
 use App\Repositories\OrganizationRepository;
 use App\Repositories\RoleRepository;
-use function dd;
-use function session;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
+// use Spatie\Permission\Models\Permission;
+// use Spatie\Permission\Models\Role;
+use App\Models\Permission;
 
 
 class RoleService
 {
 
-    private $models = [
-        'user',
-        'department',
-        'role',
-        'project',
-        'action-item',
-        'kpi',
-        'report',
-        'attachment',
-        'comment'
-    ];
+    // private $models = [
+    //     'user',
+    //     'department',
+    //     'role',
+    //     'project',
+    //     'action-item',
+    //     'kpi',
+    //     'report',
+    //     'attachment',
+    //     'comment'
+    // ];
 
-    private $permissions = [
-        'index',
-        'create',
-        'read',
-        'update',
-        'delete'
-    ];
+    // private $permissions = [
+    //     'index',
+    //     'create',
+    //     'read',
+    //     'update',
+    //     'delete'
+    // ];
 
     protected $roleRepository;
     protected $organizationRepository;
@@ -42,28 +41,42 @@ class RoleService
         $this->organizationRepository = new OrganizationRepository();
     }
 
-    public function all()
+    public function all($organizationId = null)
     {
-        $organization = session('organization');
-        return $organization->roles()
-            ->withCount(['users'])
-            ->with(['permissions' => function($query) {
-                return $query->select(['id', 'name']);
-            }])
-            ->get();
+
+        if($organizationId)
+        {
+            $organization = $this->organizationRepository->find($organizationId);
+            return $organization->roles()
+                ->withCount(['users'])
+                ->with(['permissions' => function($query) {
+                    return $query->select(['id', 'display_name']);
+                }])
+                ->get();
+        }
+
+        return $this->roleRepository->all();
     }
 
-    public function create($data, $organizationId)
+    public function create($data, $organization = null)
     {
 
         $permissions = isset($data['permissions']) ? $data['permissions'] : $this->getDefaultPermissions();
 
-        $role = $this->roleRepository->create(['name' => $data['name']]);
+        if(!isset($data['display_name']))
+        {
+            $data['display_name'] = ucfirst($data['name']);
+        }
+
+        $role = $this->roleRepository->create($data);
         $role->syncPermissions($permissions);
 
 
-        $organization = $this->organizationRepository->with(['roles'])->find($organizationId);
-        $organization->roles()->attach($role);
+        if($organization)
+        {
+            //$organization = $this->organizationRepository->with(['roles'])->find($organizationId);
+            $organization->roles()->attach($role);
+        }
 
         return $role;
     }
@@ -72,7 +85,7 @@ class RoleService
     {
         $role = $this->roleRepository->find($id);
         $role->syncPermissions($data['permissions']);
-        $role->fill(['name' => $data['name']])
+        $role->fill($data)
             ->save();
         return $role;
     }
@@ -85,26 +98,28 @@ class RoleService
 
     public function getDefaultPermissions()
     {
-        $permissions = [];
-        foreach ($this->models as $model)
-        {
-            foreach ($this->permissions as $permission)
-            {
-                $permissions[] = $permission . '.' . $model;
-            }
-        }
+        // $permissions = [];
+        // foreach ($this->models as $model)
+        // {
+        //     foreach ($this->permissions as $permission)
+        //     {
+        //         $permissions[] = $permission . '.' . $model;
+        //     }
+        // }
+
+        return Permission::all();
     }
 
-    public function createDefaultPermissions()
-    {
-        $permissions = [];
-        foreach ($this->models as $model)
-        {
-            foreach ($this->permissions as $permission)
-            {
-                $permissions[] = Permission::create(['name' =>  $permission . '.' . $model]);
-            }
-        }
-    }
+    // public function createDefaultPermissions()
+    // {
+    //     $permissions = [];
+    //     foreach ($this->models as $model)
+    //     {
+    //         foreach ($this->permissions as $permission)
+    //         {
+    //             $permissions[] = Permission::create(['name' =>  $permission . '.' . $model]);
+    //         }
+    //     }
+    // }
 
 }

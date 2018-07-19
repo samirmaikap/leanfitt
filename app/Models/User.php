@@ -5,14 +5,16 @@ namespace App\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\Permission\Traits\HasRoles;
+// use Spatie\Permission\Traits\HasRoles;
 use App\Traits\UserAttributes;
+use Laratrust\Traits\LaratrustUserTrait;
 
 class User extends Authenticatable
 {
+    use LaratrustUserTrait;
     use Notifiable;
     use SoftDeletes;
-    use HasRoles;
+    // use HasRoles;
     use UserAttributes;
     /**
      * The attributes that are mass assignable.

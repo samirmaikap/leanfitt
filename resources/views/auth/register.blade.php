@@ -3,19 +3,18 @@
 
     <div class="row no-gutters min-h-fullscreen bg-white">
 
-        <div class="col-md-6 col-lg-7 col-xl-8 d-none d-md-block bg-img"
-             style="background-image: url( {{ url('assets/img/gallery/11.jpg') }} )" data-overlay="5">
+        <div class="col-md-6 col-lg-7 col-xl-8 d-none d-md-block bg-img" style="background-image: url(https://image.shutterstock.com/z/stock-photo-warehouse-managers-and-worker-working-together-in-warehouse-office-508535986.jpg)" data-overlay="5">
 
             <div class="row h-100 pl-50">
                 <div class="col-md-10 col-lg-8 align-self-end">
-                    <img src="../assets/img/logo-light-lg.png" alt="...">
+                    {{--<img src="https://preview.ibb.co/nnWvuy/logopng_2.png" alt="...">--}}
                     <br><br><br>
-                    <h4 class="text-white">The admin is the best admin framework available online.</h4>
-                    <p class="text-white">Credibly transition sticky users after backward-compatible web services.
-                        Compellingly strategize team building interfaces.</p>
+                    <h4 class="text-white">LeanFITT™ is the best Lean Management available online.</h4>
+                    <p class="text-white">Some cool description about LeanFITT™.</p>
                     <br><br>
                 </div>
             </div>
+
         </div>
 
         <div class="col-md-6 col-lg-5 col-xl-4 align-self-center">
@@ -45,7 +44,7 @@
                         </div>
 
                         <form id="register-form" action="" method="post">
-                            @csrf
+                            {{ csrf_field() }}
                             {{ method_field('post') }}
 
                             <p class="text-center text-gray">

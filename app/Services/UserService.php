@@ -44,13 +44,15 @@ class UserService
         $this->orgUserRepo=$organizationUserRepository;
     }
 
-    public function all($data)
+    public function all($organizationId = null, $departmentId = null, $roleId = null)
     {
-        $active_organization = session()->get('organization');
-        $organization=isset($data['organization']) ? $data['organization'] : $active_organization->id;
+//        $active_organization = session()->get('organization');
+//        $organization=isset($data['organization']) ? $data['organization'] : $active_organization->id;
 
 //        return $this->userRepo->getUsersByOrganization($organization['id'], ['departments']);
-        $query=$this->userRepo->getUsers($organization,arrayValue($data,'department'));
+//        $query=$this->userRepo->getUsers($organization,arrayValue($data,'department'));
+
+        $query=$this->userRepo->getUsers($organizationId, $departmentId, $roleId);
         if(!$query){
             throw new \Exception(config('messages.common_error'));
         }

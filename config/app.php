@@ -163,7 +163,7 @@ return [
         /*
          *  3rd Party Providers
         */
-        Spatie\Permission\PermissionServiceProvider::class,
+        // Spatie\Permission\PermissionServiceProvider::class,
 
     ],
 

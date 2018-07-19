@@ -1,0 +1,506 @@
+
+.meet-image-background {
+/*    background-image: url('assets/images/illustrations/mockups/landing3/hrbg.png');
+    background-repeat: no-repeat;*/
+    background: #ffffff url('../images/illustrations/mockups/landing3/hrbg.png') no-repeat center top; 
+}
+
+/* Accordians */
+
+.multi-toggle-wrapper .mt-item{
+    position:relative;
+    margin-bottom:1px;
+    width:100%;
+    color:#444F60;
+    border:1px solid #ededed;
+    overflow:hidden
+}
+.multi-toggle-wrapper .mt-item:hover .mt-item-label{
+    color:#4FC1EA
+}
+.multi-toggle-wrapper .mt-item:hover .mt-item-label span{
+    color:#4FC1EA
+}
+.multi-toggle-wrapper .mt-item .mt-item-input{
+    position:absolute;
+    opacity:0;
+    z-index:-1
+}
+.multi-toggle-wrapper .mt-item .mt-item-label{
+    position:relative;
+    display:block;
+    padding:0 0 0 3em;
+    background:#fff;
+    font-weight:bold;
+    line-height:3;
+    cursor:pointer;
+    color:#cecece;
+    text-transform:uppercase;
+    font-size:1em;
+    margin-bottom:0;
+    border-radius:3px 3px 0 0;
+    border-bottom:1px solid #ededed
+}
+.multi-toggle-wrapper .mt-item .mt-item-label span{
+    color:#444F60;
+    font-weight:600;
+    text-transform:none;
+    -webkit-transition:all .45s;
+    -o-transition:all .45s;
+    transition:all .45s
+}
+.multi-toggle-wrapper .mt-item .mt-item-content{
+    max-height:0;
+    overflow:hidden;
+    -webkit-transition:max-height .45s;
+    -o-transition:max-height .45s;
+    transition:max-height .45s;
+    background-color:#fff;
+    border-radius:3px
+}
+.multi-toggle-wrapper .mt-item .mt-item-content p{
+    margin:1em
+}
+.multi-toggle-wrapper .mt-item .mt-item-content .mt-item{
+    padding:10px;
+    background:#fff;
+    color:#444F60;
+    margin:2px 0px;
+    border-radius:3px
+}
+.multi-toggle-wrapper .mt-item .mt-item-content .mt-item label{
+    border-radius:0
+}
+.multi-toggle-wrapper .mt-item .mt-item-inner{
+    padding:1px 0 0
+}
+.multi-toggle-wrapper .mt-item .mt-item-inner label{
+    font-weight:400;
+    background-color:#cecece;
+    color:#fff
+}
+.multi-toggle-wrapper .mt-item .mt-item-inner .mt-item-content ul{
+    margin:0;
+    padding:0
+}
+.multi-toggle-wrapper .mt-item .mt-item-inner .mt-item-content ul li{
+    list-style-type:none
+}
+.multi-toggle-wrapper .mt-item .mt-item-inner .mt-item-content ul li .checkBox label{
+    background-color:transparent;
+    color:#444F60;
+    text-transform:capitalize;
+    padding-left:0;
+    margin:0
+}
+.multi-toggle-wrapper .mt-item .mt-item-inner .mt-item-content ul li .checkBox label:after{
+    content:""
+}
+.multi-toggle-wrapper .mt-item .mt-item-input:checked ~ .mt-item-content{
+    max-height:50em
+}
+.multi-toggle-wrapper .mt-item .mt-item-label::after{
+    position:absolute;
+    left:0;
+    top:0;
+    display:block;
+    width:3em;
+    height:3em;
+    line-height:3;
+    text-align:center;
+    -webkit-transition:all .45s;
+    -o-transition:all .45s;
+    transition:all .45s
+}
+.multi-toggle-wrapper .mt-item .mt-item-input[type=checkbox]+.mt-item-label::after{
+    font-family:"FontAwesome";
+    content:"\f077";
+    font-weight:300
+}
+.multi-toggle-wrapper .mt-item .mt-item-input[type=checkbox]:checked+.mt-item-label::after{
+    transform:rotate(180deg)
+}
+.multi-toggle-wrapper .checkbox-custom{
+    opacity:0;
+    position:absolute
+}
+.multi-toggle-wrapper .checkbox-custom,.multi-toggle-wrapper .checkbox-custom-label{
+    display:inline-block;
+    vertical-align:middle;
+    margin:5px;
+    cursor:pointer
+}
+.multi-toggle-wrapper .checkbox-custom-label{
+    position:relative
+}
+.multi-toggle-wrapper .checkbox-custom+.checkbox-custom-label:before{
+    content:'';
+    background:transparent;
+    border:2px solid #ddd;
+    display:inline-block;
+    vertical-align:middle;
+    width:10px;
+    height:10px;
+    padding:2px;
+    margin-right:10px;
+    text-align:center
+}
+.multi-toggle-wrapper .checkbox-custom:checked+.checkbox-custom-label:before{
+    content:"\f00c";
+    font-family:'FontAwesome';
+    color:#cecece;
+    line-height:10px;
+    font-weight:300
+}
+
+/*Modals */
+
+/*! _dialogs.scss | Bulkit | CSS Ninja */
+.modal{
+    transition:all 0.5s;
+    transform:scale(0)
+}
+.modal .modal-content{
+    transition:all 0.4s;
+    transform:scale(0);
+    opacity:0;
+    z-index:99 !important
+}
+.modal .modal-close{
+    transition:all 0.4s;
+    z-index:100 !important
+}
+.modal .modal-close:hover{
+    background-color: #F1664E;
+    opacity: 0.9;
+    border: 1px solid #fff;
+    transform:rotate(135deg)
+}
+.modal a{
+    border-radius:6px
+}
+.modal.is-active{
+    transform:scale(1)
+}
+.modal.is-active .modal-background{
+    background:-webkit-linear-gradient(45deg, #6a85b6 0%, #bac8e0 100%);
+    background:linear-gradient(45deg, #6a85b6 0%, #bac8e0 100%);
+    background-color:#4FC1EA;
+    width:1000px;
+    height:1000px;
+    border-radius:10000px;
+    transition:all 0.5s;
+    transform:scale(0);
+    margin-left:auto;
+    margin-right:auto;
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+    z-index:98 !important;
+    overflow:hidden !important
+}
+.modal.is-active .modal-background.scaleInCircle{
+    transform:scale(7)
+}
+.modal.is-active .modal-content.scaleIn{
+    transform:scale(1);
+    opacity:1
+}
+.modal.is-active .modal-close{
+    z-index:100 !important
+}
+.modal.is-active.image-modal .modal-background{
+    background:-webkit-linear-gradient(45deg, #444F60, #444);
+    background:linear-gradient(45deg, #444F60, #444);
+    background-color:#444F60
+}
+.modal.is-active.image-modal img{
+    border-radius:6px
+}
+.modal.is-active.image-modal .gallery-item figure{
+    background:none
+}
+.modal.is-active .modal-card .modal-card-head,.modal.is-active .modal-card .modal-card-foot{
+    padding:15px
+}
+.modal.is-active .modal-card .modal-card-head{
+    background-color:#fff
+}
+.modal.is-active .modal-card .modal-card-head p{
+    color:#444F60
+}
+.modal.is-active .modal-card .modal-card-head .delete{
+    background:transparent !important;
+    transition:all 0.3s
+}
+.modal.is-active .modal-card .modal-card-head .delete:before{
+    background:#7F00FF
+}
+.modal.is-active .modal-card .modal-card-head .delete:after{
+    background:#7F00FF
+}
+.modal.is-active .modal-card .modal-card-head .delete:hover{
+    transform:rotate(135deg)
+}
+.modal.is-active .modal-card .modal-card-body::-webkit-scrollbar{
+    width:10px
+}
+.modal.is-active .modal-card .modal-card-body::-webkit-scrollbar-thumb{
+    border-radius:5px;
+    background:rgba(0,0,0,0.2)
+}
+.modal.is-active .modal-card .modal-card-foot{
+    background-color:#fff;
+    justify-content:flex-end;
+    border-top:none
+}
+.modal.is-active.modal-sm .modal-card-body{
+    max-height:400px
+}
+.modal.is-active.modal-hero .modal-background{
+    background:linear-gradient(to right, #7F00FF, #7F00FF);
+    background:linear-gradient(to top, #7F00FF, #7F00FF);
+    background-color:#7F00FF
+}
+.modal.is-active.modal-success .modal-background{
+    background:#00b289
+}
+.modal.is-active.modal-error .modal-background{
+    background:#FF7273
+}
+.modal.is-active.modal-warning .modal-background{
+    background:#eda514
+}
+.modal.is-active.modal-info .modal-background{
+    background:#039BE5
+}
+.modal.is-active .modal-svg{
+    max-width:110px;
+    margin:0 auto !important
+}
+@media screen and (min-width: 769px){
+    .modal.modal-lg .modal-card,.modal.modal-lg .modal-content{
+        width:800px !important
+    }
+    .modal.modal-sm .modal-card,.modal.modal-sm .modal-content{
+        width:400px !important
+    }
+}
+
+/* portfolio items */
+.portfolio .portfolio-item{
+    position:relative;
+    overflow:hidden;
+    border-radius:10px;
+    max-height:800px;
+    height:auto;
+    margin:20px 10px
+}
+.portfolio .portfolio-item:hover .circle-overlay{
+    transform:scale(35)
+}
+.portfolio .portfolio-item:hover .project-title{
+    opacity:1;
+    transform:translateY(0);
+    transition-delay:0 !important
+}
+.portfolio .portfolio-item:hover .project-link{
+    color:#fff;
+    opacity:1;
+    transform:translateY(0);
+    transition-delay:0 !important
+}
+.portfolio .portfolio-item img{
+    border-radius:10px;
+    max-height:800px;
+    display:block
+}
+.portfolio .portfolio-item .circle-overlay{
+    position:absolute;
+    top:-60px;
+    left:-60px;
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    background:#00D1B2;
+    transform:scale(1);
+    transition:all 0.5s;
+    z-index:1
+}
+.portfolio .portfolio-item .project-info{
+    position:absolute;
+    margin:0 auto;
+    top:40%;
+    left:0;
+    right:0;
+    z-index:2;
+    color:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:center
+}
+.portfolio .portfolio-item .project-title{
+    font-family:'Nexa Bold', sans-serif;
+    font-size:1.6rem;
+    font-weight:600;
+    padding-bottom:0;
+    opacity:0;
+    transform:translateY(20px);
+    transition:all 0.3s;
+    transition-delay:0.1s
+}
+.portfolio .portfolio-item .project-link{
+    opacity:0;
+    transform:translateY(20px);
+    transition:all 0.3s;
+    transition-delay:0.2s
+}
+.portfolio .portfolio-item .project-link a{
+    color:#fff;
+    font-family:'Nexa Light', sans-serif;
+    font-size:1.2rem
+}
+.portfolio .portfolio-item .project-link a i{
+    position:relative;
+    top:8px;
+    opacity:0;
+    transform:translateX(0);
+    transition:all 0.3s ease-out
+}
+.portfolio .portfolio-item .project-link a:hover i{
+    opacity:1;
+    transform:translateX(10px)
+}
+
+/* tool cards */ 
+.feature-card.card-md {
+    height: 350px}
+.feature-card.card-lg {
+    height: 400px}
+.feature-card.card-shadow {
+    box-shadow: 0px 5px 43px rgba(0,0,0,0.18) !important}
+.feature-card.hover-inset:hover {
+    box-shadow: inset rgba(143,160,241,0.2) 0 0 0 1px,rgba(213,220,247,0.59) 0 10px 20px;
+    cursor: pointer}
+.feature-card.light-bordered {
+    border: 1px solid #e5e5e5 !important}
+.feature-card .card-title h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #444F60}
+.feature-card .card-icon img {
+    height: 140px;
+    margin-top: 20px}
+.feature-card .card-img img {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px}
+.feature-card .card-action {
+    margin-top: 40px}
+.feature-card .card-feature-description {
+    padding: 5px 30px !important}
+.feature-card .card-feature-description span {
+    color: #878787;
+    margin-top: 20px}
+.feature-card .card-img-description {
+    padding-bottom: 10px}
+.feature-card .card-img-description span {
+    color: #878787;
+    margin-top: 20px}
+.feature-card .bookmark i {
+    font-size: 1.4rem;
+    color: #A9ABAC;
+    position: relative;
+    top: 3px;
+    margin-right: 10px}
+.feature-card .bookmark i:hover {
+    color: #7F00FF}
+
+.integration-cards .brand-logo {
+    padding: 10px 0}
+.integration-cards .brand-logo img {
+    max-height: 60px;
+    max-width: 120px}    
+.integration-cards .card-title {
+    padding: 10px 0}
+.integration-cards .card-feature-description {
+    padding: 0 !important}
+.integration-cards a {
+    margin: 20px 0}
+
+/* How It Works */
+.minimal-feature .minimal-title{
+    font-family:'Nexa Bold', sans-serif;
+    font-size:2rem !important;
+    font-weight:500;
+    color:#444F60;
+    padding:10px 0;
+    margin-bottom:0 !important
+}
+.minimal-feature-image{
+    position:relative
+}
+.minimal-feature-image .main-image{
+    position:relative;
+    z-index:2
+}
+.minimal-feature-image .image-bg{
+    position:absolute;
+    top:10%;
+    left:-20%;
+    right:0;
+    margin:0 auto;
+    max-width:1096px;
+    width:120%;
+    z-index:0
+}        
+
+/* Modal Waves */
+.modal {
+    background: #00b289 url(../images/homescreen/icon-bg.png) repeat 0 0;
+    -webkit-animation: 18s linear 0s normal none infinite animate;
+    -moz-animation: 18s linear 0s normal none infinite animate;
+    -ms-animation: 18s linear 0s normal none infinite animate;
+    -o-animation: 18s linear 0s normal none infinite animate;
+    animation: 18s linear 0s normal none infinite animate}
+@-webkit-keyframes animate {
+    from {
+    background-position: 0 0}
+to {
+    background-position: 0 -1450px}
+}
+@-moz-keyframes animate {
+    from {
+    background-position: 0 0}
+to {
+    background-position: 0 -1450px}
+}
+@-ms-keyframes animate {
+    from {
+    background-position: 0 0}
+to {
+    background-position: 0 -1450px}
+}
+@-o-keyframes animate {
+    from {
+    background-position: 0 0}
+to {
+    background-position: 0 -1450px}
+}
+@keyframes animate {
+    from {
+    background-position: 0 0}
+to {
+    background-position: 0 -1450px}
+}
+.modal:before {
+    background: transparent url(../images/bg/shapes/wavy.png) no-repeat scroll 0 bottom/100% auto;
+    content: "";
+    height: 321px;
+    width: 100%;
+    z-index: 0 !important;
+    position: absolute;
+    bottom: -1px;
+    left: 0
+}
+

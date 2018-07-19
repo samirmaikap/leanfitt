@@ -10,16 +10,17 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 class WelcomeMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
-    public $data;
+
+    public $organization ;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($data)
+    public function __construct($organization)
     {
-        $this->data = $data;
+        $this->organization = $organization;
     }
 
     /**
@@ -29,6 +30,6 @@ class WelcomeMail extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->view('email.welcome');
+        return $this->view('emails.welcome');
     }
 }

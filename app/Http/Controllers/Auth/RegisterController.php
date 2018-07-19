@@ -86,8 +86,10 @@ class RegisterController extends Controller
     }
 
     // Override method
-//    protected function registered(Request $request, $user)
-//    {
-//        $this->organizationService->create($request->only(['organization']));
-//    }
+   protected function registered(Request $request, $user)
+   {
+       // $this->organizationService->create($request->only(['organization']));
+        session(['user' => $user]);
+        return redirect($this->redirectTo);
+   }
 }

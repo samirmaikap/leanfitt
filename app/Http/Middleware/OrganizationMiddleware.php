@@ -16,27 +16,25 @@ class OrganizationMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $request->route()->forgetParameter('organization');;
-
-        $host = explode('.', $request->getHost());
-        $subdomain = $host[0];
-        $domain = $host[1];
-        $extension = $host[2];
 
         if (!auth()->check())
         {
-            return redirect('http://' . $domain . "." . $extension . '/login');
+            return redirect(config('app.url') . '/login');
         }
+
+        $subdomain = $request->route()->parameter('organization');
 
         $organizationRepository = new OrganizationRepository();
         $organization = $organizationRepository->where('subdomain', '=', $subdomain)->first();
 
-
-        // Set Organization Identifier for global access
+        // Set Organization to session for global access
         session(['organization' => $organization]);
-//        $request->route()->setParameter('organization', $organization);
 
-//        $request->route()->forgetParameter('domain');
+        // First unset this domain group parameter 'organization'
+        // Set it back again to the new value
+        // This way controllers will be able receive parameters from the routes in the same order they are defined in the routes
+        $request->route()->forgetParameter('organization');
+        $request->route()->setParameter('organization', $organization);
 
         return $next($request);
     }

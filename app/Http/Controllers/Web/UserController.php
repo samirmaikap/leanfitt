@@ -22,7 +22,6 @@ class UserController extends Controller
     protected $departmentService;
     protected $rolesService;
     protected $orgService;
-    protected $roleService;
 
     public function __construct(UserService $userService,
                                 OrganizationService $organizationService,
@@ -35,8 +34,38 @@ class UserController extends Controller
         $this->roleService=$roleService;
     }
 
-    public function index(Request $request)
+    public function index(Request $request, $activeOrganization = null)
     {
+//        dd($activeOrganization);
+
+        $organizationId = null;
+        $departmentId = null;
+        $roleId = null;
+
+        if($request->query('organization'))
+        {
+            $organizationId = $request->query('organization');
+        }
+        elseif (!empty($activeOrganization))
+        {
+            $organizationId = $activeOrganization->id;
+        }
+
+        if($request->query('department'))
+        {
+            $departmentId = $request->query('department');
+        }
+
+        if($request->query('role'))
+        {
+            $roleId = $request->query('role');
+        }
+
+
+
+        $data['users'] = $this->userService->all($organizationId, $departmentId, $roleId);
+        $data['departments'] = $this->departmentService->allDepartments();
+        $data['roles'] = $this->rolesService->all($organizationId);
 
 //        $data['users'] = $this->userService->all($request->all());
 //        $data['departments'] = $this->departmentService->allDepartments();
@@ -46,7 +75,7 @@ class UserController extends Controller
         $data['activeorg']=$request->get('organization');
         $data['activedep']=$request->get('department');
 
-        $data['users']=$this->userService->all($request->all());
+        //$data['users']=$this->userService->all($request->all()); //Fetch from the earlier service method
 
         $data['orglist']=$this->orgService->list();
         if(!empty($request->get('organization'))){
