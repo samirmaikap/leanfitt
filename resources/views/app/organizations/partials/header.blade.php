@@ -3,9 +3,9 @@
     <div class="header-info m-0 center-vh">
         <div class="d-block text-center">
             <img src="{{ asset('assets/img/header/projects.png') }}" alt="Graphics" width="200px" height="200px" style="margin: auto">
-            <h3 class="header-title text-white">
-                <strong> Create Organization</strong>
-            </h3>
+            {{--<h3 class="header-title text-white">--}}
+                {{--<strong> Create Organization</strong>--}}
+            {{--</h3>--}}
         </div>
     </div>
 

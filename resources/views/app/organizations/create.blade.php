@@ -2,13 +2,18 @@
 @section("content")
 
     <main>
-        @include('app.organizations.partials.header')
+        {{--@include('app.organizations.partials.header')--}}
         <div class="main-content">
             <div class="row">
                 <div class="col-md-3"></div>
                 <div class="col-md-6">
                     <div class="card">
-                        <div class="card-title">
+                        <div class="card-title text-center">
+                            <h3>
+                                <strong> Create Organization</strong>
+                            </h3>
+                        </div>
+                        <div class="card-body">
                             <div id="errors" class="callout callout-danger b-1" role="alert"  style="{{ $errors->any() ? 'display:block' : 'display:none' }}">
                                 <button type="button" class="close" data-dismiss="callout" aria-label="Close">
                                     <span>×</span>
@@ -20,8 +25,6 @@
                                     </p>
                                 @endforeach
                             </div>
-                        </div>
-                        <div class="card-body">
                             <form id="register-form" action="" method="post" data-provide="wizard">
 
                                 {{ csrf_field() }}
@@ -110,10 +113,6 @@
                                         </div>
 
                                         <br>
-                                        <div class="form-group">
-                                            <label>Card Number</label>
-                                            <input type="text" class="form-control" name="subscription[number]" value="{{ old('subscription.number') }}" size='20'>
-                                        </div>
 
                                         <div class="form-group">
                                             <label>Name on card</label>
@@ -122,17 +121,22 @@
 
                                         <div class="row">
                                             <div class="form-group col-lg-6">
+                                                <label>Card Number</label>
+                                                <input type="text" class="form-control" name="subscription[number]" value="{{ old('subscription.number') }}" size='20'>
+                                            </div>
+
+                                            <div class="form-group col-lg-3">
                                                 <label>CVC Code</label>
                                                 <input class="form-control" type="text" name="subscription[cvc]" value="{{ old('subscription.cvc') }}" size='4'>
                                             </div>
 
-                                            <div class="form-group col-lg-6">
+                                            <div class="form-group col-lg-3">
                                                 <label>Expiry Date</label>
                                                 <div class="row">
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-6 pr-0">
                                                         <input type="text" class="form-control" name="subscription[exp_month]" value="{{ old('subscription.exp_month') }}" size='2' maxlength="2" placeholder="MM">
                                                     </div>
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-6 pl-0">
                                                         <input type="text" class="form-control" name="subscription[exp_year]" value="{{ old('subscription.exp_year') }}" size='2' maxlength="2" placeholder="YY">
                                                     </div>
                                                 </div>

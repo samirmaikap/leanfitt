@@ -24,7 +24,7 @@
                             {{ isset($defaultOrganization->name) ?$defaultOrganization->name : null }}
                             <i class="fa fa-caret-down"></i>
                         </h4>
-                        <p>Admin, Lean Sensei, Manager</p>
+                        <p>{{ session('user')->roles->count() ? implode(', ',$user->roles->pluck('display_name')->toArray()) : '' }}</p>
                     </div>
                 </span>
                 <div class="dropdown-menu">
@@ -64,7 +64,7 @@
                 </li>
             @endif
 
-            {{--@can('read.user')--}}
+            @permission('read.user')
                 <li class="menu-item">
                     <a class="menu-link" href="{{ url('users') }}">
                         <span class="icon fa fa-users"></span>
@@ -84,9 +84,9 @@
                         <span class="title">Roles</span>
                     </a>
                 </li>
-            {{--@endcan--}}
+            @endpermission
 
-            {{--@can('read.project')--}}
+            @permission('read.project')
                 <li class="menu-category">Project</li>
 
                 <li class="menu-item">
@@ -95,8 +95,8 @@
                         <span class="title">Projects</span>
                     </a>
                 </li>
-            {{--@endcan--}}
-
+            @endpermission
+            
             <li class="menu-category">LeanFITT</li>
 
             <li class="menu-item">

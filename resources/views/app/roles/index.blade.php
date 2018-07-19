@@ -37,7 +37,7 @@
                         <tr>
                             <td>{{ $role->name }}</td>
                             <td>{{ $role->users_count  }}</td>
-                            <td></td>
+                            <td> {{ $role->permissions->count() }}</td>
                             <td>{{ date('m/d/Y h:i A', strtotime($role->create_at)) }}</td>
                             <td>
                                 <nav class="nav no-gutters">
@@ -72,7 +72,25 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <label>Description</label>
-                                                            <textarea name="description" rows="5" class="form-control">{{ $role->description }}</textarea>
+                                                            <textarea name="description" rows="2" class="form-control">{{ $role->description }}</textarea>
+                                                        </div>
+                                                        <div class="h-200px" style="overflow-x: hidden; overflow-y: scroll">
+                                                            @foreach (config('permission.models') as $model)
+                                                                <div class="form-group">
+                                                                    <p>{{ ucfirst($model) }}</p>
+                                                                    <div class="row">
+                                                                        <div class="col">
+                                                                            @foreach (config('permission.actions') as $action)
+                                                                                <label class="custom-control custom-control-primary custom-checkbox">
+                                                                                    <input type="checkbox" class="custom-control-input" name="permissions[]" value="{{ $action . '.' . $model }}" @if($role->hasPermission($action . '.' . $model))  {{ 'checked' }} @endif>
+                                                                                    <span class="custom-control-indicator"></span>
+                                                                                    <span class="custom-control-description">{{ ucfirst($action) }}</span>
+                                                                                </label>
+                                                                            @endforeach
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            @endforeach
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
@@ -127,72 +145,32 @@
                         <label>Name</label>
                         <input class="form-control" type="text" name="name" value="{{ old('name') }}">
                     </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea name="description" rows="2" class="form-control">{{ old('description') }}</textarea>
+                    </div>
 
                     <div class="form-group">
                         <label>Permissions</label>
                     </div>
 
-                    <p>User</p>
-                    <div class="row">
-                        <div class="col">
-                            <label class="custom-control custom-control-primary custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" checked="" name="permissions[]" value="{{ session('organization')->subdomain . '.create.user' }}">
-                                <span class="custom-control-indicator"></span>
-                                <span class="custom-control-description">Create</span>
-                            </label>
-
-                            <label class="custom-control custom-control-gray custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" checked="" name="permissions[]" value="{{ session('organization')->subdomain . '.read.user' }}">
-                                <span class="custom-control-indicator"></span>
-                                <span class="custom-control-description">Read</span>
-                            </label>
-
-                            <label class="custom-control custom-control-success custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" checked="" name="permissions[]" value="{{ session('organization')->subdomain . '.update.user' }}">
-                                <span class="custom-control-indicator"></span>
-                                <span class="custom-control-description">Update</span>
-                            </label>
-
-                            <label class="custom-control custom-control-danger custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" checked="" name="permissions[]" value="{{ session('organization')->subdomain . '.delete.user' }}">
-                                <span class="custom-control-indicator"></span>
-                                <span class="custom-control-description">Delete</span>
-                            </label>
-
-                        </div>
-                    </div>
-
-                    <br>
-                    <p>Department</p>
-
-                    <div class="row">
-                        <div class="col">
-                            <label class="custom-control custom-control-primary custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" checked="" name="permissions[]" value="{{ session('organization')->subdomain . '.create.department' }}">
-                                <span class="custom-control-indicator"></span>
-                                <span class="custom-control-description">Create</span>
-                            </label>
-
-                            <label class="custom-control custom-control-gray custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" checked="" name="permissions[]" value="{{ session('organization')->subdomain . '.read.department' }}">
-                                <span class="custom-control-indicator"></span>
-                                <span class="custom-control-description">Read</span>
-                            </label>
-
-                            <label class="custom-control custom-control-success custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" checked="" name="permissions[]" value="{{ session('organization')->subdomain . '.update.department' }}">
-                                <span class="custom-control-indicator"></span>
-                                <span class="custom-control-description">Update</span>
-                            </label>
-
-                            <label class="custom-control custom-control-danger custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" checked="" name="permissions[]" value="{{ session('organization')->subdomain . '.delete.department' }}">
-                                <span class="custom-control-indicator"></span>
-                                <span class="custom-control-description">Delete</span>
-                            </label>
-
-                        </div>
-
+                    <div class="h-200px" style="overflow-x: hidden; overflow-y: scroll">
+                        @foreach (config('permission.models') as $model)
+                            <div class="form-group">
+                                <p>{{ ucfirst($model) }}</p>
+                                <div class="row">
+                                    <div class="col">
+                                        @foreach (config('permission.actions') as $action)
+                                            <label class="custom-control custom-control-primary custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" name="permissions[]" value="{{ $action . '.' . $model }}">
+                                                <span class="custom-control-indicator"></span>
+                                                <span class="custom-control-description">{{ ucfirst($action) }}</span>
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
                 <div class="modal-footer">

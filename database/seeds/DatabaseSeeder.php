@@ -20,5 +20,6 @@ class DatabaseSeeder extends Seeder
 //            $admin->attachRole('admin');
 //        }
         $this->call(ModelSeeder::class);
+        $this->call(PermissionSeeder::class);
     }
 }
