@@ -33,7 +33,7 @@ class AssessmentService
             throw new \Exception("No assessment result found");
         }
 
-        return renderCollection($data);
+        return renderCollection($query);
 
     }
 

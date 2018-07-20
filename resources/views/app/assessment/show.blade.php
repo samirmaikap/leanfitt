@@ -21,13 +21,13 @@
                                         <div class="media">
                                             <div class="media-body">
                                                 <p>
-                                                    {{$assessment['assessment']}}
+                                                    {{$assessment->assessment}}
                                                 </p>
                                                 <div class="mt-10">
                                                     @for($i=0;$i<5;$i++)
                                                         <div class="form-check form-check-inline">
                                                             <label class="form-check-label">
-                                                                <input class="form-check-input" type="radio" id="rad1{{$i.$key}}" name="assessments[{{ $assessment['tool_name'] }}][{{  $key }}]" value="{{$i+1}}"> {{$string_arr[$i]}}
+                                                                <input class="form-check-input" type="radio" id="rad1{{$i.$key}}" name="assessments[{{ $assessment->tool_name }}][{{  $key }}]" value="{{$i+1}}"> {{$string_arr[$i]}}
                                                             </label>
                                                         </div>
                                                     @endfor

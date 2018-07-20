@@ -35,7 +35,7 @@ class QuizController extends Controller
     public function index(Request $request){
 
         $data['page']='Quiz';
-        $data['organization_id']=$request->get('organization');
+        $data['organization_id']=empty($request->get('organization')) ? session()->get('organization')->id : $request->get('organization') ;
         $data['department_id']=$request->get('department');
         $data['user_id']=$request->get('user');
 
@@ -43,12 +43,7 @@ class QuizController extends Controller
         $data['quizs']=$this->service->taken($request->all());
 
         $data['organizations']=$this->orgService->list();
-        if(!empty($request->get('organization'))){
-            $data['departments']=$this->depService->list($request->all());
-        }
-        else{
-            $data['departments']=null;
-        }
+        $data['departments']=$this->depService->list($request->all());
 
         if(!empty($request->get('department'))){
             $data['users']=$this->userService->list($request->all());

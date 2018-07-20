@@ -17,17 +17,17 @@
                 <div class="media-list media-list-divided media-list-hover mt-20 mb-20">
                     @if(count($tools) > 0)
                         @foreach($tools as $tool)
-                            <a class="media  {{$active_tool == $tool['tool_id'] ? 'active' : ''}}" href="{{url('quizzes/take').'/'.$tool['tool_id']}}">
+                            <a class="media  {{$active_tool == $tool->tool_id ? 'active' : ''}}" href="{{url('quizzes/take').'/'.$tool->tool_id}}">
                                 <div class="media-body">
-                                    <p><strong>{{$tool['too_name']}}</strong>
-                                        @if($tool['quiz_taken'])
-                                            <span class="badge badge-success pull-right">{{$tool['score']}} % Score</span>
+                                    <p><strong>{{$tool->too_name}}</strong>
+                                        @if($tool->quiz_taken)
+                                            <span class="badge badge-success pull-right">{{$tool->score}} % Score</span>
                                         @else
                                             <span class="badge badge-warning pull-right">Pending</span>
                                         @endif
 
                                     </p>
-                                    <p class="text-truncate">{{$tool['question_count']}} Questions</p>
+                                    <p class="text-truncate">{{$tool->question_count}} Questions</p>
                                 </div>
                             </a>
                         @endforeach
@@ -41,17 +41,17 @@
         <!-- END Page aside -->
         <header class="header no-border">
             <div class="header-bar">
-                <h4>{{isset($quiz['tool_name']) ? ucfirst($quiz['tool_name']) : 'Take'}} Quiz</h4>
+                <h4>{{isset($quiz->tool_name) ? ucfirst($quiz->tool_name) : 'Take'}} Quiz</h4>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item question-progress-text">1</li>
-                    <li class="breadcrumb-item">{{isset($quiz['question_count']) ? $quiz['question_count'] : 0}}</li>
+                    <li class="breadcrumb-item">{{isset($quiz->question_count) ? $quiz->question_count : 0}}</li>
                 </ol>
             </div>
         </header>
 
         <div class="main-content">
                 <div class="row">
-                    @if($quiz['taken'] && !isset($_GET['retake']))
+                    @if($quiz->taken && !isset($_GET['retake']))
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-body">
@@ -64,7 +64,7 @@
                         </div>
                     @else
                         @php
-                            $quizs=isset($quiz['quiz']) ? $quiz['quiz'] : null;
+                            $quizs=isset($quiz->quiz) ? $quiz->quiz : null;
                         @endphp
 
                         <div class="col-lg-12">
@@ -99,10 +99,10 @@
                                         {{csrf_field()}}
                                         <input type="hidden" id="result-correct" name="correct" value="0">
                                         <input type="hidden" id="result-incorrect" name="incorrect" value="0">
-                                        <input type="hidden" id="total-question" name="total" value="{{$quiz['question_count']}}">
+                                        <input type="hidden" id="total-question" name="total" value="{{$quiz->question_count}}">
                                         <input type="hidden" name="lean_tool_id" value="{{$active_tool}}">
                                         <input type="hidden" name="employee_id" value="{{auth()->user()->id}}">
-                                        @if(!$quiz['taken'])
+                                        @if(!$quiz->taken)
                                             <input type="submit" id="submit-result" name="submit" class="hidden btn btn-primary" value="Submit">
                                             <button type="button" class="btn btn-primary btn-next disabled">Next</button>
                                         @else

@@ -33,23 +33,15 @@ class AssessmentController extends Controller
     }
 
     public function index(Request $request){
-
         $data['page']='Quiz';
-        $data['organization_id']=$request->get('organization');
+        $data['organization_id']=empty($request->get('organization')) ? session()->get('organization')->id : $request->get('organization');
         $data['department_id']=$request->get('department');
         $data['user_id']=$request->get('user');
 
         $data['assessments']=$this->service->index($request->all());
-
         $data['organizations']=$this->orgService->list();
-
-        if(!empty($request->get('organization'))){
-            $data['departments']=$this->depService->list($request->all());
-        }
-        else{
-            $data['departments']=null;
-        }
-        if(!empty($request->get('department'))){
+        $data['departments']=$this->depService->list($request->all());
+        if($request->query('department')){
             $data['users']=$this->userService->list($request->all());
         }
         else{

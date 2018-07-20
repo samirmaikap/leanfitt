@@ -12,8 +12,8 @@
                     <ul class="nav nav-pills flex-column">
                         @if(count($organizations) > 0)
                             @foreach($organizations as $organization)
-                                <li class="nav-item {{$organization_id == $organization['id'] ? 'active' : ''}}">
-                                    <a class="nav-link" href="{{url('/quizzes?organization=').$organization['id']}}">{{$organization['name']}}</a>
+                                <li class="nav-item {{$organization_id == $organization->id ? 'active' : ''}}">
+                                    <a class="nav-link" href="{{url('/quizzes?organization=').$organization->id}}">{{$organization->name}}</a>
                                 </li>
                             @endforeach
                         @endif
@@ -47,8 +47,8 @@
                     <ul class="nav nav-pills flex-column">
                         @if(count($departments) > 0)
                             @foreach($departments as $department)
-                                <li class="nav-item {{($department_id == $department['id']) ? 'active' : '' }}">
-                                    <a class="nav-link" href="{{url('/quizzes?organization=').$organization_id}}&department={{$department['id']}}">{{$department['name']}}</a>
+                                <li class="nav-item {{($department_id == $department->id) ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{url('/quizzes?organization=').$organization_id}}&department={{$department->id}}">{{$department->name}}</a>
                                 </li>
                             @endforeach
                         @else
@@ -69,8 +69,8 @@
                     <ul class="nav nav-pills flex-column">
                         @if(count($users) > 0)
                             @foreach($users as $user)
-                                <li class="nav-item {{($user_id == $user['id']) ? 'active' : '' }}">
-                                    <a class="nav-link" href="{{url('/quizzes?organization=').$organization_id}}&department={{$department_id}}&user={{$user['id']}}">{{$user['name']}}</a>
+                                <li class="nav-item {{($user_id == $user->id) ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{url('/quizzes?organization=').$organization_id}}&department={{$department_id}}&user={{$user->id}}">{{$user->first_name}} {{$user->last_name}}</a>
                                 </li>
                             @endforeach
                         @else
@@ -93,37 +93,45 @@
 
         <div class="main-content">
             <div class="row">
-                @if(count($quizs) > 0)
-                    @foreach($quizs as $quiz)
-                        <div class="col-md-6 col-lg-3">
-                            <div class="card">
-                                <div class="card-body text-center" style="height: 270px">
-                                    <a href="javascript:void(0)">
-                                        <img class="avatar avatar-xxl" src="{{$quiz->avatar}}">
-                                    </a>
-                                    <h5 class="mt-3 mb-1"><a class="hover-primary" href="#">{{$quiz->first_name}} {{$quiz->last_name}}</a></h5>
-                                    <span class="d-block">{{$quiz->department_name}}</span>
-                                    <span class="text-fade d-block ">{{ucfirst($quiz->tool_name)}}</span>
-                                    <span class="text-fade d-block">{{\Carbon\Carbon::parse(\Carbon\Carbon::parse($quiz->updated_at))->diffForHumans(\Carbon\Carbon::now())}} </span>
-                                </div>
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <table class="table table-striped table-bordered" cellspacing="0" data-provide="datatables">
+                                <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Lean tool</th>
+                                    <th>Score</th>
+                                    <th>Correct</th>
+                                    <th>Incrorrect</th>
+                                    <th>Date</th>
+                                </tr>
+                                </thead>
+                                <tbody>
 
-                                <div class="flexbox flex-justified bt-1 border-light py-12 bg-lightest text-center">
-                                    <span class="text-muted">
-                                        <i class="fe fe-activity fs-20"></i><br>
-                                        {{$quiz->correct}} Correct
-                                    </span>
-                                    <span class="text-muted">
-                                        <i class="fe fe-target fs-20"></i><br>
-                                        {{$quiz->score}}% Score
-                                    </span>
-                                </div>
-                            </div>
+                                @if(count($quizs) > 0)
+                                    @foreach($quizs as $quiz)
+                                        <tr>
+                                            <td class="">
+                                                <img class="avatar avatar-sm" src="{{$quiz->avatar }}" alt="">
+                                                <a href="{{url("users")}}/{{$quiz->user_id}}/profile">
+                                                    {{ $quiz->first_name }} {{$quiz->last_name}}
+                                                </a>
+                                            </td>
+                                            <td>{{$quiz->tool_name}}</td>
+                                            <td>{{$quiz->score}}</td>
+                                            <td>{{$quiz->correct}}</td>
+                                            <td>{{$quiz->incorrect}}</td>
+                                            <td>{{ date('m/d/Y h:i A', strtotime($quiz->created_at)) }}</td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                                </tbody>
+                            </table>
                         </div>
-                    @endforeach
-                @else
-                    <h3 class="text-danger p-20">No result found</h3>
-                @endif
 
+                    </div>
+                </div>
             </div>
         </div>
 @endsection

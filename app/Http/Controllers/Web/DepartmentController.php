@@ -33,11 +33,11 @@ class DepartmentController extends Controller
         {
             if(!empty($request->get('department_id'))){
                 $this->departmentService->updateDepartment($request->all(), $request->get('department_id'));
-                return redirect()->back()->with(['success' => 'User has been updated successfully']);
+                return redirect()->back()->with(['success' => 'Department has bee updated successfully']);
             }
             else{
                 $this->departmentService->createDepartment($request->all());
-                return redirect()->back()->with(['success' => 'User has been added successfully']);
+                return redirect()->back()->with(['success' => 'Department has been added successfully']);
             }
 
         }

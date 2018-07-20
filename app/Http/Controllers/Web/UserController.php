@@ -71,12 +71,7 @@ class UserController extends Controller
         //$data['users']=$this->userService->all($request->all()); //Fetch from the earlier service method
 
         $data['orglist']=$this->orgService->list();
-        if(!empty($request->get('organization'))){
-            $data['deplist']=$this->departmentService->list($request->all());
-        }
-        else{
-            $data['deplist']=null;
-        }
+        $data['deplist']=$this->departmentService->list($request->all());
 
         return view('app.users.index', $data);
 

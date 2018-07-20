@@ -168,7 +168,7 @@
                                     </select>
                                     <label class="label-floated">Department</label>
                                 </div>
-                                <input type="hidden" name="organization_id" value="{{isset($activeorg) ? $activeorg : null}}">
+                                <input type="hidden" name="organization_id" value="{{session()->get('organization')->id}}">
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Cancel</button>
@@ -197,7 +197,7 @@
                                     <input type="text" class="form-control department-name" name="name">
                                     <label>Department Name</label>
                                 </div>
-                                <input type="hidden" name="organization_id" value="{{isset($activeorg) ? $activeorg : null}}">
+                                <input type="hidden" name="organization_id" value="{{session()->get('organization')->id}}">
                                 <input type="hidden" id="department-id" name="department_id">
                             </div>
                             <div class="modal-footer">
