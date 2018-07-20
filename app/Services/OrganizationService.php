@@ -135,9 +135,14 @@ class OrganizationService
             throw new \Exception('Orgnaization field is required');
         }
 
-        $query=$this->organizationRepository->with('users','project','departments')->find($organization);
+        $query=$this->organizationRepository->with(['departments'=>function($query){
+            $query->withCount('users')->get();
+        },'roles'=>function($query){
+            $query->withCount('users')->get();
+        },'project','subscriptions'])->find($organization);
+
         if(!$query){
-           throw new \Exception(config('messages.common_error'));
+            throw new \Exception(config('messages.common_error'));
         }
 
         return $query;

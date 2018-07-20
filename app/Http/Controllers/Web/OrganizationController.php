@@ -22,16 +22,8 @@ class OrganizationController extends Controller
     }
 
     public function index(){
-        try
-        {
-            $data['organizations'] = $this->service->all();
-
-            return view('app.organizations.index', $data);
-        }
-        catch(\Exception $e)
-        {
-            return redirect()->back()->withErrors([$e->getMessage()]);
-        }
+        $data['organizations'] = $this->service->all();
+        return view('app.organizations.index', $data);
     }
 
     public function create()
@@ -76,15 +68,9 @@ class OrganizationController extends Controller
 
 
     public function show($organization_id){
-        try{
-            $result=$this->service->show($organization_id);
-            $data['organization'] = $result->data;
-            return view('app.organizations.index', $data);
-        }
-        catch(\Exception $e)
-        {
-            return redirect()->back()->withErrors([$e->getMessage()]);
-        }
+        $data['organization'] =$this->service->show($organization_id);
+        dd($data);
+        return view('app.organizations.view', $data);
     }
 
     public function list(){

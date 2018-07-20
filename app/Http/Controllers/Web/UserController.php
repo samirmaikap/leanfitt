@@ -121,7 +121,8 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->userService->update($request->all(),'',$id);
+        $image=$request->hasFile('image') ? $request->file('image') : null;
+        $this->userService->update($request->all(),$image,$id);
         return redirect()->back()->with(['success' => 'Profile has been updated successfully']);
         try
         {

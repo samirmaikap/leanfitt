@@ -19,6 +19,8 @@ class CreateKpiChartsTable extends Migration
             $table->string('title');
             $table->string('x_label');
             $table->string('y_label');
+            $table->string('target');
+            $table->string('trend');
             $table->date('start_date');
             $table->date('end_date');
             $table->timestamps();

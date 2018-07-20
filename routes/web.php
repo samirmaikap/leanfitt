@@ -104,5 +104,6 @@ Route::group(['namespace' => 'Web'], function () {
     Route::get('/dashboard', 'DashboardController@index');
     Route::get('organizations/create', 'OrganizationController@create');
     Route::post('organizations/create','OrganizationController@store');
+    Route::get('organizations/{organization_id}/view','OrganizationController@show');
 
 });

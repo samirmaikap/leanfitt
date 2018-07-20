@@ -12,6 +12,8 @@ class KpiChart extends Model
         'title',
         'x_label',
         'y_label',
+        'target',
+        'trend',
         'start_date',
         'end_date',
     ];
