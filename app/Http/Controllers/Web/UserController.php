@@ -59,12 +59,11 @@ class UserController extends Controller
             $roleId = $request->query('role');
         }
 
-
         $data['users'] = $this->userService->all($organizationId, $departmentId, $roleId);
 //        $data['departments'] = $this->departmentService->allDepartments();
         $data['rolelist'] = $this->roleService->all($organizationId);
         $data['page']='Quiz';
-        $data['activeorg']=$request->get('organization');
+        $data['activeorg']=$request->query('organization') ? $request->get('organization') : session()->get('organization')->id;
         $data['activedep']=$request->get('department');
         $data['activerole']=$request->get('role');
 

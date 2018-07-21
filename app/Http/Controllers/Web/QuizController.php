@@ -44,13 +44,7 @@ class QuizController extends Controller
 
         $data['organizations']=$this->orgService->list();
         $data['departments']=$this->depService->list($request->all());
-
-        if(!empty($request->get('department'))){
-            $data['users']=$this->userService->list($request->all());
-        }
-        else{
-            $data['users']=null;
-        }
+        $data['users']=$this->userService->list($data['organization_id'],$data['department_id']);
 
         return view('app.quiz.index',$data);
     }

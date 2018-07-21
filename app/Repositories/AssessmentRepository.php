@@ -19,14 +19,15 @@ class AssessmentRepository extends BaseRepository //implements AssessmentReposit
             ->join('users as u','u.id','=','assessment_results.user_id')
             ->join('organization_user as ou','ou.user_id','=','assessment_results.user_id')
             ->join('organizations as org','org.id','=','ou.organization_id')
-            ->leftJoin('department_user as du',function($leftJoin) use($department) {
-                $leftJoin->on('assessment_results.user_id','=','du.user_id')
-                    ->where('du.department_id',empty($department) ? '!=':'=',empty($department) ? null : $department);
-            })
-            ->leftJoin('departments as dep','du.department_id','=','dep.id')
+            ->leftJoin('department_user as du','assessment_results.user_id','=','du.user_id')
             ->where('ou.organization_id',empty($organization) ? '!=':'=',empty($organization) ? null : $organization )
-            ->where('u.id',empty($user) ? '!=':'=',empty($user) ? null : $user )
-            ->select([
+            ->where('u.id',empty($user) ? '!=':'=',empty($user) ? null : $user );
+
+        if(!empty($department)){
+            $query=$query->where('du.department_id',$department);
+        }
+
+        $query=$query->select([
                 'assessment_results.*',
                 'u.id as user_id',
                 'u.first_name',

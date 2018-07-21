@@ -41,12 +41,7 @@ class AssessmentController extends Controller
         $data['assessments']=$this->service->index($request->all());
         $data['organizations']=$this->orgService->list();
         $data['departments']=$this->depService->list($request->all());
-        if($request->query('department')){
-            $data['users']=$this->userService->list($request->all());
-        }
-        else{
-            $data['users']=null;
-        }
+        $data['users']=$this->userService->list($data['organization_id'],$data['department_id']);
 
         return view('app.assessment.index',$data);
     }

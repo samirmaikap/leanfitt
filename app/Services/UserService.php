@@ -65,19 +65,11 @@ class UserService
         return $this->userRepo->find($id);
     }
 
-    public function list($data)
+    public function list($organization=null,$department=null)
     {
-        $organization=arrayValue($data,'organization');
-        $department=arrayValue($data,'department');
 
-        $query=$this->userRepo->getUsers($organization,$department);
-        $query=$query->map(function($item){
-            return [
-                'id'=>$item['id'],
-                'first_name'=>$item['first_name'],
-                'last_name'=>$item['last_name']
-            ];
-        });
+        $query=$this->userRepo->userList($organization,$department);
+
         if(!$query){
             throw  new \Exception(config('messages.common_fetch'));
         }

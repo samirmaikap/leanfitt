@@ -55,8 +55,8 @@
                     <ul class="nav nav-pills flex-column">
                         @if(count($rolelist) > 0)
                             @foreach($rolelist as $rlist)
-                                <li data-id="{{$rlist->id}}" class="nav-item {{($activedep == $rlist->id) ? 'active' : '' }}">
-                                    <a class="nav-link" href="{{url('/users?organization=').$activeorg}}&department={{$rlist->id}}">{{$rlist->name}}</a>
+                                <li data-id="{{$rlist->id}}" class="nav-item {{($activerole == $rlist->id) ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{url('/users?organization=').$activeorg}}&department={{$activedep}}&role={{$rlist->id}}">{{$rlist->name}}</a>
                                     <a class="nav-action hover-info edit-department" href="#" data-provide="tooltip" data-title="Edit" data-toggle="modal" data-target="#edit-role{{ $rlist->id }}-modal"><span class="ti-pencil"></span></a>
                                     <a class="nav-action hover-danger delete-department" href="#" data-provide="tooltip" data-title="Remove" onclick="submitForm('#delete-role{{ $rlist->id }}-form')"><span class="ti-close"></span></a>
                                 </li>
@@ -123,6 +123,8 @@
                             </a>
                         </div>
                     @endforeach
+                @else
+                    <h3 class="p-20 text-danger">No users found</h3>
                 @endif
             </div>
 

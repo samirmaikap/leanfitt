@@ -19,14 +19,15 @@ class AwardRepository extends BaseRepository //implements AwardRepositoryInterfa
     public function getAwards($organization,$department,$user){
         $query=$this->model()->join('users as u','u.id','=','awards.user_id')
             ->join('organization_user as ou','ou.user_id','=','awards.user_id')
-            ->leftJoin('department_user as du',function($leftJoin) use($department) {
-                $leftJoin->on('awards.user_id','=','du.user_id')
-                    ->where('du.organization_id',empty($department)? '!=' : '=',empty($department) ? null : $department);
-            })
-            ->leftJoin('departments as dep','du.department_id','=','dep.id')
+            ->leftJoin('department_user as du','awards.user_id','=','du.user_id')
             ->where('ou.organization_id',empty($organization)? '!=' : '=',empty($organization) ? null : $organization)
-            ->where('u.id',empty($user)? '!=' : '=',empty($user) ? null : $user)
-            ->select(['awards.*','u.first_name','u.last_name','u.avatar','dep.name as department_name'])
+            ->where('u.id',empty($user)? '!=' : '=',empty($user) ? null : $user);
+
+        if(!empty($department)){
+            $query=$query->where('du.department_id',$department);
+        }
+
+        $query=$query->select(['awards.*','u.first_name','u.last_name','u.avatar'])
             ->distinct()->orderBy('u.first_name')->get();
         return $query;
     }
