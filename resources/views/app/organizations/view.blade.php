@@ -27,6 +27,7 @@
                                     </div>
                                 </div>
                             </div>
+                            @php $status=isset($stripe->subscriptions) ? $stripe->subscriptions->data[0]->status : 'N/A';  @endphp
                             <div class="card-body">
                                 <div class="form-group">
                                     <label class="text-dark">Name</label>
@@ -44,11 +45,20 @@
                                     <label class="text-dark">Phone</label>
                                     <input class="form-control" name="phone" value="{{isset($organization->phone) ? $organization->phone : ''}}" type="text">
                                 </div>
-                                <div class="form-group">
-
+                                <div class="form-group text-center">
+                                    <label class="text-dark d-block">Current Plan: {{isset($stripe->subscriptions) ? $stripe->subscriptions->data[0]->plan->id : 'N/A'}}</label>
+                                    <label class="text-dark d-block">Billing Interval: {{isset($stripe->subscriptions) ? ucfirst($stripe->subscriptions->data[0]->plan->interval) : 'N/A'}}</label>
+                                    <label class="text-dark d-block">Billing Type: {{isset($stripe->subscriptions) ? ucwords(str_replace('_' ,' ',$stripe->subscriptions->data[0]->billing)) : 'N/A'}}</label>
+                                    <label class="text-dark d-block">Subscription Status: {!! $status=='active' ? '<span class="text-success">'.ucfirst($status).'</span>' : '<span class="text-warning">'.ucfirst($status).'</span>' !!}</label>
                                 </div>
                             </div>
-                            <div class="card-body py-20">
+                            <div class="card-body text-center pb-20">
+                                @if($status=='active')
+                                    <button type="button" class="btn btn-danger revoke-subscription">Cancel Subscription</button>
+                                @else
+                                    <button type="button" class="btn btn-primary resume-subscription">Resume Subscription</button>
+                                @endif
+
                                 <button type="submit" class="btn btn-success">Update</button>
                             </div>
                         </form>
@@ -142,8 +152,39 @@
                 </div>
             </div>
         </div>
-        <script>
+        <script data-provide="sweetalert">
             window.onload=function(){
+
+                $('.revoke-subscription').on('click',function () {
+                    var $this=$(this);
+                    swal({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, cancel it!'
+                    }).then(function() {
+                        window.location.href="{{url('organizations/subscription/revoke')}}"
+                    })
+                })
+
+                $('.resume-subscription').on('click',function () {
+                    var $this=$(this);
+                    swal({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, resume it!'
+                    }).then(function() {
+                        window.location.href="{{url('organizations/subscription/resume')}}"
+                    })
+                })
+
                 @if(session()->has('success') || session('success'))
                 setTimeout(function () {
                     toastr.success('{{ session('success') }}');

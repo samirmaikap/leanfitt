@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Repositories\OrganizationRepository;
 use App\Services\RoleService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
@@ -56,20 +57,20 @@ class OrganizationController extends Controller
     }
 
     public function update(Request $request,$organization_id){
+
+        $image=$request->hasFile('image') ? $request->file('image') : null;
         try{
-            $result=$this->service->updateOrganization( $request->all(),null,$organization_id);
-            return response()->json($result);
+            $this->service->updateOrganization( $request->all(),$image,$organization_id);
+            return redirect()->back()->with('success', 'Organization has been updated');
         }catch(\Exception $e){
-            $response['success']=false;
-            $response['message']=$e->getMessage();
-            return response()->json($response);
+            return redirect()->back()->withErrors([$e->getMessage()]);
         }
     }
 
 
     public function show($organization_id){
         $data['organization'] =$this->service->show($organization_id);
-        dd($data);
+        $data['stripe']=$data['organization']->asStripeCustomer();
         return view('app.organizations.view', $data);
     }
 
@@ -84,12 +85,43 @@ class OrganizationController extends Controller
         }
     }
 
-//    public function delete($organization_id){
-//        try{
-//            $result=$this->service->removeOrganization($organization_id);
-//            return response()->json($result);
-//        }catch(\Exception $e){
-//
-//        }
-//    }
+    public function cancelSubscription(){
+        $organization_id=is_null(session('organization')) ? null : session()->get('organization')->id;
+        if(empty($organization_id))
+            return redirect()->back()->withErrors([config('messages.common_error')]);
+
+        $orgRepo=new OrganizationRepository();
+
+        $organization=$orgRepo->find($organization_id);
+        if(empty($organization))
+            return redirect()->back()->withErrors([config('messages.common_error')]);
+
+        $query=$organization->subscription('main')->cancel();
+        if($query){
+            return redirect()->back()->with('success', 'Subscription cancelled');
+        }
+        else{
+            return redirect()->back()->withErrors([config('messages.common_error')]);
+        }
+    }
+
+    public function resumeSubscription(){
+        $organization_id=is_null(session('organization')) ? null : session()->get('organization')->id;
+        if(empty($organization_id))
+            return redirect()->back()->withErrors([config('messages.common_error')]);
+
+        $orgRepo=new OrganizationRepository();
+
+        $organization=$orgRepo->find($organization_id);
+        if(empty($organization))
+            return redirect()->back()->withErrors([config('messages.common_error')]);
+
+        $query=$organization->subscription('main')->resume();
+        if($query){
+            return redirect()->back()->with('success', 'Subscription cancelled');
+        }
+        else{
+            return redirect()->back()->withErrors([config('messages.common_error')]);
+        }
+    }
 }

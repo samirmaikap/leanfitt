@@ -19,23 +19,6 @@ Route::get('/', function () {
 Auth::routes();
 Route::get('logout', 'Auth\LoginController@logout');
 
-
-// SuperAdmin routes
-Route::group(['namespace' => 'Web', 'middleware' => 'auth:web'], function () {
-
-    Route::get('organizations', 'OrganizationController@index');
-    Route::get('organizations/create', 'OrganizationController@create');
-    Route::post('organizations/create','OrganizationController@store');
-    Route::put('organizations/{organizationId}', function ($id) {
-        dd('updated');
-    });
-    Route::delete('organizations/{organizationId}', function ($id) {
-        dd('deleted');
-    });
-
-});
-
-
 // User routes
 Route::group(['domain' => '{organization}' . config('session.domain'), 'namespace' => 'Web', 'middleware' => 'checkDomain'], function () {
 
@@ -105,5 +88,23 @@ Route::group(['namespace' => 'Web'], function () {
     Route::get('organizations/create', 'OrganizationController@create');
     Route::post('organizations/create','OrganizationController@store');
     Route::get('organizations/{organization_id}/view','OrganizationController@show');
+    Route::get('organizations/subscription/revoke','OrganizationController@cancelSubscription');
+    Route::get('organizations/subscription/resume','OrganizationController@resumeSubscription');
 
+    Route::put('organizations/{organization_id}','OrganizationController@update');
 });
+
+//// SuperAdmin routes
+//Route::group(['namespace' => 'Web', 'middleware' => 'auth:web'], function () {
+//
+//    Route::get('organizations', 'OrganizationController@index');
+//    Route::get('organizations/create', 'OrganizationController@create');
+//    Route::post('organizations/create','OrganizationController@store');
+//    Route::put('organizations/{organizationId}', function ($id) {
+//        dd('updated');
+//    });
+//    Route::delete('organizations/{organizationId}', function ($id) {
+//        dd('deleted');
+//    });
+//
+//});
