@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Filesystem\FilesystemManager;
 use Spatie\Backup\Helpers\File;
 
-class AttachmentService implements AttachmentServiceInterface
+class AttachmentService //implements AttachmentServiceInterface
 {
     protected $attachmentRepo;
     protected $mediaRepo;

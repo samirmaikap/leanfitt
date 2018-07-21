@@ -48,10 +48,6 @@ Route::group(['domain' => '{organization}' . config('session.domain'), 'namespac
     Route::put('roles/{id}', 'RoleController@update');
     Route::delete('roles/{id}', 'RoleController@delete');
 
-    Route::get('/action-items/board', function () {
-        return view('app.action-items.board');
-    });
-
     Route::get('/projects', 'ProjectController@index');
     Route::post('/projects', 'ProjectController@create');
     Route::get('/projects/{project_id}', 'ProjectController@show');
@@ -60,6 +56,12 @@ Route::group(['domain' => '{organization}' . config('session.domain'), 'namespac
     Route::get('/projects/{projectId}/members', 'ProjectController@members');
     Route::get('/projects/{projectId}/action-items', 'ProjectController@actionItems');
     Route::get('/projects/{projectId}/reports', 'ProjectController@reports');
+
+    Route::post('projects/member', 'ProjectController@addMember');
+    Route::delete('projects/{project_id}/member/{member_id}/remove', 'ProjectController@removeMember');
+
+    Route::post('projects/attachment', 'ProjectController@addAttachment');
+    Route::delete('projects/{project_id}/attachment/{attachment_id}/remove', 'ProjectController@removeAttachment');
 
     Route::get('/kpi', 'KpiController@index');
     Route::post('/kpi', 'KpiController@create');
@@ -85,6 +87,8 @@ Route::group(['domain' => '{organization}' . config('session.domain'), 'namespac
 Route::group(['namespace' => 'Web'], function () {
 
     Route::get('/dashboard', 'DashboardController@index');
+
+    Route::get('organizations', 'OrganizationController@index');
     Route::get('organizations/create', 'OrganizationController@create');
     Route::post('organizations/create','OrganizationController@store');
     Route::get('organizations/{organization_id}/view','OrganizationController@show');
@@ -92,6 +96,17 @@ Route::group(['namespace' => 'Web'], function () {
     Route::get('organizations/subscription/resume','OrganizationController@resumeSubscription');
 
     Route::put('organizations/{organization_id}','OrganizationController@update');
+
+    Route::get('users', 'UserController@index');
+    Route::post('users', 'UserController@store');
+    Route::post('users/invitation', 'UserController@invitation');
+    Route::get('users/{id}', 'UserController@show');
+    Route::get('users/{id}/profile', 'UserController@profile');
+    Route::get('users/{user_id}/suspend', 'UserController@suspend');
+    Route::get('users/{user_id}/restore', 'UserController@restore');
+    Route::get('users/{id}/invitation/resend', 'UserController@reInvitation');
+    Route::put('users/{id}', 'UserController@update');
+    Route::delete('users/{id}', 'UserController@delete');
 });
 
 //// SuperAdmin routes

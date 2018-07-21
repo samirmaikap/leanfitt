@@ -24,13 +24,13 @@ class ProjectMemberService
             throw new \Exception($validator->messages()->first());
         }
 
-        $exists=$this->repo->where('project_id',arrayValue($data['project_id']))->where('user_id',arrayValue($data,'user_id'))->exists();
+        $exists=$this->repo->where('project_id',arrayValue($data,'project_id'))->where('user_id',arrayValue($data,'user_id'))->exists();
         if($exists){
             throw new \Exception('Member already exists');
         }
 
         $query=$this->repo->create($data);
-        $log='New member '.isset($query->user()->name) ? $query->user()->name : 'n/a' .' added';
+        $log='New member added';
         if(!$query){
             throw new \Exception(config('messages.common_error'));
         }
@@ -39,11 +39,11 @@ class ProjectMemberService
         return;
     }
 
-    public function delete($project_id,$user_id){
-        if(empty($project_id)){
-
+    public function delete($project_id,$member_id){
+        if(empty($member_id)){
+            throw new \Exception('Member not found');
         }
-        $member=$this->repo->where('project_id',$project_id)->where('user_id',$user_id)->first();
+        $member=$this->repo->find($member_id);
         $log=isset($member->user()->name) ? $member->user()->name : 'A member'. ' has been removed';
         if(!$member){
             throw new \Exception('Member not found');
@@ -56,5 +56,14 @@ class ProjectMemberService
 
         $this->activityRepo->create(['added_by'=>auth()->user()->id,'project_id'=>$project_id,'log'=>$log]);
         return;
+    }
+
+    public function allMembers($project_id){
+        if(empty($project_id)){
+            return;
+        }
+
+        $query=$this->repo->allMembers($project_id);
+        return $query;
     }
 }

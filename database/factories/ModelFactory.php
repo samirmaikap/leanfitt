@@ -165,8 +165,6 @@ $factory->define(App\Models\Project::class, function (Faker $faker) {
         'organization_id'=>rand(1,10),
         'name'=>$faker->sentence,
         'goal'=>$faker->paragraph,
-        'lean_sensie'=>rand(1,10),
-        'leader'=>rand(1,10),
         'start_date'=>$startDate=Carbon::createFromTimeStamp($faker->dateTimeBetween('-30 days', '+30 days')->getTimestamp()),
         'end_date'=> Carbon::createFromFormat('Y-m-d H:i:s', $startDate)->addDays(30),
         'note'=>$faker->paragraph,

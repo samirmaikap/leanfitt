@@ -10,11 +10,8 @@ class ProjectValidator extends BaseValidator
             'organization_id'=>'required',
             'name'=>'required',
             'goal'=>'required',
-            'leader'=>'required',
-            'lean_sensie'=>'required',
             'start_date'=>'required',
             'end_date'=>'required',
-
         ]
     ];
 }

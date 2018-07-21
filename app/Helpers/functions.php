@@ -33,3 +33,11 @@ function renderCollection($data){
         return json_decode(json_encode(new \Illuminate\Database\Eloquent\Collection($data)));
     }
 }
+
+function pluckSession($key){
+    $session=session()->get('organization');
+    if($session){
+        return $session->$key;
+    }
+    return null;
+}

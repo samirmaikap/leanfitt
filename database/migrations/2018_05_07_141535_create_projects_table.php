@@ -18,8 +18,6 @@ class CreateProjectsTable extends Migration
             $table->integer('organization_id')->unsigned();
             $table->string('name');
             $table->text('goal');
-            $table->integer('leader');
-            $table->integer('lean_sensie');
             $table->date('start_date');
             $table->date('end_date');
             $table->text('note')->nullable();

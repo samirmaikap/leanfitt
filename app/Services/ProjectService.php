@@ -25,10 +25,8 @@ class ProjectService //implements ProjectServiceInterface
         $this->deleteRepo=$deleteRepository;
     }
 
-    public function index($data)
+    public function index($organization=null)
     {
-        $organization=arrayValue($data,'organization');
-
         $query=$this->projectRepo->allProject($organization);
         if(!$query){
             throw new \Exception(config('messages.common_error'));
@@ -46,49 +44,7 @@ class ProjectService //implements ProjectServiceInterface
 
         $query=$this->projectRepo->getProject($project_id);
         if($query){
-            $data['id']=$query['id'];
-            $data['name']=$query['name'];
-            $data['start_date']=$query['start_date'];
-            $data['end_date']=$query['end_date'];
-            $data['report_date']=$query['report_date'];
-            $data['is_completed']=$query['is_completed'];
-            $data['is_archived']=$query['is_archived'];
-            $data['action_items']=count($query['actionItem']) > 0 ? $query['actionItem']->map(function($item){
-                return collect($item)->except('assignees');
-            }) : null ;
-            $data['members']=count($query['member']) > 0 ? $query['member']->map(function($ac){
-                return [
-                    'id'=>$ac['user']['id'],
-                    'first_name'=>$ac['user']['first_name'],
-                    'last_name'=>$ac['user']['last_name'],
-                    'avatar'=>$ac['user']['avatar'],
-                ];
-            }) : null ;
-            $data['comments']=isset($query['comments']) ? $query['comments']->map(function($comment){
-                return [
-                    'id'=>$comment['id'],
-                    'commenter_id'=>isset($comment['user']['id']) ? $comment['user']['id'] : null,
-                    'commenter_name'=>isset($comment['user']['id']) ? $comment['user']['first_name'].' '.$comment['user']['last_name'] : null,
-                    'commenter_avatar'=>isset($comment['user']['id']) ? $comment['user']['avatar'] : null,
-                    'comment'=>$comment['comment'],
-                    'created_at'=>Carbon::parse($comment['created_at'])->format('Y-m-d H:i:s')
-                ];
-            }) :null;
-            $data['attachments']=isset($query['attachments']) ? $query['attachments']->map(function($atta){
-                return collect($atta)->except('path');
-            }) :null;
-            $data['activities']=isset($query['activity']) ? $query['activity']->map(function ($activity){
-                  return ['id'=>$activity['id'],
-                      'user_id'=>isset($activity['user']['id']) ? $activity['user']['id'] : null,
-                      'user_name'=>isset($activity['user']['id']) ? $activity['user']['first_name'].' '.$activity['user']['last_name'] : null,
-                      'user_avatar'=>isset($activity['user']['id']) ? $activity['user']['avatar'] : null,
-                      'log'=>$activity['log'],
-                      'created_at'=>Carbon::parse($activity['created_at'])->format('Y-m-d H:i:s')
-                  ];
-            }) :null;
-
-
-            return renderCollection($data);
+            return $query;
         }
         else{
             throw new \Exception(config('messages.common_error'));
@@ -97,11 +53,14 @@ class ProjectService //implements ProjectServiceInterface
 
     public function create($data)
     {
-        $data['organization_id']=session()->get('organization')->id;
+        $data['organization_id']=pluckSession('id');
         $validator=new ProjectValidator($data,'create');
         if($validator->fails()){
             throw new \Exception($validator->messages()->first());
         }
+        $data['start_date']=Carbon::parse($data['start_date'])->format('Y-m-d');
+        $data['end_date']=Carbon::parse($data['end_date'])->format('Y-m-d');
+        $data['report_date']=Carbon::parse($data['report_date'])->format('Y-m-d');
 
         $query=$this->projectRepo->create($data);
         if($query){
@@ -217,5 +176,14 @@ class ProjectService //implements ProjectServiceInterface
         else{
             throw new \Exception("Project not found");
         }
+    }
+
+    public function getMembers($project_id=null){
+        if(empty($project_id)){
+            return;
+        }
+
+        $query=$this->projectRepo->getMembers($project_id);
+        return $query;
     }
 }

@@ -23,8 +23,17 @@ class ProjectRepository extends BaseRepository //implements ProjectRepositoryInt
 
     public function getProject($project_id)
     {
-        $query=$this->model()->with(['member.user','activity.user','comments.user','attachments'])->where('id',$project_id)->first();
+        $query=$this->model()->with(['member','comments.user','attachments'])->where('id',$project_id)->first();
         return $query;
     }
 
+    public function getMembers($project_id){
+        $query=$this->model()
+            ->join('organization_user as ou','ou.organization_id','=','projects.organization_id')
+            ->join('users as u','u.id','=','ou.user_id')
+            ->where('projects.id',$project_id)
+            ->select('u.avatar','u.id','u.first_name','u.last_name')
+            ->distinct()->get();
+        return $query;
+    }
 }

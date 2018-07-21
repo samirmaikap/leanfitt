@@ -86,7 +86,7 @@ class OrganizationController extends Controller
     }
 
     public function cancelSubscription(){
-        $organization_id=is_null(session('organization')) ? null : session()->get('organization')->id;
+        $organization_id=is_null(session('organization')) ? null : pluckSession('id');
         if(empty($organization_id))
             return redirect()->back()->withErrors([config('messages.common_error')]);
 
@@ -106,7 +106,7 @@ class OrganizationController extends Controller
     }
 
     public function resumeSubscription(){
-        $organization_id=is_null(session('organization')) ? null : session()->get('organization')->id;
+        $organization_id=is_null(session('organization')) ? null : pluckSession('id');
         if(empty($organization_id))
             return redirect()->back()->withErrors([config('messages.common_error')]);
 
