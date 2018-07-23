@@ -54,7 +54,13 @@ class AttachmentService //implements AttachmentServiceInterface
         }
 
         DB::beginTransaction();
-        $data['path']=$path=Storage::putFile('public/attachments',$file);
+        $filename=$file->getClientOriginalName();
+        $exists=Storage::disk('local')->exists('public/attachments/'.$filename);
+        if($exists){
+            $filename=rand(000,999).$filename;
+        }
+
+        $data['path']=$path=Storage::putFileAs('public/attachments',$file,$filename);
         $data['url']=url(Storage::url($path));
 
         $attachment=$this->attachmentRepo->create($data);

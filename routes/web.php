@@ -102,32 +102,32 @@ Route::group(['domain' => '{organization}' . config('session.domain'), 'namespac
     Route::get('awards', 'AwardController@index');
 });
 
-Route::group(['namespace' => 'Web'], function () {
-
-    Route::get('/dashboard', 'DashboardController@index');
-
-    Route::get('organizations', 'OrganizationController@index');
-    Route::get('organizations/{organization_id}/view','OrganizationController@show');
-
-    Route::get('users', 'UserController@index');
-    Route::get('users/{id}/profile', 'UserController@profile');
-
-    Route::get('/projects', 'ProjectController@index');
-    Route::get('/projects/{project_id}/kpi', 'ProjectController@kpi');
-    Route::get('/projects/{projectId}/members', 'ProjectController@members');
-    Route::get('/projects/{projectId}/action-items', 'ProjectController@actionItems');
-    Route::get('/projects/{projectId}/reports', 'ProjectController@reports');
-    Route::get('/projects/{project_id}/details', 'ProjectController@show');
-
-    Route::get('lean-tools', 'LeanToolController@index');
-    Route::get('lean-tools/view/{tool_id}', 'LeanToolController@show');
-    Route::get('lean-tools/create', 'LeanToolController@create');
-    Route::post('lean-tools/create', 'LeanToolController@save');
-    Route::get('lean-tools/edit/{tool_id}', 'LeanToolController@create');
-
-    Route::get('quizzes', 'QuizController@index');
-
-    Route::get('assessment', 'AssessmentController@index');
-
-    Route::get('awards', 'AwardController@index');
-});
+//Route::group(['namespace' => 'Web'], function () {
+//
+//    Route::get('/dashboard', 'DashboardController@index');
+//
+//    Route::get('organizations', 'OrganizationController@index');
+//    Route::get('organizations/{organization_id}/view','OrganizationController@show');
+//
+//    Route::get('users', 'UserController@index');
+//    Route::get('users/{id}/profile', 'UserController@profile');
+//
+//    Route::get('/projects', 'ProjectController@index');
+//    Route::get('/projects/{project_id}/kpi', 'ProjectController@kpi');
+//    Route::get('/projects/{projectId}/members', 'ProjectController@members');
+//    Route::get('/projects/{projectId}/action-items', 'ProjectController@actionItems');
+//    Route::get('/projects/{projectId}/reports', 'ProjectController@reports');
+//    Route::get('/projects/{project_id}/details', 'ProjectController@show');
+//
+//    Route::get('lean-tools', 'LeanToolController@index');
+//    Route::get('lean-tools/view/{tool_id}', 'LeanToolController@show');
+//    Route::get('lean-tools/create', 'LeanToolController@create');
+//    Route::post('lean-tools/create', 'LeanToolController@save');
+//    Route::get('lean-tools/edit/{tool_id}', 'LeanToolController@create');
+//
+//    Route::get('quizzes', 'QuizController@index');
+//
+//    Route::get('assessment', 'AssessmentController@index');
+//
+//    Route::get('awards', 'AwardController@index');
+//});

@@ -101,9 +101,9 @@
                                     @if(isset($project->attachments) && count($project->attachments) > 0)
                                         @foreach($project->attachments as $key=>$attachment)
                                             @php $ext= empty($attachment->url) ? 'N/A' : pathinfo($attachment->url, PATHINFO_EXTENSION); @endphp
-                                            <a class="avatar avatar-pill avatar-lg" style="overflow: hidden" href="{{$attachment->url}}" target="_blank">
+                                            <a class="avatar avatar-pill avatar-lg" title="{{pathinfo($attachment->url, PATHINFO_BASENAME)}}" style="overflow: hidden" href="{{$attachment->url}}" target="_blank">
                                                 <img src="https://ui-avatars.com/api/?font-size=0.21&length=4&uppercase=false&name={{$ext}}" alt="...">
-                                                <span class="text-truncate w-150px">Attachment {{$key+1}}</span>
+                                                <span class="text-truncate w-150px">{{pathinfo($attachment->url, PATHINFO_FILENAME)}}</span>
                                                 <form id="attachmentRemoveForm" method="post" action="{{url('projects')}}/{{$project->id}}/attachment/{{$attachment->id}}/remove">
                                                     {{csrf_field()}}
                                                     {{method_field('delete')}}
