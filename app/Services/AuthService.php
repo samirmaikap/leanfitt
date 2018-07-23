@@ -94,7 +94,7 @@ class AuthService
 
     public function checkInvitation($data){
         if(empty(arrayValue($data,'token'))){
-            throw  new \Exception('Invalid inivation token');
+            throw  new \Exception('Invalid invitation token');
         }
 
         $orgUser=$this->orgUserRepo->where('invitation_token',$data['token'])->first();
@@ -120,7 +120,7 @@ class AuthService
 
         $account=$this->repo->where('email',arrayValue($data,'email'))->first();
         if(!$account){
-            throw new \Exception(config('messages.not_account'));
+            throw new \Exception('The email address not associated with any account');
         }
 
         $recovery['first_name']=$account->first_name;
@@ -138,71 +138,29 @@ class AuthService
         return true;
     }
 
-//    public function checkResetCode($code){
-//
-//        if(empty($code)){
-//           throw new \Exception("Please enter the recovery code");
-//        }
-//
-//        $recovery_log=$this->recoveryRepo->where('code',$code)->first();
-//        if($recovery_log) {
-//            $account = $this->repo->find($recovery_log->user_id);
-//            if($account){
-//                $response->success=true;
-//                $response->data=['user_id'=>$account->id];
-//                $response->message="Account found";
-//            }
-//            else{
-//                $response->success=false;
-//                $response->data=null;
-//                $response->message="Account not found";
-//            }
-//        }
-//        else{
-//            $response->success=true;
-//            $response->data=null;
-//            $response->message="Invalid code";
-//        }
-//
-//        return $response;
-//    }
-//
-//
-//    public function updatePassword($request)
-//    {
-//        $response=new \stdClass();
-//        if(empty($request->get('user_id'))){
-//            $response->success=false;
-//            $response->message="Invalid user id";
-//            return $response;
-//        }
-//
-//        $account=$this->repo->find($request->get('user_id'));
-//
-//        $validator=new UserValidator($request->all(),'update');
-//        if($validator->fails()){
-//            $response->success=false;
-//            $response->message=$validator->messages()->first();
-//            return $response;
-//        }
-//
-//        if($account){
-//            $data=$request->except('user_id');
-//            $query=$this->repo->fillUpdate($account,$data);
-//            if($query){
-//                $response->success=true;
-//                $response->message="Password has been updated";
-//            }
-//            else{
-//                $response->success=false;
-//                $response->message="Unable to update password";
-//            }
-//        }
-//        else{
-//            $response->success=false;
-//            $response->message="Account not found";
-//        }
-//
-//        return $response;
-//    }
+    public function updatePassword($data)
+    {
+        if(empty(arrayValue($data,'token'))){
+            throw new \Exception('Invalid token provided');
+        }
+
+        $log=$this->recoveryRepo->where('token',$data['token'])->first();
+        if(!$log){
+            throw new \Exception('The request does not exist');
+        }
+
+        $account=$this->repo->find($log->user_id);
+
+        $validator=new UserValidator($data,'update');
+        if($validator->fails()){
+            throw new \Exception($validator->messages()->first());
+        }
+
+        $query=$this->repo->fillUpdate($account,$data);
+        if(!$query){
+            throw new \Exception(config('messages.common_error'));
+        }
+
+        return;
+    }
 }

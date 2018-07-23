@@ -312,7 +312,7 @@
                                                     <table border="0" cellpadding="0" cellspacing="0">
                                                         <tbody>
                                                         <tr>
-                                                            <td> <a href="{{url('account/recovery/verify?token=').$data['token'] }}" target="_blank">Reset Password</a> </td>
+                                                            <td> <a href="{{url('password/change?token=').$data['token'] }}" target="_blank">Reset Password</a> </td>
                                                         </tr>
                                                         </tbody>
                                                     </table>

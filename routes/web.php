@@ -18,6 +18,11 @@ Route::get('/', function () {
 });
 Auth::routes();
 Route::get('logout', 'Auth\LoginController@logout');
+Route::get('recovery', 'Web\AuthController@recovery');
+Route::post('recovery', 'Web\AuthController@checkRecovery');
+Route::get('password/change', 'Web\AuthController@changePassword');
+Route::post('password/change', 'Web\AuthController@updatePassword');
+Route::get('invitaion/accept', 'Web\AuthController@invitation');
 
 // User routes
 Route::group(['domain' => '{organization}' . config('session.domain'), 'namespace' => 'Web', 'middleware' => 'checkDomain'], function () {
