@@ -78,6 +78,10 @@ class ProjectService //implements ProjectServiceInterface
             throw new \Exception("Project id field is required");
         }
 
+        $data['start_date']=Carbon::parse($data['start_date'])->format('Y-m-d');
+        $data['end_date']=Carbon::parse($data['end_date'])->format('Y-m-d');
+        $data['report_date']=Carbon::parse($data['report_date'])->format('Y-m-d');
+
         $query=$this->projectRepo->update($project_id,$data);
         if($query){
             $this->activityRepo->create(['added_by'=>auth()->user()->id,'project_id'=>$project_id,'log'=>'Project updated']);

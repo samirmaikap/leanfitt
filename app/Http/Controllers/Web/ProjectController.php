@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Services\AttachmentService;
+use App\Services\CommentService;
 use App\Services\ProjectMemberService;
 use function dd;
 use Illuminate\Http\Request;
@@ -17,16 +18,19 @@ class ProjectController extends Controller
     protected $kpiService;
     protected $memberService;
     protected $attachmentService;
+    protected $commentService;
 
     public function __construct(ProjectService $projectService,
                                 KpiService $kpiService,
                                 ProjectMemberService $projectMemberService,
-                                AttachmentService $attachmentService)
+                                AttachmentService $attachmentService,
+                                CommentService $commentService)
     {
         $this->projectService=$projectService;
         $this->kpiService = $kpiService;
         $this->memberService=$projectMemberService;
         $this->attachmentService=$attachmentService;
+        $this->commentService=$commentService;
     }
 
     public function index(Request $request){
@@ -131,44 +135,35 @@ class ProjectController extends Controller
 
     public function update(Request $request,$project_id){
         try{
-            $result=$this->projectService->update($request,$project_id);
-            return response()->json($result);
+            $this->projectService->update($request->all(),$project_id);
+            return redirect()->back()->with('success','Project has been updated');
+        }catch(\Exception $e){
+            return redirect()->back()->withInput($request->all())->withErrors([$e->getMessage()]);
+        }
+    }
+
+    public function archive($project_id){
+        try{
+            $result=$this->projectService->archive($project_id);
+            return redirect()->back()->with('success','Project has been archived');
         }catch(\Exception $e){
             return redirect()->back()->withErrors([$e->getMessage()]);
         }
     }
 
-    public function archive($project_id,$user_id){
+    public function complete($project_id){
         try{
-            $result=$this->projectService->archive($project_id,$user_id);
-            return response()->json($result);
+            $result=$this->projectService->complete($project_id);
+            return redirect()->back()->with('success','Project has been completed');
         }catch(\Exception $e){
             return redirect()->back()->withErrors([$e->getMessage()]);
         }
     }
 
-    public function restore($project_id,$user_id){
+    public function delete($project_id){
         try{
-            $result=$this->projectService->restore($project_id,$user_id);
-            return response()->json($result);
-        }catch(\Exception $e){
-            return redirect()->back()->withErrors([$e->getMessage()]);
-        }
-    }
-
-    public function complete($project_id,$user_id){
-        try{
-            $result=$this->projectService->complete($project_id,$user_id);
-            return response()->json($result);
-        }catch(\Exception $e){
-            return redirect()->back()->withErrors([$e->getMessage()]);
-        }
-    }
-
-    public function delete($project_id,$user_id){
-        try{
-            $result=$this->projectService->delete($project_id,$user_id);
-            return response()->json($result);
+            $result=$this->projectService->delete($project_id);
+            return redirect()->back()->with('success','Project has been deleted');
         }catch(\Exception $e){
             return redirect()->back()->withErrors([$e->getMessage()]);
         }
@@ -198,6 +193,33 @@ class ProjectController extends Controller
         try{
             $this->attachmentService->create($request->all(),$file);
             return redirect()->back()->with('success','Attachment has been added');
+        }catch(\Exception $e){
+            return redirect()->back()->withErrors([$e->getMessage()]);
+        }
+    }
+
+    public function removeAttachment($project_id,$attachment_id){
+        try{
+            $this->attachmentService->delete($attachment_id);
+            return redirect()->back()->with('success','Attachment has been deleted');
+        }catch(\Exception $e){
+            return redirect()->back()->withErrors([$e->getMessage()]);
+        }
+    }
+
+    public function addComment(Request $request){
+        try{
+            $this->commentService->create($request->all());
+            return redirect()->back()->with('success','Comment has been posted');
+        }catch(\Exception $e){
+            return redirect()->back()->withInput($request->all())->withErrors([$e->getMessage()]);
+        }
+    }
+
+    public function removeComment($comment_id){
+        try{
+            $this->commentService->delete($comment_id);
+            return redirect()->back()->with('success','Comment has been deleted');
         }catch(\Exception $e){
             return redirect()->back()->withErrors([$e->getMessage()]);
         }

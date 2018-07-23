@@ -37,5 +37,13 @@ class PermissionSeeder extends Seeder
 
         // Grant all permission to SuperAdmin
         $superAdmin->attachPermissions($permissions);
+
+        DB::table('role_user')->insert([
+            [
+                'user_id'=>1,
+                'role_id'=>1,
+                'user_type'=>'App\Models\User'
+            ],
+        ]);
     }
 }

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <style>
-        .avatar{
+        .avatar-container .avatar{
             vertical-align: middle !important;
         }
     </style>
@@ -22,10 +22,10 @@
         </header>
         <div class="main-content">
             <div class="row">
-                <div class="col-lg-4">
+                <div class="col-lg-4 project-container">
                     <div class="card">
-                        <div class="card-header"><h3><strong>{{$project->name}}</strong></h3></div>
-                        <div class="card-body bg-lighter">
+                        <div class="card-header center-h"><h3><strong>{{$project->name}}</strong></h3></div>
+                        <div class="card-body text-center bg-lighter">
                             <p>{{$project->note}}</p>
                             <p>{{$project->goal}}</p>
                             <p>Start Date: {{date('m/d/Y',strtotime($project->start_date))}}</p>
@@ -36,21 +36,39 @@
                             @elseif($project->is_archived==1)
                                 <p>Status: <span class="text-warning">Archived</span></p>
                             @else
-                                <p>Status: <span class="text-default">Ongoing</span></p>
+                                <p>Status: <span class="text-primary">Ongoing</span></p>
                             @endif
 
                         </div>
                         <div class="card-body text-center">
-                            <button class="btn m-1 btn-round btn-square btn-primary"><i class="fe fe-edit-3"></i></button>
-                            <button class="btn m-1 btn-round btn-square btn-success"><i class="fe fe-check"></i></button>
-                            <button class="btn m-1 btn-round btn-square btn-warning"><i class="fe fe-archive"></i></button>
-                            <button class="btn m-1 btn-round btn-square btn-danger"><i class="fe fe-trash-2"></i></button>
+                            @if($project->is_completed==0 && $project->is_archived==0 )
+                                <button class="btn m-1 btn-round btn-primary" data-toggle="modal" data-target="#modal-project">Edit</button>
+                                <form class="d-inline-block" id="compeleteProjectForm" method="post" action="{{url('projects')}}/{{$project->id}}/complete">
+                                    {{csrf_field()}}
+                                    {{method_field('put')}}
+                                    <button class="btn m-1 btn-round btn-success complete-project">Mark Complete</button>
+                                </form>
+                            @elseif($project->is_completed==1 && $project->is_archived==0 )
+                                <form class="d-inline-block" id="archiveProjectForm" method="post" action="{{url('projects')}}/{{$project->id}}/archive">
+                                    {{csrf_field()}}
+                                    {{method_field('put')}}
+                                    <button class="btn m-1 btn-round btn-warning archive-project">Archive</button>
+                                </form>
+
+                            @elseif($project->is_completed==1 && $project->is_archived==1)
+                                <form class="d-inline-block" id="deleteProjectForm" method="post" action="{{url('projects')}}/{{$project->id}}/delete">
+                                    {{csrf_field()}}
+                                    {{method_field('put')}}
+                                    <button class="btn m-1 btn-round btn-danger delete-project">Delete</button>
+                                </form>
+                            @else
+                            @endif
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-8">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12 avatar-container members-container">
                             <div class="card">
                                 <div class="card-header"><h4>Members</h4></div>
                                 <div class="card-body">
@@ -61,10 +79,10 @@
                                                 <a class="avatar avatar-pill avatar-lg" href="{{url('users')}}/{{$pmem->id}}/profile">
                                                     <img src="{{$pmem->avatar}}" alt="...">
                                                     <span>{{$pmem->first_name}} {{$pmem->last_name}}</span>
-                                                    <form method="post" action="{{url('projects')}}/{{$project->id}}/member/{{$pmem->member_id}}/remove">
+                                                    <form id="memberRemoveForm" method="post" action="{{url('projects')}}/{{$project->id}}/member/{{$pmem->member_id}}/remove">
                                                         {{csrf_field()}}
                                                         {{method_field('delete')}}
-                                                        <button type="submit" class="close cursor-pointer">&times;</button>
+                                                        <button type="submit" class="close cursor-pointer remove-member">&times;</button>
                                                     </form>
 
                                                 </a>
@@ -76,47 +94,70 @@
                             </div>
                         </div>
 
-                        <div class="col-md-12">
+                        <div class="col-md-12 avatar-container attachments-container">
                             <div class="card">
                                 <div class="card-header"><h4>Attachments</h4></div>
                                 <div class="card-body">
-                                    <a class="avatar avatar-pill avatar-lg" style="overflow: hidden" href="#" style="vertical-align: middle">
-                                        <img src="{{asset('assets')}}/img/attachment.png" alt="...">
-                                        <span class="text-truncate w-150px">Continually drive user friendly solut</span>
-                                        <span class="close">&times;</span>
-                                    </a>
-                                    <a class="avatar avatar-pill avatar-lg" style="overflow: hidden" href="#" style="vertical-align: middle">
-                                        <img src="{{asset('assets')}}/img/attachment.png" alt="...">
-                                        <span class="text-truncate w-150px">Continually drive user friendly solut</span>
-                                        <span class="close">&times;</span>
-                                    </a>
+                                    @if(isset($project->attachments) && count($project->attachments) > 0)
+                                        @foreach($project->attachments as $key=>$attachment)
+                                            @php $ext= empty($attachment->url) ? 'N/A' : pathinfo($attachment->url, PATHINFO_EXTENSION); @endphp
+                                            <a class="avatar avatar-pill avatar-lg" style="overflow: hidden" href="{{$attachment->url}}" target="_blank">
+                                                <img src="https://ui-avatars.com/api/?font-size=0.21&length=4&uppercase=false&name={{$ext}}" alt="...">
+                                                <span class="text-truncate w-150px">Attachment {{$key+1}}</span>
+                                                <form id="attachmentRemoveForm" method="post" action="{{url('projects')}}/{{$project->id}}/attachment/{{$attachment->id}}/remove">
+                                                    {{csrf_field()}}
+                                                    {{method_field('delete')}}
+                                                    <button type="submit" class="close cursor-pointer remove-attachment">&times;</button>
+                                                </form>
+                                            </a>
+                                        @endforeach
+                                    @endif
                                     <a class="avatar avatar-add avatar-lg hover-white cursor-pointer add-attachment"></a>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-md-12">
+                        <div class="col-md-12 comments-container">
                             <div class="card">
                                 <div class="card-header"><h4>Comments</h4></div>
                                 <div class="card-body">
                                     <div class="media-list media-list-divided">
                                         <div class="media">
-                                            <a class="avatar" href="#">
-                                                <img src="../assets/img/avatar/5.jpg" alt="...">
-                                            </a>
-                                            <div class="media-body">
-                                                <p>
-                                                    <a href="#"><strong>Tim Hank</strong></a>
-                                                    <time class="float-right text-fade" datetime="2018-07-14 20:00">25 Dec</time>
-                                                </p>
-                                                <p>Continually drive user friendly solutions through performance based infomediaries.</p>
-                                            </div>
+                                            @if(isset($project->comments) && count($project->comments) > 0)
+                                                @foreach($project->comments as $comment)
+                                                    <a class="avatar" href="#">
+                                                        <img src="{{isset($comment->user) ? $comment->user->avatar : null}}" alt="...">
+                                                    </a>
+                                                    <div class="media-body">
+                                                        <p>
+                                                            <a href="{{url('users')}}/{{isset($comment->user) ? $comment->user->id : null}}/profile"><strong>{{isset($comment->user) ? $comment->user->full_name : 'No Name'}}</strong></a>
+                                                            <time class="float-right text-fade" datetime="2018-07-14 20:00">{{date('m/d/Y',strtotime($comment->created_at))}}</time>
+                                                        </p>
+                                                        <p>{{$comment->comment}}</p>
+                                                        <p>
+                                                            {{--<span class="cursor-pointer badge badge-gray mr-1">Edit</span> --}}
+                                                        @if(auth()->user()->id==$comment->user->id)
+                                                            <form id="commentDeleteForm" method="post" action="{{url('projects')}}/comment/{{$comment->id}}/remove">
+                                                                {{csrf_field()}}
+                                                                {{method_field('delete')}}
+                                                                <button type="submit" class="btn btn-xs btn-outline-danger mr-5 mt-1 remove-comment">Delete</button>
+                                                            </form>
+                                                        @endif
+                                                        </p>
+                                                    </div>
+                                                @endforeach
+                                                @else
+                                                <h4>No comments</h4>
+                                            @endif
                                         </div>
                                     </div>
-                                    <form class="publisher bg-transparent bt-1 border-fade">
-                                        <textarea class="publisher-input" style="resize: none" placeholder="Add Comment"></textarea>
+                                    <form class="publisher bg-transparent bt-1 border-fade" method="post" action="{{url('projects/comment')}}">
+                                        {{csrf_field()}}
+                                        <textarea name="comment" class="publisher-input" style="resize: none" placeholder="Add Comment">{{old('comment')}}</textarea>
                                         {{--<input class="publisher-input" type="text" placeholder="Add Comment">--}}
-                                        <a class="publisher-btn" href="#"><i class="fe fe-arrow-right"></i></a>
+                                        <input type="hidden" name="type" value="project">
+                                        <input type="hidden" name="project_id" value="{{$project->id}}">
+                                        <button type="submit" class="publisher-btn" href="#"><i class="fe fe-arrow-right"></i></button>
                                     </form>
                                 </div>
                             </div>
@@ -186,10 +227,100 @@
         </form>
 
     </main>
-    <script>
+    <script data-provide="sweetalert">
         window.onload=function(){
             $('.add-attachment').click(function(){
                 $('#file-input').trigger('click');
+            })
+
+            $('.project-container').on('click','.complete-project',function(e){
+                e.preventDefault();
+                swal({
+                    title: 'Are you sure?',
+                    text: "You can't revert this later!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes'
+                }).then(function() {
+                    $('#compeleteProjectForm').submit();
+                })
+            })
+
+            $('.project-container').on('click','.archive-project',function(e){
+                e.preventDefault();
+                swal({
+                    title: 'Are you sure?',
+                    text: "You can't revert this later!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes'
+                }).then(function() {
+                    $('#archiveProjectForm').submit();
+                })
+            })
+
+            $('.project-container').on('click','.delete-project',function(e){
+                e.preventDefault();
+                swal({
+                    title: 'Are you sure?',
+                    text: "You can't revert this later!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes'
+                }).then(function() {
+                    $('#deleteProjectForm').submit();
+                })
+            })
+
+            $('.members-container').on('click','.remove-member',function(e){
+                e.preventDefault();
+                swal({
+                    title: 'Are you sure?',
+                    text: "You can revert this later!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes'
+                }).then(function() {
+                    $('#memberRemoveForm').submit();
+                })
+            })
+
+            $('.attachments-container').on('click','.remove-attachment',function(e){
+                e.preventDefault();
+                swal({
+                    title: 'Are you sure?',
+                    text: "You can revert this later!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes'
+                }).then(function() {
+                    $('#attachmentRemoveForm').submit();
+                })
+            })
+
+            $('.comments-container').on('click','.remove-comment',function(e){
+                e.preventDefault();
+                swal({
+                    title: 'Are you sure?',
+                    text: "You can't revert this later!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes'
+                }).then(function() {
+                    $('#commentDeleteForm').submit();
+                })
             })
 
             @if(session()->has('success') || session('success'))

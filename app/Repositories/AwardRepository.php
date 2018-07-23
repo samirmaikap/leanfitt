@@ -22,11 +22,9 @@ class AwardRepository extends BaseRepository //implements AwardRepositoryInterfa
             ->leftJoin('department_user as du','awards.user_id','=','du.user_id')
             ->where('ou.organization_id',empty($organization)? '!=' : '=',empty($organization) ? null : $organization)
             ->where('u.id',empty($user)? '!=' : '=',empty($user) ? null : $user);
-
         if(!empty($department)){
             $query=$query->where('du.department_id',$department);
         }
-
         $query=$query->select(['awards.*','u.first_name','u.last_name','u.avatar'])
             ->distinct()->orderBy('u.first_name')->get();
         return $query;

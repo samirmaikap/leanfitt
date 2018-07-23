@@ -19,7 +19,7 @@ class CommentService //implements CommentServiceInterface
 
    public function create($data)
    {
-
+       $data['user_id']=auth()->user()->id;
        $validator=new CommentValidator($data,'create');
        if($validator->fails()){
            throw new \Exception($validator->messages()->first());

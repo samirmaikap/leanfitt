@@ -57,11 +57,19 @@ Route::group(['domain' => '{organization}' . config('session.domain'), 'namespac
     Route::get('/projects/{projectId}/action-items', 'ProjectController@actionItems');
     Route::get('/projects/{projectId}/reports', 'ProjectController@reports');
 
+    Route::put('/projects/{project_id}', 'ProjectController@update');
+    Route::put('/projects/{project_id}/complete', 'ProjectController@complete');
+    Route::put('/projects/{project_id}/archive', 'ProjectController@archive');
+    Route::put('/projects/{project_id}/delete', 'ProjectController@delete');
+
     Route::post('projects/member', 'ProjectController@addMember');
     Route::delete('projects/{project_id}/member/{member_id}/remove', 'ProjectController@removeMember');
 
     Route::post('projects/attachment', 'ProjectController@addAttachment');
     Route::delete('projects/{project_id}/attachment/{attachment_id}/remove', 'ProjectController@removeAttachment');
+
+    Route::post('projects/comment', 'ProjectController@addComment');
+    Route::delete('projects/comment/{comment_id}/remove', 'ProjectController@removeComment');
 
     Route::get('/action-items', 'ActionItemController@index');
     Route::post('/action-items', 'ActionItemController@create');

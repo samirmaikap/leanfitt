@@ -12,36 +12,22 @@ class ModelSeeder extends Seeder
      */
     public function run()
     {
-//        factory(\App\Models\User::class,10)->create();
+        DB::table('users')->insert([
+            [
+                'first_name'=>'Test',
+                'last_name'=>'admin',
+                'email'=>'admin@example.com',
+                'phone'=>'12345789',
+                'password'=>'secret',
+                'is_superadmin'=>1,
+                'is_verified'=>1
+            ],
+        ]);
 
-//        factory(\App\Models\Organization::class,10)->create()->each(function ($u) {
-//            $dep=$u->departments()->save(factory(\App\Models\Department::class)->make());
-//        });
+
 
         /*LeanTool*/
         factory(\App\Models\LeanTool::class,10)->create();
-
-        /*Board*/
-//        factory(\App\Models\Board::class,10)->create();
-
-        /*Project -> (Kpi Chart -> Kpi Data Points, Action Items)*/
-//        factory(\App\Models\Project::class,10)->create()->each(function ($u) {
-//            $kpi=$u->kpi()->save(factory(\App\Models\KpiChart::class)->make());
-//            $kpi->kpiData()->save(factory(\App\Models\KpiDataPoint::class)->make());
-//            $u->Actionitem()->save(factory(\App\Models\ActionItem::class)->make());
-//        });
-
-        /*Label*/
-//        factory(\App\Models\Label::class,10)->create();
-
-        /*Comments*/
-//        factory(\App\Models\Comment::class,20)->create();
-
-        /*Quiz Result*/
-//        factory(\App\Models\QuizResult::class,10)->create();
-
-        /*Award*/
-//        factory(\App\Models\Award::class,10)->create();
 
         DB::table('report_categories')->insert([
             ['name'=>'Healthcare roadmap/gemba walk'],
@@ -69,6 +55,5 @@ class ModelSeeder extends Seeder
             ['name'=>'Manufacturing A3 project report'],
         ]);
 
-        /*Some table needs manual inputs to maintain relational integrity*/
     }
 }
