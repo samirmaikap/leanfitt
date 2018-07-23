@@ -5,6 +5,7 @@ return [
     'models' => [
     	'user',
         'department',
+        'organization',
         'role',
         'project',
         'action-item',

@@ -43,9 +43,9 @@ abstract class BaseRepository implements BaseRepositoryInterface
         return $this->model->get();
     }
 
-    public function first()
+    public function first($cols=null)
     {
-        return $this->model->first();
+        return $this->model->first($cols);
     }
 
     public function find($id)

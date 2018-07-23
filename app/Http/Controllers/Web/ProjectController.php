@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Services\AttachmentService;
 use App\Services\CommentService;
+use App\Services\OrganizationService;
 use App\Services\ProjectMemberService;
 use function dd;
 use Illuminate\Http\Request;
@@ -19,29 +20,36 @@ class ProjectController extends Controller
     protected $memberService;
     protected $attachmentService;
     protected $commentService;
+    protected $orgService;
 
     public function __construct(ProjectService $projectService,
                                 KpiService $kpiService,
                                 ProjectMemberService $projectMemberService,
                                 AttachmentService $attachmentService,
-                                CommentService $commentService)
+                                CommentService $commentService,
+                                OrganizationService $organizationService)
     {
         $this->projectService=$projectService;
         $this->kpiService = $kpiService;
         $this->memberService=$projectMemberService;
         $this->attachmentService=$attachmentService;
         $this->commentService=$commentService;
+        $this->orgService=$organizationService;
     }
 
     public function index(Request $request){
-        $organization=$request->query('organization') ? $request->get('organization') : pluckSession('id');
+        $data['page']='projects';
+        $data['organizations']=$this->orgService->list();
+        $data['organization_id']=!empty(pluckSession('id')) ? pluckSession('id') : $data['organizations']->first()->id;
+        $organization=$request->query('organization') ? $request->get('organization') : $data['organization_id'];
         $data['projects'] = $this->projectService->index($organization);
-        $data['page'] = 'index';
+
         return view("app.projects.index", $data);
     }
 
     public function show($project_id)
     {
+        $data['page']='projects';
         $data['project']=$this->projectService->show($project_id);
         $members=$this->projectService->getMembers($project_id);
         if(count($data['project']->member) > 0 && count($members) > 0){
@@ -56,22 +64,8 @@ class ProjectController extends Controller
 
         $project_members=$this->memberService->allMembers($project_id);
         $data['project_members']=$project_members->groupBy('role');
-        $data['page'] = 'details';
-        return view("app.projects.details", $data);
-    }
 
-    public function members($project_id)
-    {
-        try
-        {
-            $data['project'] = $this->projectService->show($project_id);
-            $data['page'] = 'members';
-            return view("app.projects.members", $data);
-        }
-        catch(\Exception $e)
-        {
-            return redirect()->back()->withErrors([$e->getMessage()]);
-        }
+        return view("app.projects.details", $data);
     }
 
     public function kpi(Request $request, $project_id)

@@ -15,17 +15,19 @@ class LeanToolController extends Controller
     }
 
     public function index(){
+        $data['page']='lean-tools';
         $data['tools']=$this->service->index();
         return view('app.leantools.index',$data);
     }
 
     public function show($tool_id){
+        $data['page']='lean-tools';
         $data['tool']=$this->service->show($tool_id);
         return view('app.leantools.view',$data);
     }
 
     public function create($tool_id=null){
-        $data['page']='lean_create';
+        $data['page']='lean-tools';
         $data['title']='New Lean Tool';
         $data['tool_id']=$tool_id;
         if(!empty($tool_id)){

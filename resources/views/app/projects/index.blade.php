@@ -1,11 +1,37 @@
 @extends('layouts.app')
 @section('content')
     <main class="main-container">
+        @if(isSuperadmin())
+            <aside class="aside aside-expand-md">
+                <div class="aside-body">
+                    <div class="aside-block mt-20">
+                        <div class="flexbox mb-1">
+                            <h6 class="aside-title">Organizations</h6>
+                        </div>
+
+                        <ul class="nav nav-pills flex-column">
+                            @if(count($organizations) > 0)
+                                @foreach($organizations as $organization)
+                                    <li class="nav-item {{$organization_id == $organization->id ? 'active' : ''}}">
+                                        <a class="nav-link" href="{{url('/projects?organization=').$organization->id}}">{{$organization->name}}</a>
+                                    </li>
+                                @endforeach
+                            @endif
+                        </ul>
+                    </div>
+                </div>
+            </aside>
+        @endif
+
         @php $colors=['brown','success','danger','warning','primary','info','cyan']; @endphp
         <header class="header no-border">
             <div class="header-bar">
                 <h4>Projects</h4>
+                @if(!isSuperadmin())
+                @permission('create.project')
                 <button class="btn btn-round btn-success" data-toggle="modal" data-target="#modal-project">Create</button>
+                @endpermission
+                @endif
             </div>
         </header>
 
@@ -29,14 +55,24 @@
                                     </p>
                                 </div>
                                 <div class="card-footer text-center py-20" data-overlay="4">
+                                    @permission('read.kpi')
                                     <a href="{{url('projects')}}/{{$project->id}}/kpi" class="btn btn-round btn-outline text-{{$color}}">Kpi</a>
+                                    @endpermission
+                                    @permission('read.action-item')
                                     <a href="{{url('projects')}}/{{$project->id}}/action-items" class="btn btn-round btn-outline text-{{$color}}">Action Items</a>
+                                    @endpermission
+                                    @permission('read.report')
                                     <a href="{{url('projects')}}/{{$project->id}}/reports" class="btn btn-round btn-outline text-{{$color}}">Reports</a>
+                                    @endpermission
+                                    @permission('read.project')
                                     <a href="{{url('projects')}}/{{$project->id}}/details" class="btn btn-round btn-outline text-{{$color}}">View</a>
+                                    @endpermission
                                 </div>
                             </div>
                         </div>
                     @endforeach
+                @else
+                    <h3 class="py-20 text-danger">No Projects</h3>
                 @endif
 
             </div>

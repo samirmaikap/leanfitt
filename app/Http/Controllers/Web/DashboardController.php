@@ -15,6 +15,7 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        return view('app.dashboard');
+        $data['page']='dashboard';
+        return view('app.dashboard',$data);
     }
 }

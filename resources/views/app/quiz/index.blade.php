@@ -4,40 +4,24 @@
         <!-- Page aside -->
         <aside class="aside aside-expand-md">
             <div class="aside-body">
-                <div class="aside-block mt-20">
-                    <div class="flexbox mb-1">
-                        <h6 class="aside-title">Organizations</h6>
+                @if(isSuperadmin())
+                    <div class="aside-block mt-20">
+                        <div class="flexbox mb-1">
+                            <h6 class="aside-title">Organizations</h6>
+                        </div>
+
+                        <ul class="nav nav-pills flex-column">
+                            @if(count($organizations) > 0)
+                                @foreach($organizations as $organization)
+                                    <li class="nav-item {{$organization_id == $organization->id ? 'active' : ''}}">
+                                        <a class="nav-link" href="{{url('/quizzes?organization=').$organization->id}}">{{$organization->name}}</a>
+                                    </li>
+                                @endforeach
+                            @endif
+                        </ul>
                     </div>
-
-                    <ul class="nav nav-pills flex-column">
-                        @if(count($organizations) > 0)
-                            @foreach($organizations as $organization)
-                                <li class="nav-item {{$organization_id == $organization->id ? 'active' : ''}}">
-                                    <a class="nav-link" href="{{url('/quizzes?organization=').$organization->id}}">{{$organization->name}}</a>
-                                </li>
-                            @endforeach
-                        @endif
-                    </ul>
-                </div>
-                <hr>
-                {{--@if(strtolower(session('role')=='superadmin'))--}}
-                    {{--<div class="aside-block mt-20">--}}
-                        {{--<div class="flexbox mb-1">--}}
-                            {{--<h6 class="aside-title">Organizations</h6>--}}
-                        {{--</div>--}}
-
-                        {{--<ul class="nav nav-pills flex-column">--}}
-                            {{--@if(count($organizations) > 0)--}}
-                                {{--@foreach($organizations as $organization)--}}
-                                    {{--<li class="nav-item {{$organization_id == $organization['id'] ? 'active' : ''}}">--}}
-                                        {{--<a class="nav-link" href="{{url('/quiz?organization=').$organization['id']}}">{{$organization['name']}}</a>--}}
-                                    {{--</li>--}}
-                                {{--@endforeach--}}
-                            {{--@endif--}}
-                        {{--</ul>--}}
-                    {{--</div>--}}
-                    {{--<hr>--}}
-                {{--@endif--}}
+                    <hr>
+                @endif
 
                 <div class="aside-block">
                     <div class="flexbox mb-1">

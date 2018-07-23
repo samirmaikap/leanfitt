@@ -48,13 +48,14 @@
                   <label class="text-dark">Phone</label>
                   <input class="form-control" name="phone" value="{{isset($user->phone) ? $user->phone : ''}}" type="text">
                 </div>
+                @permission('update.user')
                 <div class="form-group">
                   <label class="d-block">Departments</label>
-                  <select name="departments[]" id="" data-width="100%" data-provide="selectpicker" multiple >
+                  <select class="disabled-picker" name="departments[]" id="" data-width="100%" data-provide="selectpicker" multiple >
                     <option value="">None</option>
                     @if($departments->count())
                       @foreach($departments as $department)
-                        <option value="{{ $department->id }}" {{ in_array($department->name, $user->departments->pluck('name')->toArray()) ? 'selected' : '' }} >
+                        <option class="options" value="{{ $department->id }}" {{ in_array($department->name, $user->departments->pluck('name')->toArray()) ? 'selected' : '' }} >
                           {{ $department->name }}
                         </option>
                       @endforeach
@@ -63,22 +64,27 @@
                 </div>
                 <div class="form-group">
                   <label class="d-block">Roles</label>
-                  <select name="roles[]" id="" data-width="100%" data-provide="selectpicker" multiple >
+                  <select class="disabled-picker" name="roles[]" id="" data-width="100%" data-provide="selectpicker" multiple >
                     <option value="">None</option>
                     @if(count($roles))
                       @foreach($roles as $role)
-                        <option value="{{ $role->id }}" {{ in_array($role->name, $user->roles->pluck('name')->toArray()) ? 'selected' : '' }} >
+                        <option class="options" value="{{ $role->id }}" {{ in_array($role->name, $user->roles->pluck('name')->toArray()) ? 'selected' : '' }} >
                           {{ $role->name }}
                         </option>
                       @endforeach
                     @endif
                   </select>
                 </div>
+                @endpermission
+              </div>
+              @if(!isSuperadmin())
+                @permission('update.user')
+                <div class="card-footer pb-20 pt-20">
+                  <button class="btn btn-block btn-round btn-bold btn-primary" type="submit">Save</button>
+                </div>
+                @endpermission
+              @endif
 
-              </div>
-              <div class="card-footer pb-20 pt-20">
-                <button class="btn btn-block btn-round btn-bold btn-primary" type="submit">Save</button>
-              </div>
             </form>
           </div>
         </div>

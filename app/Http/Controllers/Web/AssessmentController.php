@@ -33,7 +33,11 @@ class AssessmentController extends Controller
     }
 
     public function index(Request $request){
-        $data['page']='Quiz';
+        if(!isSuperadmin() && !isAdmin()){
+            return redirect(url('assessment/take'));
+        }
+
+        $data['page']='assessment';
         $data['organization_id']=empty($request->get('organization')) ? pluckSession('id') : $request->get('organization');
         $data['department_id']=$request->get('department');
         $data['user_id']=$request->get('user');
@@ -47,6 +51,7 @@ class AssessmentController extends Controller
     }
 
     public function show(){
+        $data['page']='assessment';
         $data['assessments']=$this->service->show();
         return view('app.assessment.show',$data);
     }

@@ -57,6 +57,8 @@ class LoginController extends Controller
 //        session(['user' => $user]);
         session([
             'user' =>renderCollection(collect($user)->except(['verification_token','password'])),
+            'is_superadmin'=>$superadmin,
+            'is_admin'=>auth()->user()->hasRole('Admin')
         ]);
 
         if($superadmin==1){

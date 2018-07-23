@@ -23,12 +23,14 @@ class OrganizationController extends Controller
     }
 
     public function index(){
+        $data['page']='organizations';
         $data['organizations'] = $this->service->all();
         return view('app.organizations.index', $data);
     }
 
     public function create()
     {
+        $data['page']='organizations';
         return view('app.organizations.create');
     }
 
@@ -69,6 +71,7 @@ class OrganizationController extends Controller
 
 
     public function show($organization_id){
+        $data['page']='organizations';
         $data['organization'] =$this->service->show($organization_id);
         $data['stripe']=$data['organization']->asStripeCustomer();
         return view('app.organizations.view', $data);

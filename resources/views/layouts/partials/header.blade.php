@@ -2,8 +2,12 @@
 <nav class="topbar #topbar-expand-lg topbar-inverse bg-primary" id="app-topbar">
     <div class="topbar-left">
         {{--<span class="topbar-btn topbar-menu-toggler"><i>&#9776;</i></span>--}}
-        @if(auth()->user())
-        <span class="topbar-btn sidebar-toggler #sidebar-toggle-fold"><i>&#9776;</i></span>
+        @if(auth()->user()->is_superadmin==1)
+            <span class="topbar-btn sidebar-toggler #sidebar-toggle-fold"><i>&#9776;</i></span>
+        @else
+            @if(auth()->user() && !empty(pluckSession('id')))
+                <span class="topbar-btn sidebar-toggler #sidebar-toggle-fold"><i>&#9776;</i></span>
+            @endif
         @endif
         <span class="topbar-brand">
             <img src="https://preview.ibb.co/cf8Ugd/logopng_2_white.png" alt="LeanFITT" width="150">
@@ -24,7 +28,10 @@
                     <img class="avatar" src="{{ auth()->user()->avatar }}" alt="{{ auth()->user()->initials }}">
                 </span>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="#profile-modal" data-toggle="modal"><i class="ti-user"></i> Profile</a>
+                    <a class="dropdown-item" href="{{url('users')}}/{{auth()->user()->id}}/profile"><i class="ti-user"></i> Profile</a>
+                    @permission('update.organization')
+                    <a class="dropdown-item" href="{{url('organizations')}}/{{pluckSession('id')}}/view"><i class="ti-briefcase"></i> My Organization</a>
+                    @endpermission
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="{{ env('APP_URL').'/logout' }}"><i class="ti-power-off"></i> Logout</a>
                 </div>

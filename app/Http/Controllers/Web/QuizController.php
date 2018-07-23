@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Repositories\LeantoolRepository;
 use App\Services\DepartmentService;
 use App\Services\EmployeeService;
 use App\Services\LeanToolService;
@@ -33,8 +34,13 @@ class QuizController extends Controller
     }
 
     public function index(Request $request){
+        if(!isSuperadmin() && !isAdmin()){
+            $toolRepo=new LeantoolRepository();
+            $tool=$toolRepo->first(['id']);
+            return redirect(url('quizzes/take').'/'.$tool->id);
+        }
 
-        $data['page']='Quiz';
+        $data['page']='quizzes';
         $data['organization_id']=empty($request->get('organization')) ? pluckSession('id') : $request->get('organization') ;
         $data['department_id']=$request->get('department');
         $data['user_id']=$request->get('user');
@@ -50,6 +56,7 @@ class QuizController extends Controller
     }
 
     public function show($tool_id){
+        $data['page']='quizzes';
         $user_id=auth()->user()->id;
         $data['active_tool']=$tool_id;
         $data['tools']=$this->service->index($user_id);

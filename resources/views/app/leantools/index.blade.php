@@ -7,7 +7,9 @@
                 {{--@if(strtolower(session('role'))=='superadmin')--}}
                     {{--<a href="{{url('leantool/create')}}" class="btn btn-round btn-success">Create</a>--}}
                 {{--@endif--}}
-                <a href="{{url('lean-tools/create')}}" class="btn btn-round btn-success">Create</a>
+                @if(isSuperadmin())
+                    <a href="{{url('lean-tools/create')}}" class="btn btn-round btn-success">Create</a>
+                @endif
             </div>
         </header>
 
@@ -26,19 +28,14 @@
                                     </div>
 
                                     <ul class="flexbox flex-justified text-center py-20">
-                                        @if(session('role')=='employee')
-                                            <li class="px-10">
-                                                <a href="{{url('/leantool/view').'/'.$tool->id}}" class="btn btn-round btn-primary">View</a>
-                                            </li>
-                                        @else
-                                            <li class="px-10">
-                                                <a href="{{url('/lean-tools/view').'/'.$tool->id}}" class="btn btn-round btn-primary">View</a>
-                                            </li>
+                                        <li class="px-10">
+                                            <a href="{{url('/lean-tools/view').'/'.$tool->id}}" class="btn btn-round btn-primary">View</a>
+                                        </li>
+                                        @if(isSuperadmin())
                                             <li class="px-10">
                                                 <a href="{{url('lean-tools/edit').'/'.$tool->id}}" class="btn btn-round btn-primary">Edit</a>
                                             </li>
                                         @endif
-
                                     </ul>
                                 </div>
                             </div>

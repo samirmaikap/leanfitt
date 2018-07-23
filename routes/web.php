@@ -35,6 +35,7 @@ Route::group(['domain' => '{organization}' . config('session.domain'), 'namespac
     Route::put('users/{id}', 'UserController@update');
     Route::delete('users/{id}', 'UserController@delete');
 
+    Route::get('organizations/{organization_id}/view','OrganizationController@show');
 
     Route::get('departments', 'DepartmentController@index');
     Route::post('departments', 'DepartmentController@store');
@@ -101,37 +102,27 @@ Route::group(['namespace' => 'Web'], function () {
     Route::get('/dashboard', 'DashboardController@index');
 
     Route::get('organizations', 'OrganizationController@index');
-    Route::get('organizations/create', 'OrganizationController@create');
-    Route::post('organizations/create','OrganizationController@store');
     Route::get('organizations/{organization_id}/view','OrganizationController@show');
-    Route::get('organizations/subscription/revoke','OrganizationController@cancelSubscription');
-    Route::get('organizations/subscription/resume','OrganizationController@resumeSubscription');
-
-    Route::put('organizations/{organization_id}','OrganizationController@update');
 
     Route::get('users', 'UserController@index');
-    Route::post('users', 'UserController@store');
-    Route::post('users/invitation', 'UserController@invitation');
-    Route::get('users/{id}', 'UserController@show');
     Route::get('users/{id}/profile', 'UserController@profile');
-    Route::get('users/{user_id}/suspend', 'UserController@suspend');
-    Route::get('users/{user_id}/restore', 'UserController@restore');
-    Route::get('users/{id}/invitation/resend', 'UserController@reInvitation');
-    Route::put('users/{id}', 'UserController@update');
-    Route::delete('users/{id}', 'UserController@delete');
-});
 
-//// SuperAdmin routes
-//Route::group(['namespace' => 'Web', 'middleware' => 'auth:web'], function () {
-//
-//    Route::get('organizations', 'OrganizationController@index');
-//    Route::get('organizations/create', 'OrganizationController@create');
-//    Route::post('organizations/create','OrganizationController@store');
-//    Route::put('organizations/{organizationId}', function ($id) {
-//        dd('updated');
-//    });
-//    Route::delete('organizations/{organizationId}', function ($id) {
-//        dd('deleted');
-//    });
-//
-//});
+    Route::get('/projects', 'ProjectController@index');
+    Route::get('/projects/{project_id}/kpi', 'ProjectController@kpi');
+    Route::get('/projects/{projectId}/members', 'ProjectController@members');
+    Route::get('/projects/{projectId}/action-items', 'ProjectController@actionItems');
+    Route::get('/projects/{projectId}/reports', 'ProjectController@reports');
+    Route::get('/projects/{project_id}/details', 'ProjectController@show');
+
+    Route::get('lean-tools', 'LeanToolController@index');
+    Route::get('lean-tools/view/{tool_id}', 'LeanToolController@show');
+    Route::get('lean-tools/create', 'LeanToolController@create');
+    Route::post('lean-tools/create', 'LeanToolController@save');
+    Route::get('lean-tools/edit/{tool_id}', 'LeanToolController@create');
+
+    Route::get('quizzes', 'QuizController@index');
+
+    Route::get('assessment', 'AssessmentController@index');
+
+    Route::get('awards', 'AwardController@index');
+});

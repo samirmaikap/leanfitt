@@ -2,25 +2,27 @@
 @section('content')
 <main class="main-container">
     <!-- Page aside -->
+    @if(isSuperadmin() || isAdmin())
     <aside class="aside aside-expand-md">
         <div class="aside-body">
-            <div class="aside-block mt-20">
-                <div class="flexbox mb-1">
-                    <h6 class="aside-title">Organizations</h6>
-                </div>
+            @if(isSuperadmin())
+                <div class="aside-block mt-20">
+                    <div class="flexbox mb-1">
+                        <h6 class="aside-title">Organizations</h6>
+                    </div>
 
-                <ul class="nav nav-pills flex-column">
-                    @if(count($organizations) > 0)
-                    @foreach($organizations as $organization)
-                    <li class="nav-item {{$organization_id == $organization->id ? 'active' : ''}}">
-                        <a class="nav-link" href="{{url('/awards?organization=').$organization->id}}">{{$organization->name}}</a>
-                    </li>
-                    @endforeach
-                    @endif
-                </ul>
-            </div>
-            <hr>
-            
+                    <ul class="nav nav-pills flex-column">
+                        @if(count($organizations) > 0)
+                            @foreach($organizations as $organization)
+                                <li class="nav-item {{$organization_id == $organization->id ? 'active' : ''}}">
+                                    <a class="nav-link" href="{{url('/awards?organization=').$organization->id}}">{{$organization->name}}</a>
+                                </li>
+                            @endforeach
+                        @endif
+                    </ul>
+                </div>
+                <hr>
+            @endif
             <div class="aside-block">
                 <div class="flexbox mb-1">
                     <h6 class="aside-title">Departments</h6>
@@ -66,6 +68,7 @@
 
         <button class="aside-toggler"></button>
     </aside>
+    @endif
     <!-- END Page aside -->
     <header class="header no-border">
         <div class="header-bar">

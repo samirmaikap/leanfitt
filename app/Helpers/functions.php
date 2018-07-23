@@ -41,3 +41,17 @@ function pluckSession($key){
     }
     return null;
 }
+
+function isSuperadmin(){
+    return session('is_superadmin')==1 ? true : false;
+}
+
+function isAdmin(){
+    $session=session()->get('is_admin');
+    if($session){
+        return session('is_admin');
+    }
+    else{
+        return false;
+    }
+}
