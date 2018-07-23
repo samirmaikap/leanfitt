@@ -22,9 +22,14 @@ class Project extends Model
         return $this->hasMany(KpiChart::class);
     }
 
-    public function actionItem(){
-        return $this->hasMany(ActionItem::class);
+    public function boards()
+    {
+        return $this->hasMany(Board::class);
     }
+
+//    public function actionItems(){
+//        return $this->hasMany(ActionItem::class);
+//    }
 
     public function organization(){
         return $this->belongsTo(Organization::class);

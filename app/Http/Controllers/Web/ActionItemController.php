@@ -38,7 +38,9 @@ class ActionItemController extends Controller
 
     public function create(Request $request){
         try{
-            $result=$this->service->create($request);
+            $result=$this->service->create($request->all());
+            return redirect()->back()->with(['success' => 'Action item added successfully']);
+
             return response()->json($result);
         }catch(\Exception $e){
             $response['success']=false;
@@ -50,6 +52,7 @@ class ActionItemController extends Controller
     public function update(Request $request,$tool_id){
         try{
             $result=$this->service->update($request,$tool_id);
+            return redirect()->back()->with(['success' => 'Action item updated successfully']);
             return response()->json($result);
         }catch(\Exception $e){
             $response['success']=false;

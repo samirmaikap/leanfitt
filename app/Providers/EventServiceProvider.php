@@ -22,6 +22,9 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\SendWelcomeMail',
             'App\Listeners\SetupRolePermission',
         ],
+        'App\Events\ProjectCreated' => [
+            'App\Listeners\SetupDefaultBoard',
+        ],
     ];
 
     /**

@@ -13,4 +13,16 @@ class BoardRepository extends BaseRepository implements BoardRepositoryInterface
         return new Board();
     }
 
+    public function getByProject($projectId)
+    {
+        return $this->where('project_id', $projectId)->get();
+    }
+
+    public function getByOrganization($organizationId)
+    {
+        return $this->whereHas('project.organization', function ($query) use($organizationId) {
+            return $query->where('organization_id', '=', $organizationId);
+        })->get();
+    }
+
 }

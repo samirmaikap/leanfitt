@@ -32,7 +32,7 @@ class ProjectController extends Controller
     public function index(Request $request){
         $organization=$request->query('organization') ? $request->get('organization') : pluckSession('id');
         $data['projects'] = $this->projectService->index($organization);
-
+        $data['page'] = 'index';
         return view("app.projects.index", $data);
     }
 
@@ -52,6 +52,7 @@ class ProjectController extends Controller
 
         $project_members=$this->memberService->allMembers($project_id);
         $data['project_members']=$project_members->groupBy('role');
+        $data['page'] = 'details';
         return view("app.projects.details", $data);
     }
 
@@ -59,8 +60,8 @@ class ProjectController extends Controller
     {
         try
         {
-            $result=$this->projectService->show($project_id);
-            $data['project'] = $result->data;
+            $data['project'] = $this->projectService->show($project_id);
+            $data['page'] = 'members';
             return view("app.projects.members", $data);
         }
         catch(\Exception $e)
@@ -73,12 +74,12 @@ class ProjectController extends Controller
     {
         try
         {
-            $result = $this->projectService->show($project_id);
-            $data['project'] = $result->data;
+            $data['project'] = $this->projectService->show($project_id);
 
             $result = $this->kpiService->index($request);
             $data['kpiSet'] = $result->data;
 
+            $data['page'] = 'kpi';
 //            dd($data);
 
             return view("app.projects.kpi", $data);
@@ -93,12 +94,14 @@ class ProjectController extends Controller
     {
         try
         {
-            $result=$this->projectService->show($project_id);
-            $data['project'] = $result->data;
+            $data['project'] = $this->projectService->show($project_id);
+            $data['page'] = 'action-items';
+//            dd($data);
             return view("app.projects.action-items", $data);
         }
         catch(\Exception $e)
         {
+            dd($e->getMessage());
             return redirect()->back()->withErrors([$e->getMessage()]);
         }
     }
@@ -107,8 +110,8 @@ class ProjectController extends Controller
     {
         try
         {
-            $result=$this->projectService->show($project_id);
-            $data['project'] = $result->data;
+            $data['project'] = $this->projectService->show($project_id);
+            $data['page'] = 'reports';
             return view("app.projects.reports", $data);
         }
         catch(\Exception $e)

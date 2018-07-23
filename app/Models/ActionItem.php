@@ -7,24 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 class ActionItem extends Model
 {
     protected $fillable=[
-        'name',
-        'board_id',
-        'assignor_id',
-        'project_id',
+        'title',
+        'description',
+        'process_id',
+        'user_id',
         'position',
         'due_date',
         'is_archived',
-        'description',
     ];
 
     public function assignor()
     {
-        return $this->belongsTo(User::class,'assignor_id','id'); //assignor can be admin or employee
+        return $this->belongsTo(User::class, 'user_id'); //assignor can be admin or employee
     }
 
-    public function board(){
-        return $this->belongsTo(Board::class);
-    }
+//    public function board(){
+//        return $this->belongsTo(Board::class);
+//    }
 
     public function checklist(){
         return $this->hasMany(Checklist::class);

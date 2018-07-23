@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Events\ProjectCreated;
 use App\Models\Project;
 
 class ProjectObserver
@@ -14,7 +15,7 @@ class ProjectObserver
      */
     public function created(Project $project)
     {
-        //
+        event(new ProjectCreated($project));
     }
 
     /**

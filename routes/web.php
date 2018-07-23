@@ -63,6 +63,10 @@ Route::group(['domain' => '{organization}' . config('session.domain'), 'namespac
     Route::post('projects/attachment', 'ProjectController@addAttachment');
     Route::delete('projects/{project_id}/attachment/{attachment_id}/remove', 'ProjectController@removeAttachment');
 
+    Route::get('/action-items', 'ActionItemController@index');
+    Route::post('/action-items', 'ActionItemController@create');
+    Route::put('/action-items/{id}', 'ActionItemController@update');
+
     Route::get('/kpi', 'KpiController@index');
     Route::post('/kpi', 'KpiController@create');
     Route::post('/kpi/{kpiId}/data', 'KpiController@addDataPoint');

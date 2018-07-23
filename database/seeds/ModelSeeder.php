@@ -22,7 +22,7 @@ class ModelSeeder extends Seeder
         factory(\App\Models\LeanTool::class,10)->create();
 
         /*Board*/
-        factory(\App\Models\Board::class,10)->create();
+//        factory(\App\Models\Board::class,10)->create();
 
         /*Project -> (Kpi Chart -> Kpi Data Points, Action Items)*/
 //        factory(\App\Models\Project::class,10)->create()->each(function ($u) {

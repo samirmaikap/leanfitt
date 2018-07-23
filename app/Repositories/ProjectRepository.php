@@ -23,7 +23,9 @@ class ProjectRepository extends BaseRepository //implements ProjectRepositoryInt
 
     public function getProject($project_id)
     {
-        $query=$this->model()->with(['member','comments.user','attachments'])->where('id',$project_id)->first();
+        $query=$this->model()->with(['member','comments.user','attachments','boards.processes.actionItems' => function($query) {
+            return $query->with(['assignor','attachments', 'comments'])->orderBy('position', 'ASC');
+        }])->where('id',$project_id)->first();
         return $query;
     }
 

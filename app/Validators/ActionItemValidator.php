@@ -7,14 +7,13 @@ class ActionItemValidator extends BaseValidator
 {
     public static $rules=[
         'create'=>[
-            'name'=>'required',
-            'board_id'=>'required',
-            'project_id'=>'required',
-            'assignor_id'=>'required',
-            'position'=>'required',
-            'due_date'=>'required',
-
-            'type'=>'required',
+            'title'=>'required',
+//            'board_id'=>'required',
+            'process_id'=>'required',
+            'user_id'=>'required',
+            'position'=>'numeric',
+            'due_date'=>'date',
+//            'type'=>'required',
         ]
     ];
 }

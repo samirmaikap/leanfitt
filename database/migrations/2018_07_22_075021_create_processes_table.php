@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateActionItemsTable extends Migration
+class CreateProcessesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,11 @@ class CreateActionItemsTable extends Migration
      */
     public function up()
     {
-        Schema::create('action_items', function (Blueprint $table) {
+        Schema::create('processes', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
-            $table->integer('process_id');
-            $table->string('title');
+            $table->integer('board_id');
+            $table->string('name');
             $table->text('description')->nullable();
-            $table->tinyInteger('position');
-            $table->date('due_date')->nullable();
-            $table->tinyInteger('is_archived')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });
@@ -34,6 +30,6 @@ class CreateActionItemsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('action_items');
+        Schema::dropIfExists('processes');
     }
 }
