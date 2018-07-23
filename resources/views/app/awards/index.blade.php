@@ -77,34 +77,34 @@
         <div class="row">
             <div class="col-lg-12">
                 @if(count($awards) > 0)
-                @else
-                    <h3 class="py-20 text-danger">No awards available</h3>
-                @endif
-                <ol class="timeline" id="demo-timeline-alignment">
-                    @foreach($awards as $award)
-                        <li class="timeline-block">
-                            <div class="timeline-detail">
-                                <time>{{date('m/d/Y',strtotime($award->created_at))}}</time><br>
-                            </div>
-                            <div class="timeline-point">
-                                <span class="avatar bg-primary"><i class="fa fa-trophy"></i></span>
-                            </div>
+                    <ol class="timeline" id="demo-timeline-alignment">
+                        @foreach($awards as $award)
+                            <li class="timeline-block">
+                                <div class="timeline-detail">
+                                    <time>{{date('m/d/Y',strtotime($award->created_at))}}</time><br>
+                                </div>
+                                <div class="timeline-point">
+                                    <span class="avatar bg-primary"><i class="fa fa-trophy"></i></span>
+                                </div>
 
-                            <div class="timeline-content">
-                                <div class="card">
-                                    <div class="media align-items-center">
-                                        <img class="avatar avatar-lg" src="{{$award->avatar}}" alt="...">
-                                        <div class="media-body">
-                                            <p class="lead">{{$award->first_name}} {{$award->last_name}}</p>
-                                            <p>{{$award->title}}</p>
+                                <div class="timeline-content">
+                                    <div class="card">
+                                        <div class="media align-items-center">
+                                            <img class="avatar avatar-lg" src="{{$award->avatar}}" alt="...">
+                                            <div class="media-body">
+                                                <p class="lead">{{$award->first_name}} {{$award->last_name}}</p>
+                                                <p>{{$award->title}}</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </li>
-                    @endforeach
+                            </li>
+                        @endforeach
 
-                </ol>
+                    </ol>
+                @else
+                    <h3 class="py-20 text-danger">No awards available</h3>
+                @endif
             </div>
         </div>
     </div>
