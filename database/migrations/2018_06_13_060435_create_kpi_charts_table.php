@@ -18,7 +18,9 @@ class CreateKpiChartsTable extends Migration
             $table->integer('project_id')->unsigned();
             $table->string('title');
             $table->string('x_label');
+            $table->string('x_unit')->nullable();
             $table->string('y_label');
+            $table->string('y_unit')->nullable();
             $table->string('target');
             $table->string('trend');
             $table->date('start_date');

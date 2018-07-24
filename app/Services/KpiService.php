@@ -42,7 +42,7 @@ class KpiService //implements KpiServiceInterface
             throw new \Exception("Invalid kpi selection");
         }
 
-        $query=$this->kpiRepo->with(['project','kpiData'])->find($kpi_id);
+        $query=$this->kpiRepo->with(['project','data'])->find($kpi_id);
         if($query){
             $data['id']=$query['id'];
             $data['title']=$query['title'];
@@ -72,10 +72,13 @@ class KpiService //implements KpiServiceInterface
             throw new \Exception($validator->messages()->first());
         }
 
+        $data['start_date'] = date('Y-m-d', strtotime( $data['start_date']));
+        $data['end_date'] = date('Y-m-d', strtotime( $data['end_date']));
+
         $query=$this->kpiRepo->create($data);
 
         if($query){
-             return;
+             return $query;
         }
         else{
             throw new \Exception(config('messages.common_error'));
@@ -89,10 +92,13 @@ class KpiService //implements KpiServiceInterface
             throw new \Exception("Invalid kpi selection");
         }
 
+        $data['start_date'] = date('Y-m-d', strtotime( $data['start_date']));
+        $data['end_date'] = date('Y-m-d', strtotime( $data['end_date']));
+
         $query=$this->kpiRepo->update($kpi_id,$data);
 
         if($query){
-            return;
+            return $query;
         }
         else{
             throw new \Exception(config('messages.common_error'));
@@ -136,6 +142,23 @@ class KpiService //implements KpiServiceInterface
         $query=$this->kpiDataRepo->create($data);
         if($query){
             return;
+        }
+        else{
+            throw new \Exception(config('messages.common_error'));
+        }
+
+    }
+
+    public function updateDataPoint($data, $id)
+    {
+        $validator=new KpiDataValidator($data,'create');
+        if($validator->fails()){
+            throw new \Exception($validator->messages()->first());
+        }
+
+        $query=$this->kpiDataRepo->update($id, $data);
+        if($query){
+            return $query;
         }
         else{
             throw new \Exception(config('messages.common_error'));
