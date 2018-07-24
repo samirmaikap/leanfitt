@@ -1,25 +1,25 @@
 @extends('layouts.app')
 @section('content')
-    <style>
-        .avatar-container .avatar{
-            vertical-align: middle !important;
-        }
-    </style>
-    <main class="main-container">
-        <header class="header mb-0 bg-ui-general">
-
-            <div class="header-bar center-h">
-                <h4 class="text-dark">{{$project->name}}</h4>
-            </div>
-            <div class="header-action center-h">
-                <nav class="nav">
-                    <a class="nav-link active" href="{{url('projects')}}/{{$project->id}}/details">Details</a>
-                    <a class="nav-link" href="{{url('projects')}}/{{$project->id}}/kpi">KPI</a>
-                    <a class="nav-link" href="{{url('projects')}}/{{$project->id}}/action-items">Action Items</a>
-                    <a class="nav-link" href="{{url('projects')}}/{{$project->id}}/reports">Reports</a>
-                </nav>
-            </div>
-        </header>
+    <main>
+        <style>
+            .avatar-container .avatar{
+                vertical-align: middle !important;
+            }
+        </style>
+        {{--<header class="header mb-0 bg-ui-general">--}}
+            {{--<div class="header-bar center-h">--}}
+                {{--<h4 class="text-dark">{{$project->name}}</h4>--}}
+            {{--</div>--}}
+            {{--<div class="header-action center-h">--}}
+                {{--<nav class="nav">--}}
+                    {{--<a class="nav-link active" href="{{url('projects')}}/{{$project->id}}/details">Details</a>--}}
+                    {{--<a class="nav-link" href="{{url('projects')}}/{{$project->id}}/kpi">KPI</a>--}}
+                    {{--<a class="nav-link" href="{{url('projects')}}/{{$project->id}}/action-items">Action Items</a>--}}
+                    {{--<a class="nav-link" href="{{url('projects')}}/{{$project->id}}/reports">Reports</a>--}}
+                {{--</nav>--}}
+            {{--</div>--}}
+        {{--</header>--}}
+        @include('app.projects.partials.header')
         <div class="main-content">
             <div class="row">
                 <div class="col-lg-4 project-container">

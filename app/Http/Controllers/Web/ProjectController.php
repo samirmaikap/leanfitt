@@ -44,8 +44,8 @@ class ProjectController extends Controller
     {
         $data['project']=$this->projectService->show($project_id);
         $members=$this->projectService->getMembers($project_id);
-        if(count($data['project']->member) > 0 && count($members) > 0){
-            $existing_member=$data['project']->member->pluck('user_id')->toArray();
+        if(count($data['project']->members) > 0 && count($members) > 0){
+            $existing_member=$data['project']->members->pluck('user_id')->toArray();
             $data['members']=$members->filter(function($item) use($existing_member){
                 return !in_array($item->id,$existing_member);
             });

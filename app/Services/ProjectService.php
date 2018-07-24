@@ -42,7 +42,7 @@ class ProjectService //implements ProjectServiceInterface
             throw new \Exception("Project id field is required");
         }
 
-        $query=$this->projectRepo->getProject($project_id);
+       ($query=$this->projectRepo->getProject($project_id));
         if($query){
             return $query;
         }

@@ -17,7 +17,8 @@ use Illuminate\Http\Request;
 Route::post('login', 'API\AuthController@login');
 Route::post('register', 'API\AuthController@register');
 
-Route::group(['namespace' => 'API','middleware'=>'auth:api'], function () {
+//Route::group(['namespace' => 'API','middleware'=>'auth:api'], function () {
+Route::group(['namespace' => 'API'], function () {
 
     Route::post('register/organizations', 'OrganizationController@create');
 
@@ -88,13 +89,13 @@ Route::group(['namespace' => 'API','middleware'=>'auth:api'], function () {
     Route::delete('items/{item_id}/delete', 'ActionItemController@delete');
 
     /*Comment*/
-    Route::post('comment', 'CommentController@create'); /*item_id*/
-    Route::put('comment/{comment_id}', 'CommentController@update');
-    Route::delete('comment/{comment_id}', 'CommentController@delete');
+    Route::post('comments', 'CommentController@create'); /*item_id*/
+    Route::put('comments/{comment_id}', 'CommentController@update');
+    Route::delete('comments/{comment_id}', 'CommentController@delete');
 
     /*Attachment*/
-    Route::post('attachment', 'AttachmentController@create'); /*item_id*/
-    Route::delete('attachment/{attachment_id}', 'AttachmentController@delete');
+    Route::post('attachments', 'AttachmentController@create'); /*item_id*/
+    Route::delete('attachments/{attachment_id}', 'AttachmentController@delete');
 
     /*Project*/
     Route::get('projects', 'ProjectController@index'); /*filter by organization*/

@@ -17,24 +17,39 @@ class ProjectRepository extends BaseRepository //implements ProjectRepositoryInt
 
     public function allProject($organization)
     {
-        $query=$this->model()->withCount('member')->withCount('attachments')->withCount('comments')->where('organization_id',$organization)->get();
+        $query = $this->model()->withCount('members')->withCount('attachments')->withCount('comments')->where('organization_id', $organization)->get();
         return $query;
     }
 
     public function getProject($project_id)
     {
-        $query=$this->model()->with(['member','comments.user','attachments','boards.processes.actionItems' => function($query) {
-            return $query->with(['assignor','attachments', 'comments'])->orderBy('position', 'ASC');
-        }])->where('id',$project_id)->first();
+        $query = $this->model()
+            ->with([
+                'members.user',
+                'comments.user' => function ($query) {
+                    return $query->orderBy('created_at', 'DESC');
+                },
+                'attachments',
+                'boards.processes.actionItems' => function ($query) {
+                    return $query->with([
+                        'assignor',
+                        'attachments',
+                        'comments.user' => function ($query) {
+                            return $query->orderBy('created_at', 'DESC');
+                        }])->orderBy('position', 'ASC');
+                }])
+            ->where('id', $project_id)
+            ->first();
         return $query;
     }
 
-    public function getMembers($project_id){
-        $query=$this->model()
-            ->join('organization_user as ou','ou.organization_id','=','projects.organization_id')
-            ->join('users as u','u.id','=','ou.user_id')
-            ->where('projects.id',$project_id)
-            ->select('u.avatar','u.id','u.first_name','u.last_name')
+    public function getMembers($project_id)
+    {
+        $query = $this->model()
+            ->join('organization_user as ou', 'ou.organization_id', '=', 'projects.organization_id')
+            ->join('users as u', 'u.id', '=', 'ou.user_id')
+            ->where('projects.id', $project_id)
+            ->select('u.avatar', 'u.id', 'u.first_name', 'u.last_name')
             ->distinct()->get();
         return $query;
     }

@@ -8,10 +8,10 @@ use App\Http\Controllers\Controller;
 
 class CommentController extends Controller
 {
-    protected $sevice;
+    protected $service;
     public function __construct(CommentService $commentService)
     {
-        $this->sevice=$commentService;
+        $this->service=$commentService;
     }
 
     public function create(Request $request){
@@ -19,7 +19,7 @@ class CommentController extends Controller
             $result=$this->service->create($request->all());
             return renderSuccess($result,'Comment has been added',201);
         }catch(\Exception $e){
-            return renderError($e->getMessage());
+            return renderError($e->getTraceAsString());
         }
     }
 

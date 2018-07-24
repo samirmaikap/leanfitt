@@ -51,7 +51,7 @@ class ActionItemController extends Controller
 
     public function update(Request $request,$tool_id){
         try{
-            $result=$this->service->update($request,$tool_id);
+            $result=$this->service->update($request->all(),$tool_id);
             return redirect()->back()->with(['success' => 'Action item updated successfully']);
             return response()->json($result);
         }catch(\Exception $e){
