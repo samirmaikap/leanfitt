@@ -40,12 +40,10 @@
                     @endforeach
                     @endif
                     <div class="dropdown-divider"></div>
-                    @permission('create.organization')
                     <a class="dropdown-item" href="{{ url(config('app.url') . '/organizations/create' ) }}" target="_blank">
                         <i class="ti-plus"></i>
                         Create Organization
                     </a>
-                    @endpermission
                 </div>
             </div>
         </div>
