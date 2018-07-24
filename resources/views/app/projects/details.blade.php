@@ -280,6 +280,7 @@
 
             $('.members-container').on('click','.remove-member',function(e){
                 e.preventDefault();
+                e.stopImmediatePropagation();
                 swal({
                     title: 'Are you sure?',
                     text: "You can revert this later!",
@@ -295,6 +296,7 @@
 
             $('.attachments-container').on('click','.remove-attachment',function(e){
                 e.preventDefault();
+                e.stopImmediatePropagation();
                 swal({
                     title: 'Are you sure?',
                     text: "You can revert this later!",
