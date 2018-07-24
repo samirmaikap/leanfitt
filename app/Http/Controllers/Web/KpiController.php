@@ -43,7 +43,8 @@ class KpiController extends Controller
 
     public function create(Request $request){
         try{
-            $result=$this->service->create($request);
+            $result=$this->service->create($request->all());
+            return redirect()->back();
             return response()->json($result);
         }catch(\Exception $e){
             $response['success']=false;
@@ -54,7 +55,8 @@ class KpiController extends Controller
 
     public function update(Request $request,$kpi_id){
         try{
-            $result=$this->service->update($request,$kpi_id);
+            $result=$this->service->update($request->all(),$kpi_id);
+            return redirect()->back();
             return response()->json($result);
         }catch(\Exception $e){
             $response['success']=false;
@@ -77,7 +79,18 @@ class KpiController extends Controller
     public function addDataPoint(Request $request){
 //        dd($request->all());
         try{
-            $result=$this->service->addDataPoint($request);
+            $result=$this->service->addDataPoint($request->all());
+            return redirect()->back();
+        }catch(\Exception $e){
+            dd($e->getMessage());
+            return redirect()->back()->withErrors([$e->getMessage()]);
+        }
+    }
+
+    public function updateDataPoint(Request $request, $kpiId, $dataId){
+//        dd($request->all());
+        try{
+            $result=$this->service->updateDataPoint($request->all(), $dataId);
             return redirect()->back();
         }catch(\Exception $e){
             dd($e->getMessage());
@@ -96,9 +109,12 @@ class KpiController extends Controller
         }
     }
 
-    public function deleteDataPoint($point_id,$user_id){
+    public function deleteDataPoint($kpiId,$dataId){
         try{
-            $result=$this->service->deleteDatapoint($point_id,$user_id);
+
+//            dd($kpiId, $dataId);
+            $result=$this->service->deleteDatapoint($dataId);
+            return redirect()->back();
             return response()->json($result);
         }catch(\Exception $e){
             $response['success']=false;

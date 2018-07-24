@@ -77,7 +77,10 @@ Route::group(['domain' => '{organization}' . config('session.domain'), 'namespac
 
     Route::get('/kpi', 'KpiController@index');
     Route::post('/kpi', 'KpiController@create');
+    Route::put('/kpi', 'KpiController@update');
     Route::post('/kpi/{kpiId}/data', 'KpiController@addDataPoint');
+    Route::put('/kpi/{kpiId}/data/{datId}', 'KpiController@updateDataPoint');
+    Route::delete('/kpi/{kpiId}/data/{datId}', 'KpiController@deleteDataPoint');
 
     Route::get('lean-tools', 'LeanToolController@index');
     Route::get('lean-tools/view/{tool_id}', 'LeanToolController@show');

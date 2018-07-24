@@ -18,7 +18,7 @@ class KPIRespository extends BaseRepository //implements KPIRepositoryInterface
     {
         $query=$this->model()
             ->join('projects as p','p.id','kpi_charts.project_id')
-            ->where('kpi_charts',empty($project) ? '!=':'=',empty($project) ? null : $project)
+            ->where('kpi_charts.project_id',empty($project) ? '!=':'=',empty($project) ? null : $project)
             ->where('p.organization_id',empty($organization) ? '!=':'=',empty($organization) ? null : $organization)
             ->select('kpi_charts.*')->get();
         return $query;

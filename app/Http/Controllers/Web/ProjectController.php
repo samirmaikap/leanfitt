@@ -79,10 +79,7 @@ class ProjectController extends Controller
         try
         {
             $data['project'] = $this->projectService->show($project_id);
-
-            $result = $this->kpiService->index($request);
-            $data['kpiSet'] = $result->data;
-
+            $data['kpiSet'] = $this->kpiService->index($request);
             $data['page'] = 'kpi';
 //            dd($data);
 
@@ -90,6 +87,7 @@ class ProjectController extends Controller
         }
         catch(\Exception $e)
         {
+            dd($e->getMessage());
             return redirect()->back()->withErrors([$e->getMessage()]);
         }
     }

@@ -66,9 +66,10 @@
 
             if($selector.length) {
                 if (method) {
-                    var $methodField = $selector.find('input[name="_method"]');
+                    var $methodField = $selector.parents('tr').find('input[name="_method"]');
+                    console.log($methodField, method);
                     if ($methodField.length){
-                        $methodField.val('method');
+                        $methodField.val(method);
                     }else{
                         $selector.prepend('<input name="_method" value="' + method + '"');
                     }

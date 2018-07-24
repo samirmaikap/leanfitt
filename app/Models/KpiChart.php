@@ -11,7 +11,9 @@ class KpiChart extends Model
         'project_id',
         'title',
         'x_label',
+        'x_unit',
         'y_label',
+        'y_unit',
         'target',
         'trend',
         'start_date',
@@ -22,7 +24,7 @@ class KpiChart extends Model
         return $this->belongsTo(Project::class,'project_id','id');
     }
 
-    public function kpiData(){
+    public function data(){
         return $this->hasMany(KpiDataPoint::class);
     }
 }

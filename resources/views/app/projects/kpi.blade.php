@@ -4,96 +4,39 @@
         @include('app.projects.partials.header')
         <div class="main-content">
 
-            @foreach($kpiSet as $kpi)
-
+            @foreach($kpiSet as $index => $kpi)
+                @include('app.projects.partials.kpi-modal')
                 <div class="card">
-                <h4 class="card-title fw-400 text-center">{{ $kpi->title }} </h4>
+                    <a href="#kpi-{{ $kpi->id }}-modal" data-toggle="modal">
+                        <h4 class="card-title fw-400 text-center">
+                            {{ $kpi->title }}
+                        </h4>
+                    </a>
                 <div class="card-body">
+                    @if(count($kpi->data))
                     <div class="kpi-chart-container">
-                        <canvas id="kpi-chart-{{ $kpi->id }}"></canvas>
+                        <canvas id="kpi-{{ $kpi->id }}-chart"></canvas>
+
+                        @php
+                            $kpiSet[$index]->dataset = [
+                                'x_value' => $kpi->data->pluck('x_value')->toArray(),
+                                'y_value' => $kpi->data->pluck('y_value')->toArray()
+                            ];
+                        @endphp
                     </div>
-                    <div class="accordion" id="accordion-{{ $kpi->id }}">
-                        <div class="card">
-                            <h5 class="card-title">
-                                <a data-toggle="collapse" data-parent="#accordion-1" href="#collapse-1-1"
-                                   aria-expanded="false" class="collapsed">
-                                    KPI Details
-                                </a>
-                            </h5>
-
-                            <div id="collapse-{{ $kpi->id }}-1" class="collapse" style="">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-3"></div>
-                                        <div class="col-md-6">
-                                            <form id="update-kpi-form" action="{{ url("") }}" method="post">
-                                                {{ csrf_field() }}
-                                                {{ method_field('put') }}
-                                                <input type="hidden" name="project_id" value="{{ $project["id"] }}">
-
-                                                <div class="form-group">
-                                                    <label>Title</label>
-                                                    <input class="form-control" type="text" name="title" value="{{ $kpi->title }}">
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label>Description</label>
-                                                    <textarea class="form-control" type="text" name="description">
-
-                                                    </textarea>
-                                                </div>
-
-                                                <hr>
-
-                                                <div class="form-group">
-                                                    <label>X-Axis Label</label>
-                                                    <input class="form-control" type="text" name="x_label" value="{{ $kpi->x_label }}">
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label>Y-Axis Label</label>
-                                                    <input class="form-control" type="text" name="y_label" value="{{ $kpi->y_label }}">
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <label>Start Date</label>
-                                                            <input class="form-control" type="text" name="start_date" data-provide="datepicker" value="{{ date('m/d/Y', strtotime($kpi->start_date)) }}">
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <label>End Date</label>
-                                                            <input class="form-control" type="text" name="end_date" data-provide="datepicker"  value="{{ date('m/d/Y', strtotime($kpi->end_date)) }}">
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <button class="btn btn-primary btn-block" type="submit">Save</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <div class="col-md-3"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    @endif
 
                         <div class="card">
                             <h5 class="card-title">
-                                <a data-toggle="collapse" data-parent="#accordion-{{ $kpi->id }}" href="#collapse-1-2" class=""
-                                   aria-expanded="true">
-                                    KPI Data Points
-                                </a>
+                                KPI Data Points
                             </h5>
 
-                            <div id="collapse-{{ $kpi->id }}-2" class="collapse show" style="">
                                 <div class="card-body">
-                                    <table id="kpi-data-points-table" class="table" cellspacing="0">
+                                    <table id="kpi-{{ $kpi->id }}-data-table" class="table kpi-data-table" cellspacing="0">
                                         <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>{{ $kpi->x_label }}</th>
+                                            <th>{{ $kpi->x_label }} </th>
                                             <th>{{ $kpi->y_label }}</th>
                                             <th>Timestamp</th>
                                             <th>Action</th>
@@ -101,7 +44,7 @@
                                         </thead>
                                         <tbody>
                                         <tr class="editable">
-                                            <form id="kpi-data-0" action="{{ url('kpi/'. $kpi["id"]) . '/data' }}" method="post">
+                                            <form id="kpi-{{ $kpi->id }}-data-0" action="{{ url('kpi/'. $kpi["id"]) . '/data' }}" method="post">
                                                 {{ method_field('post') }}
                                                 {{ csrf_field() }}
                                                 <input type="hidden" name="kpi_chart_id" value="{{ $kpi->id }}">
@@ -118,62 +61,65 @@
                                                         <a class="nav-link hover-primary" href="#"
                                                            data-provide="tooltip" title=""
                                                            data-original-title="Save"
-                                                           onclick="submitForm('#kpi-data-0', 'post')">
+                                                           onclick="submitForm('#kpi-{{ $kpi->id }}-data-0', 'post')">
                                                             <i class="ti-save"></i>
                                                         </a>
                                                     </nav>
                                                 </td>
                                             </form>
                                         </tr>
-                                        <tr>
-                                            <form id="kpi-data-{{ $kpi->id }}" action="{{ url('kpi/'. $kpi["id"] . '/data/') }}" method="post">
-                                                {{ method_field('put') }}
-                                                {{ csrf_field() }}
-                                                <td>1</td>
-                                                <td>
-                                                    <input type="text" name="x_value" value="adad" readonly>
-                                                </td>
-                                                <td>
-                                                    <input type="text" name="y_value"  value="a434" readonly>
-                                                </td>
-                                                <td>{{ date('m/d/Y h:i A', strtotime('07/12/2018')) }}</td>
-                                                <td>
-                                                    {{--<nav class="nav no-gutters primary-action-group">--}}
-                                                        {{--<a class="nav-link hover-primary" href="#"--}}
-                                                           {{--data-provide="tooltip" title="" data-original-title="Edit"--}}
-                                                           {{--onclick="editDataPoint(this)">--}}
-                                                            {{--<i class="ti-pencil"></i>--}}
-                                                        {{--</a>--}}
-                                                        {{--<a class="nav-link hover-danger" href="#"--}}
-                                                           {{--data-provide="tooltip" title=""--}}
-                                                           {{--data-original-title="Delete"--}}
-                                                           {{--onclick="submitForm('#kpi-data-1', 'delete')">--}}
-                                                            {{--<i class="ti-trash"></i>--}}
-                                                        {{--</a>--}}
-                                                    {{--</nav>--}}
+                                        @if(isset($kpi->data) && count($kpi->data))
+                                            @foreach($kpi->data as $data)
+                                                <tr>
+                                                    <form id="kpi-{{ $kpi->id }}-data-{{ $data->id }}" action="{{ url('kpi/'. $kpi["id"] . '/data/' . $data->id) }}" method="post">
+                                                        {{ method_field('put') }}
+                                                        {{ csrf_field() }}
+                                                        <input type="hidden" name="kpi_chart_id" value="{{ $kpi->id }}">
+                                                        <td>{{ $data->id }}</td>
+                                                        <td>
+                                                            <input type="text" name="x_value" value="{{ $data->x_value }}" readonly>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" name="y_value"  value="{{ $data->y_value }}" readonly>
+                                                        </td>
+                                                        <td>{{ date('m/d/Y h:i A', strtotime($data->created_at)) }}</td>
+                                                        <td>
+                                                            <nav class="nav no-gutters primary-action-group">
+                                                            <a class="nav-link hover-primary" href="#"
+                                                            data-provide="tooltip" title="" data-original-title="Edit"
+                                                            onclick="editDataPoint(this)">
+                                                            <i class="ti-pencil"></i>
+                                                            </a>
+                                                            <a class="nav-link hover-danger" href="#"
+                                                            data-provide="tooltip" title=""
+                                                            data-original-title="Delete"
+                                                            onclick="submitForm('#kpi-{{ $kpi->id }}-data-{{ $data->id }}', 'delete')">
+                                                            <i class="ti-trash"></i>
+                                                            </a>
+                                                            </nav>
 
-                                                    {{--<nav class="nav no-gutters edit-action-group">--}}
-                                                        {{--<a class="nav-link hover-primary" href="#"--}}
-                                                           {{--data-provide="tooltip" title=""--}}
-                                                           {{--data-original-title="Save"--}}
-                                                           {{--onclick="submitForm('#kpi-data-2', 'put')">--}}
-                                                            {{--<i class="ti-save"></i>--}}
-                                                        {{--</a>--}}
-                                                        {{--<a class="nav-link hover-gray" href="#" data-provide="tooltip"--}}
-                                                           {{--title="" data-original-title="Cancel"--}}
-                                                            {{--onclick="cancelEditingDataPoint(this)">--}}
-                                                            {{--<i class="ti-close"></i>--}}
-                                                        {{--</a>--}}
-                                                    {{--</nav>--}}
-                                                </td>
-                                            </form>
-                                        </tr>
+                                                            <nav class="nav no-gutters edit-action-group">
+                                                            <a class="nav-link hover-primary" href="#"
+                                                            data-provide="tooltip" title=""
+                                                            data-original-title="Save"
+                                                            onclick="submitForm('#kpi-{{ $kpi->id }}-data-{{ $data->id }}', 'put')">
+                                                            <i class="ti-save"></i>
+                                                            </a>
+                                                            <a class="nav-link hover-gray" href="#" data-provide="tooltip"
+                                                            title="" data-original-title="Cancel"
+                                                            onclick="cancelEditingDataPoint(this)">
+                                                            <i class="ti-close"></i>
+                                                            </a>
+                                                            </nav>
+                                                        </td>
+                                                    </form>
+                                                </tr>
+                                            @endforeach
+                                        @endif
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>
                         </div>
-                    </div>
                 </div>
             </div>
 
@@ -182,52 +128,94 @@
     </main>
 
     <div class="fab fab-fixed">
-        <a class="btn btn-float btn-primary" href="#add-kpi-modal" title="Add New KPI"
+        <a class="btn btn-float btn-primary" href="#kpi-0-modal" title="Add New KPI"
            data-provide="tooltip" data-toggle="modal">
             <i class="ti-plus"></i>
         </a>
     </div>
 
-    @include('app.projects.partials.add-kpi-modal')
+    @include('app.projects.partials.kpi-modal', ['kpi' => null])
 
     <script>
         window.onload = function () {
 
-            // ==============================================
-            // Line chart
-            //
-            new Chart($("#chart"), {
-                type: 'line',
+            var jsonString = '{!! json_encode($kpiSet) !!}';
+            console.log(jsonString);
+            var kpiSet = JSON.parse(jsonString);
+            console.log(kpiSet);
+
+            $.each(kpiSet, function (index, kpi) {
+
+                if(kpi.data.length == 0)
+                    return;
+
+                // ==============================================
+                // Line chart
+                //
+                new Chart($("#kpi-" + kpi.id + "-chart"), {
+                    type: 'line',
 //                responsive: true,
 //                maintainAspectRatio: true,
-                // Data
-                //
-                data: {
-                    labels: ["January", "February", "March", "April"],
-                    datasets: [
-                        {
-                            label: "Revenue",
-                            fill: false,
-                            borderWidth: 3,
-                            pointRadius: 5,
-                            borderColor: "#9966ff",
-                            pointBackgroundColor: "#9966ff",
-                            pointBorderColor: "#9966ff",
-                            pointHoverBackgroundColor: "#fff",
-                            pointHoverBorderColor: "#9966ff",
-                            data: [30, 25, 35, 23]
-                        }
-                    ]
-                },
-
-                // Options
-                //
-                options: {
-                    legend: {
-                        display: false
+                    // Data
+                    //
+                    data: {
+                        labels: kpi.dataset.x_value, //["January", "February", "March", "April"],
+                        datasets: [
+                            {
+                                label: kpi.title, //"Revenue",
+                                fill: false,
+                                borderWidth: 3,
+                                pointRadius: 5,
+                                borderColor: "#9966ff",
+                                pointBackgroundColor: "#9966ff",
+                                pointBorderColor: "#9966ff",
+                                pointHoverBackgroundColor: "#fff",
+                                pointHoverBorderColor: "#9966ff",
+                                data: kpi.dataset.y_value, //[30, 25, 35, 23]
+                            }
+                        ]
                     },
-                }
+
+                    // Options
+                    //
+                    options: {
+                        legend: {
+                            display: false
+                        },
+                        scales: {
+                            yAxes: [{
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: kpi.y_label
+                                }
+                            }],
+                            xAxes: [{
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: kpi.x_label
+                                }
+                            }]
+                        }
+                    }
+                });
             });
+
+
+
+            window.onscroll = function () {
+
+                $('.accordion').each(function (index, element) {
+                    var isElementInView = Utils.isElementInView(element, true);
+
+                    if (isElementInView) {
+                        console.log('in view');
+                        Utils.scrollTo($(element).attr('id'));
+                    } else {
+                        console.log('out of view');
+                    }
+                });
+
+            }
         };
 
         function editDataPoint(element) {
@@ -240,6 +228,33 @@
             console.log($(element).parents('tr'));
             $(element).parents('tr').removeClass('editable').find('input').attr('readonly', 'true');
         }
+    </script>
+
+    <script>
+        function Utils() {
+
+        }
+
+        Utils.prototype = {
+            constructor: Utils,
+            isElementInView: function (element, fullyInView) {
+                var pageTop = $(window).scrollTop();
+                var pageBottom = pageTop + $(window).height();
+                var elementTop = $(element).offset().top;
+                var elementBottom = elementTop + $(element).height();
+
+                if (fullyInView === true) {
+                    return ((pageTop < elementTop) && (pageBottom > elementBottom));
+                } else {
+                    return ((elementTop <= pageBottom) && (elementBottom >= pageTop));
+                }
+            },
+            scrollTo: function (hash) {
+                location.hash = "#" + hash;
+            }
+        };
+
+        var Utils = new Utils();
     </script>
 
 @endsection
