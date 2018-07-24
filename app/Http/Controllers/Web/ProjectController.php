@@ -6,6 +6,7 @@ use App\Services\AttachmentService;
 use App\Services\CommentService;
 use App\Services\OrganizationService;
 use App\Services\ProjectMemberService;
+use App\Services\ReportService;
 use function dd;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -21,13 +22,15 @@ class ProjectController extends Controller
     protected $attachmentService;
     protected $commentService;
     protected $orgService;
+    protected $reportService;
 
     public function __construct(ProjectService $projectService,
                                 KpiService $kpiService,
                                 ProjectMemberService $projectMemberService,
                                 AttachmentService $attachmentService,
                                 CommentService $commentService,
-                                OrganizationService $organizationService)
+                                OrganizationService $organizationService,
+                                ReportService $reportService)
     {
         $this->projectService=$projectService;
         $this->kpiService = $kpiService;
@@ -35,6 +38,7 @@ class ProjectController extends Controller
         $this->attachmentService=$attachmentService;
         $this->commentService=$commentService;
         $this->orgService=$organizationService;
+        $this->reportService=$reportService;
     }
 
     public function index(Request $request){
@@ -104,16 +108,11 @@ class ProjectController extends Controller
 
     public function reports($project_id)
     {
-        try
-        {
-            $data['project'] = $this->projectService->show($project_id);
-            $data['page'] = 'reports';
-            return view("app.projects.reports", $data);
-        }
-        catch(\Exception $e)
-        {
-            return redirect()->back()->withErrors([$e->getMessage()]);
-        }
+        $data['project'] = $this->projectService->show($project_id);
+        $data['page'] = 'reports';
+        $data['reports']=$this->reportService->index($project_id);
+        $data['categories']=$this->reportService->names();
+        return view("app.projects.reports", $data);
     }
 
     public function create(Request $request){

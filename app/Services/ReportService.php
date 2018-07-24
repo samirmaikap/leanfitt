@@ -62,19 +62,19 @@ class ReportService //implements ReportServiceInterface
         $this->reasonRepo=$reasonRepository;
     }
 
-    public function index($data)
+    public function index($project_id)
     {
-        $organization=arrayValue($data,'organization');
-        $project=arrayValue($data,'project');
-
-        $query=$this->reportRepo->allReports($organization,$project);
-
-        if(count($query) > 0){
-            return $query;
-        }
-        else{
+        if(empty($project_id)){
             throw new \Exception("No report found");
         }
+
+        $query=$this->reportRepo->allReports($project_id);
+
+        if(!$query){
+            throw new \Exception("No report found");
+        }
+
+        return $query;
 
     }
 
@@ -101,7 +101,7 @@ class ReportService //implements ReportServiceInterface
         $query=$this->reportRepo->create($data);
         if($query){
             DB::commit();
-            return;
+            return $query;
         }
         else{
             DB::rollBack();

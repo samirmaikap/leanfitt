@@ -2,9 +2,16 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Faker\Generator as Faker;
 
 class ModelSeeder extends Seeder
 {
+    protected $faker;
+    public function __construct()
+    {
+        $this->faker=new Faker();
+    }
+
     /**
      * Run the database seeds.
      *
@@ -30,29 +37,29 @@ class ModelSeeder extends Seeder
         factory(\App\Models\LeanTool::class,10)->create();
 
         DB::table('report_categories')->insert([
-            ['name'=>'Healthcare roadmap/gemba walk'],
-            ['name'=>'Healthcare value strem map'],
-            ['name'=>'Healthcare leadership'],
-            ['name'=>'Healthcare standard work'],
-            ['name'=>'Healthcare kaizen event'],
-            ['name'=>'Healthcare quality tools'],
-            ['name'=>'Healthcare 5s audit'],
-            ['name'=>'Healthcare 6s audit'],
-            ['name'=>'Healthcare A3 project report'],
-            ['name'=>'Healthcare waste audit'],
-            ['name'=>'Lean scatter plot'],
-            ['name'=>'Lean run chart'],
-            ['name'=>'Lean stakeholder analysis'],
-            ['name'=>'Lean pareto chart'],
-            ['name'=>'Lean histogram'],
-            ['name'=>'Lean five whys analysis'],
-            ['name'=>'Lean impact map'],
-            ['name'=>'Lean brainstorming'],
-            ['name'=>'Manufacturing 5s audit'],
-            ['name'=>'Manufacturing 6s audit'],
-            ['name'=>'Manufacturing waste audit'],
-            ['name'=>'Manufacturing gemba walk'],
-            ['name'=>'Manufacturing A3 project report'],
+            ['name'=>'Healthcare roadmap/gemba walk','description'=>$this->faker->realText()],
+            ['name'=>'Healthcare value strem map','description'=>$this->faker->realText()],
+            ['name'=>'Healthcare leadership','description'=>$this->faker->realText()],
+            ['name'=>'Healthcare standard work','description'=>$this->faker->realText()],
+            ['name'=>'Healthcare kaizen event','description'=>$this->faker->realText()],
+            ['name'=>'Healthcare quality tools','description'=>$this->faker->realText()],
+            ['name'=>'Healthcare 5s audit','description'=>$this->faker->realText()],
+            ['name'=>'Healthcare 6s audit','description'=>$this->faker->realText()],
+            ['name'=>'Healthcare A3 project report','description'=>$this->faker->realText()],
+            ['name'=>'Healthcare waste audit','description'=>$this->faker->realText()],
+            ['name'=>'Lean scatter plot','description'=>$this->faker->realText()],
+            ['name'=>'Lean run chart','description'=>$this->faker->realText()],
+            ['name'=>'Lean stakeholder analysis','description'=>$this->faker->realText()],
+            ['name'=>'Lean pareto chart','description'=>$this->faker->realText()],
+            ['name'=>'Lean histogram','description'=>$this->faker->realText()],
+            ['name'=>'Lean five whys analysis','description'=>$this->faker->realText()],
+            ['name'=>'Lean impact map','description'=>$this->faker->realText()],
+            ['name'=>'Lean brainstorming','description'=>$this->faker->realText()],
+            ['name'=>'Manufacturing 5s audit','description'=>$this->faker->realText()],
+            ['name'=>'Manufacturing 6s audit','description'=>$this->faker->realText()],
+            ['name'=>'Manufacturing waste audit','description'=>$this->faker->realText()],
+            ['name'=>'Manufacturing gemba walk','description'=>$this->faker->realText()],
+            ['name'=>'Manufacturing A3 project report','description'=>$this->faker->realText()],
         ]);
 
     }
