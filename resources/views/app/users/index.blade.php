@@ -151,15 +151,15 @@
 
                                     </div>
                                     @endpermission
-                            @endif
+                                @endif
+                            </a>
                         </div>
+                    @endforeach
             </div>
-            @endforeach
             @else
                 <h3 class="p-20 text-danger">No users found</h3>
             @endif
         </div>
-
 
 
         {{--Invitation Modal--}}
@@ -484,5 +484,5 @@
                 output.src = URL.createObjectURL(event.target.files[0]);
             }
         </script>
-        </div>
+        </main>
 @endsection
