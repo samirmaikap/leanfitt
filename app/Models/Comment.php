@@ -18,6 +18,8 @@ class Comment extends Model
         'commentable_type',
     ];
 
+    protected $dates = [];
+
     public function item(){
         return $this->belongsTo(ActionItem::class);
     }

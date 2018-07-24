@@ -3,21 +3,21 @@
 
         @foreach($project->boards()->first()->processes as $process)
 {{--            {{ dd(count($process->actionItems)) }}--}}
-        <div class="">
+        <div class="process" data-id="{{ $process->id }}">
             <div class="card">
                 <h4 class="card-title">{{ $process->name }}</h4>
-                <div class="card-body">
+                <div class="card-body bg-lighter">
                     <div class="media-list media-list-hover media-list-divided" style="min-height: 100px">
                         @foreach($process->actionItems as $actionItem)
-                        <a class="media media-single" href="#action-item-{{ $actionItem->id }}-modal" data-toggle="modal">
-                            <div class="media-body">
-                                <h6> {{ $actionItem->title }}</h6>
-                                <small class="text-fader">Assignor: {{ $actionItem->assignor->full_name }}</small>
+                            <div class="action-item border-light b-1 shadow-1 mb-20" data-id="{{ $actionItem->id }}">
+                                <a class="media media-single" href="#action-item-{{ $actionItem->id }}-modal" data-toggle="modal">
+                                    <div class="media-body">
+                                        <h6 class="title"> {{ $actionItem->title }}</h6>
+                                        <small class="text-fader">Assignor: {{ $actionItem->assignor->full_name }}</small>
+                                    </div>
+                                </a>
+                                @include('app.action-items.partials.action-item-modal')
                             </div>
-
-{{--                            @include('app.action-items.partials.action-item-modal', ['actionItem' => $actionItem])--}}
-                        </a>
-                            @include('app.action-items.partials.action-item-modal')
                         @endforeach
                     </div>
                 </div>

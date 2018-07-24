@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class ActionItem extends Model
 {
     protected $fillable=[
+        'user_id',
+        'process_id',
         'title',
         'description',
-        'process_id',
-        'user_id',
         'position',
         'due_date',
         'is_archived',

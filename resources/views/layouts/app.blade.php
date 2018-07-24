@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="Responsive admin dashboard and web application ui kit. ">
         <meta name="keywords" content="mail, email, conversation, mailbox">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>LeanFITT</title>
 

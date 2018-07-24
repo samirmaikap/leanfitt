@@ -1,12 +1,7 @@
 <!-- Action Item modal -->
-<div id="action-item-{{ $actionItem->id }}-modal" class="modal fade">
+<div id="action-item-{{ $actionItem->id }}-modal" class="modal modal-center fade">
     <div class="modal-dialog modal-center">
         <div class="modal-content">
-
-            <form id="action-item-{{ $actionItem->id }}-form" action="{{ url('action-items/' . $actionItem->id) }}" method="post">
-                {{ csrf_field() }}
-                <input type="hidden" name="position" value="{{ $actionItem->position }}">
-                <input type="hidden" name="user_id" value="{{ $actionItem->user_id }}">
 
             <!-- Modal Header starts -->
             <div class="modal-header bg-primary">
@@ -18,91 +13,124 @@
             <!-- Modal Header Ends -->
 
             <!-- Modal Body Starts -->
-            <div class="modal-body" #style="height:400px; overflow-y: scroll">
-                {{--<div class="card">--}}
-                    {{--<div class="card-title">--}}
-                        {{--<h5>On Progress</h5>--}}
-                    {{--</div>--}}
-                    {{--<div class="card-body">--}}
-                        <div class="form-group">
-                            <label class="col-form-label ">Title</label>
-                            <br/>
-                            <div class="">
-                                <input type="text" class="form-control" name="title" value=""/>
-                            </div>
+            <div class="modal-body" style="height:400px; overflow-y: scroll">
+
+                <form id="action-item-{{ $actionItem->id }}-form" action="{{ url('action-items/' . $actionItem->id) }}"
+                      class="action-item-form" method="post">
+
+                    {{ csrf_field() }}
+                    {{ method_field('put') }}
+
+                    <input type="hidden" name="id" value="{{ $actionItem->id }}">
+                    <input type="hidden" name="user_id" value="{{ $actionItem->user_id }}">
+                    <input type="hidden" name="process_id" value="{{ $process->id }}">
+                    <input type="hidden" name="position" value="{{ $actionItem->position }}">
+
+                    <div class="form-group">
+                        <label class="col-form-label ">Title</label>
+                        <br/>
+                        <div class="">
+                            <input type="text" class="form-control" name="title" value="{{ $actionItem->title }}"/>
                         </div>
-                        <div class="form-group">
-                            <label class="col-form-label ">Description</label>
-                            <br/>
-                            <div class="">
-                                <textarea class="form-control" rows="3" name="description"></textarea>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label ">Description</label>
+                        <br/>
+                        <div class="">
+                            <textarea class="form-control" rows="3" name="description">{{ $actionItem->description }}</textarea>
                         </div>
+                    </div>
 
-                        {{--<hr/>--}}
+                    {{--<hr/>--}}
 
-                        <div class="form-group">
-                            <label class="col-form-label">Assignees</label>
-                            <select name="assignees[]" id="" class="form-control selectpicker" multiple>
-                                <option value="">Debajyoti Das</option>
-                                <option value="">Debajyoti Das</option>
-                                <option value="">Debajyoti Das</option>
-                                <option value="">Debajyoti Das</option>
-                                <option value="">Debajyoti Das</option>
-                                <option value="">Debajyoti Das</option>
-                                <option value="">Debajyoti Das</option>
-                                <option value="">Debajyoti Das</option>
-                                <option value="">Debajyoti Das</option>
-                                <option value="">Debajyoti Das</option>
-                            </select>
-                        </div>
+                    <div class="form-group">
+                        <label class="col-form-label">Assignees</label>
+                        <select name="assignees[]" class="form-control selectpicker" multiple>
+                            @if(isset($project->members) && count($project->members))
+                                @foreach($project->members as $member)
+                                    <option value="{{ $member->user->id }}" @if(in_array($member->user->id, $actionItem->assignees()->pluck('user_id')->toArray())) {{ 'selected' }} @endif>
+                                        {{ $member->user->full_name }}
+                                    </option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
 
-                        {{--<hr/>--}}
+                </form>
+                {{--<hr/>--}}
 
-                        <div class="form-group">
-                            <label class="col-form-label">Attachments</label>
-                            {{--<div class="dropzone1" data-provide="dropzone"--}}
-                                 {{--data-url="{{ url('action-items') }}"--}}
-                                 {{--data-error="dropzoneError()" --}}
-                                 {{--data-params="{_token: {{ csrf_token() }}">--}}
-                            {{--</div>--}}
-                            <div id="dropzone" class="dropzone p-0">
-                                <div class="dropzone-previews b-1"></div>
-                            </div>
-                        </div>
+                <div class="form-group">
+                    <label class="col-form-label">Attachments</label>
+                    <div id="dropzone-{{ $actionItem->id }}" class="p-0"
+                         data-provide="dropzone"
+                         data-method="post"
+                         data-url="{{ url('api/attachments') }}"
+                         data-params='{"_token": "{{ csrf_token() }}", "type": "action_item", "action_item_id": "{{ $actionItem->id }}" }'
+                         data-test=demo>
+                    </div>
+                    <div class="b-1 border-light p-10">
+                        @if(isset($actionItem->attachments) && count($actionItem->attachments) > 0)
+                            @foreach($actionItem->attachments as $key=>$attachment)
+                                @php $ext= empty($attachment->url) ? 'N/A' : pathinfo($attachment->url, PATHINFO_EXTENSION); @endphp
+                                <a class="avatar avatar-pill avatar-lg" style="overflow: hidden"
+                                   href="{{$attachment->url}}" target="_blank">
+                                    <img src="https://ui-avatars.com/api/?font-size=0.21&length=4&uppercase=false&name={{$ext}}"
+                                         alt="...">
+                                    {{--<span class="text-truncate w-150px">Attachment {{$key+1}}</span>--}}
+                                    <form class="attachmentRemoveForm" method="post"
+                                          action="{{url('projects')}}/{{$actionItem->id}}/attachment/{{$attachment->id}}/remove">
+                                        {{csrf_field()}}
+                                        {{method_field('delete')}}
+                                        {{--<button type="submit" class="close cursor-pointer remove-attachment">&times;</button>--}}
+                                    </form>
+                                </a>
+                            @endforeach
+                        @endif
+                    </div>
+                </div>
 
-                        {{--<hr/>--}}
+                {{--<hr/>--}}
 
-                        <div class="publisher publisher-multi b-1">
-                            <textarea id="comment" name="comment" class="publisher-input" rows="3" placeholder="Add Comments"></textarea>
-                            <div class="flexbox flex-row-reverse">
-                                <button id="post-comment" class="btn btn-sm btn-bold btn-primary">Post</button>
-                            </div>
-                        </div>
+                <form class="comment-form publisher publisher-multi b-1" method="post">
+                    {{ csrf_field() }}
+                    <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                    <input type="hidden" name="type" value="action_item">
+                    <input type="hidden" name="action_item_id" value="{{ $actionItem->id }}">
+                    <textarea name="comment" class="publisher-input comment" rows="3"
+                              placeholder="Add Comments"></textarea>
+                    <div class="flexbox flex-row-reverse">
+                        <button type="submit" class="btn btn-sm btn-bold btn-primary post-comment">Post</button>
+                    </div>
+                </form>
 
-                        <div class="media-list media-list-divided bg-lighter" style="border: 1px solid #ebebeb;">
+                <div class="comment-list media-list media-list-divided b-1 border-light">
+                    @if(isset($actionItem->comments) && count($actionItem->comments))
+                        @foreach($actionItem->comments->sortByDesc('created_at') as $comment)
                             <div class="media">
                                 <a class="avatar" href="#">
-                                    <img src="../assets/img/avatar/4.jpg" alt="...">
+                                    <img src="https://ui-avatars.com/api/?name={{ $comment->user->full_name }}"
+                                         alt="...">
                                 </a>
                                 <div class="media-body">
                                     <p>
-                                        <a href="#"><strong>Frank Camley</strong></a>
-                                        <time class="float-right text-fade" datetime="2017-07-14 20:00">Just now
+                                        <a href="#"><strong>{{ $comment->user->full_name }}</strong></a>
+                                        <time class="float-right text-fade" datetime="2017-07-14 20:00">
+                                            {{ $comment->created_at->format('m/d/Y h:i A') }}
                                         </time>
                                     </p>
-                                    <p>Uniquely enhance world-class channels with just in time schemas.</p>
+                                    <p>{{ $comment->comment }}</p>
                                 </div>
                             </div>
-                        </div>
-                    {{--</div>--}}
+                        @endforeach
+                    @endif
+                </div>
+                {{--</div>--}}
                 {{--</div>--}}
             </div>
             <!-- Modal Body Ends -->
             <div class="modal-footer">
-                 {{--<a href="javascript:;" class="btn btn-block btn-primary" data-dismiss="modal">Submit</a>--}}
+                <button type="submit" class="update-action-item btn btn-block btn-primary">Update</button>
             </div>
-            </form>
         </div>
     </div>
 </div>

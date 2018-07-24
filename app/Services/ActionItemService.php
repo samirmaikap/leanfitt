@@ -134,6 +134,19 @@ class ActionItemService //implements ActionItemServiceInterface
 
         DB::beginTransaction();
         $query=$this->itemRepo->update($item_id,$data);
+
+        if(!empty($data['assignees']))
+        {
+            $item = $this->itemRepo->getItem($item_id);
+            $item->assignees()->delete();
+            foreach ($data['assignees'] as $assignee)
+            {
+                $this->addAssignee([
+                    'user_id' => $assignee,
+                    'action_item_id' => $item_id
+                ]);
+            }
+        }
         if($query){
             DB::commit();
             return true;
