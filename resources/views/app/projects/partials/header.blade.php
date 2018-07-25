@@ -1,13 +1,7 @@
 <!-- Project header -->
 <header class="header mb-0 bg-ui-general">
-    <div class="header-info mt-30 mb-0 center-vh">
-        <div class="d-block text-center">
-            {{--<img src="{{ asset('assets/img/header/projects.png') }}" alt="Graphics" width="200px" height="200px" style="margin: auto">--}}
-            <h3 class="header-title">
-                <strong>{{ $project["name"] ? $project["name"] : "Hi, Its me Saqueib Ansari, a web developer building cool things using PHP" }}</strong>
-                {{--<small>{{ isset($project["description"]) ? $project["description"] : '' }}</small>--}}
-            </h3>
-        </div>
+    <div class="header-bar center-h">
+        <h4 class="text-dark">{{$project->name}}</h4>
     </div>
 
     <div class="header-action center-h">
