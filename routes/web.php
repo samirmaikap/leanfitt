@@ -41,6 +41,12 @@ Route::group(['domain' => '{organization}' . config('session.domain'), 'namespac
     Route::delete('users/{id}', 'UserController@delete');
 
     Route::get('organizations/{organization_id}/view','OrganizationController@show');
+    Route::get('organizations/create', 'OrganizationController@create');
+    Route::post('organizations/create','OrganizationController@store');
+    Route::get('organizations/subscription/revoke','OrganizationController@cancelSubscription');
+    Route::get('organizations/subscription/resume','OrganizationController@resumeSubscription');
+    Route::put('organizations/{organization_id}','OrganizationController@update');
+
 
     Route::get('departments', 'DepartmentController@index');
     Route::post('departments', 'DepartmentController@store');
@@ -105,12 +111,15 @@ Route::group(['domain' => '{organization}' . config('session.domain'), 'namespac
     Route::get('awards', 'AwardController@index');
 });
 
+
 Route::group(['namespace' => 'Web'], function () {
 
     Route::get('/dashboard', 'DashboardController@index');
 
     Route::get('organizations', 'OrganizationController@index');
     Route::get('organizations/{organization_id}/view','OrganizationController@show');
+    Route::get('organizations/create', 'OrganizationController@create');
+    Route::post('organizations/create','OrganizationController@store');
 
     Route::get('users', 'UserController@index');
     Route::get('users/{id}/profile', 'UserController@profile');
