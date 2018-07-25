@@ -3,46 +3,58 @@
     <main>
         <header class="header no-border">
             <div class="header-bar">
-                <h4>Report Name</h4>
+                <h4>{{ucfirst($report->report_name)}} ({{ucfirst($report->project_name)}})</h4>
             </div>
         </header>
         <div class="main-content">
             <div class="row">
-                {{--@include('app.projects.reports.chart')--}}
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="pull-left"><h3>Datasets</h3></div>
-                            <div class="pull-right">
-                                <button class="btn btn-success btn-square btn-round" title="New Dataset"><i class="fe fe-plus"></i></button>
-                                <button class="btn btn-success btn-square btn-round" title="Change Axis"><i class="fe fe-edit-2"></i></button>
-                            </div>
-
-                        </div>
-                        <table class="table table-hover">
-                            <thead>
-                            <tr>
-                                <th>Label</th>
-                                <th>Value</th>
-                                <th class="w-80px text-center">Action</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>Template PSD</td>
-                                <td>45</td>
-                                <td>
-                                    <nav class="nav no-gutters gap-2 fs-16">
-                                        <a class="nav-link hover-primary" href="#" data-provide="tooltip" title="Edit"><i class="ti-pencil"></i></a>
-                                        <a class="nav-link hover-danger" href="#" data-provide="tooltip" title="Delete"><i class="ti-trash"></i></a>
-                                    </nav>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                @if($report_category==14 || $report_category==15 || $report_category==11 || $report_category==12 || $report_category==6)
+                    @include('app.projects.reports.chart')
+                @endif
             </div>
         </div>
     </main>
+    <script>
+        window.onload=function(){
+            $(function(){
+                var category_id="{{$report_category}}";
+                var label=JSON.parse('{!! isset($report_data->chart) ? $report_data->chart->pluck('label')->values()->toJson() : null !!}');
+                var value1=JSON.parse('{!! isset($report_data->chart) ? $report_data->chart->pluck('value')->values()->toJson() : null !!}');
+                var xAxis="{{empty($report_data->axis) ? 'X Axis' : $report_data->axis}}"
+                var yAxis="{{empty($report_data->yxis) ? 'Y Axis' : $report_data->yxis}}"
+
+                if(category_id==14){
+                    var value2=[];
+                    var currentValue=0;
+                    for (var i=0;i<value1.length;i++){
+                        currentValue+=parseFloat(value1[i]);
+                        value2[i]=currentValue;
+                    }
+                    paretoChart('pareto-chart',label,value1,value2,xAxis,yAxis);
+                }
+                else if(category_id=15){
+
+                }
+                else if(category_id==11){
+
+                }
+                else if(category_id==12){
+
+                }
+            })
+
+            @if(session()->has('success') || session('success'))
+            setTimeout(function () {
+                toastr.success('{{ session('success') }}');
+            }, 500);
+            @endif
+            @if(isset($errors) && count($errors->all()) > 0 && $timeout = 700)
+            @foreach ($errors->all() as $key => $error)
+            setTimeout(function () {
+                toastr.error("{{ $error }}");
+            }, {{ $timeout * $key }});
+            @endforeach
+            @endif
+        }
+    </script>
 @endsection

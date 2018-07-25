@@ -71,6 +71,11 @@ Route::group(['domain' => '{organization}' . config('session.domain'), 'namespac
 
     Route::post('/projects/reports', 'ReportController@create');
 
+    Route::post('/projects/reports/charts', 'ReportController@storeChartData');
+    Route::put('/projects/reports/charts/{chart_id}', 'ReportController@updateChartData');
+    Route::delete('/projects/reports/charts/{chart_id}', 'ReportController@removeChartData');
+    Route::post('/projects/reports/charts/{chart_id}/axis', 'ReportController@changeChartAxis');
+
     Route::post('projects/member', 'ProjectController@addMember');
     Route::delete('projects/{project_id}/member/{member_id}/remove', 'ProjectController@removeMember');
 

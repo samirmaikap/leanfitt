@@ -25,8 +25,11 @@ class ReportController extends Controller
 
     public function view($project_id,$report_id){
         $report=$this->service->show($report_id);
-        $data['category_id']=$report->id;
-        $data['report']=$this->getReport($report_id);
+        $data['project_id']=$project_id;
+        $data['report']=$report;
+        $data['report_category']=$report->report_category_id;
+        $data['report_data']=$this->getReport($data['report_category'],$report_id);
+//        dd($data);
         return view('app.projects.reports.view',$data);
     }
 
@@ -42,6 +45,42 @@ class ReportController extends Controller
             default:
                 return null;
                 break;
+        }
+    }
+
+    public function storeChartData(Request $request){
+        try{
+           $this->service->createChartData($request->all());
+           return redirect()->back()->with('success','Data has been added');
+        }catch (\Exception $e){
+            return redirect()->back()->withErrors([$e->getMessage()]);
+        }
+    }
+
+    public function updateChartData(Request $request,$chart_id){
+        try{
+            $this->service->updateChartData($request->all(),$chart_id);
+            return redirect()->back()->with('success','Data has been updated');
+        }catch (\Exception $e){
+            return redirect()->back()->withErrors([$e->getMessage()]);
+        }
+    }
+
+    public function removeChartData($chart_id){
+        try{
+            $this->service->deleteChartData($chart_id);
+            return redirect()->back()->with('success','Data has been deleted');
+        }catch (\Exception $e){
+            return redirect()->back()->withErrors([$e->getMessage()]);
+        }
+    }
+
+    public function changeChartAxis(Request $request){
+        try{
+            $this->service->changeChartAxis($request->all());
+            return redirect()->back()->with('success','Axis has been updated');
+        }catch (\Exception $e){
+            return redirect()->back()->withErrors([$e->getMessage()]);
         }
     }
 }

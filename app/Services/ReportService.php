@@ -221,12 +221,7 @@ class ReportService //implements ReportServiceInterface
 
         $query=$this->chartAxisRepo->getChart($report_id);
 
-        if(count($query) > 0){
-            return $query;
-        }
-        else{
-            throw new \Exception("No data found");
-        }
+        return $query;
     }
 
     public function createChartData($data)
@@ -239,6 +234,27 @@ class ReportService //implements ReportServiceInterface
         $query=$this->chartRepo->create($data);
         if($query){
             $chartaxes=$this->chartAxisRepo->create(['x'=>'x axis','y'=>'y axis','report_id'=>$data['report_id']]);
+            if($chartaxes){
+                return;
+            }
+            else{
+                throw new \Exception(config('messages.common_error'));
+            }
+        }
+        else{
+            throw new \Exception(config('messages.common_error'));
+        }
+    }
+
+    public function updateChartData($data,$chart_id)
+    {
+        if(empty($chart_id)){
+            throw new \Exception('Chart id field is required');
+        }
+
+        $query=$this->chartRepo->create($data);
+        if($query){
+            $chartaxes=$this->chartAxisRepo->update($chart_id,$data);
             if($chartaxes){
                 return;
             }
