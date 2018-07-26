@@ -17,22 +17,22 @@
 <!-- END Project header -->
 
 
-<div class="fab fab-fixed">
-    <button class="btn btn-float btn-primary" data-toggle="button">
-        <i class="fab-icon-default ti-settings"></i>
-        <i class="fab-icon-active ti-close"></i>
-    </button>
+{{--<div class="fab fab-fixed">--}}
+    {{--<button class="btn btn-float btn-primary" data-toggle="button">--}}
+        {{--<i class="fab-icon-default ti-settings"></i>--}}
+        {{--<i class="fab-icon-active ti-close"></i>--}}
+    {{--</button>--}}
 
-    <ul class="fab-buttons">
-        <li>
-            <a class="btn btn-float btn-sm btn-primary" href="#" title="Export PDF" data-toggle="tooltip">
-                <i class="fa fa-file-pdf-o"></i>
-            </a>
-        </li>
-        <li>
-            <a class="btn btn-float btn-sm btn-primary" href="#" title="View Discussions" data-toggle="tooltip">
-                <i class="fa fa-comment"></i>
-            </a>
-        </li>
-    </ul>
-</div>
+    {{--<ul class="fab-buttons">--}}
+        {{--<li>--}}
+            {{--<a class="btn btn-float btn-sm btn-primary" href="#" title="Export PDF" data-toggle="tooltip">--}}
+                {{--<i class="fa fa-file-pdf-o"></i>--}}
+            {{--</a>--}}
+        {{--</li>--}}
+        {{--<li>--}}
+            {{--<a class="btn btn-float btn-sm btn-primary" href="#" title="View Discussions" data-toggle="tooltip">--}}
+                {{--<i class="fa fa-comment"></i>--}}
+            {{--</a>--}}
+        {{--</li>--}}
+    {{--</ul>--}}
+{{--</div>--}}
