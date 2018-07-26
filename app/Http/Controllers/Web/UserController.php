@@ -40,7 +40,7 @@ class UserController extends Controller
         $organizationId = null;
         $departmentId = null;
         $roleId = null;
-        
+
         if($request->query('organization'))
         {
             $organizationId = $request->query('organization');
@@ -124,6 +124,8 @@ class UserController extends Controller
         {
             $image=$request->hasFile('image') ? $request->file('image') : null;
             $this->userService->update($request->all(),$image,$id);
+            session()->forget('user');
+            session()->put('user',auth()->user());
             return redirect()->back()->with(['success' => 'Profile has been updated successfully']);
         }
         catch(\Exception $e)
