@@ -319,9 +319,14 @@
 
                             <div class="form-group">
                                 <label>Permissions</label>
+                                <label class="custom-control float-right custom-control-primary custom-checkbox">
+                                    <input type="checkbox" class="check-all-role custom-control-input">
+                                    <span class="custom-control-indicator"></span>
+                                    <span class="custom-control-description">Select All</span>
+                                </label>
                             </div>
 
-                            <div class="h-200px" style="overflow-x: hidden; overflow-y: scroll">
+                            <div class="h-200px role-checkbox-container" style="overflow-x: hidden; overflow-y: scroll">
                                 @foreach (config('permission.models') as $model)
                                     <div class="form-group">
                                         <p>{{ ucfirst($model) }}</p>
@@ -373,7 +378,15 @@
                                         <label>Description</label>
                                         <textarea name="description" rows="2" class="form-control">{{ $rlist->description }}</textarea>
                                     </div>
-                                    <div class="h-200px" style="overflow-x: hidden; overflow-y: scroll">
+                                    <div class="form-group">
+                                        <label>Permissions</label>
+                                        <label class="custom-control float-right custom-control-primary custom-checkbox">
+                                            <input type="checkbox" class="check-all-role custom-control-input">
+                                            <span class="custom-control-indicator"></span>
+                                            <span class="custom-control-description">Select All</span>
+                                        </label>
+                                    </div>
+                                    <div class="h-200px role-checkbox-container" style="overflow-x: hidden; overflow-y: scroll">
                                         @foreach (config('permission.models') as $model)
                                             <div class="form-group">
                                                 <p>{{ ucfirst($model) }}</p>
@@ -464,6 +477,15 @@
                         var id=$this.parent().parent().data('id');
                         window.location.href="{{url('users')}}/"+id+"/restore";
                     })
+                })
+
+                $('.check-all-role').on('change',function(){
+                    if($(this).is(':checked')){
+                        $(this).parent().parent().parent().children('.role-checkbox-container').find('input[type="checkbox"]').attr('checked',true);
+                    }
+                    else{
+                        $(this).parent().parent().parent().children('.role-checkbox-container').find('input[type="checkbox"]').attr('checked',false);
+                    }
                 })
 
                 @if(session()->has('success') || session('success'))
