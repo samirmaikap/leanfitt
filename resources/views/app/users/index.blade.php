@@ -121,7 +121,7 @@
                 @if(count($users) > 0)
                     @foreach($users as $user)
                         <div class="col-md-6 col-lg-3">
-                            <a href="{{url('users').'/'.$user->id.'/profile'}}" class="card" data-id="{{$user->id}}">
+                            <a href="{{url('users').'/'.$user->id.'/profile'}}{{isSuperadmin() ? '?organization='.$activeorg : ''}}" class="card" data-id="{{$user->id}}">
                                 <div class="card-body text-center" style="height: 270px">
                                     <div>
                                         <img class="avatar avatar-xxl" src="{{$user->avatar}}">

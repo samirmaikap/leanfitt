@@ -34,18 +34,12 @@ function renderCollection($data){
     }
 }
 
-function pluckOrganization($key,$user_id=null){
+function pluckOrganization($key){
     $session=session()->get('organization');
     if($session){
         return $session->$key;
     }
-    else{
-        $orgRepo=new \App\Repositories\OrganizationUserRepository();
-        $organization=$orgRepo->where('user_id',$user_id)->first();
-        if(!$organization)
-            return null;
-        return $organization->organization_id;
-    }
+    return null;
 }
 
 function isSuperadmin(){
