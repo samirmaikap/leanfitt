@@ -16,7 +16,7 @@
               {{method_field('put')}}
               <div class="card-header pt-20 pb-20">
                 <div class="flexbox gap-items-4">
-                  <img class="avatar avatar-xl" id="user-avatar" src="{{isset($user->avatar) ? $user->avatar : ''}}" alt="...">
+                  <img class="avatar avatar-xl" id="user-avatar" src="{{empty($user->avatar) ? env('UI_AVATAR').$user->full_name : $user->avatar}}" alt="...">
                   <div class="flex-grow">
                     <h5>{{isset($user->full_name) ? $user->full_name : ''}}</h5>
                     <div class="d-flex flex-column flex-sm-row gap-items-2 gap-y mt-16">

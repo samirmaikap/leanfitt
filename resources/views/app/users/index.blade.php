@@ -124,7 +124,7 @@
                             <a href="{{url('users').'/'.$user->id.'/profile'}}{{isSuperadmin() ? '?organization='.$activeorg : ''}}" class="card" data-id="{{$user->id}}">
                                 <div class="card-body text-center" style="height: 270px">
                                     <div>
-                                        <img class="avatar avatar-xxl" src="{{$user->avatar}}">
+                                        <img class="avatar avatar-xxl" src="{{empty($user->avatar) ? env('UI_AVATAR').$user->full_name : $user->avatar}}">
                                     </div>
                                     <h5 class="mt-3 mb-1">{{$user->full_name}}</h5>
                                     <span class="text-fade d-block ">{{$user->email}}</span>
