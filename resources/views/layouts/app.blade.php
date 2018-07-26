@@ -56,7 +56,9 @@
     <script src="{{ asset('assets/js/core.min.js') }}" data-provide="chartjs"></script>
     <script src="{{ asset('assets/js/app.js') }}"></script>
     <script src="{{ asset('assets/js/script.js') }}"></script>
-    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+    @if(isset($page) && $page=='lean-tools')
+        <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+    @endif
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <script>
