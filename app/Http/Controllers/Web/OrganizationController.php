@@ -39,11 +39,11 @@ class OrganizationController extends Controller
         {
             $organization = $this->service->create($request->all());
 
-            $relatedOrganizations = $this->userService->getRelatedOrganization(auth()->user());
-
+            $relatedOrganizations = $this->userService->getRelatedOrganization(session()->get('user')->id);
 //            $this->roleService->create(['name' => 'Admin'], $organization->id);
 
             session()->forget('relatedOrganizations');
+
             session(['relatedOrganizations' => $relatedOrganizations]);
 
             $url = 'http://' . $organization->subdomain  . config('session.domain') . '/dashboard';

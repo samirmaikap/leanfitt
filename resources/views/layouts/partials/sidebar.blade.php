@@ -20,7 +20,7 @@
             <div class="dropdown">
                 <span class="dropdown-toggle no-caret" data-toggle="dropdown">
                     <div class="profile-info">
-                        <img class="avatar" src="{{session()->get('user')->avatar}}" alt="...">
+                        <img class="avatar" src="{{empty(session()->get('user')->avatar) ? env('UI_AVATAR').session()->get('user')->full_name : session()->get('user')->avatar}}" alt="...">
                         <h4 class="mb-0">
                             @php $defaultOrganization = session()->get('organization')  @endphp
                             {{ isset($defaultOrganization->name) ?$defaultOrganization->name : null }}
@@ -40,7 +40,7 @@
                     @endforeach
                     @endif
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{{ url(config('app.url') . '/organizations/create' ) }}" target="_blank">
+                    <a class="dropdown-item" href="{{ url(config('app.url') . '/organizations/create' ) }}">
                         <i class="ti-plus"></i>
                         Create Organization
                     </a>
