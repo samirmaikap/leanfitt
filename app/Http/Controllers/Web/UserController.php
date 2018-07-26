@@ -63,7 +63,7 @@ class UserController extends Controller
         $data['users'] = $this->userService->all($organizationId, $departmentId, $roleId);
 //        $data['departments'] = $this->departmentService->allDepartments();
         $data['rolelist'] = $this->roleService->all($organizationId);
-        $data['activeorg']=$request->query('organization') ? $request->get('organization') : pluckSession('id');
+        $data['activeorg']=$request->query('organization') ? $request->get('organization') : pluckOrganization('id');
         $data['activedep']=$request->get('department');
         $data['activerole']=$request->get('role');
 
@@ -101,7 +101,7 @@ class UserController extends Controller
 
     public function profile(Request $request,$user_id)
     {
-        $organizationId=null;
+        $organizationId=pluckOrganization('id');
         $data['user']=$this->userService->profile($user_id);
         $data['departments']=$this->departmentService->list($request->all());
         $data['roles']=$this->roleService->all($organizationId);

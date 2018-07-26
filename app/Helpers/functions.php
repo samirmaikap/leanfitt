@@ -34,7 +34,7 @@ function renderCollection($data){
     }
 }
 
-function pluckSession($key){
+function pluckOrganization($key){
     $session=session()->get('organization');
     if($session){
         return $session->$key;

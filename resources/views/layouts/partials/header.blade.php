@@ -5,7 +5,7 @@
         @if(auth()->user()->is_superadmin==1)
             <span class="topbar-btn sidebar-toggler #sidebar-toggle-fold"><i>&#9776;</i></span>
         @else
-            @if(auth()->user() && !empty(pluckSession('id')))
+            @if(auth()->user() && !empty(pluckOrganization('id')))
                 <span class="topbar-btn sidebar-toggler #sidebar-toggle-fold"><i>&#9776;</i></span>
             @endif
         @endif
@@ -30,7 +30,7 @@
                 <div class="dropdown-menu dropdown-menu-right">
                     <a class="dropdown-item" href="{{url('users')}}/{{auth()->user()->id}}/profile"><i class="ti-user"></i> Profile</a>
                     @permission('update.organization')
-                    <a class="dropdown-item" href="{{url('organizations')}}/{{pluckSession('id')}}/view"><i class="ti-briefcase"></i> My Organization</a>
+                    <a class="dropdown-item" href="{{url('organizations')}}/{{pluckOrganization('id')}}/view"><i class="ti-briefcase"></i> My Organization</a>
                     @endpermission
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="{{ env('APP_URL').'/logout' }}"><i class="ti-power-off"></i> Logout</a>
