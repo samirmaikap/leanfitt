@@ -143,7 +143,7 @@ class UserService
         }
 
         DB::commit();
-        return;
+        return $query;
     }
 
     public function getRelatedOrganization($id)

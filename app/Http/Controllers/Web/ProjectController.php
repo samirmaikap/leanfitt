@@ -50,6 +50,7 @@ class ProjectController extends Controller
     public function show($project_id)
     {
         $data['page']='projects';
+        $data['sub_page']='details';
         $data['project']=$this->projectService->show($project_id);
         $members=$this->projectService->getMembers($project_id);
         if(count($data['project']->members) > 0 && count($members) > 0){
@@ -74,7 +75,8 @@ class ProjectController extends Controller
         {
             $data['project'] = $this->projectService->show($project_id);
             $data['kpiSet'] = $this->kpiService->index($request);
-            $data['page'] = 'kpi';
+            $data['sub_page'] = 'kpi';
+            $data['page'] = 'projects';
 //            dd($data);
 
             return view("app.projects.kpi", $data);
@@ -91,7 +93,8 @@ class ProjectController extends Controller
         try
         {
             $data['project'] = $this->projectService->show($project_id);
-            $data['page'] = 'action-items';
+            $data['sub_page'] = 'action-items';
+            $data['page'] = 'projects';
 //            dd($data);
             return view("app.projects.action-items", $data);
         }
@@ -107,7 +110,8 @@ class ProjectController extends Controller
         try
         {
             $data['project'] = $this->projectService->show($project_id);
-            $data['page'] = 'reports';
+            $data['sub_page'] = 'reports';
+            $data['page'] = 'projects';
             return view("app.projects.reports", $data);
         }
         catch(\Exception $e)

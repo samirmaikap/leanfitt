@@ -55,3 +55,8 @@ function isAdmin(){
         return false;
     }
 }
+
+function makeSubdomain($domain){
+    $url=str_replace('http://','',env('APP_URL'));
+    return 'http://'.$domain.'.'.$url;
+}

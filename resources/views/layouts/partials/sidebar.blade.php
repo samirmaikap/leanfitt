@@ -23,7 +23,7 @@
                         <img class="avatar" src="{{empty(session()->get('user')->avatar) ? env('UI_AVATAR').session()->get('user')->full_name : session()->get('user')->avatar}}" alt="...">
                         <h4 class="mb-0">
                             @php $defaultOrganization = session()->get('organization')  @endphp
-                            {{ isset($defaultOrganization->name) ?$defaultOrganization->name : null }}
+                            {{ isset($defaultOrganization->name) ? $defaultOrganization->name : null }}
                             <i class="fa fa-caret-down"></i>
                         </h4>
                         <p>{{ isset(session('user')->roles) ? implode(', ',session('user')->roles->pluck('display_name')->toArray()) : '' }}</p>
@@ -33,7 +33,7 @@
                     @php $relatedOrganization=session()->get('relatedOrganizations') @endphp
                     @if(count($relatedOrganization) > 0)
                     @foreach($relatedOrganization as $organization)
-                        <a class="dropdown-item" href="{{ $organization->url . '/dashboard' }}">
+                        <a class="dropdown-item" href="{{ makeSubdomain($organization->subdomain). '/dashboard' }}">
                             <i class="ti-arrow-right"></i>
                             {{ $organization->name }}
                         </a>

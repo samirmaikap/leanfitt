@@ -6,11 +6,11 @@
 
     <div class="header-action center-h">
         <nav class="nav">
-            <a class="nav-link @if(isset($page) && $page == 'details') {{ 'active' }} @endif" href="{{ url('projects/' . $project["id"] . '/details') }}">Details</a>
+            <a class="nav-link @if(isset($sub_page) && $sub_page == 'details') {{ 'active' }} @endif" href="{{ url('projects/' . $project["id"] . '/details') }}">Details</a>
 {{--            <a class="nav-link @if(isset($page) && $page == 'members') {{ 'active' }} @endif" href="{{ url('projects/' . $project["id"] . '/members') }}">Members</a>--}}
-            <a class="nav-link @if(isset($page) && $page == 'kpi') {{ 'active' }} @endif" href="{{ url('projects/' . $project["id"] . '/kpi') }}">KPI</a>
-            <a class="nav-link @if(isset($page) && $page == 'action-items') {{ 'active' }} @endif" href="{{ url('projects/' . $project["id"] . '/action-items') }}">Action Items</a>
-            <a class="nav-link @if(isset($page) && $page == 'reports') {{ 'active' }} @endif" href="{{ url('projects/' . $project["id"] . '/reports') }}">Reports</a>
+            <a class="nav-link @if(isset($sub_page) && $sub_page == 'kpi') {{ 'active' }} @endif" href="{{ url('projects/' . $project["id"] . '/kpi') }}">KPI</a>
+            <a class="nav-link @if(isset($sub_page) && $sub_page == 'action-items') {{ 'active' }} @endif" href="{{ url('projects/' . $project["id"] . '/action-items') }}">Action Items</a>
+            <a class="nav-link @if(isset($sub_page) && $sub_page == 'reports') {{ 'active' }} @endif" href="{{ url('projects/' . $project["id"] . '/reports') }}">Reports</a>
         </nav>
     </div>
 </header><!--/.header -->
