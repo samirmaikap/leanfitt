@@ -40,9 +40,9 @@ class ProjectController extends Controller
     public function index(Request $request){
         $data['page']='projects';
         $data['organizations']=$this->orgService->list();
-        $data['organization_id']=!empty(pluckOrganization('id')) ? pluckOrganization('id') : $data['organizations']->first()->id;
-        $organization=$request->query('organization') ? $request->get('organization') : $data['organization_id'];
-        $data['projects'] = $this->projectService->index($organization);
+        $organization=!empty(pluckOrganization('id')) ? pluckOrganization('id') : $data['organizations']->first()->id;
+        $data['organization_id']=$request->query('organization') ? $request->get('organization') : $organization;
+        $data['projects'] = $this->projectService->index($data['organization_id']);
 
         return view("app.projects.index", $data);
     }

@@ -29,9 +29,11 @@
                 </span>
                 <div class="dropdown-menu dropdown-menu-right">
                     <a class="dropdown-item" href="{{url('users')}}/{{auth()->user()->id}}/profile"><i class="ti-user"></i> Profile</a>
+                    @if(!isSuperadmin())
                     @permission('update.organization')
                     <a class="dropdown-item" href="{{url('organizations')}}/{{pluckOrganization('id')}}/view"><i class="ti-briefcase"></i> My Organization</a>
                     @endpermission
+                    @endif
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="{{ env('APP_URL').'/logout' }}"><i class="ti-power-off"></i> Logout</a>
                 </div>
