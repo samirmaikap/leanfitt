@@ -104,7 +104,7 @@ class AuthService
 
         $query=$this->orgUserRepo->fillUpdate($orgUser,['is_invited'=>0]);
         if($query){
-            $this->repo->update($query->user_id,['is_verified'=>1]);
+            $this->repo->update($orgUser->user_id,['is_verified'=>1]);
             return;
         }
 

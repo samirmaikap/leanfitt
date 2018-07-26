@@ -27,18 +27,18 @@
                         <p>{{$success}}</p>
                     </div>
                     <div class="form-group">
-                        <p>Please <a href="{{url('login')}}">Login</a> to your account </p>
+                        <p class="d-block text-center">Please <a href="{{url('login')}}">Login</a> to your account </p>
                     </div>
                 @else
                     <div class="form-group text-center center-h">
                         <span class="status-square btn mt-20 mb-20 btn-danger btn-round fs-30 center-h center-v btn-square h-100px w-100px"><i class="ti-close"></i></span>
                     </div>
-                    <div class="form-group text-center">
+                    <div class="form-grou text-center">
                         <p>{{$error}}</p>
                     </div>
                 @endif
             </div>
-            <p class="text-center text-muted fs-13 mt-20">Don't have an account? <a class="text-primary fw-500" href="{{url('register')}}">Sign up</a></p>
+            <p class="text-center text-muted d-block fs-13 mt-20">Don't have an account? <a class="text-primary fw-500" href="{{url('register')}}">Sign up</a></p>
         </div>
 
 
