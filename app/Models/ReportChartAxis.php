@@ -17,6 +17,6 @@ class ReportChartAxis extends Model
     }
 
     public function chart(){
-        return $this->hasManyThrough(ReportChart::class,Report::class,'id','report_id');
+        return $this->hasManyThrough(ReportChart::class,Report::class,'id','report_id','report_id');
     }
 }

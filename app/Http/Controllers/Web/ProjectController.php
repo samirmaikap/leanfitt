@@ -111,9 +111,11 @@ class ProjectController extends Controller
 
     public function reports($project_id)
     {
+
         $data['project'] = $this->projectService->show($project_id);
-        $data['sub_page'] = 'reports';
-        $data['page'] = 'projects';
+        $data['page'] = 'reports';
+        $data['reports']=$this->reportService->index($project_id);
+        $data['categories']=$this->reportService->names();
         return view("app.projects.reports", $data);
     }
 

@@ -29,7 +29,6 @@ class ReportController extends Controller
         $data['report']=$report;
         $data['report_category']=$report->report_category_id;
         $data['report_data']=$this->getReport($data['report_category'],$report_id);
-//        dd($data);
         return view('app.projects.reports.view',$data);
     }
 
@@ -49,21 +48,26 @@ class ReportController extends Controller
     }
 
     public function storeChartData(Request $request){
-        try{
-           $this->service->createChartData($request->all());
-           return redirect()->back()->with('success','Data has been added');
-        }catch (\Exception $e){
-            return redirect()->back()->withErrors([$e->getMessage()]);
+        if($request->has('chart_id') && !empty($request->chart_id)){
+            try{
+                $this->service->updateChartData($request->all(),$request->chart_id);
+                return redirect()->back()->with('success','Data has been updated');
+            }catch (\Exception $e){
+                return redirect()->back()->withErrors([$e->getMessage()]);
+            }
+        }
+        else{
+            try{
+                $this->service->createChartData($request->all());
+                return redirect()->back()->with('success','Data has been added');
+            }catch (\Exception $e){
+                return redirect()->back()->withErrors([$e->getMessage()]);
+            }
         }
     }
 
-    public function updateChartData(Request $request,$chart_id){
-        try{
-            $this->service->updateChartData($request->all(),$chart_id);
-            return redirect()->back()->with('success','Data has been updated');
-        }catch (\Exception $e){
-            return redirect()->back()->withErrors([$e->getMessage()]);
-        }
+    public function updateChartData($request,$chart_id){
+
     }
 
     public function removeChartData($chart_id){
@@ -75,9 +79,9 @@ class ReportController extends Controller
         }
     }
 
-    public function changeChartAxis(Request $request){
+    public function changeChartAxis(Request $request,$report_id){
         try{
-            $this->service->changeChartAxis($request->all());
+            $this->service->changeChartAxis($request->all(),$report_id);
             return redirect()->back()->with('success','Axis has been updated');
         }catch (\Exception $e){
             return redirect()->back()->withErrors([$e->getMessage()]);

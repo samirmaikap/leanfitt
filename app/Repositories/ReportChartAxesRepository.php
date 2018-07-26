@@ -16,7 +16,7 @@ class ReportChartAxesRepository extends BaseRepository implements ReportChartAxe
     public function getChart($report_id)
     {
         $query=$this->model()->with(['chart'=>function($query){
-            $query->select('report_charts.id','label','value');
+            $query->select('report_charts.id as chart_id','label','value');
         }])->where('report_id',$report_id)->first();
         return $query;
     }
