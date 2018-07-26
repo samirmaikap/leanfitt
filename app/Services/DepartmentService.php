@@ -22,8 +22,7 @@ class DepartmentService //implements DepartmentServiceInterface
     }
 
     public function list($data){
-        $organization=empty(arrayValue($data,'organization')) ? pluckSession('id') : arrayValue($data,'organization');
-
+        $organization=empty(arrayValue($data,'organization')) ? pluckOrganization('id') : arrayValue($data,'organization');
         $query=$this->departmentRepo->getDepartments($organization);
         if(!$query)
             throw new \Exception(config('messages.common_error'));
@@ -48,7 +47,7 @@ class DepartmentService //implements DepartmentServiceInterface
 
     public function createDepartment($data)
     {
-        $data['organization_id']=pluckSession('id');
+        $data['organization_id']=pluckOrganization('id');
         $validator=new DepartmentValidator($data, 'create');
         
         if($validator->fails())

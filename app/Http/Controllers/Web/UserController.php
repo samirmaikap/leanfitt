@@ -40,6 +40,9 @@ class UserController extends Controller
         $organizationId = null;
         $departmentId = null;
         $roleId = null;
+        $data['orglist']=$this->orgService->list();
+        $orglist=empty($data['orglist']) ? null : $data['orglist']->pluck('id')->toArray();
+        $firstOrg=array_shift($orglist);
 
         if($request->query('organization'))
         {
@@ -48,6 +51,9 @@ class UserController extends Controller
         elseif (!empty($activeOrganization))
         {
             $organizationId = $activeOrganization->id;
+        }
+        else{
+            $organizationId=$firstOrg;
         }
 
         if($request->query('department'))
@@ -60,16 +66,18 @@ class UserController extends Controller
             $roleId = $request->query('role');
         }
 
+
+
         $data['users'] = $this->userService->all($organizationId, $departmentId, $roleId);
 //        $data['departments'] = $this->departmentService->allDepartments();
         $data['rolelist'] = $this->roleService->all($organizationId);
-        $data['activeorg']=$request->query('organization') ? $request->get('organization') : pluckSession('id');
+        $sessionOrg=$request->query('organization') ? $request->get('organization') : $firstOrg;
+        $data['activeorg']=empty($sessionOrg) ? pluckOrganization('id') : $sessionOrg;
         $data['activedep']=$request->get('department');
         $data['activerole']=$request->get('role');
 
         //$data['users']=$this->userService->all($request->all()); //Fetch from the earlier service method
 
-        $data['orglist']=$this->orgService->list();
         $data['deplist']=$this->departmentService->list($request->all());
 
         return view('app.users.index', $data);
@@ -101,7 +109,7 @@ class UserController extends Controller
 
     public function profile(Request $request,$user_id)
     {
-        $organizationId=null;
+        $organizationId=$request->has('organization') ? $request->get('organization') : pluckOrganization('id');
         $data['user']=$this->userService->profile($user_id);
         $data['departments']=$this->departmentService->list($request->all());
         $data['roles']=$this->roleService->all($organizationId);
@@ -119,13 +127,14 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-        $image=$request->hasFile('image') ? $request->file('image') : null;
-        $this->userService->update($request->all(),$image,$id);
-        return redirect()->back()->with(['success' => 'Profile has been updated successfully']);
+
         try
         {
-//            $this->userService->update($request->all(), $id);
-//            return redirect()->back()->with(['success' => 'Profile has been updated successfully']);
+            $image=$request->hasFile('image') ? $request->file('image') : null;
+            $this->userService->update($request->all(),$image,$id);
+            session()->forget('user');
+            session()->put('user',auth()->user());
+            return redirect()->back()->with(['success' => 'Profile has been updated successfully']);
         }
         catch(\Exception $e)
         {

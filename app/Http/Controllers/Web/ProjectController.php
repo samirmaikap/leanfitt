@@ -44,9 +44,9 @@ class ProjectController extends Controller
     public function index(Request $request){
         $data['page']='projects';
         $data['organizations']=$this->orgService->list();
-        $data['organization_id']=!empty(pluckSession('id')) ? pluckSession('id') : $data['organizations']->first()->id;
-        $organization=$request->query('organization') ? $request->get('organization') : $data['organization_id'];
-        $data['projects'] = $this->projectService->index($organization);
+        $organization=!empty(pluckOrganization('id')) ? pluckOrganization('id') : $data['organizations']->first()->id;
+        $data['organization_id']=$request->query('organization') ? $request->get('organization') : $organization;
+        $data['projects'] = $this->projectService->index($data['organization_id']);
 
         return view("app.projects.index", $data);
     }
@@ -54,6 +54,7 @@ class ProjectController extends Controller
     public function show($project_id)
     {
         $data['page']='projects';
+        $data['sub_page']='details';
         $data['project']=$this->projectService->show($project_id);
         $members=$this->projectService->getMembers($project_id);
         if(count($data['project']->members) > 0 && count($members) > 0){
@@ -78,7 +79,8 @@ class ProjectController extends Controller
         {
             $data['project'] = $this->projectService->show($project_id);
             $data['kpiSet'] = $this->kpiService->index($request);
-            $data['page'] = 'kpi';
+            $data['sub_page'] = 'kpi';
+            $data['page'] = 'projects';
 //            dd($data);
 
             return view("app.projects.kpi", $data);
@@ -95,7 +97,8 @@ class ProjectController extends Controller
         try
         {
             $data['project'] = $this->projectService->show($project_id);
-            $data['page'] = 'action-items';
+            $data['sub_page'] = 'action-items';
+            $data['page'] = 'projects';
 //            dd($data);
             return view("app.projects.action-items", $data);
         }
@@ -109,9 +112,8 @@ class ProjectController extends Controller
     public function reports($project_id)
     {
         $data['project'] = $this->projectService->show($project_id);
-        $data['page'] = 'reports';
-        $data['reports']=$this->reportService->index($project_id);
-        $data['categories']=$this->reportService->names();
+        $data['sub_page'] = 'reports';
+        $data['page'] = 'projects';
         return view("app.projects.reports", $data);
     }
 

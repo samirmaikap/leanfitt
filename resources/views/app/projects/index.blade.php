@@ -113,7 +113,7 @@
                                 <label for="input-normal">Report Date</label>
                                 <input type="text" name="report_date" class="form-control" id="input-normal" data-provide="datepicker" data-date-today-highlight="true" value="{{old('report_date')}}">
                             </div>
-                            <input type="hidden" name="organization_id" value="{{pluckSession('id')}}">
+                            <input type="hidden" name="organization_id" value="{{pluckOrganization('id')}}">
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Cancel</button>

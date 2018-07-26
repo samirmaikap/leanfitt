@@ -34,7 +34,7 @@ function renderCollection($data){
     }
 }
 
-function pluckSession($key){
+function pluckOrganization($key){
     $session=session()->get('organization');
     if($session){
         return $session->$key;
@@ -54,4 +54,16 @@ function isAdmin(){
     else{
         return false;
     }
+}
+
+function makeSubdomain($domain=null){
+    if(empty($domain)){
+        $domain= session()->has('organization') ? session()->get('organization')->subdomain.'.' : '';
+    }
+    else{
+        $domain=$domain.'.';
+    }
+
+    $url=str_replace('http://','',env('APP_URL'));
+    return 'http://'.$domain.$url;
 }

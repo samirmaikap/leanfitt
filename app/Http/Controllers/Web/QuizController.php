@@ -41,7 +41,7 @@ class QuizController extends Controller
         }
 
         $data['page']='quizzes';
-        $data['organization_id']=empty($request->get('organization')) ? pluckSession('id') : $request->get('organization') ;
+        $data['organization_id']=empty($request->get('organization')) ? pluckOrganization('id') : $request->get('organization') ;
         $data['department_id']=$request->get('department');
         $data['user_id']=$request->get('user');
 

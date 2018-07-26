@@ -121,10 +121,10 @@
                 @if(count($users) > 0)
                     @foreach($users as $user)
                         <div class="col-md-6 col-lg-3">
-                            <a href="{{url('users').'/'.$user->id.'/profile'}}" class="card" data-id="{{$user->id}}">
+                            <a href="{{url('users').'/'.$user->id.'/profile'}}{{isSuperadmin() ? '?organization='.$activeorg : ''}}" class="card" data-id="{{$user->id}}">
                                 <div class="card-body text-center" style="height: 270px">
                                     <div>
-                                        <img class="avatar avatar-xxl" src="{{$user->avatar}}">
+                                        <img class="avatar avatar-xxl" src="{{empty($user->avatar) ? env('UI_AVATAR').$user->full_name : $user->avatar}}">
                                     </div>
                                     <h5 class="mt-3 mb-1">{{$user->full_name}}</h5>
                                     <span class="text-fade d-block ">{{$user->email}}</span>
@@ -202,7 +202,7 @@
                                 </select>
                                 <label class="label-floated">Department</label>
                             </div>
-                            <input type="hidden" name="organization_id" value="{{pluckSession('id')}}">
+                            <input type="hidden" name="organization_id" value="{{pluckOrganization('id')}}">
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Cancel</button>
@@ -231,7 +231,7 @@
                                 <input type="text" class="form-control department-name" name="name">
                                 <label>Department Name</label>
                             </div>
-                            <input type="hidden" name="organization_id" value="{{pluckSession('id')}}">
+                            <input type="hidden" name="organization_id" value="{{pluckOrganization('id')}}">
                             <input type="hidden" id="department-id" name="department_id">
                         </div>
                         <div class="modal-footer">
@@ -319,9 +319,14 @@
 
                             <div class="form-group">
                                 <label>Permissions</label>
+                                <label class="custom-control float-right custom-control-primary custom-checkbox">
+                                    <input type="checkbox" class="check-all-role custom-control-input">
+                                    <span class="custom-control-indicator"></span>
+                                    <span class="custom-control-description">Select All</span>
+                                </label>
                             </div>
 
-                            <div class="h-200px" style="overflow-x: hidden; overflow-y: scroll">
+                            <div class="h-200px role-checkbox-container" style="overflow-x: hidden; overflow-y: scroll">
                                 @foreach (config('permission.models') as $model)
                                     <div class="form-group">
                                         <p>{{ ucfirst($model) }}</p>
@@ -373,7 +378,15 @@
                                         <label>Description</label>
                                         <textarea name="description" rows="2" class="form-control">{{ $rlist->description }}</textarea>
                                     </div>
-                                    <div class="h-200px" style="overflow-x: hidden; overflow-y: scroll">
+                                    <div class="form-group">
+                                        <label>Permissions</label>
+                                        <label class="custom-control float-right custom-control-primary custom-checkbox">
+                                            <input type="checkbox" class="check-all-role custom-control-input">
+                                            <span class="custom-control-indicator"></span>
+                                            <span class="custom-control-description">Select All</span>
+                                        </label>
+                                    </div>
+                                    <div class="h-200px role-checkbox-container" style="overflow-x: hidden; overflow-y: scroll">
                                         @foreach (config('permission.models') as $model)
                                             <div class="form-group">
                                                 <p>{{ ucfirst($model) }}</p>
@@ -464,6 +477,15 @@
                         var id=$this.parent().parent().data('id');
                         window.location.href="{{url('users')}}/"+id+"/restore";
                     })
+                })
+
+                $('.check-all-role').on('change',function(){
+                    if($(this).is(':checked')){
+                        $(this).parent().parent().parent().children('.role-checkbox-container').find('input[type="checkbox"]').attr('checked',true);
+                    }
+                    else{
+                        $(this).parent().parent().parent().children('.role-checkbox-container').find('input[type="checkbox"]').attr('checked',false);
+                    }
                 })
 
                 @if(session()->has('success') || session('success'))
