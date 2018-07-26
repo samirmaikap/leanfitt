@@ -101,7 +101,7 @@ class UserController extends Controller
 
     public function profile(Request $request,$user_id)
     {
-        $organizationId=pluckOrganization('id');
+        $organizationId=pluckOrganization('id',$user_id);
         $data['user']=$this->userService->profile($user_id);
         $data['departments']=$this->departmentService->list($request->all());
         $data['roles']=$this->roleService->all($organizationId);
