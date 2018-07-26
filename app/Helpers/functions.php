@@ -56,7 +56,14 @@ function isAdmin(){
     }
 }
 
-function makeSubdomain($domain){
+function makeSubdomain($domain=null){
+    if(empty($domain)){
+        $domain= session()->has('organization') ? session()->get('organization')->subdomain.'.' : '';
+    }
+    else{
+        $domain=$domain.'.';
+    }
+
     $url=str_replace('http://','',env('APP_URL'));
-    return 'http://'.$domain.'.'.$url;
+    return 'http://'.$domain.$url;
 }
