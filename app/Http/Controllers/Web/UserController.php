@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Events\UsersUpdated;
 use App\Http\Resources\UserResource;
 use App\Services\DepartmentService;
 use App\Services\OrganizationService;

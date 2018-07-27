@@ -83,6 +83,7 @@ class OrganizationService
 
         if(!empty($stripe_token)){
             $organization->newSubscription( 'main', arrayValue($data['subscription'],'plan'))
+                ->trialDays(7)
                 ->create($stripe_token, [
                     'email' => $organization->email,
                     'description' => $organization->name

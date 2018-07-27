@@ -105,4 +105,8 @@ class User extends Authenticatable
     public function projectMember(){
         return $this->hasMany(ProjectMember::class);
     }
+
+    public function userOrganization(){
+        return $this->hasMany(OrganizationUser::class,'user_id','id');
+    }
 }

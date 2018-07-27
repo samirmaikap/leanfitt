@@ -7,17 +7,17 @@
             }
         </style>
         {{--<header class="header mb-0 bg-ui-general">--}}
-            {{--<div class="header-bar center-h">--}}
-                {{--<h4 class="text-dark">{{$project->name}}</h4>--}}
-            {{--</div>--}}
-            {{--<div class="header-action center-h">--}}
-                {{--<nav class="nav">--}}
-                    {{--<a class="nav-link active" href="{{url('projects')}}/{{$project->id}}/details">Details</a>--}}
-                    {{--<a class="nav-link" href="{{url('projects')}}/{{$project->id}}/kpi">KPI</a>--}}
-                    {{--<a class="nav-link" href="{{url('projects')}}/{{$project->id}}/action-items">Action Items</a>--}}
-                    {{--<a class="nav-link" href="{{url('projects')}}/{{$project->id}}/reports">Reports</a>--}}
-                {{--</nav>--}}
-            {{--</div>--}}
+        {{--<div class="header-bar center-h">--}}
+        {{--<h4 class="text-dark">{{$project->name}}</h4>--}}
+        {{--</div>--}}
+        {{--<div class="header-action center-h">--}}
+        {{--<nav class="nav">--}}
+        {{--<a class="nav-link active" href="{{url('projects')}}/{{$project->id}}/details">Details</a>--}}
+        {{--<a class="nav-link" href="{{url('projects')}}/{{$project->id}}/kpi">KPI</a>--}}
+        {{--<a class="nav-link" href="{{url('projects')}}/{{$project->id}}/action-items">Action Items</a>--}}
+        {{--<a class="nav-link" href="{{url('projects')}}/{{$project->id}}/reports">Reports</a>--}}
+        {{--</nav>--}}
+        {{--</div>--}}
         {{--</header>--}}
         @include('app.projects.partials.header')
         <div class="main-content">
@@ -40,30 +40,32 @@
                             @endif
 
                         </div>
-                        <div class="card-body text-center">
-                            @if($project->is_completed==0 && $project->is_archived==0 )
-                                <button class="btn m-1 btn-round btn-primary" data-toggle="modal" data-target="#modal-project">Edit</button>
-                                <form class="d-inline-block" id="compeleteProjectForm" method="post" action="{{url('projects')}}/{{$project->id}}/complete">
-                                    {{csrf_field()}}
-                                    {{method_field('put')}}
-                                    <button class="btn m-1 btn-round btn-success complete-project">Mark Complete</button>
-                                </form>
-                            @elseif($project->is_completed==1 && $project->is_archived==0 )
-                                <form class="d-inline-block" id="archiveProjectForm" method="post" action="{{url('projects')}}/{{$project->id}}/archive">
-                                    {{csrf_field()}}
-                                    {{method_field('put')}}
-                                    <button class="btn m-1 btn-round btn-warning archive-project">Archive</button>
-                                </form>
+                        @if(!isSuperadmin())
+                            <div class="card-body text-center">
+                                @if($project->is_completed==0 && $project->is_archived==0 )
+                                    <button class="btn m-1 btn-round btn-primary" data-toggle="modal" data-target="#modal-project">Edit</button>
+                                    <form class="d-inline-block" id="compeleteProjectForm" method="post" action="{{url('projects')}}/{{$project->id}}/complete">
+                                        {{csrf_field()}}
+                                        {{method_field('put')}}
+                                        <button class="btn m-1 btn-round btn-success complete-project">Mark Complete</button>
+                                    </form>
+                                @elseif($project->is_completed==1 && $project->is_archived==0 )
+                                    <form class="d-inline-block" id="archiveProjectForm" method="post" action="{{url('projects')}}/{{$project->id}}/archive">
+                                        {{csrf_field()}}
+                                        {{method_field('put')}}
+                                        <button class="btn m-1 btn-round btn-warning archive-project">Archive</button>
+                                    </form>
 
-                            @elseif($project->is_completed==1 && $project->is_archived==1)
-                                <form class="d-inline-block" id="deleteProjectForm" method="post" action="{{url('projects')}}/{{$project->id}}/delete">
-                                    {{csrf_field()}}
-                                    {{method_field('put')}}
-                                    <button class="btn m-1 btn-round btn-danger delete-project">Delete</button>
-                                </form>
-                            @else
-                            @endif
-                        </div>
+                                @elseif($project->is_completed==1 && $project->is_archived==1)
+                                    <form class="d-inline-block" id="deleteProjectForm" method="post" action="{{url('projects')}}/{{$project->id}}/delete">
+                                        {{csrf_field()}}
+                                        {{method_field('put')}}
+                                        <button class="btn m-1 btn-round btn-danger delete-project">Delete</button>
+                                    </form>
+                                @else
+                                @endif
+                            </div>
+                        @endif
                     </div>
                 </div>
                 <div class="col-lg-8">
@@ -79,17 +81,21 @@
                                                 <a class="avatar avatar-pill avatar-lg" href="{{url('users')}}/{{$pmem->id}}/profile">
                                                     <img src="{{$pmem->avatar}}" alt="...">
                                                     <span>{{$pmem->first_name}} {{$pmem->last_name}}</span>
-                                                    <form id="memberRemoveForm" method="post" action="{{url('projects')}}/{{$project->id}}/member/{{$pmem->member_id}}/remove">
-                                                        {{csrf_field()}}
-                                                        {{method_field('delete')}}
-                                                        <button type="submit" class="close cursor-pointer remove-member">&times;</button>
-                                                    </form>
-
+                                                    @if(!isSuperadmin())
+                                                        <form id="memberRemoveForm" method="post" action="{{url('projects')}}/{{$project->id}}/member/{{$pmem->member_id}}/remove">
+                                                            {{csrf_field()}}
+                                                            {{method_field('delete')}}
+                                                            <button type="submit" class="close cursor-pointer remove-member">&times;</button>
+                                                        </form>
+                                                    @endif
                                                 </a>
                                             @endforeach
                                         @endforeach
                                     @endif
-                                    <div class="avatar avatar-add avatar-lg hover-white cursor-pointer" data-toggle="modal" data-target="#modal-member"></div>
+                                    @if(!isSuperadmin())
+                                        <div class="avatar avatar-add avatar-lg hover-white cursor-pointer" data-toggle="modal" data-target="#modal-member"></div>
+                                    @endif
+
                                 </div>
                             </div>
                         </div>
@@ -104,15 +110,19 @@
                                             <a class="avatar avatar-pill avatar-lg" title="{{pathinfo($attachment->url, PATHINFO_BASENAME)}}" style="overflow: hidden" href="{{$attachment->url}}" target="_blank">
                                                 <img src="https://ui-avatars.com/api/?font-size=0.21&length=4&uppercase=false&name={{$ext}}" alt="...">
                                                 <span class="text-truncate w-150px">{{pathinfo($attachment->url, PATHINFO_FILENAME)}}</span>
-                                                <form id="attachmentRemoveForm" method="post" action="{{url('projects')}}/{{$project->id}}/attachment/{{$attachment->id}}/remove">
-                                                    {{csrf_field()}}
-                                                    {{method_field('delete')}}
-                                                    <button type="submit" class="close cursor-pointer remove-attachment">&times;</button>
-                                                </form>
+                                                @if(!isSuperadmin())
+                                                    <form id="attachmentRemoveForm" method="post" action="{{url('projects')}}/{{$project->id}}/attachment/{{$attachment->id}}/remove">
+                                                        {{csrf_field()}}
+                                                        {{method_field('delete')}}
+                                                        <button type="submit" class="close cursor-pointer remove-attachment">&times;</button>
+                                                    </form>
+                                                @endif
                                             </a>
                                         @endforeach
                                     @endif
-                                    <a class="avatar avatar-add avatar-lg hover-white cursor-pointer add-attachment"></a>
+                                    @if(!isSuperadmin())
+                                        <a class="avatar avatar-add avatar-lg hover-white cursor-pointer add-attachment"></a>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -135,30 +145,32 @@
                                                         </p>
                                                         <p>{{$comment->comment}}</p>
                                                         <p>
-                                                            {{--<span class="cursor-pointer badge badge-gray mr-1">Edit</span> --}}
+                                                        {{--<span class="cursor-pointer badge badge-gray mr-1">Edit</span> --}}
                                                         @if(auth()->user()->id==$comment->user->id)
                                                             <form id="commentDeleteForm" method="post" action="{{url('projects')}}/comment/{{$comment->id}}/remove">
                                                                 {{csrf_field()}}
                                                                 {{method_field('delete')}}
                                                                 <button type="submit" class="btn btn-xs btn-outline-danger mr-5 mt-1 remove-comment">Delete</button>
                                                             </form>
-                                                        @endif
-                                                        </p>
+                                                            @endif
+                                                            </p>
                                                     </div>
                                                 @endforeach
-                                                @else
+                                            @else
                                                 <h4>No comments</h4>
                                             @endif
                                         </div>
                                     </div>
-                                    <form class="publisher bg-transparent bt-1 border-fade" method="post" action="{{url('projects/comment')}}">
-                                        {{csrf_field()}}
-                                        <textarea name="comment" class="publisher-input" style="resize: none" placeholder="Add Comment">{{old('comment')}}</textarea>
-                                        {{--<input class="publisher-input" type="text" placeholder="Add Comment">--}}
-                                        <input type="hidden" name="type" value="project">
-                                        <input type="hidden" name="project_id" value="{{$project->id}}">
-                                        <button type="submit" class="publisher-btn" href="#"><i class="fe fe-arrow-right"></i></button>
-                                    </form>
+                                    @if(!isSuperadmin())
+                                        <form class="publisher bg-transparent bt-1 border-fade" method="post" action="{{url('projects/comment')}}">
+                                            {{csrf_field()}}
+                                            <textarea name="comment" class="publisher-input" style="resize: none" placeholder="Add Comment">{{old('comment')}}</textarea>
+                                            {{--<input class="publisher-input" type="text" placeholder="Add Comment">--}}
+                                            <input type="hidden" name="type" value="project">
+                                            <input type="hidden" name="project_id" value="{{$project->id}}">
+                                            <button type="submit" class="publisher-btn" href="#"><i class="fe fe-arrow-right"></i></button>
+                                        </form>
+                                    @endif
                                 </div>
                             </div>
                         </div>

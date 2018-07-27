@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Log;
 
 class HasSubscription
 {
@@ -15,6 +16,13 @@ class HasSubscription
      */
     public function handle($request, Closure $next)
     {
+        $subscribed=session('organization')->subscribed('main');
+        if(!$subscribed){
+            return redirect('abort');
+        }
+
+        Log::info('Cheking....');
+
         return $next($request);
     }
 }
