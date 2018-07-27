@@ -32,7 +32,7 @@
                         <input type="hidden" name="process_id" value="{{ $process->id }}">
                         <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
                         <input type="hidden" name="position" value="{{ count($process->actionItems) + 1 }}">
-                        <input class="publisher-input" type="text" name="title" placeholder="Enter action item title">
+                        <input class="publisher-input" type="text" name="title" placeholder="Enter action item title" required>
 
                         <button class="publisher-btn btn" data-provide="tooltip" data-title="Add New Action Item" title="Add New Action Item">
                             <i class="fa fa-plus"></i>
