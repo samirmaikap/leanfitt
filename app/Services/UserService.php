@@ -166,7 +166,6 @@ class UserService
         }
 
         $user = $this->userRepo->create($data);
-
         if(isset($data['organization']))
         {
             $user->organizations()->attach($data['organization']);
@@ -198,6 +197,7 @@ class UserService
         DB::beginTransaction();
         $user=$this->userRepo->where('email',arrayValue($data,'email'))->first();
         $orgUser['is_invited']=1;
+        $orgUser['invitation_token']=md5(time());
         if($user){
             $orgUser['user_id']=$user->id;
         }

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\NotifySubscriptions;
 use App\Repositories\AdminRepository;
 use App\Repositories\DeleteRepository;
 use App\Repositories\MediaRepository;
@@ -96,6 +97,9 @@ class OrganizationService
             DB::rollBack();
             throw new \Exception(config("messages.common_error"));
         }
+
+        $event['organization_id']=$organization->id;
+        event(new NotifySubscriptions($event));
 
         DB::commit();
         return $organization;

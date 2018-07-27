@@ -78,41 +78,30 @@
 
                                         <p class="text-center text-gray">Choose a Subscriptions that suits your Organization. You may change or cancel anytime.</p>
                                         <hr class="w-100px">
-
-                                        <div class="flexbox">
-                                            <div>
-                                                <label class="custom-control custom-radio">
-                                                    <input type="radio" class="custom-control-input" name="subscription[plan]" value="plan_DBzmDsCSCotMdS" checked>
-                                                    <span class="custom-control-indicator"></span>
-                                                    <span class="custom-control-description"><strong>Team</strong></span>
-                                                </label>
-                                                {{--<button type="button" class="btn btn-pure" data-provide="tooltip" data-placement="right" title="" data-original-title="Tooltip on right">--}}
-                                                {{--<i class="fa fa-info"></i>--}}
-                                                {{--</button>--}}
-                                                <p class="small lh-14 mt-4 ml-24">10 licenses, 7 days free trial</p>
-                                            </div>
-                                            <div>
-                                                <strong>$60/month</strong>
-                                            </div>
-                                        </div>
-
-                                        <br>
-
-                                        <div class="flexbox">
-                                            <div>
-                                                <label class="custom-control custom-radio">
-                                                    <input type="radio" class="custom-control-input" name="subscription[plan]" value="plan_DCC6l9OvdUyzYm" {{ old('subscription.plan') == 'plan_DCC6l9OvdUyzYm' ? 'checked': '' }}>
-                                                    <span class="custom-control-indicator"></span>
-                                                    <span class="custom-control-description"><strong>Enterprise</strong></span>
-                                                </label>
-                                                <p class="small lh-14 mt-4 ml-24">50 licenses, 7 days free trial</p>
-                                            </div>
-                                            <div>
-                                                <strong>$100/month</strong>
-                                            </div>
-                                        </div>
-
-                                        <br>
+                                        @if(isset($plans->data))
+                                            @foreach($plans->data as $key=>$plan)
+                                                <div class="flexbox">
+                                                    <div>
+                                                        <label class="custom-control custom-radio">
+                                                            <input type="radio" class="custom-control-input" name="subscription[plan]" value="{{$plan->id}}" {{$key==0 ? 'checked' : ''}}>
+                                                            <span class="custom-control-indicator"></span>
+                                                            <span class="custom-control-description"><strong>Plan {{$key}}</strong></span>
+                                                        </label>
+                                                        <p class="small lh-14 ml-24">7 days free trial</p>
+                                                    </div>
+                                                    <div>
+                                                        <strong>{{($plan->amount/100)}} {{$plan->currency}}/{{$plan->interval}}</strong>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                            @endforeach
+                                        @endif
+                                        <p class="text-center text-success d-block mt-5">Please note that when you register you will be subscribed for this plan for 1 user only.
+                                            When users will join or left, subscription quantity will be updated per user as 1 quantity automatically.
+                                        </p>
+                                        <p class="text-center text-grey  mb-5">
+                                            Eg. You + One user = 2 quantity for this plan
+                                        </p>
 
                                         <div class="form-group">
                                             <label>Name on card</label>

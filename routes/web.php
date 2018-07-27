@@ -24,6 +24,10 @@ Route::get('password/change', 'Web\AuthController@changePassword');
 Route::post('password/change', 'Web\AuthController@updatePassword');
 Route::get('invitaion/accept', 'Web\AuthController@invitation');
 
+Route::get('test/test', function(){
+    dd(date('Y-m-d H:i:s'));
+});
+
 Route::get('projects/{project_id}/reports/{report_id}', 'Web\ReportController@view');
 // User routes
 Route::group(['domain' => '{organization}' . config('session.domain'), 'namespace' => 'Web', 'middleware' => 'checkDomain'], function () {

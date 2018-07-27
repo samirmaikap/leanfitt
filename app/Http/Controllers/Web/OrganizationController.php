@@ -8,6 +8,8 @@ use App\Services\UserService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\OrganizationService;
+use Stripe\Plan;
+use Stripe\Stripe;
 
 class OrganizationController extends Controller
 {
@@ -30,8 +32,9 @@ class OrganizationController extends Controller
 
     public function create()
     {
-        $data['page']='organizations';
-        return view('app.organizations.create');
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+        $data['plans']=Plan::all();
+        return view('app.organizations.create',$data);
     }
 
     public function store(Request $request){
