@@ -90,19 +90,19 @@
                 </div>
 
                 {{--<hr/>--}}
-
-                <form class="comment-form publisher publisher-multi b-1" method="post">
-                    {{ csrf_field() }}
-                    <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
-                    <input type="hidden" name="type" value="action_item">
-                    <input type="hidden" name="action_item_id" value="{{ $actionItem->id }}">
-                    <textarea name="comment" class="publisher-input comment" rows="3"
-                              placeholder="Add Comments"></textarea>
-                    <div class="flexbox flex-row-reverse">
-                        <button type="submit" class="btn btn-sm btn-bold btn-primary post-comment">Post</button>
-                    </div>
-                </form>
-
+                @if(!isSuperadmin())
+                    <form class="comment-form publisher publisher-multi b-1" method="post">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                        <input type="hidden" name="type" value="action_item">
+                        <input type="hidden" name="action_item_id" value="{{ $actionItem->id }}">
+                        <textarea name="comment" class="publisher-input comment" rows="3"
+                                  placeholder="Add Comments"></textarea>
+                        <div class="flexbox flex-row-reverse">
+                            <button type="submit" class="btn btn-sm btn-bold btn-primary post-comment">Post</button>
+                        </div>
+                    </form>
+                @endif
                 <div class="comment-list media-list media-list-divided b-1 border-light">
                     @if(isset($actionItem->comments) && count($actionItem->comments))
                         @foreach($actionItem->comments->sortByDesc('created_at') as $comment)
@@ -128,9 +128,11 @@
                 {{--</div>--}}
             </div>
             <!-- Modal Body Ends -->
-            <div class="modal-footer">
-                <button type="submit" class="update-action-item btn btn-block btn-primary">Update</button>
-            </div>
+            @if(!isSuperadmin())
+                <div class="modal-footer">
+                    <button type="submit" class="update-action-item btn btn-block btn-primary">Update</button>
+                </div>
+            @endif
         </div>
     </div>
 </div>

@@ -52,15 +52,19 @@
                                     <label class="text-dark d-block">Subscription Status: {!! $status=='active' ? '<span class="text-success">'.ucfirst($status).'</span>' : '<span class="text-warning">'.ucfirst($status).'</span>' !!}</label>
                                 </div>
                             </div>
-                            <div class="card-body text-center pb-20">
-                                @if($status=='active')
-                                    <button type="button" class="btn btn-danger revoke-subscription">Cancel Subscription</button>
-                                @else
-                                    <button type="button" class="btn btn-primary resume-subscription">Resume Subscription</button>
-                                @endif
+                            @if(!isSuperadmin())
+                                @permission('update.organization')
+                                <div class="card-body text-center pb-20">
+                                    @if($status=='active')
+                                        <button type="button" class="btn btn-danger revoke-subscription">Cancel Subscription</button>
+                                    @else
+                                        <button type="button" class="btn btn-primary resume-subscription">Resume Subscription</button>
+                                    @endif
 
-                                <button type="submit" class="btn btn-success">Update</button>
-                            </div>
+                                    <button type="submit" class="btn btn-success">Update</button>
+                                </div>
+                                @endpermission
+                            @endif
                         </form>
                     </div>
                 </div>

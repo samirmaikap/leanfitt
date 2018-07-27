@@ -21,6 +21,7 @@
                         @endforeach
                     </div>
                 </div>
+                @if(!isSuperadmin())
                 <div class="card-footer">
                     {{--<a href="#new-action-item-modal" data-toggle="modal">--}}
                         {{--+ New Action Item--}}
@@ -39,6 +40,7 @@
                         </button>
                     </form>
                 </div>
+                @endif
             </div>
         </div>
         @endforeach

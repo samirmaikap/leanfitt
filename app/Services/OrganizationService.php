@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\NotifySubscriptions;
 use App\Repositories\AdminRepository;
 use App\Repositories\DeleteRepository;
 use App\Repositories\MediaRepository;
@@ -59,6 +60,11 @@ class OrganizationService
         if($card_validator->fails())
             throw new \Exception($card_validator->messages()->first());
 
+        $subdomain_exist=$this->organizationRepository->where('subdomain',$subdomain)->exists();
+        if($subdomain_exist){
+            $data['organization']['subdomain']=$subdomain.rand(00,99);
+        }
+
         DB::beginTransaction();
         $organization = $this->organizationRepository->create(arrayValue($data,'organization'));
 
@@ -91,6 +97,9 @@ class OrganizationService
             DB::rollBack();
             throw new \Exception(config("messages.common_error"));
         }
+
+        $event['organization_id']=$organization->id;
+        event(new NotifySubscriptions($event));
 
         DB::commit();
         return $organization;

@@ -30,7 +30,7 @@ class AwardController extends Controller
     public function index(Request $request){
         $data['page']='awards';
         $data['department_id']=$request->get('department');
-        $data['organization_id']=$request->query('organiztion') ? $request->get('organization') : pluckSession('id');
+        $data['organization_id']=$request->query('organiztion') ? $request->get('organization') : pluckOrganization('id');
         $data['user_id']=$request->query('user') ? $request->get('user') : auth()->user()->id;
 
         $data['organizations']=$this->orgService->list();

@@ -62,19 +62,19 @@ class ReportService //implements ReportServiceInterface
         $this->reasonRepo=$reasonRepository;
     }
 
-    public function index($data)
+    public function index($project_id)
     {
-        $organization=arrayValue($data,'organization');
-        $project=arrayValue($data,'project');
-
-        $query=$this->reportRepo->allReports($organization,$project);
-
-        if(count($query) > 0){
-            return $query;
-        }
-        else{
+        if(empty($project_id)){
             throw new \Exception("No report found");
         }
+
+        $query=$this->reportRepo->allReports($project_id);
+
+        if(!$query){
+            throw new \Exception("No report found");
+        }
+
+        return $query;
 
     }
 
@@ -101,7 +101,7 @@ class ReportService //implements ReportServiceInterface
         $query=$this->reportRepo->create($data);
         if($query){
             DB::commit();
-            return;
+            return $query;
         }
         else{
             DB::rollBack();
@@ -221,12 +221,7 @@ class ReportService //implements ReportServiceInterface
 
         $query=$this->chartAxisRepo->getChart($report_id);
 
-        if(count($query) > 0){
-            return $query;
-        }
-        else{
-            throw new \Exception("No data found");
-        }
+        return $query;
     }
 
     public function createChartData($data)
@@ -237,14 +232,30 @@ class ReportService //implements ReportServiceInterface
         }
 
         $query=$this->chartRepo->create($data);
+
         if($query){
-            $chartaxes=$this->chartAxisRepo->create(['x'=>'x axis','y'=>'y axis','report_id'=>$data['report_id']]);
+            $chartaxes=$this->chartAxisRepo->updateOrCreate(['x_axis'=>'x axis','y_axis'=>'y axis','report_id'=>$data['report_id']]);
             if($chartaxes){
                 return;
             }
             else{
                 throw new \Exception(config('messages.common_error'));
             }
+        }
+        else{
+            throw new \Exception(config('messages.common_error'));
+        }
+    }
+
+    public function updateChartData($data,$chart_id)
+    {
+        if(empty($chart_id)){
+            throw new \Exception('Chart id field is required');
+        }
+
+        $query=$this->chartRepo->update($chart_id,$data);
+        if($query){
+            return;
         }
         else{
             throw new \Exception(config('messages.common_error'));
@@ -259,7 +270,7 @@ class ReportService //implements ReportServiceInterface
 
         DB::beginTransaction();
         $chart=$this->chartRepo->find($chart_id);
-        if(count($chart)){
+        if($chart){
             $query=$this->chartRepo->forceDeleteRecord($chart);
             if($query){
                 DB::commit();
@@ -277,20 +288,20 @@ class ReportService //implements ReportServiceInterface
 
     }
 
-    public function changeChartAxis($data)
+    public function changeChartAxis($data,$report_id)
     {
         if(empty($data)){
             throw new \Exception("Can't add the empty data");
         }
 
-        if(empty(arrayValue($data,'report_id'))){
+        if(empty($report_id)){
             throw new \Exception("report_id is required");
         }
 
         DB::beginTransaction();
-        $chart=$this->chartAxisRepo->where('report_id',arrayValue($data,'report_id'))->first();
-        if(count($chart) > 0){
-            $update=$this->chartAxisRepo->fillUpdate($chart,$data);
+        $report=$this->chartAxisRepo->where('report_id',$report_id)->first();
+        if($report){
+            $update=$this->chartAxisRepo->fillUpdate($report,$data);
             if($update){
                 DB::commit();
                 return;
@@ -299,12 +310,9 @@ class ReportService //implements ReportServiceInterface
                 DB::rollBack();
                 throw new \Exception(config('messages.common_error'));
             }
+        }
 
-        }
-        else{
-            DB::rollBack();
-            throw new \Exception("Chart not found");
-        }
+        throw new \Exception('Report not found');
     }
 
     public function showDefaultData($data, $report_id,$level)

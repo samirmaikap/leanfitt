@@ -12,12 +12,11 @@ class ReportRepository extends BaseRepository //implements ReportRepositoryInter
         return new Report();
     }
 
-    public function allReports($organization,$project){
+    public function allReports($project){
         return $this->model()->join('projects as p','p.id','=','reports.project_id')
             ->join('report_categories as cat','cat.id','reports.report_category_id')
-            ->where('p.organization_id',empty($organization) ? '!=':'=',empty($organization) ? null : $organization)
             ->where('p.id',empty($project) ? '!=':'=',empty($project) ? null : $project)
-            ->select(['reports.*','p.organization_id','p.name as project_name','p.report_date','cat.name as report_category'])->get();
+            ->select(['reports.*','cat.id as category_id','cat.name as report_category'])->get();
     }
 
     public function showReport($report_id)

@@ -24,6 +24,11 @@ Route::get('password/change', 'Web\AuthController@changePassword');
 Route::post('password/change', 'Web\AuthController@updatePassword');
 Route::get('invitaion/accept', 'Web\AuthController@invitation');
 
+Route::get('test/test', function(){
+    dd(date('Y-m-d H:i:s'));
+});
+
+Route::get('projects/{project_id}/reports/{report_id}', 'Web\ReportController@view');
 // User routes
 Route::group(['domain' => '{organization}' . config('session.domain'), 'namespace' => 'Web', 'middleware' => 'checkDomain'], function () {
 
@@ -41,6 +46,12 @@ Route::group(['domain' => '{organization}' . config('session.domain'), 'namespac
     Route::delete('users/{id}', 'UserController@delete');
 
     Route::get('organizations/{organization_id}/view','OrganizationController@show');
+    Route::get('organizations/create', 'OrganizationController@create');
+    Route::post('organizations/create','OrganizationController@store');
+    Route::get('organizations/subscription/revoke','OrganizationController@cancelSubscription');
+    Route::get('organizations/subscription/resume','OrganizationController@resumeSubscription');
+    Route::put('organizations/{organization_id}','OrganizationController@update');
+
 
     Route::get('departments', 'DepartmentController@index');
     Route::post('departments', 'DepartmentController@store');
@@ -61,12 +72,19 @@ Route::group(['domain' => '{organization}' . config('session.domain'), 'namespac
     Route::get('/projects/{project_id}/kpi', 'ProjectController@kpi');
     Route::get('/projects/{projectId}/members', 'ProjectController@members');
     Route::get('/projects/{projectId}/action-items', 'ProjectController@actionItems');
-    Route::get('/projects/{projectId}/reports', 'ProjectController@reports');
+    Route::get('/projects/{project_id}/reports', 'ProjectController@reports');
 
     Route::put('/projects/{project_id}', 'ProjectController@update');
     Route::put('/projects/{project_id}/complete', 'ProjectController@complete');
     Route::put('/projects/{project_id}/archive', 'ProjectController@archive');
     Route::put('/projects/{project_id}/delete', 'ProjectController@delete');
+
+    Route::post('/projects/reports', 'ReportController@create');
+
+    Route::post('/projects/reports/charts', 'ReportController@storeChartData');
+//    Route::put('/projects/reports/charts/{chart_id}', 'ReportController@updateChartData');
+    Route::delete('/projects/reports/charts/{chart_id}', 'ReportController@removeChartData');
+    Route::post('/projects/reports/{report_id}/charts/axis', 'ReportController@changeChartAxis');
 
     Route::post('projects/member', 'ProjectController@addMember');
     Route::delete('projects/{project_id}/member/{member_id}/remove', 'ProjectController@removeMember');
@@ -105,32 +123,34 @@ Route::group(['domain' => '{organization}' . config('session.domain'), 'namespac
     Route::get('awards', 'AwardController@index');
 });
 
-//Route::group(['namespace' => 'Web'], function () {
-//
-//    Route::get('/dashboard', 'DashboardController@index');
-//
-//    Route::get('organizations', 'OrganizationController@index');
-//    Route::get('organizations/{organization_id}/view','OrganizationController@show');
-//
-//    Route::get('users', 'UserController@index');
-//    Route::get('users/{id}/profile', 'UserController@profile');
-//
-//    Route::get('/projects', 'ProjectController@index');
-//    Route::get('/projects/{project_id}/kpi', 'ProjectController@kpi');
-//    Route::get('/projects/{projectId}/members', 'ProjectController@members');
-//    Route::get('/projects/{projectId}/action-items', 'ProjectController@actionItems');
-//    Route::get('/projects/{projectId}/reports', 'ProjectController@reports');
-//    Route::get('/projects/{project_id}/details', 'ProjectController@show');
-//
-//    Route::get('lean-tools', 'LeanToolController@index');
-//    Route::get('lean-tools/view/{tool_id}', 'LeanToolController@show');
-//    Route::get('lean-tools/create', 'LeanToolController@create');
-//    Route::post('lean-tools/create', 'LeanToolController@save');
-//    Route::get('lean-tools/edit/{tool_id}', 'LeanToolController@create');
-//
-//    Route::get('quizzes', 'QuizController@index');
-//
-//    Route::get('assessment', 'AssessmentController@index');
-//
-//    Route::get('awards', 'AwardController@index');
-//});
+Route::group(['namespace' => 'Web'], function () {
+
+    Route::get('/dashboard', 'DashboardController@index');
+
+    Route::get('organizations', 'OrganizationController@index');
+    Route::get('organizations/{organization_id}/view','OrganizationController@show');
+    Route::get('organizations/create', 'OrganizationController@create');
+    Route::post('organizations/create','OrganizationController@store');
+
+    Route::get('users', 'UserController@index');
+    Route::get('users/{id}/profile', 'UserController@profile');
+
+    Route::get('/projects', 'ProjectController@index');
+    Route::get('/projects/{project_id}/kpi', 'ProjectController@kpi');
+    Route::get('/projects/{projectId}/members', 'ProjectController@members');
+    Route::get('/projects/{projectId}/action-items', 'ProjectController@actionItems');
+    Route::get('/projects/{projectId}/reports', 'ProjectController@reports');
+    Route::get('/projects/{project_id}/details', 'ProjectController@show');
+
+    Route::get('lean-tools', 'LeanToolController@index');
+    Route::get('lean-tools/view/{tool_id}', 'LeanToolController@show');
+    Route::get('lean-tools/create', 'LeanToolController@create');
+    Route::post('lean-tools/create', 'LeanToolController@save');
+    Route::get('lean-tools/edit/{tool_id}', 'LeanToolController@create');
+
+    Route::get('quizzes', 'QuizController@index');
+
+    Route::get('assessment', 'AssessmentController@index');
+
+    Route::get('awards', 'AwardController@index');
+});

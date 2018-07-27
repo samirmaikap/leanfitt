@@ -188,7 +188,7 @@
 
                                         @if(auth()->check())
                                             @if(session('organization'))
-                                                <a id="signup-btn" href="{{ url( 'http://' . session('organization')->domain . config('session.domain') .  '/dashboard') }}" class="button button-signup btn-outlined is-bold btn-align light-btn font-18 primary-btn secondary-btn">
+                                                <a id="signup-btn" href="{{ url( 'http://' . session('organization')->subdomain . config('session.domain') .  '/dashboard') }}" class="button button-signup btn-outlined is-bold btn-align light-btn font-18 primary-btn secondary-btn">
                                                     Home
                                                 </a>
                                             @else

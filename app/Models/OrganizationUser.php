@@ -16,4 +16,8 @@ class OrganizationUser extends Model
         'is_default',
         'invitation_token'
     ];
+
+    public function organization(){
+        return $this->belongsTo(Organization::class);
+    }
 }

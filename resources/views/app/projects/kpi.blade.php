@@ -4,34 +4,35 @@
         @include('app.projects.partials.header')
         <div class="main-content">
 
-            @foreach($kpiSet as $index => $kpi)
-                @include('app.projects.partials.kpi-modal')
-                <div class="card">
-                    <a href="#kpi-{{ $kpi->id }}-modal" data-toggle="modal">
-                        <h4 class="card-title fw-400 text-center">
-                            {{ $kpi->title }}
-                        </h4>
-                    </a>
-                <div class="card-body">
-                    @if(count($kpi->data))
-                    <div class="kpi-chart-container">
-                        <canvas id="kpi-{{ $kpi->id }}-chart"></canvas>
+            @if(count($kpiSet) > 0)
+                @foreach($kpiSet as $index => $kpi)
+                    @include('app.projects.partials.kpi-modal')
+                    <div class="card">
+                        <a href="#kpi-{{ $kpi->id }}-modal" data-toggle="modal">
+                            <h4 class="card-title fw-400 text-center">
+                                {{ $kpi->title }}
+                            </h4>
+                        </a>
+                        <div class="card-body">
+                            @if(count($kpi->data))
+                                <div class="kpi-chart-container">
+                                    <canvas id="kpi-{{ $kpi->id }}-chart"></canvas>
 
-                        @php
-                            $kpiSet[$index]->dataset = [
-                                'x_value' => $kpi->data->pluck('x_value')->toArray(),
-                                'y_value' => $kpi->data->pluck('y_value')->toArray()
-                            ];
-                        @endphp
-                    </div>
-                    @endif
+                                    @php
+                                        $kpiSet[$index]->dataset = [
+                                            'x_value' => $kpi->data->pluck('x_value')->toArray(),
+                                            'y_value' => $kpi->data->pluck('y_value')->toArray()
+                                        ];
+                                    @endphp
+                                </div>
+                            @endif
 
-                        <div class="card">
-                            <h5 class="card-title">
-                                KPI Data Points
-                            </h5>
+                            <div class="panel">
+                                <h5 class="panel-heading">
+                                    KPI Data Points
+                                </h5>
 
-                                <div class="card-body">
+                                <div class="panel-body">
                                     <table id="kpi-{{ $kpi->id }}-data-table" class="table kpi-data-table" cellspacing="0">
                                         <thead>
                                         <tr>
@@ -85,31 +86,31 @@
                                                         <td>{{ date('m/d/Y h:i A', strtotime($data->created_at)) }}</td>
                                                         <td>
                                                             <nav class="nav no-gutters primary-action-group">
-                                                            <a class="nav-link hover-primary" href="#"
-                                                            data-provide="tooltip" title="" data-original-title="Edit"
-                                                            onclick="editDataPoint(this)">
-                                                            <i class="ti-pencil"></i>
-                                                            </a>
-                                                            <a class="nav-link hover-danger" href="#"
-                                                            data-provide="tooltip" title=""
-                                                            data-original-title="Delete"
-                                                            onclick="submitForm('#kpi-{{ $kpi->id }}-data-{{ $data->id }}', 'delete')">
-                                                            <i class="ti-trash"></i>
-                                                            </a>
+                                                                <a class="nav-link hover-primary" href="#"
+                                                                   data-provide="tooltip" title="" data-original-title="Edit"
+                                                                   onclick="editDataPoint(this)">
+                                                                    <i class="ti-pencil"></i>
+                                                                </a>
+                                                                <a class="nav-link hover-danger" href="#"
+                                                                   data-provide="tooltip" title=""
+                                                                   data-original-title="Delete"
+                                                                   onclick="submitForm('#kpi-{{ $kpi->id }}-data-{{ $data->id }}', 'delete')">
+                                                                    <i class="ti-trash"></i>
+                                                                </a>
                                                             </nav>
 
                                                             <nav class="nav no-gutters edit-action-group">
-                                                            <a class="nav-link hover-primary" href="#"
-                                                            data-provide="tooltip" title=""
-                                                            data-original-title="Save"
-                                                            onclick="submitForm('#kpi-{{ $kpi->id }}-data-{{ $data->id }}', 'put')">
-                                                            <i class="ti-save"></i>
-                                                            </a>
-                                                            <a class="nav-link hover-gray" href="#" data-provide="tooltip"
-                                                            title="" data-original-title="Cancel"
-                                                            onclick="cancelEditingDataPoint(this)">
-                                                            <i class="ti-close"></i>
-                                                            </a>
+                                                                <a class="nav-link hover-primary" href="#"
+                                                                   data-provide="tooltip" title=""
+                                                                   data-original-title="Save"
+                                                                   onclick="submitForm('#kpi-{{ $kpi->id }}-data-{{ $data->id }}', 'put')">
+                                                                    <i class="ti-save"></i>
+                                                                </a>
+                                                                <a class="nav-link hover-gray" href="#" data-provide="tooltip"
+                                                                   title="" data-original-title="Cancel"
+                                                                   onclick="cancelEditingDataPoint(this)">
+                                                                    <i class="ti-close"></i>
+                                                                </a>
                                                             </nav>
                                                         </td>
                                                     </form>
@@ -119,20 +120,24 @@
                                         </tbody>
                                     </table>
                                 </div>
+                            </div>
                         </div>
-                </div>
-            </div>
-
-            @endforeach
+                    </div>
+                @endforeach
+            @else
+                <h3 class="text-dark d-block text-center py-20">No kpi available</h3>
+            @endif
         </div>
     </main>
 
-    <div class="fab fab-fixed">
-        <a class="btn btn-float btn-primary" href="#kpi-0-modal" title="Add New KPI"
-           data-provide="tooltip" data-toggle="modal">
-            <i class="ti-plus"></i>
-        </a>
-    </div>
+    @if(!isSuperadmin())
+        <div class="fab fab-fixed">
+            <a class="btn btn-float btn-primary" href="#kpi-0-modal" title="Add New KPI"
+               data-provide="tooltip" data-toggle="modal">
+                <i class="ti-plus"></i>
+            </a>
+        </div>
+    @endif
 
     @include('app.projects.partials.kpi-modal', ['kpi' => null])
 

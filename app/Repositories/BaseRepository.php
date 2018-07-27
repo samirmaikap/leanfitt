@@ -126,6 +126,12 @@ abstract class BaseRepository implements BaseRepositoryInterface
         return $this->model->create($attributes);
     }
 
+    public function updateOrCreate($attributes){
+
+        return $this->model->updateOrCreate($attributes);
+
+    }
+
     public function update($id,$attributes)
     {
         return $this->model->find($id)->update($attributes);
@@ -154,10 +160,6 @@ abstract class BaseRepository implements BaseRepositoryInterface
     public function forceDelete($id)
     {
         return $this->model->find($id)->forceDelete();
-    }
-
-    public function updateOrCreate(array $attributes, array $values = []){
-        return $this->model->updateOrCreate($attributes,$values);
     }
 
     public function fillUpdate($record,$data){

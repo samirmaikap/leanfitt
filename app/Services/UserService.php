@@ -80,7 +80,7 @@ class UserService
     public function profile($user_id=null)
     {
         $user_id=empty($user_id) ? auth()->user()->id : $user_id;
-        $organization=pluckSession('id');
+        $organization=pluckOrganization('id');
         if(empty($user_id)){
             throw new \Exception('User id field is required');
         }
@@ -143,7 +143,7 @@ class UserService
         }
 
         DB::commit();
-        return;
+        return $query;
     }
 
     public function getRelatedOrganization($id)
@@ -166,7 +166,6 @@ class UserService
         }
 
         $user = $this->userRepo->create($data);
-
         if(isset($data['organization']))
         {
             $user->organizations()->attach($data['organization']);
@@ -186,10 +185,10 @@ class UserService
     }
 
     public function invitaton($data){
-        if(empty(pluckSession('id'))){
+        if(empty(pluckOrganization('id'))){
             throw new \Exception('Unable to find your organization');
         }
-        $data['organization_id']=$orgUser['organization_id']=pluckSession('id');
+        $data['organization_id']=$orgUser['organization_id']=pluckOrganization('id');
 
         if(empty(arrayValue($data,'email'))){
             throw new \Exception('Email id is required');
@@ -198,6 +197,7 @@ class UserService
         DB::beginTransaction();
         $user=$this->userRepo->where('email',arrayValue($data,'email'))->first();
         $orgUser['is_invited']=1;
+        $orgUser['invitation_token']=md5(time());
         if($user){
             $orgUser['user_id']=$user->id;
         }
@@ -240,11 +240,11 @@ class UserService
             throw new \Exception('User id is required');
         }
 
-        if(empty(pluckSession('id'))){
+        if(empty(pluckOrganization('id'))){
             throw new \Exception('Unable to find your organization');
         }
 
-        $organization_id=pluckSession('id');
+        $organization_id=pluckOrganization('id');
         $user=$this->orgUserRepo->where('organization_id',$organization_id)->where('user_id',$user_id)->first();
         if($user){
             $this->orgUserRepo->fillUpdate($user,['invitation_token'=>md5(time()).rand(00000,99999)]);
@@ -264,11 +264,11 @@ class UserService
             throw new \Exception('User id is required');
         }
 
-        if(empty(pluckSession('id'))){
+        if(empty(pluckOrganization('id'))){
             throw new \Exception('Unable to find your organization');
         }
 
-        $organization_id=pluckSession('id');
+        $organization_id=pluckOrganization('id');
         $user=$this->orgUserRepo->where('organization_id',$organization_id)->where('user_id',$user_id)->first();
         if(!$user){
             throw new \Exception('User not found');
@@ -287,11 +287,11 @@ class UserService
             throw new \Exception('User id is required');
         }
 
-        if(empty(pluckSession('id'))){
+        if(empty(pluckOrganization('id'))){
             throw new \Exception('Unable to find your organization');
         }
 
-        $organization_id=pluckSession('id');
+        $organization_id=pluckOrganization('id');
         $user=$this->orgUserRepo->where('organization_id',$organization_id)->where('user_id',$user_id)->first();
         if(!$user){
             throw new \Exception('User not found');

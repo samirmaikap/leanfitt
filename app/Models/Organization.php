@@ -43,6 +43,10 @@ class Organization extends Model
         return $this->belongsToMany(User::class, 'organization_user', 'organization_id', 'user_id')->withPivot('is_suspended');
     }
 
+    public function organizationUsers(){
+        return $this->hasMany(OrganizationUser::class,'organization_id','id');
+    }
+
      public function roles()
      {
           return $this->belongsToMany(Role::class, 'organization_role', 'organization_id', 'role_id');

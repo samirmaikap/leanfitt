@@ -25,6 +25,12 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\ProjectCreated' => [
             'App\Listeners\SetupDefaultBoard',
         ],
+        'App\Events\UsersUpdated' => [
+            'App\Listeners\ChangeSubscriptions',
+        ],
+        'App\Events\NotifySubscriptions' => [
+            'App\Listeners\SendSubscriptionsEmail',
+        ],
     ];
 
     /**

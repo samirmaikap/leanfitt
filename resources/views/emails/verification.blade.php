@@ -312,7 +312,7 @@
                                                     <table border="0" cellpadding="0" cellspacing="0">
                                                         <tbody>
                                                         <tr>
-                                                            <td> <a href="{{url('account/verification?token=').$data['verification_token'] }}" target="_blank">Verify</a> </td>
+                                                            <td> <a href="{{env('APP_URL').'/account/verification?token='.$data['verification_token'] }}" target="_blank">Verify</a> </td>
                                                         </tr>
                                                         </tbody>
                                                     </table>

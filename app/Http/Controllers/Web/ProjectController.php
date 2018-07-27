@@ -6,6 +6,7 @@ use App\Services\AttachmentService;
 use App\Services\CommentService;
 use App\Services\OrganizationService;
 use App\Services\ProjectMemberService;
+use App\Services\ReportService;
 use function dd;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -21,13 +22,15 @@ class ProjectController extends Controller
     protected $attachmentService;
     protected $commentService;
     protected $orgService;
+    protected $reportService;
 
     public function __construct(ProjectService $projectService,
                                 KpiService $kpiService,
                                 ProjectMemberService $projectMemberService,
                                 AttachmentService $attachmentService,
                                 CommentService $commentService,
-                                OrganizationService $organizationService)
+                                OrganizationService $organizationService,
+                                ReportService $reportService)
     {
         $this->projectService=$projectService;
         $this->kpiService = $kpiService;
@@ -35,14 +38,15 @@ class ProjectController extends Controller
         $this->attachmentService=$attachmentService;
         $this->commentService=$commentService;
         $this->orgService=$organizationService;
+        $this->reportService=$reportService;
     }
 
     public function index(Request $request){
         $data['page']='projects';
         $data['organizations']=$this->orgService->list();
-        $data['organization_id']=!empty(pluckSession('id')) ? pluckSession('id') : $data['organizations']->first()->id;
-        $organization=$request->query('organization') ? $request->get('organization') : $data['organization_id'];
-        $data['projects'] = $this->projectService->index($organization);
+        $organization=!empty(pluckOrganization('id')) ? pluckOrganization('id') : $data['organizations']->first()->id;
+        $data['organization_id']=$request->query('organization') ? $request->get('organization') : $organization;
+        $data['projects'] = $this->projectService->index($data['organization_id']);
 
         return view("app.projects.index", $data);
     }
@@ -50,6 +54,7 @@ class ProjectController extends Controller
     public function show($project_id)
     {
         $data['page']='projects';
+        $data['sub_page']='details';
         $data['project']=$this->projectService->show($project_id);
         $members=$this->projectService->getMembers($project_id);
         if(count($data['project']->members) > 0 && count($members) > 0){
@@ -74,7 +79,8 @@ class ProjectController extends Controller
         {
             $data['project'] = $this->projectService->show($project_id);
             $data['kpiSet'] = $this->kpiService->index($request);
-            $data['page'] = 'kpi';
+            $data['sub_page'] = 'kpi';
+            $data['page'] = 'projects';
 //            dd($data);
 
             return view("app.projects.kpi", $data);
@@ -91,7 +97,8 @@ class ProjectController extends Controller
         try
         {
             $data['project'] = $this->projectService->show($project_id);
-            $data['page'] = 'action-items';
+            $data['sub_page'] = 'action-items';
+            $data['page'] = 'projects';
 //            dd($data);
             return view("app.projects.action-items", $data);
         }
@@ -104,16 +111,12 @@ class ProjectController extends Controller
 
     public function reports($project_id)
     {
-        try
-        {
-            $data['project'] = $this->projectService->show($project_id);
-            $data['page'] = 'reports';
-            return view("app.projects.reports", $data);
-        }
-        catch(\Exception $e)
-        {
-            return redirect()->back()->withErrors([$e->getMessage()]);
-        }
+
+        $data['project'] = $this->projectService->show($project_id);
+        $data['page'] = 'reports';
+        $data['reports']=$this->reportService->index($project_id);
+        $data['categories']=$this->reportService->names();
+        return view("app.projects.reports", $data);
     }
 
     public function create(Request $request){

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Events\UsersUpdated;
 use App\Services\AuthService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -46,6 +47,8 @@ class AuthController extends Controller
         try{
             $this->service->checkInvitation($request->all());
             $data['success']='Thank you joining';
+            $event['organization_id']=pluckOrganization('id');
+            event(new UsersUpdated($event));
             return view('auth.invitation',$data);
         }catch(\Exception $e){
             $data['error']=$e->getMessage();

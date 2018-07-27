@@ -14,6 +14,8 @@ use App\Observers\SubscriptionObserver;
 use App\Observers\UserObserver;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Cashier\Cashier;
+use Laravel\Cashier\SubscriptionBuilder;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,7 +31,6 @@ class AppServiceProvider extends ServiceProvider
         Organization::observe(OrganizationObserver::class);
         Project::observe(ProjectObserver::class);
         OrganizationUser::observe(OrganizationUserObserver::class);
-        Subscription::observe(SubscriptionObserver::class);
     }
 
     /**
@@ -39,6 +40,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+
     }
 }

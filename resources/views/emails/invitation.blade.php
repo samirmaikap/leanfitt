@@ -312,7 +312,7 @@
                                                     <table border="0" cellpadding="0" cellspacing="0">
                                                         <tbody>
                                                         <tr>
-                                                            <td> <a href="{{url('invitaion/accept?token=').$data['token'] }}" target="_blank">Accept Invitation</a> </td>
+                                                            <td> <a href="{{env('APP_URL').'/invitaion/accept?token='.$data['token'] }}" target="_blank">Accept Invitation</a> </td>
                                                         </tr>
                                                         </tbody>
                                                     </table>

@@ -16,6 +16,7 @@ class CreateReportCategoriesTable extends Migration
         Schema::create('report_categories', function (Blueprint $table) {
             $table->increments('id')->unsigned()->index();
             $table->string('name');
+            $table->longText('description')->nullable();
         });
     }
 
