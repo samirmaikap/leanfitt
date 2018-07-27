@@ -31,21 +31,15 @@ class OrganizationMiddleware
 
         $subscribed=$organization->subscribed('main');
         if(!$subscribed){
-            Auth::logout();
-            Session::flush();
             return redirect('abort/subscription');
         }
 
         $orgUser=auth()->user()->userOrganization[0];
         if($orgUser->is_suspended==1){
-            Auth::logout();
-            Session::flush();
             return redirect('abort/suspend');
         }
 
         if($orgUser->is_invited==1){
-            Auth::logout();
-            Session::flush();
             return redirect('abort/invited');
         }
 

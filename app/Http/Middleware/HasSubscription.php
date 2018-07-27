@@ -16,13 +16,6 @@ class HasSubscription
      */
     public function handle($request, Closure $next)
     {
-        $subscribed=session('organization')->subscribed('main');
-        if(!$subscribed){
-            return redirect('abort');
-        }
-
-        Log::info('Cheking....');
-
         return $next($request);
     }
 }

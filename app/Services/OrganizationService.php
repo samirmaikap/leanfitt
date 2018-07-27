@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Events\NotifySubscriptions;
+use App\Events\SubscriptionResumed;
+use App\Events\SubscriptionStopped;
 use App\Repositories\AdminRepository;
 use App\Repositories\DeleteRepository;
 use App\Repositories\MediaRepository;
@@ -14,6 +16,7 @@ use App\Validators\OrganizationValidator;
 use function auth;
 use function dd;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use function str_slug;
 use Stripe\Stripe;
@@ -220,5 +223,38 @@ class OrganizationService
         return $organizations;
     }
 
+    public function cancelSubscription($organization_id){
+        if(empty($organization_id))
+            throw new \Exception('Organization id field is required');
 
+        $organization=$this->organizationRepository->find($organization_id);
+        if(empty($organization))
+            throw new \Exception('Organization not found');
+
+        $query=$organization->subscription('main')->cancel();
+        if(!$query){
+           throw new \Exception(config('messages.common_error'));
+        }
+
+        event(new SubscriptionStopped($organization));
+        return;
+
+    }
+
+    public function resumeSubscription($organization_id){
+        if(empty($organization_id))
+            throw new \Exception('Organization id field is required');
+
+        $organization=$this->organizationRepository->find($organization_id);
+        if(empty($organization))
+            throw new \Exception('Organization not found');
+
+        $query=$organization->subscription('main')->resume();
+        if(!$query){
+            throw new \Exception(config('messages.common_error'));
+        }
+
+        event(new SubscriptionResumed($organization));
+        return;
+    }
 }

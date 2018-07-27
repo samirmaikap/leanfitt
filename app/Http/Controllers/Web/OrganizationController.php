@@ -93,41 +93,21 @@ class OrganizationController extends Controller
 
     public function cancelSubscription(){
         $organization_id=is_null(session('organization')) ? null : pluckOrganization('id');
-        if(empty($organization_id))
-            return redirect()->back()->withErrors([config('messages.common_error')]);
-
-        $orgRepo=new OrganizationRepository();
-
-        $organization=$orgRepo->find($organization_id);
-        if(empty($organization))
-            return redirect()->back()->withErrors([config('messages.common_error')]);
-
-        $query=$organization->subscription('main')->cancel();
-        if($query){
+        try{
+            $this->service->cancelSubscription($organization_id);
             return redirect()->back()->with('success', 'Subscription cancelled');
-        }
-        else{
-            return redirect()->back()->withErrors([config('messages.common_error')]);
+        }catch (\Exception $e){
+            return redirect()->back()->withErrors([$e->getMessage()]);
         }
     }
 
     public function resumeSubscription(){
         $organization_id=is_null(session('organization')) ? null : pluckOrganization('id');
-        if(empty($organization_id))
-            return redirect()->back()->withErrors([config('messages.common_error')]);
-
-        $orgRepo=new OrganizationRepository();
-
-        $organization=$orgRepo->find($organization_id);
-        if(empty($organization))
-            return redirect()->back()->withErrors([config('messages.common_error')]);
-
-        $query=$organization->subscription('main')->resume();
-        if($query){
-            return redirect()->back()->with('success', 'Subscription cancelled');
-        }
-        else{
-            return redirect()->back()->withErrors([config('messages.common_error')]);
+        try{
+            $this->service->resumeSubscription($organization_id);
+            return redirect()->back()->with('success', 'Subscription resumed');
+        }catch (\Exception $e){
+            return redirect()->back()->withErrors([$e->getMessage()]);
         }
     }
 }

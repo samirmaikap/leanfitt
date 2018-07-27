@@ -155,7 +155,6 @@ class UserController extends Controller
         }
         catch(\Exception $e)
         {
-            dd($e->getMessage(), $e->getTraceAsString());
             return redirect()->back()->withInput($request->all())->withErrors([$e->getMessage()]);
         }
     }
@@ -171,7 +170,6 @@ class UserController extends Controller
         }
         catch(\Exception $e)
         {
-            dd($e->getMessage(), $e->getTraceAsString());
             return redirect()->back()->withErrors([$e->getMessage()]);
         }
     }
@@ -187,7 +185,6 @@ class UserController extends Controller
         }
         catch(\Exception $e)
         {
-            dd($e->getMessage(), $e->getTraceAsString());
             return redirect()->back()->withErrors([$e->getMessage()]);
         }
     }

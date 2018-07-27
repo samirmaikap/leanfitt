@@ -7,11 +7,10 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SignupMail extends Mailable implements ShouldQueue
+class ResumeSubscriptionMail extends Mailable
 {
     use Queueable, SerializesModels;
     public $data;
-
     /**
      * Create a new message instance.
      *
@@ -19,7 +18,7 @@ class SignupMail extends Mailable implements ShouldQueue
      */
     public function __construct($data)
     {
-        $this->data = $data;
+        $this->data=$data;
     }
 
     /**
@@ -29,6 +28,6 @@ class SignupMail extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->subject('Welcome to '.ucfirst(config('app.name')))->view('emails.signup');
+        return $this->subject(env('APP_NAME').' subscription resumed')->view('emails.resumeSubscription');
     }
 }

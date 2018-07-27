@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SignupMail extends Mailable implements ShouldQueue
+class StopSubscriptionMail extends Mailable
 {
     use Queueable, SerializesModels;
     public $data;
@@ -19,7 +19,7 @@ class SignupMail extends Mailable implements ShouldQueue
      */
     public function __construct($data)
     {
-        $this->data = $data;
+        $this->data=$data;
     }
 
     /**
@@ -29,6 +29,6 @@ class SignupMail extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->subject('Welcome to '.ucfirst(config('app.name')))->view('emails.signup');
+        return $this->subject(env('APP_NAME').' subscription end')->view('emails.stopSubscription');
     }
 }
