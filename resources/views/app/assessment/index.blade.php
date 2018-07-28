@@ -70,7 +70,7 @@
                         @if(count($users) > 0)
                             @foreach($users as $user)
                                 <li class="nav-item {{($user_id == $user->id) ? 'active' : '' }}">
-                                    <a class="nav-link text-truncate w-160px" href="{{url('/assessment?organization=').$organization_id}}&department={{$department_id}}&user={{$user->id}}">{{$user->first_name}} {{$user->last_name}}</a>
+                                    <a class="nav-link text-truncate w-160px" href="{{url('/assessment?organization=').$organization_id}}&department={{$department_id}}&user={{$user->id}}">{{ucfirst($user->first_name)}} {{ucfirst($user->last_name)}}</a>
                                 </li>
                             @endforeach
                         @else
@@ -119,7 +119,7 @@
                                             <td class="">
                                                 <img class="avatar avatar-sm" src="{{ $assessment->avatar }}" alt="">
                                                 <a href="{{url("users")}}/{{$assessment->user_id}}/profile">
-                                                    {{ $assessment->first_name }} {{$assessment->last_name}}
+                                                    {{ ucfirst($assessment->first_name) }} {{ucfirst($assessment->last_name)}}
                                                 </a>
                                             </td>
                                             <td>{{$max}} ({{$assessment_result[$max]}})</td>

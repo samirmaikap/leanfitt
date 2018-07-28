@@ -303,8 +303,7 @@
                                 <tr><td><img class="logo" src="https://ui-avatars.com/api/?rounded=true&size=128x128"></td></tr>
                                 <tr>
                                     <td>
-                                        <h3 style="color:#13c482">Subscription Resumed</h3>
-                                        <p>Hi {{isset($data['first_name']) ? $data['first_name'] : 'user'}}, Your account for the organization {{$data['organization']}} has been suspended. Please contact your organization admin for help</p>
+                                        <p>Hi {{isset($data['first_name']) ? ucfirst($data['first_name']) : 'User'}}, Your account for the organization {{ucfirst($data['organization'])}} has been suspended. Please contact your organization admin for help</p>
                                         <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                                             <tbody>
                                             <tr>

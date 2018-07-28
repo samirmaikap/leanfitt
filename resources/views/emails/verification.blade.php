@@ -304,7 +304,7 @@
                                 <tr>
                                     <td>
                                         <h3 style="color:#13c482">Email Verification</h3>
-                                        <p>Hi {{isset($data['first_name']) ? $data['first_name'] : 'user'}}, Thank you for joining {{ucfirst(config('app.name'))}}.To verify your email address please follow the link below.</p>
+                                        <p>Hi {{isset($data['first_name']) ? ucfirst($data['first_name']) : 'User'}}, Thank you for joining {{ucfirst(config('app.name'))}}.To verify your email address please follow the link below.</p>
                                         <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                                             <tbody>
                                             <tr>

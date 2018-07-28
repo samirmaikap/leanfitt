@@ -304,7 +304,7 @@
                                 <tr>
                                     <td>
                                         <h3 style="color:#13c482">Accept Inviation</h3>
-                                        <p>Hi {{isset($data['first_name']) ? $data['first_name'] : 'user'}}, You've invited to join the {{ucfirst(config('app.name'))}}.To accept the inviattion please follow the link below.</p>
+                                        <p>Hi {{isset($data['first_name']) ? ucfirst($data['first_name']) : 'user'}}, You've invited to join the {{ucfirst(config('app.name'))}}.To accept the inviattion please follow the link below.</p>
                                         <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                                             <tbody>
                                             <tr>

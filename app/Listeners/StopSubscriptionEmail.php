@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\SubscriptionStopped;
+use App\Jobs\SendSubscriptionStoppedMail;
 use App\Mail\StopSubscriptionMail;
 use App\Models\Subscription;
 use Illuminate\Queue\InteractsWithQueue;
@@ -33,6 +34,7 @@ class StopSubscriptionEmail
         $subscripton=Subscription::where('organization_id',$data->id)->first();
         $mail['contact_person']=$data->contact_person;
         $mail['ends_at']=$subscripton->ends_at;
-        Mail::to($data->email)->send(new StopSubscriptionMail($mail));
+        $mail['email']=$data->email;
+        SendSubscriptionStoppedMail::dispatch($mail)->onQueue('emails');
     }
 }

@@ -54,7 +54,7 @@
                     @if(count($users) > 0)
                     @foreach($users as $user)
                     <li class="nav-item {{($user_id == $user->id) ? 'active' : '' }}">
-                        <a class="nav-link text-truncate" href="{{url('/awards?organization=').$organization_id}}&department={{$department_id}}&user={{$user->id}}">{{$user->first_name}} {{$user->last_name}}</a>
+                        <a class="nav-link text-truncate" href="{{url('/awards?organization=').$organization_id}}&department={{$department_id}}&user={{$user->id}}">{{ucfirst($user->first_name)}} {{ucfirst($user->last_name)}}</a>
                     </li>
                     @endforeach
                     @else
@@ -95,7 +95,7 @@
                                         <div class="media align-items-center">
                                             <img class="avatar avatar-lg" src="{{$award->avatar}}" alt="...">
                                             <div class="media-body">
-                                                <p class="lead">{{$award->first_name}} {{$award->last_name}}</p>
+                                                <p class="lead">{{ucfirst($award->first_name)}} {{ucfirst($award->last_name)}}</p>
                                                 <p>{{$award->title}}</p>
                                             </div>
                                         </div>

@@ -99,7 +99,7 @@
                 </li>
                 @endpermission
 
-                <li class="menu-category">LeanFITT</li>
+                <li class="menu-category">LeanFITT™</li>
 
                 <li class="menu-item {{$page=='lean-tools' ? 'active' : ''}}">
                     <a class="menu-link" href="{{ url("lean-tools") }}">

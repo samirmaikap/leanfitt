@@ -8,7 +8,7 @@
         <meta name="keywords" content="mail, email, conversation, mailbox">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>LeanFITT</title>
+        <title>LeanFITT™</title>
 
         <!-- Favicons -->
         <link rel="apple-touch-icon" href="{{asset('assets')}}/img/apple-touch-icon.png">

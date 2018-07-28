@@ -80,7 +80,7 @@
                                             @foreach($pmems as $pmem)
                                                 <a class="avatar avatar-pill avatar-lg" href="{{url('users')}}/{{$pmem->id}}/profile">
                                                     <img src="{{$pmem->avatar}}" alt="...">
-                                                    <span>{{$pmem->first_name}} {{$pmem->last_name}}</span>
+                                                    <span>{{ucfirst($pmem->first_name)}} {{ucfirst($pmem->last_name)}}</span>
                                                     @if(!isSuperadmin())
                                                         <form id="memberRemoveForm" method="post" action="{{url('projects')}}/{{$project->id}}/member/{{$pmem->member_id}}/remove">
                                                             {{csrf_field()}}

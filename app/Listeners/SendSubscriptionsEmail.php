@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\NotifySubscriptions;
+use App\Jobs\SendSubscriptionMail;
 use App\Mail\SubscriptionMail;
 use App\Models\Organization;
 use Illuminate\Queue\InteractsWithQueue;
@@ -37,7 +38,8 @@ class SendSubscriptionsEmail
                 $data['contact_person']=$organization->contact_person;
                 $data['organization_name']=$organization->name;
                 $data['invoice']=isset($invoice->invoice_pdf) ? $invoice->invoice_pdf : null;
-                Mail::to($organization->email)->send(new SubscriptionMail($data));
+                $data['email']=$organization->email;
+                SendSubscriptionMail::dispatch($data)->onQueue('emails');
                 Log::info($data['invoice']);
             }
         }catch(\Exception $e){

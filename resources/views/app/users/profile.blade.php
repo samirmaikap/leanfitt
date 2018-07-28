@@ -32,7 +32,7 @@
                 <div class="row">
                   <div class="form-group col-md-6">
                     <label class="text-dark">First name</label>
-                    <input class="form-control" name="first_name" value="{{isset($user->first_name) ? $user->first_name : ''}}" type="text">
+                    <input class="form-control" name="first_name" value="{{isset($user->first_name) ? ucfirst($user->first_name) : ''}}" type="text">
                   </div>
                   <div class="form-group col-md-6">
                     <label class="text-dark">Last name</label>

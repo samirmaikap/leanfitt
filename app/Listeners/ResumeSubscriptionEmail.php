@@ -3,10 +3,12 @@
 namespace App\Listeners;
 
 use App\Events\SubscriptionResumed;
+use App\Jobs\SendSubscriptionResumedMail;
 use App\Mail\ResumeSubscriptionMail;
 use App\Models\Subscription;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class ResumeSubscriptionEmail
@@ -32,6 +34,8 @@ class ResumeSubscriptionEmail
         $subscripton=Subscription::where('organization_id',$data->id)->first();
         $mail['contact_person']=$data->contact_person;
         $mail['ends_at']=$subscripton->ends_at;
-        Mail::to($data->email)->send(new ResumeSubscriptionMail($mail));
+        $mail['email']=$data->email;
+        SendSubscriptionResumedMail::dispatch($mail)->onQueue('emails');
+        Log::info('Dispacthed');
     }
 }

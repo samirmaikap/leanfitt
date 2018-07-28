@@ -2,6 +2,8 @@
 namespace App\Services;
 
 use App\Events\UsersUpdated;
+use App\Jobs\SendRestoreMail;
+use App\Jobs\SendSuspendMail;
 use App\Mail\DeactivationMail;
 use App\Mail\InvitationMail;
 use App\Mail\UserSuspendMail;
@@ -287,9 +289,10 @@ class UserService
 
         $data['organization']=$user->organization->name;
         $data['first_name']=$user->user->first_name;
+        $data['email']=$user->user->email;
         $event['organization_id']=$organization_id;
         event(new UsersUpdated($event));
-        Mail::to($user->user->email)->send(new UserSuspendMail($data));
+        SendSuspendMail::dispatch($data)->onQueue('emails');
         return;
     }
 
@@ -317,7 +320,8 @@ class UserService
         $data['first_name']=$user->user->first_name;
         $event['organization_id']=$organization_id;
         event(new UsersUpdated($event));
-        Mail::to($user->user->email)->send(new UserSuspendMail($data));
+        $data['email']=$user->user->email;
+        SendRestoreMail::dispatch($data)->onQueue('emails');
         return;
     }
 }

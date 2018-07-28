@@ -7,7 +7,7 @@
     <meta name="description" content="Responsive admin dashboard and web application ui kit. ">
     <meta name="keywords" content="mail, email, conversation, mailbox">
 
-    <title>LeanFITT</title>
+    <title>LeanFITT™</title>
 
     <!-- Favicons -->
     <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">

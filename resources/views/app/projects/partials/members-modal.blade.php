@@ -16,7 +16,7 @@
                         <select name="user_id" data-provide="selectpicker" data-width="100%">
                             @if(isset($members) && count($members) > 0)
                                 @foreach($members as $member)
-                                    <option value="{{$member->id}}">{{$member->first_name}} {{$member->last_name}}</option>
+                                    <option value="{{$member->id}}">{{ucfirst($member->first_name)}} {{ucfirst($member->last_name)}}</option>
                                 @endforeach
                             @else
                                 <option value="">None</option>
