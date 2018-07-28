@@ -303,8 +303,8 @@
                                 <tr><td><img class="logo" src="https://ui-avatars.com/api/?rounded=true&size=128x128"></td></tr>
                                 <tr>
                                     <td>
-                                        <p>Hi {{isset($data['contact_person']) ? $data['contact_person'] : 'user'}}, Your subscription for {{ucfirst(config('app.name'))}} has been updated as per your request.To cancel please goto your account.
-                                            Please download the invoice using following link</p>
+                                        <h3 style="color:#13c482">Subscription Resumed</h3>
+                                        <p>Hi {{isset($data['first_name']) ? $data['first_name'] : 'user'}}, Your account for the organization {{$data['organization']}} has been restored. Please contact your organization admin for help</p>
                                         <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                                             <tbody>
                                             <tr>
@@ -312,7 +312,7 @@
                                                     <table border="0" cellpadding="0" cellspacing="0">
                                                         <tbody>
                                                         <tr>
-                                                            <td> <a href="{{$data['invoice']}}" target="_blank">Download Invoice</a> </td>
+                                                            <td> <a href="{{env('APP_URL').'/login'}}" target="_blank">My Account</a> </td>
                                                         </tr>
                                                         </tbody>
                                                     </table>

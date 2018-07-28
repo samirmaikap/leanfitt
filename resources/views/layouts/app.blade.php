@@ -41,7 +41,7 @@
 
         @include('layouts.partials.footer')
 
-        @include('layouts.partials.profile')
+        {{--@include('layouts.partials.profile')--}}
 
         <!-- Global quickview -->
         <div id="qv-global" class="quickview" data-url="assets/data/quickview-global.html">

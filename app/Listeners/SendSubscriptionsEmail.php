@@ -38,7 +38,7 @@ class SendSubscriptionsEmail
                 $data['organization_name']=$organization->name;
                 $data['invoice']=isset($invoice->invoice_pdf) ? $invoice->invoice_pdf : null;
                 Mail::to($organization->email)->send(new SubscriptionMail($data));
-                Log::info('Email send');
+                Log::info($data['invoice']);
             }
         }catch(\Exception $e){
             Log::info($e->getMessage());

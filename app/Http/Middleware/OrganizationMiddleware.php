@@ -29,28 +29,33 @@ class OrganizationMiddleware
         $organizationRepository = new OrganizationRepository();
         $organization = $organizationRepository->where('subdomain', '=', $subdomain)->first();
 
-        $subscribed=$organization->subscribed('main');
-        if(!$subscribed){
-            return redirect('abort/subscription');
-        }
-
-        $orgUser=auth()->user()->userOrganization[0];
-        if($orgUser->is_suspended==1){
-            return redirect('abort/suspend');
-        }
-
-        if($orgUser->is_invited==1){
-            return redirect('abort/invited');
-        }
-
         // Set Organization to session for global access
         session(['organization' => $organization]);
+        $orgUser=auth()->user()->userOrganization->where('organization_id',$organization->id)->first();
 
         // First unset this domain group parameter 'organization'
         // Set it back again to the new value
         // This way controllers will be able receive parameters from the routes in the same order they are defined in the routes
         $request->route()->forgetParameter('organization');
         $request->route()->setParameter('organization', $organization);
+
+        $subscribed=$organization->subscribed('main');
+        if(!$subscribed){
+            session()->put(['not_accessible'=>'subscription']);
+            return redirect(url('users').'/'.$orgUser->user_id.'/profile');
+        }
+
+        if($orgUser->is_suspended==1){
+            session()->put(['not_accessible'=>'suspended']);
+            return redirect(url('users').'/'.$orgUser->user_id.'/profile');
+        }
+
+        if($orgUser->is_invited==1){
+            session()->put(['not_accessible'=>'invited']);
+            return redirect(url('users').'/'.$orgUser->user_id.'/profile');
+        }
+
+        session()->forget('not_accessible');
 
         return $next($request);
     }

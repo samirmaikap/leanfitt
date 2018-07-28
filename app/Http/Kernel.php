@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\HasAcessToOrganization;
 use App\Http\Middleware\HasSubscription;
 use App\Http\Middleware\OrganizationMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
@@ -62,6 +63,6 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'checkDomain'=>OrganizationMiddleware::class,
-        'checkSubscription'=>HasSubscription::class,
+        'hasAccess'=>HasAcessToOrganization::class,
     ];
 }

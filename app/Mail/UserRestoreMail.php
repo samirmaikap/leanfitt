@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SubscriptionMail extends Mailable implements ShouldQueue
+class UserRestoreMail extends Mailable
 {
     use Queueable, SerializesModels;
     public $data;
@@ -19,7 +19,7 @@ class SubscriptionMail extends Mailable implements ShouldQueue
      */
     public function __construct($data)
     {
-        $this->data = $data;
+        $this->data=$data;
     }
 
     /**
@@ -29,7 +29,6 @@ class SubscriptionMail extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->subject(ucfirst(config('app.name')).' Subscription')
-            ->view('emails.subscription');
+        return $this->subject('Account restored')->view('emails.restore');
     }
 }

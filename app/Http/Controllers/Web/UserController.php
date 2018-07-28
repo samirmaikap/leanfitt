@@ -164,8 +164,6 @@ class UserController extends Controller
         try
         {
             $this->userService->suspend($user_id);
-            $event['organization_id']=pluckOrganization('id');
-            event(new UsersUpdated($event));
             return redirect()->back()->with(['success' => 'User has been suspended']);
         }
         catch(\Exception $e)
@@ -176,11 +174,10 @@ class UserController extends Controller
 
     public function restore($user_id)
     {
+
         try
         {
             $this->userService->restore($user_id);
-            $event['organization_id']=pluckOrganization('id');
-            event(new UsersUpdated($event));
             return redirect()->back()->with(['success' => 'User has been restored']);
         }
         catch(\Exception $e)

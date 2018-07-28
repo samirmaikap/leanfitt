@@ -22,6 +22,6 @@ class OrganizationUser extends Model
     }
 
     public function user(){
-        return $this->belongsTo(OrganizationUser::class);
+        return $this->belongsTo(User::class);
     }
 }
