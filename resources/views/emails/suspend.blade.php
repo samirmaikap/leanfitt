@@ -300,7 +300,7 @@
                     <tr>
                         <td class="wrapper">
                             <table border="0" cellpadding="0" cellspacing="0">
-                                <tr><td><img class="logo" src="https://ui-avatars.com/api/?rounded=true&size=128x128"></td></tr>
+                                <tr><td><img class="logo" src="{{env('APP_URL').(env('APP_LOGO_PATH'))}}"></td></tr>
                                 <tr>
                                     <td>
                                         <p>Hi {{isset($data['first_name']) ? ucfirst($data['first_name']) : 'User'}}, Your account for the organization {{ucfirst($data['organization'])}} has been suspended. Please contact your organization admin for help</p>

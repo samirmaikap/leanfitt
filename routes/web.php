@@ -25,9 +25,7 @@ Route::post('password/change', 'Web\AuthController@updatePassword');
 Route::get('invitaion/accept', 'Web\AuthController@invitation');
 
 Route::get('test', function(){
-    $orgRepo=new \App\Repositories\OrganizationRepository();
-    $invoice=($orgRepo->find(1))->invoices();
-    dd($invoice);
+    dd(env('APP_URL').(env('APP_LOGO_PATH')));
 });
 
 Route::view('abort/suspend', 'errors.suspend');

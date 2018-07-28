@@ -300,10 +300,9 @@
                     <tr>
                         <td class="wrapper">
                             <table border="0" cellpadding="0" cellspacing="0">
-                                <tr><td><img class="logo" src="https://ui-avatars.com/api/?rounded=true&size=128x128"></td></tr>
+                                <tr><td><img class="logo" src="{{env('APP_URL').(env('APP_LOGO_PATH'))}}"></td></tr>
                                 <tr>
                                     <td>
-                                        <h3 style="color:#13c482">Subscription Resumed</h3>
                                         <p>Hi {{isset($data['contact_person']) ? $data['contact_person'] : 'user'}}, Your subscription for {{ucfirst(config('app.name'))}} has been resumed as per your request.To cancel please goto your account</p>
                                         <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                                             <tbody>
