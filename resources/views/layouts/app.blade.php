@@ -53,7 +53,12 @@
     </body>
 
     <!-- Scripts  -->
-    <script src="{{ asset('assets/js/core.min.js') }}" data-provide="chartjs"></script>
+    @if($page=='dashboard')
+        <script src="{{ asset('assets/js/core.min.js') }}" data-provide="chartjs" data-provide="fullcalendar"></script>
+    @else
+        <script src="{{ asset('assets/js/core.min.js') }}" data-provide="chartjs"></script>
+    @endif
+
     <script src="{{ asset('assets/js/app.js') }}"></script>
     <script src="{{ asset('assets/js/script.js') }}"></script>
     <script src="{{ asset('assets/js/charts.js') }}"></script>

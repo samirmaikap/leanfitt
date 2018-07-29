@@ -133,6 +133,7 @@ class ActionItemService //implements ActionItemServiceInterface
         }
 
         DB::beginTransaction();
+        $data['due_date']=empty($data['due_date']) ? null : Carbon::parse($data['due_date'])->format('Y-m-d');
         $query=$this->itemRepo->update($item_id,$data);
 
         if(!empty($data['assignees']))

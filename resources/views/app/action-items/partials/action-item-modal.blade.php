@@ -40,6 +40,13 @@
                             <textarea class="form-control" rows="3" name="description">{{ $actionItem->description }}</textarea>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="col-form-label ">Due Date</label>
+                        <br/>
+                        <div class="">
+                            <input type="text" class="form-control" data-provide="datepicker" data-date-today-highlight="true" name="due_date" value="{{ empty($actionItem->due_date) ? old('due_date') : date('m/d/Y',strtotime($actionItem->due_date))  }}"/>
+                        </div>
+                    </div>
 
                     {{--<hr/>--}}
 
