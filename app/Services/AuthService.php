@@ -3,6 +3,7 @@
 namespace App\Services;
 
 
+use App\Events\UsersUpdated;
 use App\Mail\PasswordResetMail;
 use App\Repositories\DeviceRepository;
 use App\Repositories\OrganizationRepository;
@@ -105,6 +106,8 @@ class AuthService
         $query=$this->orgUserRepo->fillUpdate($orgUser,['is_invited'=>0]);
         if($query){
             $this->repo->update($orgUser->user_id,['is_verified'=>1]);
+            $event['organization_id']=$orgUser->organization_id;
+            event(new UsersUpdated($event));
             return;
         }
 

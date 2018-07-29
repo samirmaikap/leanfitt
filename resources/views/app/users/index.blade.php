@@ -14,7 +14,7 @@
                             @if(count($orglist) > 0)
                                 @foreach($orglist as $olist)
                                     <li class="nav-item {{$activeorg == $olist['id'] ? 'active' : ''}}">
-                                        <a class="nav-link" href="{{url('/users?organization=').$olist['id']}}">{{$olist['name']}}</a>
+                                        <a class="nav-link text-truncate w-160px" href="{{url('/users?organization=').$olist['id']}}" title="{{$olist['name']}}">{{$olist['name']}}</a>
                                     </li>
                                 @endforeach
                             @endif
@@ -31,7 +31,7 @@
                         @if(count($deplist) > 0)
                             @foreach($deplist as $dlist)
                                 <li data-id="{{$dlist->id}}" class="nav-item {{($activedep == $dlist->id) ? 'active' : '' }}">
-                                    <a class="nav-link" href="{{url('/users?organization=').$activeorg}}&department={{$dlist->id}}">{{$dlist->name}}</a>
+                                    <a class="nav-link text-truncate w-100px" title="{{$dlist->name}}" href="{{url('/users?organization=').$activeorg}}&department={{$dlist->id}}">{{$dlist->name}}</a>
                                     @if(!isSuperadmin())
                                         @permission('update.department')
                                         <a class="nav-action hover-info edit-department" href="#" data-provide="tooltip" data-title="Edit" data-toggle="modal" data-target="#modal-department"><span class="ti-pencil"></span></a>
@@ -68,7 +68,7 @@
                         @if(count($rolelist) > 0)
                             @foreach($rolelist as $rlist)
                                 <li data-id="{{$rlist->id}}" class="nav-item {{($activerole == $rlist->id) ? 'active' : '' }}">
-                                    <a class="nav-link" href="{{url('/users?organization=').$activeorg}}&department={{$activedep}}&role={{$rlist->id}}">{{$rlist->name}}</a>
+                                    <a class="nav-link text-truncate w-100px" href="{{url('/users?organization=').$activeorg}}&department={{$activedep}}&role={{$rlist->id}}" title="{{$rlist->name}}">{{$rlist->name}}</a>
                                     @if(!isSuperadmin())
                                         @permission('update.role')
                                         <a class="nav-action hover-info edit-department" href="#" data-provide="tooltip" data-title="Edit" data-toggle="modal" data-target="#edit-role{{ $rlist->id }}-modal"><span class="ti-pencil"></span></a>
@@ -126,8 +126,8 @@
                                     <div>
                                         <img class="avatar avatar-xxl" src="{{empty($user->avatar) ? env('UI_AVATAR').$user->full_name : $user->avatar}}">
                                     </div>
-                                    <h5 class="mt-3 mb-1">{{$user->full_name}}</h5>
-                                    <span class="text-fade d-block ">{{$user->email}}</span>
+                                    <h5 class="mt-3 mb-1 text-truncate">{{$user->full_name}}</h5>
+                                    <span class="text-fade text-truncate d-block ">{{$user->email}}</span>
                                     <span class="text-fade d-block ">{{$user->phone}}</span>
                                     <span class="text-success d-block ">{{ $user->roles->count()}} Roles</span>
                                     <time>{{$user->is_invited==0 ? 'Joined' : 'Invited'}} {{\Illuminate\Support\Carbon::parse($user->created_at)->format('d F Y')}}</time>

@@ -46,7 +46,7 @@
                                     <div class="tab-pane fade" id="wizard-form-1">
 
                                         <p class="text-center text-gray">
-                                            Create an organization and start managing LeanFITT. You can be associated with multiple organizations either via invitation from other organizations or by creating your own organization.
+                                            Create an organization and start managing LeanFITT™. You can be associated with multiple organizations either via invitation from other organizations or by creating your own organization.
                                         </p>
                                         <hr class="w-100px">
 

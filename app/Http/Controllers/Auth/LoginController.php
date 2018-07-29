@@ -54,7 +54,6 @@ class LoginController extends Controller
     protected function authenticated(Request $request, $user)
     {
         $superadmin=auth()->user()->is_superadmin;
-//        session(['user' => $user]);
         session([
             'user' =>renderCollection(collect($user)->except(['verification_token','password'])),
             'is_superadmin'=>$superadmin,

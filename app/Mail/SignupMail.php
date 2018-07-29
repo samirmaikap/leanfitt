@@ -29,6 +29,6 @@ class SignupMail extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->view('emails.signup');
+        return $this->subject('Welcome to '.ucfirst(config('app.name')))->view('emails.signup');
     }
 }

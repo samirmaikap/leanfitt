@@ -32,7 +32,7 @@
                         @if(count($organizations) > 0)
                             @foreach($organizations as $organization)
                                 <li class="nav-item {{$organization_id == $organization->id ? 'active' : ''}}">
-                                    <a class="nav-link" href="{{url('/assessment?organization=').$organization->id}}">{{$organization->name}}</a>
+                                    <a class="nav-link text-truncate w-160px" href="{{url('/assessment?organization=').$organization->id}}">{{$organization->name}}</a>
                                 </li>
                             @endforeach
                         @endif
@@ -48,7 +48,7 @@
                         @if(count($departments) > 0)
                             @foreach($departments as $department)
                                 <li class="nav-item {{($department_id == $department->id) ? 'active' : '' }}">
-                                    <a class="nav-link" href="{{url('/assessment?organization=').$organization_id}}&department={{$department->id}}">{{$department->name}}</a>
+                                    <a class="nav-link text-truncate w-160px" href="{{url('/assessment?organization=').$organization_id}}&department={{$department->id}}">{{$department->name}}</a>
                                 </li>
                             @endforeach
                         @else
@@ -70,7 +70,7 @@
                         @if(count($users) > 0)
                             @foreach($users as $user)
                                 <li class="nav-item {{($user_id == $user->id) ? 'active' : '' }}">
-                                    <a class="nav-link" href="{{url('/assessment?organization=').$organization_id}}&department={{$department_id}}&user={{$user->id}}">{{$user->first_name}} {{$user->last_name}}</a>
+                                    <a class="nav-link text-truncate w-160px" href="{{url('/assessment?organization=').$organization_id}}&department={{$department_id}}&user={{$user->id}}">{{ucfirst($user->first_name)}} {{ucfirst($user->last_name)}}</a>
                                 </li>
                             @endforeach
                         @else
@@ -119,7 +119,7 @@
                                             <td class="">
                                                 <img class="avatar avatar-sm" src="{{ $assessment->avatar }}" alt="">
                                                 <a href="{{url("users")}}/{{$assessment->user_id}}/profile">
-                                                    {{ $assessment->first_name }} {{$assessment->last_name}}
+                                                    {{ ucfirst($assessment->first_name) }} {{ucfirst($assessment->last_name)}}
                                                 </a>
                                             </td>
                                             <td>{{$max}} ({{$assessment_result[$max]}})</td>

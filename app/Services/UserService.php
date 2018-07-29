@@ -1,7 +1,12 @@
 <?php
 namespace App\Services;
 
+use App\Events\UsersUpdated;
+use App\Jobs\SendRestoreMail;
+use App\Jobs\SendSuspendMail;
 use App\Mail\DeactivationMail;
+use App\Mail\InvitationMail;
+use App\Mail\UserSuspendMail;
 use App\Mail\VerificationMail;
 use App\Repositories\AdminRepository;
 use App\Repositories\DeviceRepository;
@@ -247,7 +252,10 @@ class UserService
         $organization_id=pluckOrganization('id');
         $user=$this->orgUserRepo->where('organization_id',$organization_id)->where('user_id',$user_id)->first();
         if($user){
-            $this->orgUserRepo->fillUpdate($user,['invitation_token'=>md5(time()).rand(00000,99999)]);
+            $organizationUser=$this->orgUserRepo->where('user_id',$user->id)->where('organizaton_id',$organization_id)->first();
+            $data['token']=$organizationUser->invitation_token;
+            $data['first_name']=$user->first_name;
+            Mail::to($user->email)->send(new InvitationMail($data));
             return;
         }
 
@@ -269,7 +277,7 @@ class UserService
         }
 
         $organization_id=pluckOrganization('id');
-        $user=$this->orgUserRepo->where('organization_id',$organization_id)->where('user_id',$user_id)->first();
+        $user=$this->orgUserRepo->with(['user','organization'])->where('organization_id',$organization_id)->where('user_id',$user_id)->first();
         if(!$user){
             throw new \Exception('User not found');
         }
@@ -279,6 +287,12 @@ class UserService
             throw new \Exception(config('messages.common_error'));
         }
 
+        $data['organization']=$user->organization->name;
+        $data['first_name']=$user->user->first_name;
+        $data['email']=$user->user->email;
+        $event['organization_id']=$organization_id;
+        event(new UsersUpdated($event));
+        SendSuspendMail::dispatch($data)->onQueue('emails');
         return;
     }
 
@@ -292,7 +306,7 @@ class UserService
         }
 
         $organization_id=pluckOrganization('id');
-        $user=$this->orgUserRepo->where('organization_id',$organization_id)->where('user_id',$user_id)->first();
+        $user=$this->orgUserRepo->with(['user','organization'])->where('organization_id',$organization_id)->where('user_id',$user_id)->first();
         if(!$user){
             throw new \Exception('User not found');
         }
@@ -302,6 +316,12 @@ class UserService
             throw new \Exception(config('messages.common_error'));
         }
 
+        $data['organization']=$user->organization->name;
+        $data['first_name']=$user->user->first_name;
+        $event['organization_id']=$organization_id;
+        event(new UsersUpdated($event));
+        $data['email']=$user->user->email;
+        SendRestoreMail::dispatch($data)->onQueue('emails');
         return;
     }
 }

@@ -35,7 +35,12 @@
                     barChart('bar-chart',label,value1,xAxis,yAxis);
                 }
                 else if(category_id==11){
-                    scatterChart('scatter-chart',label,value1,xAxis,yAxis);
+                    var data_array=[];
+                    for(var i=0;i<label.length;i++){
+                        data_array[i]['x']=label[i];
+                        data_array[i]['y']=value1[i];
+                    }
+                    scatterChart('scatter-chart',data_array,xAxis,yAxis);
                 }
                 else if(category_id==12){
                     lineChart('line-chart',label,value1,xAxis,yAxis);

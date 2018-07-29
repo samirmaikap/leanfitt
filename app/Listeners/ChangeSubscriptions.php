@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\NotifySubscriptions;
 use App\Events\UsersUpdated;
+use App\Jobs\ProcessUpdateSubscription;
 use App\Mail\SubscriptionMail;
 use App\Models\Organization;
 use Illuminate\Queue\InteractsWithQueue;
@@ -35,9 +36,7 @@ class ChangeSubscriptions
             $organization=Organization::withCount(['organizationUsers'=>function($query){
                 $query->where('is_invited',0)->where('is_suspended',0);
             }])->find($event->data['organization_id']);
-            $organization->subscription('main')->updateQuantity($organization->organization_users_count);
-            $data['organization_id']=$organization->id;
-            event(new NotifySubscriptions($data));
+            ProcessUpdateSubscription::dispatch($organization)->onQueue('subscription');
         }catch(\Exception $e){
             Log::error($e->getMessage());
         }
