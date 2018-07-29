@@ -78,7 +78,7 @@ class ProjectController extends Controller
         try
         {
             $data['project'] = $this->projectService->show($project_id);
-            $data['kpiSet'] = $this->kpiService->index($request);
+            $data['kpiSet'] = $this->kpiService->index($project_id);
             $data['sub_page'] = 'kpi';
             $data['page'] = 'projects';
 //            dd($data);

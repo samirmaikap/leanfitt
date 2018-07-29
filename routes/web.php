@@ -24,8 +24,10 @@ Route::get('password/change', 'Web\AuthController@changePassword');
 Route::post('password/change', 'Web\AuthController@updatePassword');
 Route::get('invitaion/accept', 'Web\AuthController@invitation');
 
-Route::get('test/test', function(){
-    dd(date('Y-m-d H:i:s'));
+Route::get('test', function(){
+    $organization=\App\Models\Organization::find(1);
+    $invoice=$organization->invoices()->first();
+    dd($invoice);
 });
 
 Route::get('projects/{project_id}/reports/{report_id}', 'Web\ReportController@view');
