@@ -19,7 +19,7 @@
                         @foreach($tools as $tool)
                             <a class="media  {{$active_tool == $tool->tool_id ? 'active' : ''}}" href="{{url('quizzes/take').'/'.$tool->tool_id}}">
                                 <div class="media-body">
-                                    <p><strong>{{$tool->too_name}}</strong>
+                                    <p class="text-truncate w-160px"><strong>{{$tool->too_name}}</strong>
                                         @if($tool->quiz_taken)
                                             <span class="badge badge-success pull-right">{{$tool->score}} % Score</span>
                                         @else

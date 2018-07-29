@@ -12,7 +12,6 @@
             border: none;
             -ms-interpolation-mode: bicubic;
             max-width: 100%;
-            margin-top: 20px;
         }
 
         body {
@@ -176,27 +175,6 @@
             border-color: #3498db;
             color: #ffffff; }
 
-        .invoice-table{
-            margin-top: 20px;
-            margin-bottom: 20px;
-            text-align: center;
-            border: 1px solid #f3f3f3;
-            background-color: #f7f7f7;
-            padding: 5px 0;
-        }
-        .invoice-table tr{
-            display: flex;
-        }
-        .invoice-table td:first-child{
-            text-align: right;
-            flex: 1;
-            padding: 5px;
-        }
-        .invoice-table td:last-child{
-            text-align: left;
-            flex: 1;
-            padding: 5px;
-        }
         /* -------------------------------------
             OTHER STYLES THAT MIGHT BE USEFUL
         ------------------------------------- */
@@ -321,58 +299,27 @@
                     <!-- START MAIN CONTENT AREA -->
                     <tr>
                         <td class="wrapper">
-                            <table>
-                                <tr><td><img class="logo" src="https://ui-avatars.com/api/?name={{$data['organization_name']}}&rounded=true&size=128x128&background=13c482&color=fff"></td></tr>
+                            <table border="0" cellpadding="0" cellspacing="0">
+                                <tr><td><img class="logo" src="{{env('APP_URL').(env('APP_LOGO_PATH'))}}"></td></tr>
                                 <tr>
                                     <td>
-                                        <h3 style="color:#13c482">Subscription</h3>
-                                        <p>Hi {{isset($data['contact_person']) ? $data['contact_person'] : ''}},Thanks for purchasing <b>{{$data['plan_name']}}</b> using card ending {{$data['card_end']}} for the organization {{$data['organization_name']}}.Your subscription details is as follows</p>
-                                        <table class="invoice-table" border="0" cellpadding="0" cellspacing="0">
-                                            <tbody>
-                                            <tr>
-                                                <td>Plan Name:</td>
-                                                <td>{{$data['plan_name']}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Billing Type:</td>
-                                                <td>{{str_replace('_',' ',$data['billing'])}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Amount:</td>
-                                                <td>{{is_nan($data['amount']/100) ? 0  :($data['amount']/100)}} {{$data['currency']}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Quantity:</td>
-                                                <td>{{$data['quantity']}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Next Billing:</td>
-                                                <td>{{Carbon\Carbon::createFromTimestamp($data['current_period_end'])->format('d F Y')}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Status:</td>
-                                                <td>{{$data['status']}}</td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
+                                        <p>Hi {{isset($data['contact_person']) ? $data['contact_person'] : 'user'}}, Your subscription for {{ucfirst(config('app.name'))}} has been updated as per your request.To cancel please goto your account.
+                                            Please download the invoice using following link</p>
                                         <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                                             <tbody>
-                                            <tr>
-                                                <td><p>To change or cancel the plan please goto your account or contact the admin.</p></td>
-                                            </tr>
                                             <tr>
                                                 <td align="center">
                                                     <table border="0" cellpadding="0" cellspacing="0">
                                                         <tbody>
                                                         <tr>
-                                                            <td> <a href="{{env('APP_URL').'/login'}}" target="_blank">Goto Account</a> </td>
+                                                            <td> <a href="{{$data['invoice']}}" target="_blank">Download Invoice</a> </td>
                                                         </tr>
                                                         </tbody>
                                                     </table>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td><p>Thank You. Team {{ucfirst(config('app.name'))}}</p></td>
+                                                <td><p>Thanks.</p><br><p>Team {{config('app.name')}}.</p></td>
                                             </tr>
                                             </tbody>
                                         </table>

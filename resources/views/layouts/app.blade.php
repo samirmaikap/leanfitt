@@ -8,7 +8,7 @@
         <meta name="keywords" content="mail, email, conversation, mailbox">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>LeanFITT</title>
+        <title>LeanFITT™</title>
 
         <!-- Favicons -->
         <link rel="apple-touch-icon" href="{{asset('assets')}}/img/apple-touch-icon.png">
@@ -41,7 +41,7 @@
 
         @include('layouts.partials.footer')
 
-        @include('layouts.partials.profile')
+        {{--@include('layouts.partials.profile')--}}
 
         <!-- Global quickview -->
         <div id="qv-global" class="quickview" data-url="assets/data/quickview-global.html">
@@ -53,7 +53,12 @@
     </body>
 
     <!-- Scripts  -->
-    <script src="{{ asset('assets/js/core.min.js') }}" data-provide="chartjs"></script>
+    @if($page=='dashboard')
+        <script src="{{ asset('assets/js/core.min.js') }}" data-provide="chartjs" data-provide="fullcalendar"></script>
+    @else
+        <script src="{{ asset('assets/js/core.min.js') }}" data-provide="chartjs"></script>
+    @endif
+
     <script src="{{ asset('assets/js/app.js') }}"></script>
     <script src="{{ asset('assets/js/script.js') }}"></script>
     <script src="{{ asset('assets/js/charts.js') }}"></script>

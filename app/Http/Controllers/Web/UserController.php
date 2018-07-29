@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Events\UsersUpdated;
 use App\Http\Resources\UserResource;
 use App\Services\DepartmentService;
 use App\Services\OrganizationService;
@@ -154,7 +155,6 @@ class UserController extends Controller
         }
         catch(\Exception $e)
         {
-            dd($e->getMessage(), $e->getTraceAsString());
             return redirect()->back()->withInput($request->all())->withErrors([$e->getMessage()]);
         }
     }
@@ -164,29 +164,24 @@ class UserController extends Controller
         try
         {
             $this->userService->suspend($user_id);
-            $event['organization_id']=pluckOrganization('id');
-            event(new UsersUpdated($event));
             return redirect()->back()->with(['success' => 'User has been suspended']);
         }
         catch(\Exception $e)
         {
-            dd($e->getMessage(), $e->getTraceAsString());
             return redirect()->back()->withErrors([$e->getMessage()]);
         }
     }
 
     public function restore($user_id)
     {
+
         try
         {
             $this->userService->restore($user_id);
-            $event['organization_id']=pluckOrganization('id');
-            event(new UsersUpdated($event));
             return redirect()->back()->with(['success' => 'User has been restored']);
         }
         catch(\Exception $e)
         {
-            dd($e->getMessage(), $e->getTraceAsString());
             return redirect()->back()->withErrors([$e->getMessage()]);
         }
     }

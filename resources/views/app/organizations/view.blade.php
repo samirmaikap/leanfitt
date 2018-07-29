@@ -55,7 +55,7 @@
                             @if(!isSuperadmin())
                                 @permission('update.organization')
                                 <div class="card-body text-center pb-20">
-                                    @if($status=='active')
+                                    @if(empty($organization->subscriptions[0]->ends_at))
                                         <button type="button" class="btn btn-danger revoke-subscription">Cancel Subscription</button>
                                     @else
                                         <button type="button" class="btn btn-primary resume-subscription">Resume Subscription</button>

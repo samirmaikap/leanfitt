@@ -28,7 +28,7 @@
         "psr-4": {
             "App\\": "app/"
         },
-        "files": ["app/Helpers/functions.php","app/Helpers/reportHelper.php"]
+        "files": ["app/Helpers/functions.php"]
     },
     "autoload-dev": {
         "psr-4": {

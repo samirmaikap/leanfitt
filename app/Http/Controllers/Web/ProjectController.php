@@ -70,6 +70,10 @@ class ProjectController extends Controller
         $project_members=$this->memberService->allMembers($project_id);
         $data['project_members']=$project_members->groupBy('role');
 
+        $savings=$this->projectService->getSavings($project_id);
+        $data['tangibles']=$savings->where('type','tangible');
+        $data['intangibles']=$savings->where('type','intangible');
+
         return view("app.projects.details", $data);
     }
 
@@ -87,7 +91,6 @@ class ProjectController extends Controller
         }
         catch(\Exception $e)
         {
-            dd($e->getMessage());
             return redirect()->back()->withErrors([$e->getMessage()]);
         }
     }
@@ -104,7 +107,6 @@ class ProjectController extends Controller
         }
         catch(\Exception $e)
         {
-            dd($e->getMessage());
             return redirect()->back()->withErrors([$e->getMessage()]);
         }
     }
@@ -215,6 +217,25 @@ class ProjectController extends Controller
         try{
             $this->commentService->delete($comment_id);
             return redirect()->back()->with('success','Comment has been deleted');
+        }catch(\Exception $e){
+            return redirect()->back()->withErrors([$e->getMessage()]);
+        }
+    }
+
+    public function saveTangibles(Request $request,$project_id){
+        try{
+            $this->projectService->saveTangibles($request->all(),$project_id);
+            return redirect()->back()->with('success','Tangibles has been updated');
+        }catch(\Exception $e){
+            return redirect()->back()->withErrors([$e->getMessage()]);
+        }
+
+    }
+
+    public function saveIntangibles(Request $request,$project_id){
+        try{
+            $this->projectService->saveIntangibles($request->all(),$project_id);
+            return redirect()->back()->with('success','Intangibles has been udpated');
         }catch(\Exception $e){
             return redirect()->back()->withErrors([$e->getMessage()]);
         }

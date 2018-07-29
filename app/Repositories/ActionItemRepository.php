@@ -32,4 +32,17 @@ class ActionItemRepository extends BaseRepository //implements ActionItemReposit
         $query=$this->model()->with(['assignor','assignees.user','comments.user','attachments'])->where('id',$id)->where('is_archived',0)->first();
         return $query;
     }
+
+    public function actionItems($organization,$user){
+        return $this->model()
+            ->join('processes as p','p.id','=','action_items.process_id')
+            ->join('boards as b','b.id','p.board_id')
+            ->join('projects as pr','pr.id','=','b.project_id')
+            ->join('action_item_assignees as aia','aia.action_item_id','=','action_items.id')
+            ->where('pr.organization_id',empty($organization) ? '!=' : '=',empty($organization) ? null : $organization)
+            ->where('action_items.user_id',empty($user) ? '!=':'=',empty($user) ? null : $user)
+            ->orWhere('aia.user_id',empty($user) ? '!=':'=',empty($user) ? null : $user)
+            ->select(['action_items.title','action_items.due_date','action_items.is_archived'])
+            ->get();
+    }
 }

@@ -17,4 +17,5 @@ class DepartmentRepository extends BaseRepository //implements DepartmentReposit
         $query=$this->model()->where('organization_id',empty($organization) ? '!=' : '=',empty($organization) ? null : $organization)->get(['id','name']);
         return $query;
     }
+
 }

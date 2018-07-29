@@ -22,19 +22,4 @@ class OrganizationUserObserver
         $data['first_name']=$user->first_name;
         Mail::to($user->email)->send(new InvitationMail($data));
     }
-
-    /**
-     * Handle the organization user "updated" event.
-     *
-     * @param  \App\Models\OrganizationUser  $organizationUser
-     * @return void
-     */
-    public function updated(OrganizationUser $organizationUser)
-    {
-        $user=User::find($organizationUser->user_id);
-        $data['token']=$organizationUser->invitation_token;
-        $data['first_name']=$user->first_name;
-        Mail::to($user->email)->send(new InvitationMail($data));
-    }
-
 }

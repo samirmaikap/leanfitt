@@ -300,11 +300,10 @@
                     <tr>
                         <td class="wrapper">
                             <table border="0" cellpadding="0" cellspacing="0">
-                                <tr><td><img class="logo" src="https://ui-avatars.com/api/?rounded=true&size=128x128"></td></tr>
+                                <tr><td><img class="logo" src="{{env('APP_URL').(env('APP_LOGO_PATH'))}}"></td></tr>
                                 <tr>
                                     <td>
-                                        <h3 style="color:#13c482">Accept Inviation</h3>
-                                        <p>Hi {{isset($data['first_name']) ? $data['first_name'] : 'user'}}, You've invited to join the {{ucfirst(config('app.name'))}}.To accept the inviattion please follow the link below.</p>
+                                        <p>Welcome {{isset($data['first_name']) ? ucfirst($data['first_name']) : 'user'}}! You've invited to join the {{ucfirst(config('app.name'))}}.To accept this invitation please follow the link below.</p>
                                         <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                                             <tbody>
                                             <tr>
@@ -319,7 +318,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td><p>Please use <b>password</b> as password of your account if you're not an existing member of the {{ucfirst(config('app.name'))}}.<br>We recomend to change the password on your first login</p></td>
+                                                <td><p>Please use the word <b>"password"</b> as your initial password for your account for your first sigin if you're not an existing member of the {{ucfirst(config('app.name'))}}.<br>We recommend you change your password under your Profile on your first login</p></td>
                                             </tr>
                                             </tbody>
                                         </table>

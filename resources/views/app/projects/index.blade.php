@@ -13,7 +13,7 @@
                             @if(count($organizations) > 0)
                                 @foreach($organizations as $organization)
                                     <li class="nav-item {{$organization_id == $organization->id ? 'active' : ''}}">
-                                        <a class="nav-link" href="{{url('/projects?organization=').$organization->id}}">{{$organization->name}}</a>
+                                        <a class="nav-link text-truncate w-160px" href="{{url('/projects?organization=').$organization->id}}">{{$organization->name}}</a>
                                     </li>
                                 @endforeach
                             @endif

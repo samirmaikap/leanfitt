@@ -175,4 +175,20 @@ abstract class BaseRepository implements BaseRepositoryInterface
         return $record->forceDelete();
     }
 
+    public function select($attributes)
+    {
+        $this->model = $this->model->select($attributes);
+        return $this->model;
+    }
+
+    public function sum($col)
+    {
+        return $this->model->sum($col);
+    }
+
+    public function join($table,$clause1,$operator,$clause2)
+    {
+        $this->model = $this->model->join($table,$clause1,$operator,$clause2);
+        return $this->model;
+    }
 }

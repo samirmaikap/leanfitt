@@ -19,7 +19,7 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\SendNotification',
         ],
         'App\Events\OrganizationCreated' => [
-            'App\Listeners\SendWelcomeMail',
+//            'App\Listeners\SendWelcomeMail',
             'App\Listeners\SetupRolePermission',
         ],
         'App\Events\ProjectCreated' => [
@@ -30,6 +30,12 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\NotifySubscriptions' => [
             'App\Listeners\SendSubscriptionsEmail',
+        ],
+        'App\Events\SubscriptionStopped' => [
+            'App\Listeners\StopSubscriptionEmail',
+        ],
+        'App\Events\SubscriptionResumed' => [
+            'App\Listeners\ResumeSubscriptionEmail',
         ],
     ];
 
