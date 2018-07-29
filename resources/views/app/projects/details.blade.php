@@ -6,19 +6,6 @@
                 vertical-align: middle !important;
             }
         </style>
-        {{--<header class="header mb-0 bg-ui-general">--}}
-        {{--<div class="header-bar center-h">--}}
-        {{--<h4 class="text-dark">{{$project->name}}</h4>--}}
-        {{--</div>--}}
-        {{--<div class="header-action center-h">--}}
-        {{--<nav class="nav">--}}
-        {{--<a class="nav-link active" href="{{url('projects')}}/{{$project->id}}/details">Details</a>--}}
-        {{--<a class="nav-link" href="{{url('projects')}}/{{$project->id}}/kpi">KPI</a>--}}
-        {{--<a class="nav-link" href="{{url('projects')}}/{{$project->id}}/action-items">Action Items</a>--}}
-        {{--<a class="nav-link" href="{{url('projects')}}/{{$project->id}}/reports">Reports</a>--}}
-        {{--</nav>--}}
-        {{--</div>--}}
-        {{--</header>--}}
         @include('app.projects.partials.header')
         <div class="main-content">
             <div class="row">
@@ -69,6 +56,81 @@
                     </div>
                 </div>
                 <div class="col-lg-8">
+                    <div class="row">
+                        @php
+                            $default_savings_content=json_decode(\Illuminate\Support\Facades\Storage::get('savings.json'));
+                            $default_savings=$default_savings_content->values;
+                            $default_savings_arr=$default_savings_content->values;
+                        @endphp
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header"><h4>Tangible Savings</h4></div>
+                                <form method="post" action="{{url('projects')}}/{{$project->id}}/savings/tangibles" enctype="multipart/form-data">
+                                    {{csrf_field()}}
+                                    <div class="media-list media-list-hover media-list-divided tangible-container">
+                                        @if(count($tangibles) > 0)
+                                            @foreach($tangibles as $key2=>$tangible)
+                                                <div class="media media-single" id="tangible-{{$key2+1}}" data-id="{{$tangible->id}}">
+                                                    <span class="title">{{$tangible->value}}</span>
+                                                    <input type="hidden" id="tangible-input-value" name="values[]" value="{{$tangible->value}}">
+                                                    <span class="badge badge-pill cursor-pointer fs-15 text-success edit-tangible" data-toggle="modal" data-target="#modal-tangible"><i class="ti-pencil"></i></span>
+                                                    <span class="badge badge-pill cursor-pointer fs-15 text-success remove-tangible"><i class="ti-trash"></i></span>
+                                                </div>
+                                            @endforeach
+                                        @endif
+
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <button type="button" class="btn btn-round btn-outline-info add-tangible">Add New</button>
+                                        <button class="btn btn-round btn-outline-success">Update</button>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header"><h4>Intangible Benefits</h4></div>
+                                <form method="post" action="{{url('projects')}}/{{$project->id}}/savings/intangibles" enctype="multipart/form-data">
+                                    {{csrf_field()}}
+                                    <div class="media-list media-list-hover media-list-divided intangible-container">
+                                        @php $intangibles_arr=$intangibles->pluck('value')->toArray(); @endphp
+                                        @php
+                                            $diff_arr=array_diff($intangibles_arr,$default_savings_arr);
+                                            $other_name=array_pop($diff_arr) @endphp
+
+                                        @foreach($default_savings as $key3=>$int_value)
+                                            @if(next($default_savings))
+                                                <div class="media media-single" href="#">
+                                                    <label class="custom-control title custom-control-primary custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" value="{{$int_value}}" name="values[]" {{in_array($int_value,$intangibles_arr) ? 'checked' : ''}}>
+                                                        <span class="custom-control-indicator"></span>
+                                                        <span class="custom-control-description">{{$int_value}}</span>
+                                                    </label>
+                                                </div>
+                                            @else
+                                                <div class="media media-single" href="#">
+                                                    <label class="custom-control title custom-control-primary custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" value="{{empty($other_name) ? $int_value : $other_name}}" name="values[]" {{in_array(empty($other_name) ? $int_value : $other_name,$intangibles_arr) ? 'checked' : ''}}>
+                                                        <span class="custom-control-indicator"></span>
+                                                        <span class="custom-control-description">{{empty($other_name) ? $int_value : $other_name}}</span>
+                                                    </label>
+                                                    @if(strtolower($int_value)=='others')
+                                                        <span class="badge badge-pill cursor-pointer fs-15 text-success change-intangible-other" data-toggle="modal" data-target="#modal-intangible"><i class="ti-pencil"></i></span>
+                                                    @endif
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <button class="btn btn-round btn-outline-success update-intangible">Update</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row">
                         <div class="col-md-12 avatar-container members-container">
                             <div class="card">
@@ -227,6 +289,56 @@
             </div>
         </div>
 
+        {{--Tangible--}}
+        <div class="modal modal-center fade" id="modal-tangible" tabindex="-1">
+            <div class="modal-dialog mt-30 ">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Project</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="input-normal">Value</label>
+                            <input type="text" id="tangible-input" class="form-control">
+                        </div>
+                        <input type="hidden" name="id" id="tangible-id">
+                        <input type="hidden" id="tangible-key">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-bold btn-pure btn-primary update-tangible">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{--Intangible--}}
+        <div class="modal modal-center fade" id="modal-intangible" tabindex="-1">
+            <div class="modal-dialog mt-30 ">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Intagible</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="input-normal">Name</label>
+                            <input type="text" class="form-control" id="input-intangible">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-bold btn-pure btn-secondary " data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-bold btn-pure btn-primary rename-intangible-other">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         @include('app.projects.partials.members-modal')
 
         {{--Upload attachment--}}
@@ -336,6 +448,55 @@
                     $('#commentDeleteForm').submit();
                 })
             })
+
+            $('.rename-intangible-other').click(function(){
+                var text=$('#input-intangible').val();
+                if(text!==null){
+                    $('.intangible-container .custom-control-input:last').val(text);
+                    $('.intangible-container .custom-control-description:last').html(text);
+                }
+            })
+
+            $('.tangible-container').on('click','.edit-tangible',function(){
+                var text=$(this).parent().find('input').val();
+                var id=$(this).parent().data('id');
+                var key=($(this).parent().attr('id').split('-'))[1]
+                $('#tangible-input').val(text);
+                $('#tangible-id').val(id);
+                $('#tangible-key').val(key);
+            })
+
+            $('.tangible-container').on('click','.remove-tangible',function(){
+                $(this).parent().remove();
+            })
+
+            $('.add-tangible').click(function(){
+                $('#tangible-input').val('');
+                $('#tangible-key').val('');
+                $('#tangible-id').val('');
+                $("#modal-tangible").modal('show');
+            })
+
+            $('.update-tangible').click(function(){
+                var value=$('#tangible-input').val();
+                var key=$('#tangible-key').val();
+               if(!key){
+                   var len=parseInt($('.tangible-container .media-single').length)+1;
+                   var html=' <div class="media media-single" id="tangible-'+len+'" data-id="">\n' +
+                       '                                                            <span class="title">'+value+'</span>\n' +
+                       '                                                            <input type="hidden" id="tangible-input-value" name="tangibles[]" value="'+value+'">\n' +
+                       '                                                            <span class="badge badge-pill cursor-pointer fs-15 text-success edit-tangible" data-toggle="modal" data-target="#modal-tangible"><i class="ti-pencil"></i></span>\n' +
+                       '                                                            <span class="badge badge-pill cursor-pointer fs-15 text-success"><i class="ti-trash"></i></span>\n' +
+                       '                                                        </div>'
+                   $('.tangible-container').append(html);
+               }
+               else{
+                   $('#tangible-'+key).find('.title').html(value);
+                   $('#tangible-'+key).find('input').val(value);
+               }
+            })
+
+
 
             @if(session()->has('success') || session('success'))
             setTimeout(function () {

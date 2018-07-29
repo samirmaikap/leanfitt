@@ -6,6 +6,7 @@ use App\Repositories\DeleteRepository;
 use App\Repositories\ProjectActivityRepository;
 use App\Repositories\ProjectRepository;
 //use App\Services\Contracts\ProjectServiceInterface;
+use App\Repositories\SavingsRepository;
 use App\Validators\ProjectValidator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -16,13 +17,16 @@ class ProjectService //implements ProjectServiceInterface
     protected $projectRepo;
     protected $activityRepo;
     protected $deleteRepo;
+    protected $savingsRepo;
     public function __construct(ProjectRepository $projectRepository,
                                 ProjectActivityRepository $projectActivityRepository,
-                                DeleteRepository $deleteRepository)
+                                DeleteRepository $deleteRepository,
+                                SavingsRepository $savingsRepository)
     {
         $this->projectRepo=$projectRepository;
         $this->activityRepo=$projectActivityRepository;
         $this->deleteRepo=$deleteRepository;
+        $this->savingsRepo=$savingsRepository;
     }
 
     public function index($organization=null)
@@ -189,5 +193,84 @@ class ProjectService //implements ProjectServiceInterface
 
         $query=$this->projectRepo->getMembers($project_id);
         return $query;
+    }
+
+    public function getSavings($project_id){
+        if(empty($project_id)){
+            return;
+        }
+
+        $query=$this->savingsRepo->where('project_id',$project_id)->get();
+        return $query;
+    }
+
+    public function saveTangibles($data,$project_id){
+        $delCount=0;
+        $saveCount=0;
+        $tangibles=$this->savingsRepo->where('project_id',$project_id)->where('type','tangible')->get();
+        if(count($tangibles) > 0){
+            foreach ($tangibles as $tangible){
+                if($this->savingsRepo->forceDeleteRecord($tangible)){
+                    $delCount++;
+                }
+            }
+        }
+        else{
+            $delCount=1;
+        }
+
+        if($delCount > 0){
+            foreach ($data['values'] as $value){
+                $query=$this->savingsRepo->create(['value'=>$value,'type'=>'tangible','project_id'=>$project_id]);
+                if($query){
+                    $saveCount++;
+                }
+            }
+        }
+        else{
+            throw new \Exception(congif('messages.common_erorr'));
+        }
+
+        if($saveCount > 0){
+            return;
+        }
+        else{
+            throw new \Exception(congif('messages.common_erorr'));
+        }
+    }
+
+    public function saveIntangibles($data,$project_id){
+        $delCount=0;
+        $saveCount=0;
+        $tangibles=$this->savingsRepo->where('project_id',$project_id)->where('type','intangible')->get();
+        if(count($tangibles) > 0){
+            foreach ($tangibles as $tangible){
+                if($this->savingsRepo->forceDeleteRecord($tangible)){
+                    $delCount++;
+                }
+            }
+        }
+        else{
+            $delCount=1;
+        }
+
+        if($delCount > 0){
+            foreach ($data['values'] as $value){
+                $query=$this->savingsRepo->create(['value'=>$value,'type'=>'intangible','project_id'=>$project_id]);
+                if($query){
+                    $saveCount++;
+                }
+            }
+        }
+        else{
+            throw new \Exception(congif('messages.common_erorr'));
+        }
+
+        if($saveCount > 0){
+            return;
+        }
+        else{
+            throw new \Exception(congif('messages.common_erorr'));
+        }
     }
 }
