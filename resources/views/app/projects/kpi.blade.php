@@ -4,7 +4,7 @@
         @include('app.projects.partials.header')
         <div class="main-content">
 
-            <canvas id="canvas"></canvas>
+            <!-- <canvas id="canvas"></canvas> -->
 
             @if(count($kpiSet) > 0)
                 @foreach($kpiSet as $index => $kpi)
@@ -13,11 +13,24 @@
                         <a href="#kpi-{{ $kpi->id }}-modal" data-toggle="modal">
                             <h4 class="card-title fw-400 text-center">
                                 {{ $kpi->title }}
+                                <i class="fa fa-edit"></i>
                             </h4>
                         </a>
                         <div class="card-body">
                             @if(count($kpi->data))
-                                <div class="#kpi-chart-container" style="">
+                                @php 
+                                    $lastValue = $kpi->data->reverse()->first()->y_value;
+                                    if($kpi->trend == "+")
+                                        $percentage = ceil(($lastValue/$kpi->target)*100);
+                                    else                                        
+                                        $percentage = ceil(($kpi->target/$lastValue)*100);
+                                @endphp
+                                <div class="progress">
+                                  <div class="progress-bar" role="progressbar" style="height: 16px;width: {{ $percentage }}%">
+                                      <strong>{{ $percentage }}% of target achieved</strong>
+                                  </div>
+                                </div>
+                                <div class="#kpi-chart-container" style="margin: 20px;height: 600px;">
                                     <canvas id="kpi-{{ $kpi->id }}-chart"></canvas>
 
                                     @php
@@ -42,7 +55,7 @@
                                     <table id="kpi-{{ $kpi->id }}-data-table" class="table kpi-data-table" cellspacing="0">
                                         <thead>
                                         <tr>
-                                            <th>#</th>
+                                            <!-- <th>#</th> -->
                                             <th>{{ $kpi->x_label }} </th>
                                             <th>{{ $kpi->y_label }}</th>
                                             <th>Timestamp</th>
@@ -55,12 +68,12 @@
                                                 {{ method_field('post') }}
                                                 {{ csrf_field() }}
                                                 <input type="hidden" name="kpi_chart_id" value="{{ $kpi->id }}">
-                                                <td>1</td>
+                                                <!-- <td>1</td> -->
                                                 <td>
-                                                    <input type="text" name="x_value" value="">
+                                                    <input type="text" name="x_value" value="" required="">
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="y_value"  value="">
+                                                    <input type="text" name="y_value"  value="" required="">
                                                 </td>
                                                 <td></td>
                                                 <td>
@@ -82,12 +95,12 @@
                                                         {{ method_field('put') }}
                                                         {{ csrf_field() }}
                                                         <input type="hidden" name="kpi_chart_id" value="{{ $kpi->id }}">
-                                                        <td>{{ $data->id }}</td>
+                                                        <!-- <td>{{ $data->id }}</td> -->
                                                         <td>
-                                                            <input type="text" name="x_value" value="{{ $data->x_value }}" readonly>
+                                                            <input type="text" name="x_value" value="{{ $data->x_value }}" readonly required="">
                                                         </td>
                                                         <td>
-                                                            <input type="text" name="y_value"  value="{{ $data->y_value }}" readonly>
+                                                            <input type="text" name="y_value"  value="{{ $data->y_value }}" readonly required="">
                                                         </td>
                                                         <td>{{ date('m/d/Y h:i A', strtotime($data->created_at)) }}</td>
                                                         <td>
@@ -171,7 +184,7 @@
 
 
             $.each(kpiSet, function (index, kpi) {
-
+                console.log(index);
 
                 if(kpi.data.length == 0)
                     return;
@@ -204,8 +217,10 @@
                 }
 
                 $.each(kpi.dataset.timestamp, function(index, timestamp){
-                    // console.log("before", index, timestamp);
+
+                   
                     // timestamp = moment(timestamp.format('MM/DD/YYYY'));
+
                     timestamp = moment(timestamp.date.substr(0,10));
                     var nextTimestamp = typeof kpi.dataset.timestamp[index +1] != "undefined" ? moment(kpi.dataset.timestamp[index +1].date.substr(0,10)) : null;
                     // console.log("after", index, timestamp);
@@ -240,31 +255,45 @@
                     // Project & KPI End Date
                     if(!kpiEndFlag && !projectEndFlag){
 
-                        if(!skipValue)
-                            kpi.dataset2.x_value.push(timestamp.format('MM/DD/YYYY'));
-
                         if(nextTimestamp){
 
+                            if(!skipValue)
+                                kpi.dataset2.x_value.push(timestamp.format('MM/DD/YYYY'));
+
                             if(projectEnd.isSameOrBefore(nextTimestamp)){
-                                kpi.dataset2.x_value.push("Project End - " + projectEnd.format('MM/DD/YYYY'));
+                                kpi.dataset2.x_value.push("Project Endx - " + projectEnd.format('MM/DD/YYYY'));
                                 projectEndFlag = true;
                             }
 
                         }else if(kpiEnd.isSameOrBefore(projectEnd)){
 
-                            kpi.dataset2.x_value.push("KPI End - " + kpiEnd.format('MM/DD/YYYY'));
-                            kpiEndFlag = true;  
+                            // if(kpiEnd.isSameOrAfter(timestamp)){
 
-                            kpi.dataset2.x_value.push("Project End - " + projectEnd.format('MM/DD/YYYY'));
+                            kpi.dataset2.x_value.push(timestamp.format('MM/DD/YYYY'));
+                            kpi.dataset2.x_value.push("KPI End - " + kpiEnd.format('MM/DD/YYYY'));
+                            kpiEndFlag = true;
+                            // }
+
+                            kpi.dataset2.x_value.push("Project Endy - " + projectEnd.format('MM/DD/YYYY'));
                             projectEndFlag = true;
 
                         }else{
-                            kpi.dataset2.x_value.push("Project End - " + projectEnd.format('MM/DD/YYYY'));
-                            projectEndFlag = true;
-                        }
-                    }
 
-                    else if(kpiEndFlag && !projectEndFlag){
+                            if(projectEnd.isSameOrAfter(timestamp)){
+                                kpi.dataset2.x_value.push(timestamp.format('MM/DD/YYYY'));
+                                kpi.dataset2.x_value.push("Project Endz - " + projectEnd.format('MM/DD/YYYY'));
+                                projectEndFlag = true;
+                            }else{
+                                kpi.dataset2.x_value.push("Project Endz - " + projectEnd.format('MM/DD/YYYY'));
+                                projectEndFlag = true;
+                                kpi.dataset2.x_value.push(timestamp.format('MM/DD/YYYY'));
+                            }
+                            
+                            kpi.dataset2.x_value.push("KPI End - " + kpiEnd.format('MM/DD/YYYY'));
+                            kpiEndFlag = true;
+                        }
+
+                    }else if(kpiEndFlag && !projectEndFlag){
 
                         console.log("second else");
                 
@@ -272,11 +301,11 @@
 
                             kpi.dataset2.x_value.push(timestamp.format('MM/DD/YYYY'));
 
-                            kpi.dataset2.x_value.push("Project End - " + projectEnd.format('MM/DD/YYYY'));
+                            kpi.dataset2.x_value.push("Project End! - " + projectEnd.format('MM/DD/YYYY'));
                             projectEndFlag = true;
                         }else{
 
-                            kpi.dataset2.x_value.push("Project End - " + projectEnd.format('MM/DD/YYYY'));
+                            kpi.dataset2.x_value.push("Project End@ - " + projectEnd.format('MM/DD/YYYY'));
                             projectEndFlag = true;
 
                             kpi.dataset2.x_value.push(timestamp.format('MM/DD/YYYY'));
@@ -345,7 +374,7 @@
                 kpi.dataset.x_value = labelArr;
                 kpi.dataset.y_value = valuelArr;
 
-                console.log(labelArr)
+                // console.log(labelArr)
 
                 // ==============================================
                 // Line chart
@@ -466,7 +495,7 @@
                                     padding: 50,
                                     callback:function(label, index, labelSet){
                                         
-                                        console.log(label, index, labelSet);
+                                        // console.log(label, index, labelSet);
 
                                         return kpi.dataset2.x_value[index];
                                     //     console.log(kpi.data[index]);
