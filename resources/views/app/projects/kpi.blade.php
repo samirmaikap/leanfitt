@@ -17,7 +17,7 @@
                         </a>
                         <div class="card-body">
                             @if(count($kpi->data))
-                                <div class="kpi-chart-container">
+                                <div class="#kpi-chart-container" style="">
                                     <canvas id="kpi-{{ $kpi->id }}-chart"></canvas>
 
                                     @php
@@ -210,104 +210,142 @@
                     var nextTimestamp = typeof kpi.dataset.timestamp[index +1] != "undefined" ? moment(kpi.dataset.timestamp[index +1].date.substr(0,10)) : null;
                     // console.log("after", index, timestamp);
 
-                    // Project Start Date
+                    var skipValue = false;
+
                     if(!projectStartFlag){
 
+                        if(projectStart.isSameOrAfter(timestamp) && projectStart.isSameOrBefore(nextTimestamp)){
 
-                        if(projectStart.isSameOrAfter(timestamp)){
                             kpi.dataset2.x_value.push(timestamp.format('MM/DD/YYYY'));
+                            skipValue = true; 
 
-                        }else if(projectStart.isSameOrBefore(nextTimestamp)){
+                            kpi.dataset2.x_value.push("Project Start - " + projectStart.format('MM/DD/YYYY'));
+                            projectStartFlag = true;
 
-                            if(projectStart.isSameOrBefore(kpiStart)) {
-                                kpi.dataset2.x_value.push("Project Start - " + projectStart.format('MM/DD/YYYY'));
+                        }else{
+                            kpi.dataset2.x_value.push("Project Start - " + projectStart.format('MM/DD/YYYY'));
                                 projectStartFlag = true;
-                            }else if(!kpiStartFlag){
-                                kpi.dataset2.x_value.push("KPI Start - " + kpiStart.format('MM/DD/YYYY'));
-                                kpiStartFlag = true;
-                            }else {
-                                console.log("else 1");
-                            }
-                    
+
+                            // kpi.dataset2.x_value.push(timestamp.format('MM/DD/YYYY'));   
+                        }
+                    }else if(!kpiStartFlag){
+                        kpiStartFlag = true;
+                        kpi.dataset2.x_value.push("KPI Start - " + kpiStart.format('MM/DD/YYYY'));
+
+                        if(kpiStart.diff(timestamp) !=0){
+                            // kpi.dataset2.x_value.push(timestamp.format('MM/DD/YYYY'));
                         }
                     }
 
+                    // Project & KPI End Date
+                    if(!kpiEndFlag && !projectEndFlag){
 
-                    // KPI Start Date
-                    if(!kpiStartFlag){
-
-                        if(kpiStart.isSameOrAfter(timestamp)){
+                        if(!skipValue)
                             kpi.dataset2.x_value.push(timestamp.format('MM/DD/YYYY'));
-                        }else if(kpiStart.isSameOrBefore(nextTimestamp)){
 
-                            if(kpiStart.isSameOrBefore(projectStart)) {
-                                kpi.dataset2.x_value.push("KPI Start - " + kpiStart.format('MM/DD/YYYY'));
-                                kpiStartFlag = true;
-                            }else if(!projectStartFlag){
-                                  kpi.dataset2.x_value.push("Project Start - " + projectStart.format('MM/DD/YYYY'));
-                                projectStartFlag = true;
-                            }else {
-                                console.log("else 2");
+                        if(nextTimestamp){
+
+                            if(projectEnd.isSameOrBefore(nextTimestamp)){
+                                kpi.dataset2.x_value.push("Project End - " + projectEnd.format('MM/DD/YYYY'));
+                                projectEndFlag = true;
                             }
-                            
-                        }
-                    }
 
+                        }else if(kpiEnd.isSameOrBefore(projectEnd)){
 
-                    // Project End Date
-                    if(projectStart && !projectEndFlag){
+                            kpi.dataset2.x_value.push("KPI End - " + kpiEnd.format('MM/DD/YYYY'));
+                            kpiEndFlag = true;  
 
-                        if(projectEnd.isSameOrAfter(timestamp)){
-                            kpi.dataset2.x_value.push(timestamp.format('MM/DD/YYYY'));
-                        }else if(projectEnd.isSameOrBefore(nextTimestamp)){
+                            kpi.dataset2.x_value.push("Project End - " + projectEnd.format('MM/DD/YYYY'));
+                            projectEndFlag = true;
+
+                        }else{
                             kpi.dataset2.x_value.push("Project End - " + projectEnd.format('MM/DD/YYYY'));
                             projectEndFlag = true;
                         }
                     }
 
+                    else if(kpiEndFlag && !projectEndFlag){
 
-                    // KPI End Date
-                    if(kpiStartFlag && !kpiEndFlag){
+                        console.log("second else");
+                
+                        if(projectEnd.isSameOrAfter(timestamp)){
+
+                            kpi.dataset2.x_value.push(timestamp.format('MM/DD/YYYY'));
+
+                            kpi.dataset2.x_value.push("Project End - " + projectEnd.format('MM/DD/YYYY'));
+                            projectEndFlag = true;
+                        }else{
+
+                            kpi.dataset2.x_value.push("Project End - " + projectEnd.format('MM/DD/YYYY'));
+                            projectEndFlag = true;
+
+                            kpi.dataset2.x_value.push(timestamp.format('MM/DD/YYYY'));
+
+                        }
+                    }else if(!kpiEndFlag && projectEndFlag){
+
+                        console.log("last else", timestamp.format('MM/DD/YYYY'));
 
                         if(kpiEnd.isSameOrAfter(timestamp)){
+
+                            console.log("last else 1");
+
                             kpi.dataset2.x_value.push(timestamp.format('MM/DD/YYYY'));
-                        }else if(kpiEnd.isSameOrBefore(nextTimestamp)){
-                            kpi.dataset2.x_value.push("KPI End - " + kpiEnd.format('MM/DD/YYYY'));
-                            kpiEndFlag = true;
+
+                            if(nextTimestamp == null){
+                                kpi.dataset2.x_value.push("KPI End - " + kpiEnd.format('MM/DD/YYYY'));
+                                kpiEndFlag = true;
+                            }
+                            
                         }
+                        // else{
+                        //     console.log("last else 2");
+                        //     kpi.dataset2.x_value.push("KPI End - " + kpiEnd.format('MM/DD/YYYY'));
+                        //     // kpiEndFlag = true;
+
+                        //     kpi.dataset2.x_value.push(timestamp.format('MM/DD/YYYY'));
+                            
+                        // }
+
+                                                    
                     }
-
-
-                    // if(projectEnd.isSameOrAfter(timestamp) && projectEndFlag != true){
-                    //     kpi.dataset2.x_value.push(timestamp.format('MM/DD/YYYY'));
-                        
-                    // }else{
-                    //     projectEndFlag = true;
-                    //     kpi.dataset2.x_value.push("Project End - " + projectEnd.format('MM/DD/YYYY'));
-                    // }
-
-
-                    // if(kpiEnd.diff(timestamp) >= 0 && kpiStartFlag == true && kpiEndFlag != true){
-                    //     kpi.dataset2.x_value.push(timestamp.format('MM/DD/YYYY'));
-                        
-                    // }else{
-                    //     kpiEndFlag = true;
-                    //     kpi.dataset2.x_value.push("KPI End - " + kpiEnd.format('MM/DD/YYYY'));
-                    // }
 
                 });
 
 
-                console.log(kpi);
-                return;
+                // console.log(kpi);
+                // return;
 
 
 
-                kpi.dataset.x_value.unshift("") ;
-                kpi.dataset.x_value.push("") ;
+                // kpi.dataset.x_value.unshift("") ;
+                // kpi.dataset.x_value.push("") ;
 
-                kpi.dataset.y_value.unshift(null) ;
-                kpi.dataset.y_value.push(null) ;
+                // kpi.dataset.y_value.unshift(null) ;
+                // kpi.dataset.y_value.push(null) ;
+
+                kpi.dataset2.y_value =  new Array(kpi.dataset2.x_value.length).fill(kpi.target)
+
+                var labelArr = [];
+                var valuelArr = [];
+                
+                var lastIndex = 0;
+
+                $.each(kpi.dataset2.x_value, function(index, value){
+                    if(value.includes("KPI") || value.includes("Project")){
+                        labelArr.push("");
+                        valuelArr.push(null);
+                    }else{
+                        labelArr.push(kpi.dataset.x_value[lastIndex]);
+                        valuelArr.push(kpi.dataset.y_value[lastIndex]);
+                        lastIndex++;
+                    }
+                });
+
+                kpi.dataset.x_value = labelArr;
+                kpi.dataset.y_value = valuelArr;
+
+                console.log(labelArr)
 
                 // ==============================================
                 // Line chart
@@ -317,7 +355,7 @@
                 Chart.Line(ctx, {
                 // new Chart($("#kpi-" + kpi.id + "-chart"), {
                 
-                    type: 'line',
+                    type: 'scatter',
 //                responsive: true,
 //                maintainAspectRatio: true,
                     // Data
@@ -327,8 +365,8 @@
                         labels: kpi.dataset.x_value, //["January", "February", "March", "April"],
                         datasets: [
                             {
-                                // xAxisID:'xAxis1',
-                                // yAxisID: 'A',
+                                xAxisID:'xAxis1',
+                                yAxisID: 'A',
                                 label: kpi.title, //"Revenue",
                                 fill: true,
                                 borderWidth: 3,
@@ -342,7 +380,7 @@
                                 // data: [null, 30, 25, 35, 23, null]
                             },
                             {
-                                xAxisID:'xAxis1',
+                                xAxisID:'xAxis2',
                                 yAxisID: 'A',
                                 label: "Target", //"Revenue",
                                 fill: false,
@@ -353,7 +391,7 @@
                                 pointBorderColor: "#00FF53",
                                 pointHoverBackgroundColor: "#fff",
                                 pointHoverBorderColor: "#00FF53",
-                                data: kpi.dataset2,
+                                data: kpi.dataset2.y_value,
                                 // data: new Array(6).fill(kpi.target), //[30, 25, 35, 23]
                             }
                         ]
@@ -371,6 +409,7 @@
                           mode: 'index',
                           intersect: true
                         },
+                         spanGaps: true,
                         annotation: {
                           annotations: [{
                             drawTime: 'afterDraw',
@@ -428,32 +467,34 @@
                                     callback:function(label, index, labelSet){
                                         
                                         console.log(label, index, labelSet);
-                                        console.log(kpi.data[index]);
+
+                                        return kpi.dataset2.x_value[index];
+                                    //     console.log(kpi.data[index]);
                                       
-                                        var timestamp = "";
+                                    //     var timestamp = "";
 
-                                        if(typeof kpi.data[index] != "undefined") {
-                                            timestamp  = moment(kpi.data[index].created_at).format('MM/DD/YYYY');
-                                        }
+                                    //     if(typeof kpi.data[index] != "undefined") {
+                                    //         timestamp  = moment(kpi.data[index].created_at).format('MM/DD/YYYY');
+                                    //     }
 
-                                        kpi.dataset['x2_value'] = [];
+                                    //     kpi.dataset['x2_value'] = [];
 
-                                        var projectStart = moment(kpi.project_start);
-                                        var projectEnd = moment(kpi.project_start);
+                                    //     var projectStart = moment(kpi.project_start);
+                                    //     var projectEnd = moment(kpi.project_start);
 
-                                        var kpiStart = moment(kpi.start_date);
-                                        var kpiEnd = moment(kpi.end_date);
+                                    //     var kpiStart = moment(kpi.start_date);
+                                    //     var kpiEnd = moment(kpi.end_date);
 
 
-                                        if(kpiStart.diff(projectStart) >0){
-                                            kpi.dataset['x2_value'].push("KPI Start");
-                                        }else{
+                                    //     if(kpiStart.diff(projectStart) >0){
+                                    //         kpi.dataset['x2_value'].push("KPI Start");
+                                    //     }else{
 
-                                        }
+                                    //     }
 
-                                        console.log(timestamp);
+                                    //     console.log(timestamp);
 
-                                        return timestamp;
+                                    //     return timestamp;
                                     }
                                   }
                             }]
