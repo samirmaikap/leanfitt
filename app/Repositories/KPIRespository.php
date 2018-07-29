@@ -14,7 +14,7 @@ class KPIRespository extends BaseRepository //implements KPIRepositoryInterface
         return new KpiChart();
     }
 
-    public function allKpi($project,$organization)
+    public function allKpi($project = null, $organization = null)
     {
         $query=$this->model()
             ->join('projects as p','p.id','kpi_charts.project_id')

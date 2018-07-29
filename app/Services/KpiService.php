@@ -21,12 +21,12 @@ class KpiService //implements KpiServiceInterface
         $this->kpiDataRepo=$kpiDataPointRepository;
     }
 
-    public function index($data)
+    public function index($project, $organization = null)
     {
-        $project=arrayValue($data,'project');
-        $organization=arrayValue($data,'organization');
+//        $project=arrayValue($data,'project');
+//        $organization=arrayValue($data,'organization');
 
-        $query=$this->kpiRepo->allKpi($project,$organization);
+        $query=$this->kpiRepo->allKpi($project, $organization);
 
         if($query){
             return renderCollection($query);
