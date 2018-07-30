@@ -54,7 +54,7 @@
                     },
                     invalid: function (el, handle) {
                         console.log($(el).data('disabled'));
-                        if($(el).data('disabled')) {
+                        if($(el).data('disabled') || $('.modal').is(':visible')) {
                             return true;
                         }
                         return false; // don't prevent any drags from initiating by default
