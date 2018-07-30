@@ -18,6 +18,8 @@ class CreateKpiDataPointsTable extends Migration
             $table->integer('kpi_chart_id')->unsigned();
             $table->text('x_value');
             $table->text('y_value');
+            $table->date('date');
+            $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('kpi_chart_id')

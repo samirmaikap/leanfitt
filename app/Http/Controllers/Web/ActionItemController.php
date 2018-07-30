@@ -43,6 +43,7 @@ class ActionItemController extends Controller
 
             return response()->json($result);
         }catch(\Exception $e){
+            return redirect()->back()->withErrors($e->getMessage());
             $response['success']=false;
             $response['message']=$e->getMessage();
             return response()->json($response);
@@ -55,6 +56,7 @@ class ActionItemController extends Controller
             return redirect()->back()->with(['success' => 'Action item updated successfully']);
             return response()->json($result);
         }catch(\Exception $e){
+            return redirect()->back()->withErrors($e->getMessage());
             $response['success']=false;
             $response['message']=$e->getMessage();
             return response()->json($response);
