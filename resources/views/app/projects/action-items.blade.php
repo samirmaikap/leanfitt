@@ -37,6 +37,7 @@
     <script>
         // Dropzone.autoDiscover = false;
 
+        var userId = '{{ session()->get('user')->id }}';
         window.onload = function () {
 
             var drake = dragula(
@@ -52,6 +53,7 @@
                         return true; // elements can be dropped in any of the `containers` by default
                     },
                     invalid: function (el, handle) {
+                        console.log($(el).data('disabled'));
                         if($(el).data('disabled')) {
                             return true;
                         }
@@ -78,8 +80,16 @@
                 // $.each($(target).children(), function (key, value) {
                 //     console.log(key, value);
                 // });
-
                 $(el).find('.action-item-form').submit();
+
+                var assignorId = $(el).find('.action-item-form input[name="user_id"]').val();
+
+                var assignees =  $(el).find('.action-item-form:first [name="assignees[]"]').val();
+
+                if((currentProcess == 4 || currentIndex == 5) && (userId != assignorId)){
+                    $(el).data('disabled','true');
+//                    alert('disabled');
+                }
             });
 
             var scroll = autoScroll([
@@ -144,6 +154,7 @@
                         if (response.success) {
                             $('.action-item[data-id="' + id + '"]').find('.title').text(title);
                             toastr.success(response.message);
+//                            location.reload();
                             $this.parents('.modal').modal('hide');
                         } else {
                             toastr.error("Something went wrong! Please try again later.");

@@ -39,7 +39,7 @@
                                         $kpiSet[$index]->dataset = [
                                             'x_value' => $kpi->data->pluck('x_value')->toArray(),
                                             'y_value' => $kpi->data->pluck('y_value')->toArray(),
-                                            'timestamp' => $kpi->data->pluck('created_at')->toArray(),
+                                            'timestamp' => $kpi->data->pluck('date')->toArray(),
                                         ];
                                         $kpiSet[$index]->timestamp = $kpi->data->pluck('created_at')->toArray();
                                     @endphp
@@ -58,7 +58,8 @@
                                             <!-- <th>#</th> -->
                                             <th>{{ $kpi->x_label }} </th>
                                             <th>{{ $kpi->y_label }}</th>
-                                            <th>Timestamp</th>
+                                            <th>Date</th>
+                                            <th width="30%">Description</th>
                                             <th>Action</th>
                                         </tr>
                                         </thead>
@@ -75,7 +76,12 @@
                                                 <td>
                                                     <input type="text" name="y_value"  value="" required="">
                                                 </td>
-                                                <td></td>
+                                                <td>
+                                                    <input type="text" name="date" data-provide="datepicker"  value="" required="">
+                                                </td>
+                                                <td>
+                                                    <textarea name="description"></textarea>
+                                                </td>
                                                 <td>
                                                     <nav class="nav no-gutters">
                                                         <a class="nav-link hover-primary" href="#"
@@ -102,7 +108,13 @@
                                                         <td>
                                                             <input type="text" name="y_value"  value="{{ $data->y_value }}" readonly required="">
                                                         </td>
-                                                        <td>{{ date('m/d/Y h:i A', strtotime($data->created_at)) }}</td>
+                                                        <td>
+                                                            <input type="text" name="date" data-provide="datepicker" value="{{ date('m/d/Y', strtotime($data->date)) }}" readonly required="">
+                                                        </td>
+                                                        <td>
+                                                            <textarea type="text" name="description" readonly>{{ $data->description }}</textarea>
+                                                        </td>
+                                                        {{--<td>{{ date('m/d/Y h:i A', strtotime($data->created_at)) }}</td>--}}
                                                         <td>
                                                             <nav class="nav no-gutters primary-action-group">
                                                                 <a class="nav-link hover-primary" href="#"
@@ -221,8 +233,10 @@
                    
                     // timestamp = moment(timestamp.format('MM/DD/YYYY'));
 
-                    timestamp = moment(timestamp.date.substr(0,10));
-                    var nextTimestamp = typeof kpi.dataset.timestamp[index +1] != "undefined" ? moment(kpi.dataset.timestamp[index +1].date.substr(0,10)) : null;
+//                    timestamp = moment(timestamp.date.substr(0,10));
+                    timestamp = moment(timestamp);
+//                    var nextTimestamp = typeof kpi.dataset.timestamp[index +1] != "undefined" ? moment(kpi.dataset.timestamp[index +1].date.substr(0,10)) : null;
+                    var nextTimestamp = typeof kpi.dataset.timestamp[index +1] != "undefined" ? moment(kpi.dataset.timestamp[index +1]) : null;
                     // console.log("after", index, timestamp);
 
                     var skipValue = false;
@@ -552,13 +566,13 @@
 
         function editDataPoint(element) {
             console.log($(element).parents('tr'));
-            $(element).parents('tr').addClass('editable').find('input').removeAttr('readonly');
+            $(element).parents('tr').addClass('editable').find('input, textarea').removeAttr('readonly');
             $(element).parents('tr').find()
         }
 
         function cancelEditingDataPoint(element) {
             console.log($(element).parents('tr'));
-            $(element).parents('tr').removeClass('editable').find('input').attr('readonly', 'true');
+            $(element).parents('tr').removeClass('editable').find('input, textarea').attr('readonly', 'true');
         }
     </script>
 

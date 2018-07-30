@@ -18,7 +18,7 @@ class KPIRespository extends BaseRepository //implements KPIRepositoryInterface
     {
         $query=$this->model()
             ->with(['data' => function($query){
-                return $query->orderBy('created_at', "ASC");
+                return $query->orderBy('date', "ASC");
             }])
             ->join('projects as p','p.id','kpi_charts.project_id')
             ->where('kpi_charts.project_id',empty($project) ? '!=':'=',empty($project) ? null : $project)

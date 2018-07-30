@@ -53,7 +53,7 @@
     </body>
 
     <!-- Scripts  -->
-    @if($page=='dashboard')
+    @if(isset($page) && $page=='dashboard')
         <script src="{{ asset('assets/js/core.min.js') }}" data-provide="chartjs" data-provide="fullcalendar"></script>
     @else
         <script src="{{ asset('assets/js/core.min.js') }}" data-provide="chartjs"></script>

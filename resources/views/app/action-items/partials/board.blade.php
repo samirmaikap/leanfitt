@@ -9,10 +9,16 @@
                 <div class="card-body bg-lighter">
                     <div class="media-list media-list-hover media-list-divided" style="min-height: 100px">
                         @foreach($process->actionItems as $actionItem)
-                            @php 
-                                $class = in_array(session('user')->id, $actionItem->assignees()->pluck('user_id')->toArray()) ? 'border-primary' : 'border-light' ;
+                            @php
+                                $isAssignor = (session('user')->id == $actionItem->assignor->id);
+                                $isAssignee = in_array(session('user')->id, $actionItem->assignees()->pluck('user_id')->toArray());
+                                $class = $isAssignee ? 'border-primary' : 'border-light' ;
+                                $isDisabled = ( $isAssignor || $isAssignee ) ? 'false' : 'true';
+                                if(($process->id == 4 || $process->id == 5) && !$isAssignor){
+                                    $isDisabled = 'true';
+                                }
                             @endphp
-                            <div class="action-item {{ $class}} b-2 shadow-1 mb-20" data-id="{{ $actionItem->id }}">
+                            <div class="action-item {{ $class}} b-2 shadow-1 mb-20" data-id="{{ $actionItem->id }}" data-disabled="{{ $isDisabled }}">
                                 <a class="media media-single" href="#action-item-{{ $actionItem->id }}-modal" data-toggle="modal">
                                     <div class="media-body">
                                         <h5 class="title" style="padding-bottom: 5px;border-bottom: 1px solid #efefef;margin-bottom: 5px;">
@@ -50,7 +56,7 @@
                         @endforeach
                     </div>
                 </div>
-                @if(!isSuperadmin() && in_array(session('user')->id, $project->members()->pluck('id')->toArray()))
+                @if(!isSuperadmin() && in_array(session('user')->id, $project->members()->pluck('user_id')->toArray()))
                 <div class="card-footer">
                     {{--<a href="#new-action-item-modal" data-toggle="modal">--}}
                         {{--+ New Action Item--}}
