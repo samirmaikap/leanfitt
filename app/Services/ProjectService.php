@@ -220,11 +220,16 @@ class ProjectService //implements ProjectServiceInterface
         }
 
         if($delCount > 0){
-            foreach ($data['values'] as $value){
-                $query=$this->savingsRepo->create(['value'=>$value,'type'=>'tangible','project_id'=>$project_id]);
-                if($query){
-                    $saveCount++;
+            if(count($data['values']) > 0){
+                foreach ($data['values'] as $value){
+                    $query=$this->savingsRepo->create(['value'=>$value,'type'=>'tangible','project_id'=>$project_id]);
+                    if($query){
+                        $saveCount++;
+                    }
                 }
+            }
+            else{
+                $saveCount++;
             }
         }
         else{
@@ -255,12 +260,17 @@ class ProjectService //implements ProjectServiceInterface
         }
 
         if($delCount > 0){
-            foreach ($data['values'] as $value){
-                $query=$this->savingsRepo->create(['value'=>$value,'type'=>'intangible','project_id'=>$project_id]);
-                if($query){
-                    $saveCount++;
+            if(count($data['values']) > 0){
+                foreach ($data['values'] as $value){
+                    $query=$this->savingsRepo->create(['value'=>$value,'type'=>'intangible','project_id'=>$project_id]);
+                    if($query){
+                        $saveCount++;
+                    }
                 }
+            }else{
+                $saveCount++;
             }
+
         }
         else{
             throw new \Exception(congif('messages.common_erorr'));
