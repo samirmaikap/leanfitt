@@ -148,6 +148,8 @@
                                                 @else
                                                     <button class="mt-10 mb-10 btn btn-w-md btn-round btn-success restore-user">Restore</button>
                                                 @endif
+                                            @else
+                                                <button class="mt-10 mb-10 btn btn-w-md btn-round btn-default">Suspend</button>
                                             @endif
                                         @endif
                                     </div>
