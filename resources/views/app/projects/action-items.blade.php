@@ -159,6 +159,10 @@
                         } else {
                             toastr.error("Something went wrong! Please try again later.");
                         }
+                    },
+                    error: function (response, error) {
+                        console.log(response, error);
+                        toastr.error("Something went wrong! Please try again later.");
                     }
                 });
             });

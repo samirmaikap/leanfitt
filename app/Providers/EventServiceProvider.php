@@ -37,6 +37,15 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\SubscriptionResumed' => [
             'App\Listeners\ResumeSubscriptionEmail',
         ],
+        'App\Events\ActionItemUpdated' => [
+            'App\Listeners\SendActionItemUpdatedNotification',
+        ],
+        'App\Events\AssigneeAdded' => [
+            'App\Listeners\SendAssigneeAddedNotification',
+        ],
+        'App\Events\AssigneeRemoved' => [
+            'App\Listeners\SendAssigneeRemovedNotification',
+        ],
     ];
 
     /**
