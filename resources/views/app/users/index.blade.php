@@ -142,13 +142,16 @@
                                             </form>
 
                                         @else
-                                            @if($user->is_suspended==0)
-                                                <button class="mt-10 mb-10 btn btn-w-md btn-round btn-danger suspend-user">Suspend</button>
+                                            @if(session()->get('user')->id!=$user->id)
+                                                @if($user->is_suspended==0)
+                                                    <button class="mt-10 mb-10 btn btn-w-md btn-round btn-danger suspend-user">Suspend</button>
+                                                @else
+                                                    <button class="mt-10 mb-10 btn btn-w-md btn-round btn-success restore-user">Restore</button>
+                                                @endif
                                             @else
-                                                <button class="mt-10 mb-10 btn btn-w-md btn-round btn-success restore-user">Restore</button>
+                                                <button class="mt-10 mb-10 btn btn-w-md btn-round btn-default">Suspend</button>
                                             @endif
                                         @endif
-
                                     </div>
                                     @endpermission
                                 @endif
@@ -192,15 +195,14 @@
                                 <label>Phone</label>
                             </div>
                             <div class="form-group">
-                                <select class="form-control" name="department_id">
-                                    <option value="">None</option>
-                                    @if(count($deplist) > 0)
-                                        @foreach($deplist as $dlist)
-                                            <option value="{{$dlist['id']}}">{{$dlist['name']}}</option>
+                                <select class="form-control" name="roles[]">
+                                    @if(count($rolelist) > 0)
+                                        @foreach($rolelist as $rlist)
+                                            <option value="{{$rlist->id}}">{{$rlist->name}}</option>
                                         @endforeach
                                     @endif
                                 </select>
-                                <label class="label-floated">Department</label>
+                                <label class="label-floated">Role</label>
                             </div>
                             <input type="hidden" name="organization_id" value="{{pluckOrganization('id')}}">
                         </div>

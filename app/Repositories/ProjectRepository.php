@@ -15,9 +15,24 @@ class ProjectRepository extends BaseRepository //implements ProjectRepositoryInt
         return new Project();
     }
 
-    public function allProject($organization)
+    public function allProject($organization,$department,$user)
     {
-        $query = $this->model()->withCount('members')->withCount('attachments')->withCount('comments')->where('organization_id', $organization)->get();
+        $query = $this->model()
+            ->leftJoin('project_members as mem','projects.id','=','mem.project_id')
+            ->leftJoin('department_user as du','mem.user_id','=','du.user_id')
+            ->where('projects.organization_id', $organization);
+        if(!empty($user)){
+            $query=$query->where('mem.user_id',$user);
+        }
+
+        if(!empty($department)){
+            $query=$query->where('du.department_id',$department);
+        }
+        $query=$query->select(['projects.*'])
+            ->withCount('members')
+            ->withCount('attachments')
+            ->withCount('comments')
+            ->get();
         return $query;
     }
 

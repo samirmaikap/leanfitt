@@ -41,7 +41,7 @@
         <!-- END Page aside -->
         <header class="header no-border">
             <div class="header-bar">
-                <h4>{{isset($quiz->tool_name) ? ucfirst($quiz->tool_name) : 'Take'}} Quiz</h4>
+                <h4>{{isset($quiz->tool_name) ? ucfirst($quiz->tool_name) : 'Take'}} Quizzes</h4>
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item question-progress-text">1</li>
                     <li class="breadcrumb-item">{{isset($quiz->question_count) ? $quiz->question_count : 0}}</li>

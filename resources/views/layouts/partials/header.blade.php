@@ -15,20 +15,31 @@
 
         <div class="topbar-divider d-none d-xl-block"></div>
 
-        <nav class="topbar-navigation">
-            <marquee style="width: calc(100vw - 400px)" direction="left"> Daily motivational quotes for your organization.</marquee>
-        </nav>
+        {{--<nav class="topbar-navigation">--}}
+            {{--<marquee style="width: calc(100vw - 400px)" direction="left"> Daily motivational quotes for your organization.</marquee>--}}
+        {{--</nav>--}}
 
     </div>
 
     <div class="topbar-right">
+
         <ul class="topbar-btns">
             <li class="dropdown">
                 <span class="topbar-btn" data-toggle="dropdown">
+                    @php
+                        if(isSuperadmin()){
+                        $user_role='SuperAdmin';
+                        }
+                        else{
+                        $crole=session()->get('currentRole');
+                        $user_role=isset($crole) ? $crole->name : 'User';
+                        }
+                    @endphp
                     <img class="avatar" src="{{ auth()->user()->avatar }}" alt="{{ auth()->user()->initials }}">
+                    <span class="ml-1 fs-14">Welcome, {{ucfirst($user_role)}}</span>
                 </span>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="{{url('users')}}/{{auth()->user()->id}}/profile"><i class="ti-user"></i> Profile</a>
+                    <a class="dropdown-item text-truncate w-180px" href="{{url('users')}}/{{auth()->user()->id}}/profile"><i class="ti-user"></i> {{auth()->user()->full_name}}</a>
                     @if(!isSuperadmin())
                     @permission('update.organization')
                     <a class="dropdown-item" href="{{url('organizations')}}/{{pluckOrganization('id')}}/view"><i class="ti-briefcase"></i> My Organization</a>

@@ -42,7 +42,7 @@ class ActionItemRepository extends BaseRepository //implements ActionItemReposit
             ->where('pr.organization_id',empty($organization) ? '!=' : '=',empty($organization) ? null : $organization)
             ->where('action_items.user_id',empty($user) ? '!=':'=',empty($user) ? null : $user)
             ->orWhere('aia.user_id',empty($user) ? '!=':'=',empty($user) ? null : $user)
-            ->select(['action_items.title','action_items.due_date','action_items.is_archived'])
+            ->select(['action_items.title','action_items.due_date','action_items.is_archived','p.name as process'])
             ->get();
     }
 }

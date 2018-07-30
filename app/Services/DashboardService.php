@@ -16,7 +16,9 @@ use App\Repositories\RoleRepository;
 use App\Repositories\SavingsRepository;
 use App\Repositories\UserRepository;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
+use PHPUnit\Framework\Constraint\IsInstanceOf;
 
 class DashboardService
 {
@@ -120,22 +122,26 @@ class DashboardService
     }
 
     public function getTangible($organization=null){
-        $query=$this->savingsRepo->whereHas('project',function($query) use ($organization) {
-               $query->where('organization_id',empty($organization) ? '!=' : '=', empty($organization) ? null : $organization );
-        })->where('type','tangible')->get();
-//        $query= $query->map(function($item){
-//            return ['created_at'=>Carbon::parse($item->created_at)->format('Y-m-d'),'value'=>$item->value];
-//        });
-//        return renderCollection($query);
+        $query=$this->savingsRepo
+            ->whereHas('project',function($query) use ($organization) {
+                $query->where('organization_id',empty($organization) ? '!=' : '=', empty($organization) ? null : $organization );
+            })
+            ->where('type','tangible')
+            ->select(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d") as created_at,value'))
+            ->get();
         return $query;
     }
 
     public function userTangible($user){
-        $query=$this->savingsRepo->whereHas('project',function($query) use ($user) {
-            $query->whereHas('members',function ($query) use($user) {
-                $query->where('user_id', $user);
-            });
-        })->where('type','tangible')->get();
+        $query=$this->savingsRepo
+            ->whereHas('project',function($query) use ($user) {
+                $query->whereHas('members',function ($query) use($user) {
+                    $query->where('user_id', $user);
+                });
+            })
+            ->where('type','tangible')
+            ->select(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d") as created_at,value'))
+            ->get();
         return $query;
     }
 

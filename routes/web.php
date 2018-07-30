@@ -25,7 +25,9 @@ Route::post('password/change', 'Web\AuthController@updatePassword');
 Route::get('invitaion/accept', 'Web\AuthController@invitation');
 
 Route::get('test', function(){
-    dd(env('APP_URL').(env('APP_LOGO_PATH')));
+//    $roleRepo=new \App\Repositories\RoleRepository();
+//    dd(($roleRepo->currentRoles(pluckOrganization('id'),session('user')->id))->first()->name);
+//    dd(session()->get('user'));
 });
 
 Route::view('abort/suspend', 'errors.suspend');
@@ -34,6 +36,8 @@ Route::view('abort/subscription', 'errors.subscription');
 
 Route::get('projects/{project_id}/reports/{report_id}', 'Web\ReportController@view');
 Route::get('users/{id}/profile', 'Web\UserController@profile');
+
+Route::get('dashboard/export/pdf', 'Web\DashboardController@makePdf');
 
 // User routes
 Route::group(['domain' => '{organization}' . config('session.domain'), 'namespace' => 'Web'], function () {
@@ -142,6 +146,7 @@ Route::group(['namespace' => 'Web'], function () {
     Route::post('organizations/create','OrganizationController@store');
 
     Route::get('users', 'UserController@index');
+    Route::put('users/{id}', 'UserController@update');
 
     Route::get('/projects', 'ProjectController@index');
     Route::get('/projects/{project_id}/kpi', 'ProjectController@kpi');

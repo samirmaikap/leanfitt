@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Events\UsersUpdated;
 use App\Http\Resources\UserResource;
+use App\Repositories\RoleRepository;
 use App\Services\DepartmentService;
 use App\Services\OrganizationService;
 use App\Services\RoleService;
@@ -135,6 +136,12 @@ class UserController extends Controller
             $this->userService->update($request->all(),$image,$id);
             session()->forget('user');
             session()->put('user',auth()->user());
+            if(session()->get('user')->id==$id){
+                $roleRepo=new RoleRepository();
+                session()->forget('currentRole');
+                $currentRole=$roleRepo->currentRoles(pluckOrganization('id'),$id)->first();
+                session()->put('currentRole',$currentRole);
+            }
             return redirect()->back()->with(['success' => 'Profile has been updated successfully']);
         }
         catch(\Exception $e)
