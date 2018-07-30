@@ -53,12 +53,14 @@ class ProjectController extends Controller
         $data['page']='projects';
         $data['organizations']=$this->orgService->list();
         $data['department_id']=$request->get('department');
-        if(!isAdmin() && !isSuperadmin()){
-            $data['user_id']=session()->get('user')->id;
-        }
-        else{
-            $data['user_id']=$request->get('user');
-        }
+//        if(!isAdmin() && !isSuperadmin()){
+//            $data['user_id']=session()->get('user')->id;
+//        }
+//        else{
+//            $data['user_id']=$request->get('user');
+//        }
+
+        $data['user_id']=$request->get('user');
 
         $organization=!empty(pluckOrganization('id')) ? pluckOrganization('id') : $data['organizations']->first()->id;
         $data['organization_id']=$request->query('organization') ? $request->get('organization') : $organization;
