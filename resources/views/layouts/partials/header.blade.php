@@ -39,7 +39,7 @@
                     <span class="ml-1 fs-14">Welcome, {{ucfirst($user_role)}}</span>
                 </span>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="{{url('users')}}/{{auth()->user()->id}}/profile"><i class="ti-user"></i> Profile</a>
+                    <a class="dropdown-item text-truncate w-180px" href="{{url('users')}}/{{auth()->user()->id}}/profile"><i class="ti-user"></i> {{auth()->user()->full_name}}</a>
                     @if(!isSuperadmin())
                     @permission('update.organization')
                     <a class="dropdown-item" href="{{url('organizations')}}/{{pluckOrganization('id')}}/view"><i class="ti-briefcase"></i> My Organization</a>

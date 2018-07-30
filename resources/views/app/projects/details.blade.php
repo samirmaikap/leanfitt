@@ -484,7 +484,7 @@
                    var len=parseInt($('.tangible-container .media-single').length)+1;
                    var html=' <div class="media media-single" id="tangible-'+len+'" data-id="">\n' +
                        '                                                            <span class="title">'+value+'</span>\n' +
-                       '                                                            <input type="hidden" id="tangible-input-value" name="tangibles[]" value="'+value+'">\n' +
+                       '                                                            <input type="hidden" id="tangible-input-value" name="values[]" value="'+value+'">\n' +
                        '                                                            <span class="badge badge-pill cursor-pointer fs-15 text-success edit-tangible" data-toggle="modal" data-target="#modal-tangible"><i class="ti-pencil"></i></span>\n' +
                        '                                                            <span class="badge badge-pill cursor-pointer fs-15 text-success"><i class="ti-trash"></i></span>\n' +
                        '                                                        </div>'
