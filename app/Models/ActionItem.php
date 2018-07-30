@@ -21,6 +21,11 @@ class ActionItem extends Model
         return $this->belongsTo(User::class, 'user_id'); //assignor can be admin or employee
     }
 
+    public function process()
+    {
+        return $this->belongsTo(Process::class, 'process_id');
+    }
+
 //    public function board(){
 //        return $this->belongsTo(Board::class);
 //    }

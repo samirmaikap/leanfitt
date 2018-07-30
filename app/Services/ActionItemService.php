@@ -3,6 +3,7 @@
 namespace App\Services;
 
 
+use App\Events\ActionItemUpdated;
 use App\Repositories\ActionItemAssigneeRepository;
 use App\Repositories\ActionItemAssignmentRepository;
 use App\Repositories\ActionItemRepository;
@@ -16,6 +17,7 @@ use App\Validators\ActionItemAssigneeValidator;
 use App\Validators\ActionItemValidator;
 use App\Validators\CommentValidator;
 use App\Validators\ItemAssignmentValidator;
+use function event;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -150,6 +152,7 @@ class ActionItemService //implements ActionItemServiceInterface
         }
         if($query){
             DB::commit();
+            event(new ActionItemUpdated($item));
             return true;
         }
         else{
