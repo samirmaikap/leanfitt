@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Web;
 
 use App\Services\AttachmentService;
 use App\Services\CommentService;
+use App\Services\DepartmentService;
 use App\Services\OrganizationService;
 use App\Services\ProjectMemberService;
 use App\Services\ReportService;
+use App\Services\UserService;
 use function dd;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -23,6 +25,8 @@ class ProjectController extends Controller
     protected $commentService;
     protected $orgService;
     protected $reportService;
+    protected $depService;
+    protected $userService;
 
     public function __construct(ProjectService $projectService,
                                 KpiService $kpiService,
@@ -30,7 +34,9 @@ class ProjectController extends Controller
                                 AttachmentService $attachmentService,
                                 CommentService $commentService,
                                 OrganizationService $organizationService,
-                                ReportService $reportService)
+                                ReportService $reportService,
+                                DepartmentService $departmentService,
+                                UserService $userService)
     {
         $this->projectService=$projectService;
         $this->kpiService = $kpiService;
@@ -39,14 +45,29 @@ class ProjectController extends Controller
         $this->commentService=$commentService;
         $this->orgService=$organizationService;
         $this->reportService=$reportService;
+        $this->userService=$userService;
+        $this->depService=$departmentService;
     }
 
     public function index(Request $request){
         $data['page']='projects';
         $data['organizations']=$this->orgService->list();
+        $data['department_id']=$request->get('department');
+        if(!isAdmin() && !isSuperadmin()){
+            $data['user_id']=session()->get('user')->id;
+        }
+        else{
+            $data['user_id']=$request->get('user');
+        }
+
         $organization=!empty(pluckOrganization('id')) ? pluckOrganization('id') : $data['organizations']->first()->id;
         $data['organization_id']=$request->query('organization') ? $request->get('organization') : $organization;
-        $data['projects'] = $this->projectService->index($data['organization_id']);
+
+        $data['departments']=$this->depService->list($request->all());
+        $data['users']=$this->userService->list($data['organization_id'],$data['department_id']);
+
+
+        $data['projects'] = $this->projectService->index($data['organization_id'],$data['department_id'],$data['user_id']);
 
         return view("app.projects.index", $data);
     }

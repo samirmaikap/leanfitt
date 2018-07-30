@@ -29,9 +29,9 @@ class ProjectService //implements ProjectServiceInterface
         $this->savingsRepo=$savingsRepository;
     }
 
-    public function index($organization=null)
+    public function index($organization=null,$department=null,$user=null)
     {
-        $query=$this->projectRepo->allProject($organization);
+        $query=$this->projectRepo->allProject($organization,$department,$user);
         if(!$query){
             throw new \Exception(config('messages.common_error'));
         }

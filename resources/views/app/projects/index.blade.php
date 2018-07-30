@@ -1,27 +1,73 @@
 @extends('layouts.app')
 @section('content')
     <main class="main-container">
-        @if(isSuperadmin())
+        @if(isSuperadmin() || isAdmin())
             <aside class="aside aside-expand-md">
                 <div class="aside-body">
-                    <div class="aside-block mt-20">
+                    @if(isSuperadmin())
+                        <div class="aside-block mt-20">
+                            <div class="flexbox mb-1">
+                                <h6 class="aside-title">Organizations</h6>
+                            </div>
+
+                            <ul class="nav nav-pills flex-column">
+                                @if(count($organizations) > 0)
+                                    @foreach($organizations as $organization)
+                                        <li class="nav-item {{$organization_id == $organization->id ? 'active' : ''}}">
+                                            <a class="nav-link text-truncate w-160px" href="{{url('/projects?organization=').$organization->id}}">{{$organization->name}}</a>
+                                        </li>
+                                    @endforeach
+                                @endif
+                            </ul>
+                        </div>
+                        <hr>
+                    @endif
+
+                    <div class="aside-block">
                         <div class="flexbox mb-1">
-                            <h6 class="aside-title">Organizations</h6>
+                            <h6 class="aside-title">Departments</h6>
                         </div>
 
                         <ul class="nav nav-pills flex-column">
-                            @if(count($organizations) > 0)
-                                @foreach($organizations as $organization)
-                                    <li class="nav-item {{$organization_id == $organization->id ? 'active' : ''}}">
-                                        <a class="nav-link text-truncate w-160px" href="{{url('/projects?organization=').$organization->id}}">{{$organization->name}}</a>
+                            @if(count($departments) > 0)
+                                @foreach($departments as $department)
+                                    <li class="nav-item {{($department_id == $department->id) ? 'active' : '' }}">
+                                        <a class="nav-link" href="{{url('/projects?organization=').$organization_id}}&department={{$department->id}}">{{$department->name}}</a>
                                     </li>
                                 @endforeach
+                            @else
+                                <li class="nav-item">
+                                    <span class="nav-link text-danger">No department found</span>
+                                </li>
+                            @endif
+                        </ul>
+                    </div>
+
+                    <hr>
+
+                    <div class="aside-block mb-20">
+                        <div class="flexbox mb-1">
+                            <h6 class="aside-title">users</h6>
+                        </div>
+
+                        <ul class="nav nav-pills flex-column">
+                            @if(count($users) > 0)
+                                @foreach($users as $user)
+                                    <li class="nav-item {{($user_id == $user->id) ? 'active' : '' }}">
+                                        <a class="nav-link" href="{{url('/projects?organization=').$organization_id}}&department={{$department_id}}&user={{$user->id}}">{{ucfirst($user->first_name)}} {{ucfirst($user->last_name)}}</a>
+                                    </li>
+                                @endforeach
+                            @else
+                                <li class="nav-item">
+                                    <span class="nav-link text-danger">No user found</span>
+                                </li>
                             @endif
                         </ul>
                     </div>
                 </div>
             </aside>
         @endif
+
 
         @php $colors=['brown','success','danger','warning','primary','info','cyan']; @endphp
         <header class="header no-border">

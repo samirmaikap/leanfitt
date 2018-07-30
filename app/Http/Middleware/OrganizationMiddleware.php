@@ -34,8 +34,8 @@ class OrganizationMiddleware
         $orgUser=auth()->user()->userOrganization->where('organization_id',$organization->id)->first();
 
         $roleRepo=new \App\Repositories\RoleRepository();
-        $currentRole=$roleRepo->currentRoles($organization->id,$orgUser->user_id)->first();
-
+        $currentRoles=$roleRepo->currentRoles($organization->id,$orgUser->user_id);
+        $currentRole=$currentRoles->first();
         // First unset this domain group parameter 'organization'
         // Set it back again to the new value
         // This way controllers will be able receive parameters from the routes in the same order they are defined in the routes
@@ -44,6 +44,9 @@ class OrganizationMiddleware
 
         session()->forget('currentRole');
         session()->put('currentRole',$currentRole);
+
+        session()->forget('is_admin');
+        session()->put('is_admin',in_array('Admin',$currentRoles->pluck('name')->toArray()));
 
         $subscribed=$organization->subscribed('main');
         if(!$subscribed){
