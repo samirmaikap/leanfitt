@@ -311,7 +311,7 @@
                                                     <table border="0" cellpadding="0" cellspacing="0">
                                                         <tbody>
                                                         <tr>
-                                                            <td> <a href="{{ url( "http://" . session()->get('organization')->subdomain . env('SESSION_DOMAIN'). "/projects/". $actionItem->process->board->project->id . "/action-items") }}" target="_blank">Go</a> </td>
+                                                            <td> <a href="{{ url( "http://" . $actionItem->process->board->project->organization->subdomain . env('SESSION_DOMAIN'). "/projects/". $actionItem->process->board->project->id . "/action-items") }}" target="_blank">Go</a> </td>
                                                         </tr>
                                                         </tbody>
                                                     </table>
