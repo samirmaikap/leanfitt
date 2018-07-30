@@ -455,6 +455,7 @@
                     $('.intangible-container .custom-control-input:last').val(text);
                     $('.intangible-container .custom-control-description:last').html(text);
                 }
+                $('#modal-intangible').modal('hide');
             })
 
             $('.tangible-container').on('click','.edit-tangible',function(){
@@ -493,6 +494,7 @@
                else{
                    $('#tangible-'+key).find('.title').html(value);
                    $('#tangible-'+key).find('input').val(value);
+                   $('#modal-tangible').modal('hide');
                }
             })
 
