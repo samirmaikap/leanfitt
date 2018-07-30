@@ -192,15 +192,14 @@
                                 <label>Phone</label>
                             </div>
                             <div class="form-group">
-                                <select class="form-control" name="department_id">
-                                    <option value="">None</option>
-                                    @if(count($deplist) > 0)
-                                        @foreach($deplist as $dlist)
-                                            <option value="{{$dlist['id']}}">{{$dlist['name']}}</option>
+                                <select class="form-control" name="roles[]">
+                                    @if(count($rolelist) > 0)
+                                        @foreach($rolelist as $rlist)
+                                            <option value="{{$rlist->id}}">{{$rlist->name}}</option>
                                         @endforeach
                                     @endif
                                 </select>
-                                <label class="label-floated">Department</label>
+                                <label class="label-floated">Role</label>
                             </div>
                             <input type="hidden" name="organization_id" value="{{pluckOrganization('id')}}">
                         </div>

@@ -24,9 +24,10 @@ Route::get('password/change', 'Web\AuthController@changePassword');
 Route::post('password/change', 'Web\AuthController@updatePassword');
 Route::get('invitaion/accept', 'Web\AuthController@invitation');
 
-Route::get('test', function(){
-    dd(env('APP_URL').(env('APP_LOGO_PATH')));
-});
+//Route::get('test', function(){
+//    $roleRepo=new \App\Repositories\RoleRepository();
+//    dd(($roleRepo->currentRoles(pluckOrganization('id'),session('user')->id))->first()->name);
+//});
 
 Route::view('abort/suspend', 'errors.suspend');
 Route::view('abort/invited', 'errors.invited');
@@ -142,6 +143,7 @@ Route::group(['namespace' => 'Web'], function () {
     Route::post('organizations/create','OrganizationController@store');
 
     Route::get('users', 'UserController@index');
+    Route::put('users/{id}', 'UserController@update');
 
     Route::get('/projects', 'ProjectController@index');
     Route::get('/projects/{project_id}/kpi', 'ProjectController@kpi');

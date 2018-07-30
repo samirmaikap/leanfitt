@@ -115,6 +115,10 @@ class UserService
             throw new \Exception('User id field is required');
         }
 
+        if(empty($data['roles'])){
+            throw new \Exception("Roles can't be empty");
+        }
+
         DB::beginTransaction();
         if(!empty($image))
         {

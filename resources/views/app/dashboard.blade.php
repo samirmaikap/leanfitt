@@ -9,30 +9,30 @@
         <div class="main-content">
             <div class="row">
                 @if(isSuperadmin() || isAdmin())
-                <div class="col-lg-3">
-                    <a href="#">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="text-center my-2">
-                                    <div class="fs-60 fw-400 text-success">{{isset($user->active) ? $user->active : 0}}</div>
-                                    <span class="fw-400 text-muted">Active Users</span>
+                    <div class="col-lg-3">
+                        <a href="#">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="text-center my-2">
+                                        <div class="fs-60 fw-400 text-success">{{isset($user->active) ? $user->active : 0}}</div>
+                                        <span class="fw-400 text-muted">Active Users</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-3">
-                    <a href="#">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="text-center my-2">
-                                    <div class="fs-60 fw-400 text-warning">{{isset($user->invited) ? $user->invited : 0}}</div>
-                                    <span class="fw-400 text-muted">Invited Users</span>
+                        </a>
+                    </div>
+                    <div class="col-lg-3">
+                        <a href="#">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="text-center my-2">
+                                        <div class="fs-60 fw-400 text-warning">{{isset($user->invited) ? $user->invited : 0}}</div>
+                                        <span class="fw-400 text-muted">Invited Users</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </a>
-                </div>
+                        </a>
+                    </div>
                 @endif
                 <div class="col-lg-3">
                     <a href="#">
@@ -142,8 +142,17 @@
                 var events=[];
                 var items=JSON.parse('{!!$action_items->values()->toJson() !!}');
                 for(var i=0; i<items.length;i++){
-                    if(items[i].is_archived){
+                    if(items[i].process=='Backlog'){
+                        var color = '#dc3545';
+                    }
+                    else if(items[i].process=='To Do'){
+                        var color = '#428bca';
+                    }
+                    else if(items[i].process=='In Review'){
                         var color = '#ffc107';
+                    }
+                    else if(items[i].process=='In Progress'){
+                        var color = '#5bc0de';
                     }
                     else{
                         var color = '#28a745';
@@ -154,6 +163,7 @@
                         start: (new Date(items[i].due_date)),
                         allDay: true,
                         color: color,
+                        tooltip:items[i].process,
                     };
                     events.push(event);
                 }
@@ -166,6 +176,9 @@
                     navLinks: true, // can click day/week names to navigate views
                     eventLimit: true, // allow "more" link when too many events
                     events: events,
+                    eventRender: function(event, element) {
+                        $(element).tooltip({title: event.tooltip});
+                    }
                     // dayClick: function(date, jsEvent, view) {
                     //     $('#modal-add-event').modal('show');
                     // },
