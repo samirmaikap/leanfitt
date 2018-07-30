@@ -9,7 +9,10 @@ use App\Repositories\KPIRespository;
 use App\Validators\KpiDataValidator;
 use App\Validators\KpiValidator;
 use Carbon\Carbon;
+use function date;
+use function dd;
 use Illuminate\Support\Facades\DB;
+use function strtotime;
 
 class KpiService //implements KpiServiceInterface
 {
@@ -21,12 +24,12 @@ class KpiService //implements KpiServiceInterface
         $this->kpiDataRepo=$kpiDataPointRepository;
     }
 
-    public function index($data)
+    public function index($project, $organization = null)
     {
-        $project=arrayValue($data,'project');
-        $organization=arrayValue($data,'organization');
+//        $project=arrayValue($data,'project');
+//        $organization=arrayValue($data,'organization');
 
-        $query=$this->kpiRepo->allKpi($project,$organization);
+        $query=$this->kpiRepo->allKpi($project, $organization);
 
         if($query){
             return renderCollection($query);
@@ -139,6 +142,11 @@ class KpiService //implements KpiServiceInterface
             throw new \Exception($validator->messages()->first());
         }
 
+        if(!empty($data['date']))
+        {
+            $data['date'] = date('Y-m-d', strtotime($data['date']));
+        }
+
         $query=$this->kpiDataRepo->create($data);
         if($query){
             return;
@@ -155,6 +163,12 @@ class KpiService //implements KpiServiceInterface
         if($validator->fails()){
             throw new \Exception($validator->messages()->first());
         }
+
+        if(!empty($data['date']))
+        {
+            $data['date'] = date('Y-m-d', strtotime($data['date']));
+        }
+//        dd($data['date']);
 
         $query=$this->kpiDataRepo->update($id, $data);
         if($query){

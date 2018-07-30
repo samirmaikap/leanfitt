@@ -2,7 +2,7 @@
 <footer class="site-footer">
     <div class="row">
         <div class="col-md-12">
-            <p class="text-center">Copyright © 2018 <a href="http://thetheme.io/theadmin">LeanFITT</a>.
+            <p class="text-center">Copyright © 2018 <a href="http://thetheme.io/theadmin">LeanFITT&trade;</a>.
                 All rights reserved.</p>
         </div>
 
