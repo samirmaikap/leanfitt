@@ -71,7 +71,7 @@
         <!-- END Page aside -->
         <header class="header no-border">
             <div class="header-bar">
-                <h4>Quiz</h4>
+                <h4>Quizzes</h4>
             </div>
         </header>
 

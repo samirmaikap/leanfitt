@@ -36,6 +36,8 @@ Route::view('abort/subscription', 'errors.subscription');
 Route::get('projects/{project_id}/reports/{report_id}', 'Web\ReportController@view');
 Route::get('users/{id}/profile', 'Web\UserController@profile');
 
+Route::get('dashboard/export/pdf', 'Web\DashboardController@makePdf');
+
 // User routes
 Route::group(['domain' => '{organization}' . config('session.domain'), 'namespace' => 'Web'], function () {
     Route::group(['middleware' => ['checkDomain','hasAccess']], function() {

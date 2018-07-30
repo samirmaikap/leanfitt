@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Web;
 
 use App\Services\DashboardService;
 use function auth;
+use Barryvdh\Snappy\Facades\SnappyPdf;
 use function config;
 use function dd;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\App;
+use Knp\Snappy\Pdf;
 use function url;
 use function view;
 
@@ -62,5 +65,22 @@ class DashboardController extends Controller
         $data['tangibles']=$this->service->userTangible($user);
 
         return $data;
+    }
+
+    function makePdf(){
+        $organization_id=pluckOrganization('id');
+        $user_id=session()->get('user')->id;
+        if(isSuperadmin()){
+            $data=$this->adminDashboard();
+        }
+        elseif(isAdmin()){
+            $data=$this->adminDashboard($organization_id);
+        }
+        else{
+            $data=$this->userDashboard($organization_id,$user_id);
+        }
+
+//        SnappyPdf::
+//        return $file->download('Dashbboard-'.date('Y-m-d').'.pdf');
     }
 }

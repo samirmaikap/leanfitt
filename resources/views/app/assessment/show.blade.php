@@ -3,7 +3,7 @@
     <main class="main-container">
         <header class="header no-border">
             <div class="header-bar">
-                <h4>assessment</h4>
+                <h4>Assessments</h4>
             </div>
         </header>
 
