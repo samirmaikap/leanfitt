@@ -142,13 +142,14 @@
                                             </form>
 
                                         @else
-                                            @if($user->is_suspended==0)
-                                                <button class="mt-10 mb-10 btn btn-w-md btn-round btn-danger suspend-user">Suspend</button>
-                                            @else
-                                                <button class="mt-10 mb-10 btn btn-w-md btn-round btn-success restore-user">Restore</button>
+                                            @if(session()->get('user')->id!=$user->id)
+                                                @if($user->is_suspended==0)
+                                                    <button class="mt-10 mb-10 btn btn-w-md btn-round btn-danger suspend-user">Suspend</button>
+                                                @else
+                                                    <button class="mt-10 mb-10 btn btn-w-md btn-round btn-success restore-user">Restore</button>
+                                                @endif
                                             @endif
                                         @endif
-
                                     </div>
                                     @endpermission
                                 @endif
