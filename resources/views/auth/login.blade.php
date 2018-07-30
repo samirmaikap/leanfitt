@@ -2,7 +2,7 @@
 @section("content")
 
     <div class="row no-gutters min-h-fullscreen bg-white">
-        <div class="col-md-6 col-lg-7 col-xl-8 d-none d-md-block bg-img" style="background-image: url(https://image.shutterstock.com/z/stock-photo-warehouse-managers-and-worker-working-together-in-warehouse-office-508535986.jpg)" data-overlay="5">
+        <div class="col-md-6 col-lg-7 col-xl-8 d-none d-md-block bg-img" style="background-image: url({{asset('assets/img/bg/bg.jpg')}})" data-overlay="5">
             <div class="row h-100 pl-50">
                 <div class="col-md-10 col-lg-8 align-self-end">
                     {{--<img src="https://preview.ibb.co/nnWvuy/logopng_2.png" alt="...">--}}
