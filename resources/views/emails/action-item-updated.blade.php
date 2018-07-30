@@ -303,7 +303,7 @@
                                 <tr><td><img class="logo" src="{{env('APP_URL').(env('APP_LOGO_PATH'))}}"></td></tr>
                                 <tr>
                                     <td>
-                                        <p> An action item named {{ $actionItem->title }} has been updated. To go to your action item board please follow the link below.</p>
+                                        <p> An action item named <strong>"{{ $actionItem->title }}"</strong> has been updated. To go to your action item board please follow the link below.</p>
                                         <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                                             <tbody>
                                             <tr>
@@ -311,7 +311,7 @@
                                                     <table border="0" cellpadding="0" cellspacing="0">
                                                         <tbody>
                                                         <tr>
-                                                            <td> <a href="{{ url( "http://" . session()->get('organization')->subdomain . env('SESSION_DOMAIN'). "/projects/". $actionItem->process->board->project->id . "/action-items") }}" target="_blank">Go</a> </td>
+                                                            <td> <a href="{{ url( "http://" . $actionItem->process->board->project->organization->subdomain . env('SESSION_DOMAIN'). "/projects/". $actionItem->process->board->project->id . "/action-items") }}" target="_blank">Go</a> </td>
                                                         </tr>
                                                         </tbody>
                                                     </table>
