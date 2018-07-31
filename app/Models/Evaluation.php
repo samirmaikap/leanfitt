@@ -17,7 +17,7 @@ class Evaluation extends Model
         'evaluated_by'
     ];
 
-    public function user(){
+    public function orgUser(){
         return $this->belongsTo(OrganizationUser::class,'organization_user_id','id');
     }
 

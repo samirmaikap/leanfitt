@@ -107,79 +107,145 @@
                     </div>
                 </div>
                 <div class="col-lg-8 col-sm-12">
-                    <div class="card">
-                        <h4 class="card-title py-20"><strong>Evaluation</strong></h4>
-                        <form method="post" action="{{url('users/profile/evaluation')}}" enctype="multipart/form-data">
-                            {{csrf_field()}}
-                            <div class="card-body">
-                                <table class="table table-separated">
-                                    <tbody>
-                                    <tr>
-                                        <td class="w-180px align-middle">Communication</td>
-                                        <td class="align-middle"><input class="evaluation-slider evaluation-slider-0" type="text" name="communication" value="{{isset($evaluation->communication) ? $evaluation->communication : 1}}" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-180px align-middle">Entusiasm</td>
-                                        <td class="align-middle"><input class="evaluation-slider evaluation-slider-1" type="text" name="enthusiasm" value="{{isset($evaluation->enthusiasm) ? $evaluation->enthusiasm : 1}}" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-180px align-middle">Participation</td>
-                                        <td class="align-middle"><input class="evaluation-slider evaluation-slider-2" type="text" name="participation" value="{{isset($evaluation->participation) ? $evaluation->participation : 1}}" /></td>
+                    @if(!$superadmin_profile)
+                        @if(count($evaluations) > 0)
+                            @foreach($evaluations as $key=>$evaluation_col)
+                                @foreach($evaluation_col as $evaluation)
+                                    <div class="card">
+                                        <h4 class="card-title py-20"><strong>Evaluation {{isSuperadmin() ? ' on '.ucwords($key) : ''}}</strong></h4>
+                                        <form method="post" action="{{url('users/profile/evaluation')}}" enctype="multipart/form-data">
+                                            {{csrf_field()}}
+                                            <div class="card-body">
+                                                <table class="table table-separated">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td class="w-180px align-middle">Communication</td>
+                                                        <td class="align-middle"><input class="evaluation-slider evaluation-slider-0" type="text" name="communication" data-from="{{isset($evaluation->communication) ? $evaluation->communication : 1}}" /></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="w-180px align-middle">Entusiasm</td>
+                                                        <td class="align-middle"><input class="evaluation-slider evaluation-slider-1" type="text" name="enthusiasm" value="{{isset($evaluation->enthusiasm) ? $evaluation->enthusiasm : 1}}" /></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="w-180px align-middle">Participation</td>
+                                                        <td class="align-middle"><input class="evaluation-slider evaluation-slider-2" type="text" name="participation" value="{{isset($evaluation->participation) ? $evaluation->participation : 1}}" /></td>
 
-                                    </tr>
-                                    <tr>
-                                        <td class="w-180px align-middle">Quality of Work</td>
-                                        <td class="align-middle"><input class="evaluation-slider evaluation-slider-3" type="text" name="quality_work" value="{{isset($evaluation->quality_work) ? $evaluation->quality_work : 1}}" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="w-180px align-middle">Dependability</td>
-                                        <td class="align-middle"><input class="evaluation-slider evaluation-slider-4" type="text" name="dependability" value="1" /></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                                <div class="form-group">
-                                    <label>Remark</label>
-                                    <textarea class="form-control" name="remark" style="resize: none">{{isset($evaluation->remark) ? $evaluation->remark : ''}}</textarea>
-                                </div>
-                                <input type="hidden" name="user_id" value="{{$user->id}}">
-                                <input type="hidden" name="organization_id" value="{{session()->get('organization')->id}}">
-                                <input type="hidden" name="evaluated_by" value="{{session()->get('user')->id}}">
-                                <input type="hidden" name="evaluation_id" value="{{isset($evaluation->id) ? $evaluation->id : ''}}">
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="w-180px align-middle">Quality of Work</td>
+                                                        <td class="align-middle"><input class="evaluation-slider evaluation-slider-3" type="text" name="quality_work" value="{{isset($evaluation->quality_work) ? $evaluation->quality_work : 1}}" /></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="w-180px align-middle">Dependability</td>
+                                                        <td class="align-middle"><input class="evaluation-slider evaluation-slider-4" type="text" name="dependability" value="{{isset($evaluation->dependability) ? $evaluation->dependability : 1}}" /></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div class="form-group">
+                                                    <label>Remark</label>
+                                                    <textarea class="form-control" name="remark" style="resize: none">{{isset($evaluation->remark) ? $evaluation->remark : ''}}</textarea>
+                                                </div>
+                                                <input type="hidden" name="user_id" value="{{$user->id}}">
+                                                <input type="hidden" name="organization_id" value="{{$organization_id}}">
+                                                <input type="hidden" name="evaluated_by" value="{{session()->get('user')->id}}">
+                                                <input type="hidden" name="evaluation_id" value="{{isset($evaluation->id) ? $evaluation->id : ''}}">
+                                            </div>
+                                            @if(session()->get('user')->id != $user->id)
+                                                @permission('create.evaluation')
+                                                <div class="card-body text-center py-20">
+                                                    <button class="btn btn-success btn-round w-200px mb-20">Save</button>
+                                                </div>
+                                                @endpermission
+                                            @endif
+                                        </form>
+                                    </div>
+                                @endforeach
+                            @endforeach
+                        @else
+                            <div class="card">
+                                <h4 class="card-title py-20"><strong>Evaluation</strong></h4>
+                                <form method="post" action="{{url('users/profile/evaluation')}}" enctype="multipart/form-data">
+                                    {{csrf_field()}}
+                                    <div class="card-body">
+                                        <table class="table table-separated">
+                                            <tbody>
+                                            <tr>
+                                                <td class="w-180px align-middle">Communication</td>
+                                                <td class="align-middle"><input class="evaluation-slider evaluation-slider-0" type="text" name="communication" data-from="{{isset($evaluation->communication) ? $evaluation->communication : 1}}" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="w-180px align-middle">Entusiasm</td>
+                                                <td class="align-middle"><input class="evaluation-slider evaluation-slider-1" type="text" name="enthusiasm" value="{{isset($evaluation->enthusiasm) ? $evaluation->enthusiasm : 1}}" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="w-180px align-middle">Participation</td>
+                                                <td class="align-middle"><input class="evaluation-slider evaluation-slider-2" type="text" name="participation" value="{{isset($evaluation->participation) ? $evaluation->participation : 1}}" /></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td class="w-180px align-middle">Quality of Work</td>
+                                                <td class="align-middle"><input class="evaluation-slider evaluation-slider-3" type="text" name="quality_work" value="{{isset($evaluation->quality_work) ? $evaluation->quality_work : 1}}" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="w-180px align-middle">Dependability</td>
+                                                <td class="align-middle"><input class="evaluation-slider evaluation-slider-4" type="text" name="dependability" value="1" /></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="form-group">
+                                            <label>Remark</label>
+                                            <textarea class="form-control" name="remark" style="resize: none">{{isset($evaluation->remark) ? $evaluation->remark : ''}}</textarea>
+                                        </div>
+                                        <input type="hidden" name="user_id" value="{{$user->id}}">
+                                        <input type="hidden" name="organization_id" value="{{$organization_id}}">
+                                        <input type="hidden" name="evaluated_by" value="{{session()->get('user')->id}}">
+                                        <input type="hidden" name="evaluation_id" value="{{isset($evaluation->id) ? $evaluation->id : ''}}">
+                                    </div>
+                                    @if(session()->get('user')->id != $user->id)
+                                        @permission('create.evaluation')
+                                        <div class="card-body text-center py-20">
+                                            <button class="btn btn-success btn-round w-200px mb-20">Save</button>
+                                        </div>
+                                        @endpermission
+                                    @endif
+                                </form>
                             </div>
-                            @if(session()->get('user')->id != $user->id)
-                                @permission('create.evaluation')
-                                <div class="card-body text-center py-20">
-                                    <button class="btn btn-success btn-round w-200px mb-20">Save</button>
+                        @endif
+                    @endif
+                    @if(isSuperadmin() && session()->get('user')->id==$user->id )
+                        {{--Superadmin Section--}}
+                        <div class="card">
+                            <h4 class="card-title">Intangible benefits titles</h4>
+                            <form method="post" action="{{url('settings/intangibles')}}" enctype="multipart/form-data">
+                                {{csrf_field()}}
+                                <div class="card-body">
+                                    @php
+                                        $default_savings_content=json_decode(\Illuminate\Support\Facades\Storage::get('savings.json'));
+                                        $default_savings=isset($default_savings_content->values) ? $default_savings_content->values : '';
+                                    @endphp
+                                    <div class="form-group">
+                                        <input type="text" name="value" value="{{empty($default_savings) ? '' : implode(',',$default_savings)}}" data-provide="tagsinput">
+                                        <small class="text-fade d-block mt-3">Please use <q>Others</q> as last keyword</small>
+                                    </div>
                                 </div>
-                                @endpermission
-                            @endif
-                        </form>
-                    </div>
+                                <div class="card-footer text-center py-20">
+                                    <button class="btn btn-round w-180px btn-success">Update</button>
+                                </div>
+                            </form>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
-        {{--{{dd(collect($evaluation)->except(['id','organization_user_id','remark','evaluated_by','created_at','updated_at'])->values()->toJson())}}--}}
+
         <script>
             window.onload=function(){
-                $(function(){
-                    var values=JSON.parse('{{collect($evaluation)->except(['id','organization_user_id','remark','evaluated_by','created_at','updated_at'])->values()->toJson()}}')
-                    if(values.length > 0){
-                        for(var i=0;i<values.length;i++){
-                            $(".evaluation-slider-"+i).ionRangeSlider({
-                                min: 1,
-                                max: 10,
-                                from:values[i]
-                            });
-                        }
-                    }
-                    else{
-                        $(".evaluation-slider").ionRangeSlider({
-                            min: 1,
-                            max: 10,
-                            from:1
-                        });
-                    }
 
+                $(".evaluation-slider").each(function(){
+                    $(this).ionRangeSlider({
+                        min: 1,
+                        max: 10
+                    });
                 })
 
                 @if(session()->has('success') || session('success'))

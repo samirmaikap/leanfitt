@@ -168,4 +168,6 @@ Route::group(['namespace' => 'Web'], function () {
     Route::get('assessment', 'AssessmentController@index');
 
     Route::get('awards', 'AwardController@index');
+
+    Route::post('settings/intangibles', 'SettingsController@intangibles');
 });

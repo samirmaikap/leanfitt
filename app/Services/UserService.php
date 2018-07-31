@@ -333,12 +333,20 @@ class UserService
     }
 
     public function getEvaluation($user_id,$organization_id){
-        $orguser=$this->orgUserRepo->where('user_id',$user_id)->where('organization_id',$organization_id)->first(['id']);
-        if(!$orguser->id){
+        if(isSuperadmin()){
+            $organization=$this->orgUserRepo->where('user_id',$user_id)->get();
+            $orgusers_id=$organization->pluck('id')->toArray();
+        }
+        else{
+            $orguser=$this->orgUserRepo->where('user_id',$user_id)->where('organization_id',$organization_id)->first(['id']);
+            $orgusers_id=array($orguser->id);
+        }
+        if(!$orgusers_id){
             throw new \Exception('User not found');
         }
 
-        $query=$this->evRepo->where('organization_user_id',$orguser->id)->first();
+        $query=$this->evRepo->getEvaluation($orgusers_id);
+
         return $query;
     }
 

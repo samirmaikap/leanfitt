@@ -113,10 +113,20 @@ class UserController extends Controller
     {
         $data['page']='profile';
         $organizationId=$request->has('organization') ? $request->get('organization') : pluckOrganization('id');
+        $data['organization_id']=$organizationId;
+        $data['user_id']=$user_id;
         $data['user']=$this->userService->profile($user_id);
         $data['departments']=$this->departmentService->list($request->all());
         $data['roles']=$this->roleService->all($organizationId);
-        $data['evaluation']=$this->userService->getEvaluation($user_id,$organizationId);
+
+        if(isSuperadmin() && session()->get('user')->id==$data['user']->id){
+            $data['superadmin_profile']=true;
+            $data['evaluations']=null;
+        }
+        else{
+            $data['superadmin_profile']= false;
+            $data['evaluations']=$this->userService->getEvaluation($user_id,$organizationId);
+        }
         return view('app.users.profile', $data);
     }
 
