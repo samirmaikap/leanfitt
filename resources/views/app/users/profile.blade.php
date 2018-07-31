@@ -116,24 +116,24 @@
                                     <tbody>
                                     <tr>
                                         <td class="w-180px align-middle">Communication</td>
-                                        <td class="align-middle"><input class="evaluation-slider-0" type="text" name="communication" value="{{isset($evaluation->communication) ? $evaluation->communication : 1}}" /></td>
+                                        <td class="align-middle"><input class="evaluation-slider evaluation-slider-0" type="text" name="communication" value="{{isset($evaluation->communication) ? $evaluation->communication : 1}}" /></td>
                                     </tr>
                                     <tr>
                                         <td class="w-180px align-middle">Entusiasm</td>
-                                        <td class="align-middle"><input class="evaluation-slider-1" type="text" name="enthusiasm" value="{{isset($evaluation->enthusiasm) ? $evaluation->enthusiasm : 1}}" /></td>
+                                        <td class="align-middle"><input class="evaluation-slider evaluation-slider-1" type="text" name="enthusiasm" value="{{isset($evaluation->enthusiasm) ? $evaluation->enthusiasm : 1}}" /></td>
                                     </tr>
                                     <tr>
                                         <td class="w-180px align-middle">Participation</td>
-                                        <td class="align-middle"><input class="evaluation-slider-2" type="text" name="participation" value="{{isset($evaluation->participation) ? $evaluation->participation : 1}}" /></td>
+                                        <td class="align-middle"><input class="evaluation-slider evaluation-slider-2" type="text" name="participation" value="{{isset($evaluation->participation) ? $evaluation->participation : 1}}" /></td>
 
                                     </tr>
                                     <tr>
                                         <td class="w-180px align-middle">Quality of Work</td>
-                                        <td class="align-middle"><input class="evaluation-slider-3" type="text" name="quality_work" value="{{isset($evaluation->quality_work) ? $evaluation->quality_work : 1}}" /></td>
+                                        <td class="align-middle"><input class="evaluation-slider evaluation-slider-3" type="text" name="quality_work" value="{{isset($evaluation->quality_work) ? $evaluation->quality_work : 1}}" /></td>
                                     </tr>
                                     <tr>
                                         <td class="w-180px align-middle">Dependability</td>
-                                        <td class="align-middle"><input class="evaluation-slider-4" type="text" name="dependability" value="1" /></td>
+                                        <td class="align-middle"><input class="evaluation-slider evaluation-slider-4" type="text" name="dependability" value="1" /></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -146,11 +146,14 @@
                                 <input type="hidden" name="evaluated_by" value="{{session()->get('user')->id}}">
                                 <input type="hidden" name="evaluation_id" value="{{isset($evaluation->id) ? $evaluation->id : ''}}">
                             </div>
-                            <div class="card-body text-center py-20">
-                                <button class="btn btn-success btn-round w-200px mb-20">Save</button>
-                            </div>
+                            @if(session()->get('user')->id != $user->id)
+                                @permission('create.evaluation')
+                                <div class="card-body text-center py-20">
+                                    <button class="btn btn-success btn-round w-200px mb-20">Save</button>
+                                </div>
+                                @endpermission
+                            @endif
                         </form>
-
                     </div>
                 </div>
             </div>
@@ -160,13 +163,23 @@
             window.onload=function(){
                 $(function(){
                     var values=JSON.parse('{{collect($evaluation)->except(['id','organization_user_id','remark','evaluated_by','created_at','updated_at'])->values()->toJson()}}')
-                    for(var i=0;i<values.length;i++){
-                        $(".evaluation-slider-"+i).ionRangeSlider({
+                    if(values.length > 0){
+                        for(var i=0;i<values.length;i++){
+                            $(".evaluation-slider-"+i).ionRangeSlider({
+                                min: 1,
+                                max: 10,
+                                from:values[i]
+                            });
+                        }
+                    }
+                    else{
+                        $(".evaluation-slider").ionRangeSlider({
                             min: 1,
                             max: 10,
-                            from:values[i]
+                            from:1
                         });
                     }
+
                 })
 
                 @if(session()->has('success') || session('success'))
