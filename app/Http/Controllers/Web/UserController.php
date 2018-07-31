@@ -111,10 +111,12 @@ class UserController extends Controller
 
     public function profile(Request $request,$user_id)
     {
+        $data['page']='profile';
         $organizationId=$request->has('organization') ? $request->get('organization') : pluckOrganization('id');
         $data['user']=$this->userService->profile($user_id);
         $data['departments']=$this->departmentService->list($request->all());
         $data['roles']=$this->roleService->all($organizationId);
+        $data['evaluation']=$this->userService->getEvaluation($user_id,$organizationId);
         return view('app.users.profile', $data);
     }
 
@@ -134,14 +136,12 @@ class UserController extends Controller
         {
             $image=$request->hasFile('image') ? $request->file('image') : null;
             $this->userService->update($request->all(),$image,$id);
-            session()->forget('user');
-            session()->put('user',auth()->user());
             if(session()->get('user')->id==$id){
                 $roleRepo=new RoleRepository();
-                session()->forget('currentRole');
-                $currentRole=$roleRepo->currentRoles(pluckOrganization('id'),$id)->first();
-                session()->put('currentRole',$currentRole);
+                session()->forget(['user','currentRole']);
+                session()->put(['user'=>auth()->user(),'currentRole'=>$roleRepo->currentRoles(pluckOrganization('id'),$id)->first()]);
             }
+
             return redirect()->back()->with(['success' => 'Profile has been updated successfully']);
         }
         catch(\Exception $e)
@@ -191,5 +191,18 @@ class UserController extends Controller
         {
             return redirect()->back()->withErrors([$e->getMessage()]);
         }
+    }
+
+    public function evaluation(Request $request){
+        try
+        {
+            $this->userService->evaluation($request->all());
+            return redirect()->back()->with(['success' => 'Evaluation has been updated']);
+        }
+        catch(\Exception $e)
+        {
+            return redirect()->back()->withErrors([$e->getMessage()]);
+        }
+
     }
 }

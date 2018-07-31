@@ -11,6 +11,7 @@ use App\Mail\VerificationMail;
 use App\Repositories\AdminRepository;
 use App\Repositories\DeviceRepository;
 use App\Repositories\EmployeeRepository;
+use App\Repositories\EvaluationRepository;
 use App\Repositories\InvitationRepository;
 use App\Repositories\MediaRepository;
 use App\Repositories\OrganizationAdminRepository;
@@ -38,15 +39,18 @@ class UserService
     protected $organizationRepo;
     protected $mediaRepo;
     protected $orgUserRepo;
+    protected $evRepo;
     public function __construct(UserRepository $userRepository,
                                 OrganizationRepository $organizationRepository,
                                 MediaRepository $mediaRepository,
-                                OrganizationUserRepository $organizationUserRepository)
+                                OrganizationUserRepository $organizationUserRepository,
+                                EvaluationRepository $evaluationRepository)
     {
         $this->userRepo=$userRepository;
         $this->organizationRepo=$organizationRepository;
         $this->mediaRepo=$mediaRepository;
         $this->orgUserRepo=$organizationUserRepository;
+        $this->evRepo=$evaluationRepository;
     }
 
     public function all($organizationId = null, $departmentId = null, $roleId = null)
@@ -325,6 +329,41 @@ class UserService
         event(new UsersUpdated($event));
         $data['email']=$user->user->email;
         SendRestoreMail::dispatch($data)->onQueue('emails');
+        return;
+    }
+
+    public function getEvaluation($user_id,$organization_id){
+        $orguser=$this->orgUserRepo->where('user_id',$user_id)->where('organization_id',$organization_id)->first(['id']);
+        if(!$orguser->id){
+            throw new \Exception('User not found');
+        }
+
+        $query=$this->evRepo->where('organization_user_id',$orguser->id)->first();
+        return $query;
+    }
+
+    public function evaluation($data){
+        $orguser=$this->orgUserRepo->where('user_id',arrayValue($data,'user_id'))->where('organization_id',arrayValue($data,'organization_id'))->first(['id']);
+        if(!$orguser->id){
+            throw new \Exception('User not found');
+        }
+
+        if(empty(arrayValue($data,'evaluated_by'))){
+            throw new \Exception('Evaluated by field is required');
+        }
+
+        $data['organization_user_id']=$orguser->id;
+        if(empty(arrayValue($data,'evaluation_id'))){
+            $query=$this->evRepo->create($data);
+        }
+        else{
+            $query=$this->evRepo->update(arrayValue($data,'evaluation_id'),$data);
+        }
+
+        if(!$query){
+            throw new \Exception(config('messages.common_error'));
+        }
+
         return;
     }
 }

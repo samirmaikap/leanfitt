@@ -101,7 +101,7 @@
                                         <input type="hidden" id="result-incorrect" name="incorrect" value="0">
                                         <input type="hidden" id="total-question" name="total" value="{{$quiz->question_count}}">
                                         <input type="hidden" name="lean_tool_id" value="{{$active_tool}}">
-                                        <input type="hidden" name="employee_id" value="{{auth()->user()->id}}">
+                                        <input type="hidden" name="employee_id" value="{{session()->get('user')->id}}">
                                         @if(!$quiz->taken)
                                             <input type="submit" id="submit-result" name="submit" class="hidden btn btn-primary" value="Submit">
                                             <button type="button" class="btn btn-primary btn-next disabled">Next</button>

@@ -208,7 +208,7 @@
                                                         <p>{{$comment->comment}}</p>
                                                         <p>
                                                         {{--<span class="cursor-pointer badge badge-gray mr-1">Edit</span> --}}
-                                                        @if(auth()->user()->id==$comment->user->id)
+                                                        @if(session()->get('user')->id==$comment->user->id)
                                                             <form id="commentDeleteForm" method="post" action="{{url('projects')}}/comment/{{$comment->id}}/remove">
                                                                 {{csrf_field()}}
                                                                 {{method_field('delete')}}

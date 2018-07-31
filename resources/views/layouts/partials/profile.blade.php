@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
 {{--            <form action="{{ url(config('app.url') . '/users/' . auth()->user()->id) }}" method="post">--}}
-            <form action="{{ url('users/' . auth()->user()->id) }}" method="post">
+            <form action="{{ url('users/' . session()->get('user')->id) }}" method="post">
                 {{ csrf_field() }}
                 {{ method_field('put') }}
                 <div class="modal-header bg-primary">
@@ -38,20 +38,20 @@
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label>First Name</label>
-                            <input class="form-control" type="text" name="first_name" value="{{ old('first_name', auth()->user()->first_name) }}">
+                            <input class="form-control" type="text" name="first_name" value="{{ old('first_name', session()->get('user')->first_name) }}">
                         </div>
                         <div class="form-group col-md-6">
                             <label>Last Name</label>
-                            <input class="form-control" type="text" name="last_name" value="{{ old('last_name', auth()->user()->last_name) }}">
+                            <input class="form-control" type="text" name="last_name" value="{{ old('last_name', session()->get('user')->last_name) }}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Phone</label>
-                        <input class="form-control" type="text" name="phone" value="{{ old('phone', auth()->user()->phone) }}">
+                        <input class="form-control" type="text" name="phone" value="{{ old('phone', session()->get('user')->phone) }}">
                     </div>
                     <div class="form-group">
                         <label>Email address</label>
-                        <input class="form-control" type="text" name="email" value="{{ old('email', auth()->user()->email) }}">
+                        <input class="form-control" type="text" name="email" value="{{ old('email', session()->get('user')->email) }}">
                     </div>
                     <div class="form-group">
                         <label>Password</label>

@@ -30,8 +30,12 @@ class OrganizationMiddleware
         $organization = $organizationRepository->where('subdomain', '=', $subdomain)->first();
 
         // Set Organization to session for global access
-        session(['organization' => $organization]);
         $orgUser=auth()->user()->userOrganization->where('organization_id',$organization->id)->first();
+        if(isset($orgUser->user_id)){
+            $organization['user_id']=$orgUser->user_id;
+        }
+
+        session(['organization' => $organization]);
 
         $roleRepo=new \App\Repositories\RoleRepository();
         $currentRoles=$roleRepo->currentRoles($organization->id,$orgUser->user_id);

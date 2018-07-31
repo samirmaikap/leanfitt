@@ -27,7 +27,7 @@ Route::get('invitaion/accept', 'Web\AuthController@invitation');
 Route::get('test', function(){
 //    $roleRepo=new \App\Repositories\RoleRepository();
 //    dd(($roleRepo->currentRoles(pluckOrganization('id'),session('user')->id))->first()->name);
-//    dd(session()->get('user'));
+    dd(pluckOrganization('user_id'));
 });
 
 Route::view('abort/suspend', 'errors.suspend');
@@ -53,6 +53,8 @@ Route::group(['domain' => '{organization}' . config('session.domain'), 'namespac
         Route::get('users/{id}/invitation/resend', 'UserController@reInvitation');
         Route::put('users/{id}', 'UserController@update');
         Route::delete('users/{id}', 'UserController@delete');
+
+        Route::post('users/profile/evaluation', 'UserController@evaluation');
 
         Route::get('organizations/{organization_id}/view','OrganizationController@show');
         Route::get('organizations/create', 'OrganizationController@create');

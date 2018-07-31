@@ -66,7 +66,7 @@
 
                         {{ csrf_field() }}
                         <input type="hidden" name="process_id" value="{{ $process->id }}">
-                        <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                        <input type="hidden" name="user_id" value="{{ session()->get('user')->id }}">
                         <input type="hidden" name="position" value="{{ count($process->actionItems) + 1 }}">
                         <input class="publisher-input" type="text" name="title" placeholder="Enter action item title" required>
 
