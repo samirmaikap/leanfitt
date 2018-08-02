@@ -87,7 +87,7 @@
                                                             <span class="custom-control-indicator"></span>
                                                             <span class="custom-control-description"><strong>Plan {{$key}}</strong></span>
                                                         </label>
-                                                        <p class="small lh-14 ml-24">7 days free trial</p>
+                                                        <p class="small lh-14 ml-24">{{!empty($plan->trial_period_days) ? $plan->trial_period_days : 0}}</p>
                                                     </div>
                                                     <div>
                                                         <strong>{{($plan->amount/100)}} {{$plan->currency}}/{{$plan->interval}}</strong>
@@ -130,6 +130,10 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Coupon Code</label>
+                                            <input class="form-control" type="text" name="subscription[coupon]" value="{{ old('subscription.coupon') }}">
                                         </div>
 
                                     </div>

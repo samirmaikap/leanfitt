@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Events\NotifySubscriptions;
+use App\Events\OrganizationCreated;
 use App\Events\SubscriptionResumed;
 use App\Events\SubscriptionStopped;
 use App\Repositories\AdminRepository;
@@ -87,7 +88,7 @@ class OrganizationService
 
         if(!empty($stripe_token)){
             $organization->newSubscription( 'main', arrayValue($data['subscription'],'plan'))
-                ->trialDays(7)
+                ->withCoupon(arrayValue($data['subscription']['coupon']))
                 ->create($stripe_token, [
                     'email' => $organization->email,
                     'description' => $organization->name
@@ -114,25 +115,9 @@ class OrganizationService
         $subdomain = str_slug(arrayValue($data['organization'],'name'));
         $data['organization']['subdomain'] = $subdomain;
         $data['organization']['featured_image']=env('UI_AVATAR').arrayValue($data['organization'],'name');
+        $data['organization']['trial_ends_at']=now()->addDays(arrayValue($data['subscription'],'trial'));
 
         DB::beginTransaction();
-        $organization = $this->organizationRepository->create(arrayValue($data,'organization'));
-        if(!$organization){
-            DB::rollBack();
-            throw new \Exception(config("messages.common_error"));
-        }
-
-        $subscription=$organization->newSubscription( 'main', arrayValue($data['subscription'],'plan'))
-            ->trialDays(7);
-//            ->create(null,[
-//            'email' => $organization->email,
-//            'description' => $organization->name
-//        ]);
-        if(!$subscription){
-            DB::rollBack();
-            throw new \Exception(config("messages.common_error"));
-        }
-
         $data['admin']['password']=$data['admin']['password_confirmation']='password';
         $data['admin']['avatar']=env('UI_AVATAR').urlencode(arrayValue($data['admin'],'first_name').' '.arrayValue($data['admin'],'last_name'));
         $validator = new UserValidator($data['admin'], 'create');
@@ -141,27 +126,22 @@ class OrganizationService
             throw new \Exception($validator->messages());
         }
 
-        $admin = $this->userRepository->create($data['admin']);
-        dd($admin);
-        $user=$this->userRepository->find($admin->id);
-        dd($user);
-        $user->organizations()->attach([ $organization->id => ['is_default' => $isDefault]]);
-        if(isset($organization))
-        {
+        $user = $this->userRepository->create($data['admin']);
+        if(!$user){
+            DB::rollBack();
+            throw new \Exception(config("messages.common_error"));
+        }
+
+        $organization = $this->organizationRepository->create(arrayValue($data,'organization'));
+
+        if(!$organization){
+            DB::rollBack();
+            throw new \Exception(config("messages.common_error"));
+        }
+
+        if($organization){
             $user->organizations()->attach($organization);
-        }
-
-        if(isset($data['admin']['departments']))
-        {
-            $user->departments()->sync($data['admin']['departments']);
-        }
-
-        if(isset($data['admin']['roles']))
-        {
-            $user->syncRoles($data['admin']['roles']);
-        }
-
-        if($user){
+            event(new OrganizationCreated($organization));
             DB::commit();
             return;
         }

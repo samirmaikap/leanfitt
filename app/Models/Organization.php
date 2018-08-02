@@ -21,6 +21,7 @@ class Organization extends Model
         'contact_person',
         'is_archived',
         'subdomain',
+        'trial_ends_at',
     ];
 
     protected $appends = [

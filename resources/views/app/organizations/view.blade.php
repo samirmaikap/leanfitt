@@ -27,7 +27,20 @@
                                     </div>
                                 </div>
                             </div>
-                            @php $status=isset($stripe->subscriptions) ? $stripe->subscriptions->data[0]->status : 'N/A';  @endphp
+
+                            @php
+                                if(isset($stripe->subscriptions->data[0])){
+                                    $status=$stripe->subscriptions->data[0]->status;
+                                }
+                                else{
+                                    if(!empty($organization->trial_ends_at) && strtotime(date('Y-m-d H:i:s')) > strtotime($organization->trial_ends_at)){
+                                       $status='No active subscription';
+                                    }
+                                    else{
+                                       $status='On Trial';
+                                    }
+                                }
+                            @endphp
                             <div class="card-body">
                                 <div class="form-group">
                                     <label class="text-dark">Name</label>
@@ -46,25 +59,26 @@
                                     <input class="form-control" name="phone" value="{{isset($organization->phone) ? $organization->phone : ''}}" type="text">
                                 </div>
                                 <div class="form-group text-center">
-                                    <label class="text-dark d-block">Current Plan: {{isset($stripe->subscriptions) ? $stripe->subscriptions->data[0]->plan->id : 'N/A'}}</label>
-                                    <label class="text-dark d-block">Billing Interval: {{isset($stripe->subscriptions) ? ucfirst($stripe->subscriptions->data[0]->plan->interval) : 'N/A'}}</label>
-                                    <label class="text-dark d-block">Billing Type: {{isset($stripe->subscriptions) ? ucwords(str_replace('_' ,' ',$stripe->subscriptions->data[0]->billing)) : 'N/A'}}</label>
+                                    <label class="text-dark d-block">Current Plan: {{isset($stripe->subscriptions->data[0]) ? $stripe->subscriptions->data[0]->plan->id : 'N/A'}}</label>
+                                    <label class="text-dark d-block">Billing Interval: {{isset($stripe->subscriptions->data[0]) ? ucfirst($stripe->subscriptions->data[0]->plan->interval) : 'N/A'}}</label>
+                                    <label class="text-dark d-block">Billing Type: {{isset($stripe->subscriptions->data[0]) ? ucwords(str_replace('_' ,' ',$stripe->subscriptions->data[0]->billing)) : 'N/A'}}</label>
                                     <label class="text-dark d-block">Subscription Status: {!! $status=='active' ? '<span class="text-success">'.ucfirst($status).'</span>' : '<span class="text-warning">'.ucfirst($status).'</span>' !!}</label>
                                 </div>
                             </div>
-                            @if(!isSuperadmin())
-                                @permission('update.organization')
-                                <div class="card-body text-center pb-20">
-                                    @if(empty($organization->subscriptions[0]->ends_at))
+                            @permission('update.organization')
+                            <div class="card-body text-center pb-20">
+                                @if(strtolower($status)=='no active subscription')
+                                    <button type="button" class="btn btn-info add-subscription" data-toggle="modal" data-target="#modal-subscription">Add Subscription</button>
+                                @else
+                                    @if(isset($organization->subscriptions[0]) && empty(isset($organization->subscriptions[0]->ends_at)))
                                         <button type="button" class="btn btn-danger revoke-subscription">Cancel Subscription</button>
                                     @else
                                         <button type="button" class="btn btn-primary resume-subscription">Resume Subscription</button>
                                     @endif
-
-                                    <button type="submit" class="btn btn-success">Update</button>
-                                </div>
-                                @endpermission
-                            @endif
+                                @endif
+                                <button type="submit" class="btn btn-success">Update</button>
+                            </div>
+                            @endpermission
                         </form>
                     </div>
                 </div>
@@ -153,6 +167,78 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal modal-top fade" id="modal-subscription" tabindex="-1">
+            <div class="modal-dialog mt-30 ">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add Subscription</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form id="register-form" action="{{url('organizations/add/subscription')}}" method="post">
+                        {{csrf_field()}}
+                        <div class="modal-body">
+                            @if(isset($plans->data))
+                                @foreach($plans->data as $key=>$plan)
+                                    <div class="row">
+                                        <div class="col-lg-8">
+                                            <label class="custom-control custom-radio">
+                                                <input type="radio" class="custom-control-input" name="plan" value="{{$plan->id}}" {{$key==0 ? 'checked' : ''}}>
+                                                <span class="custom-control-indicator"></span>
+                                                <span class="custom-control-description"><strong>Plan {{$key+1}}</strong></span>
+                                            </label>
+                                            <p class="small lh-14 ml-24">{{!empty($plan->trial_period_days) ? $plan->trial_period_days : 0}} days free trial</p>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <strong>{{($plan->amount/100)}} {{$plan->currency}}/{{$plan->interval}}</strong>
+                                        </div>
+                                    </div>
+                                    <br>
+                                @endforeach
+                            @endif
+                            <div class="form-group">
+                                <label>Name on Card</label>
+                                <input class="form-control" type="text" name="name_on_card" value="{{ old('name_on_card') }}">
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-lg-6">
+                                    <label>Card Number</label>
+                                    <input type="text" class="form-control" name="number" value="{{ old('number') }}" size='20'>
+                                </div>
+
+                                <div class="form-group col-lg-3">
+                                    <label>CVC Code</label>
+                                    <input class="form-control" type="text" name="cvc" value="{{ old('cvc') }}" size='4'>
+                                </div>
+
+                                <div class="form-group col-lg-3">
+                                    <label>Expiry Date</label>
+                                    <div class="row">
+                                        <div class="col-md-6 pr-0">
+                                            <input type="text" class="form-control" name="exp_month" value="{{ old('exp_month') }}" size='2' maxlength="2" placeholder="MM">
+                                        </div>
+                                        <div class="col-md-6 pl-0">
+                                            <input type="text" class="form-control" name="exp_year" value="{{ old('exp_year') }}" size='2' maxlength="2" placeholder="YY">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Coupon Code</label>
+                                <input class="form-control" type="text" name="coupon" value="{{ old('coupon') }}">
+                            </div>
+                            <input type="hidden" name="organization_id" value="{{$organization->id}}">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-bold btn-pure btn-primary">Add</button>
+                        </div>
+                    </form>
+
                 </div>
             </div>
         </div>

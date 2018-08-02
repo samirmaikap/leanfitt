@@ -163,56 +163,13 @@
 
                             <div class="tab-pane fade" id="wizard-form-3">
 
-                                <p class="text-center text-gray">Choose a Subscriptions that suits the Organization</p>
+                                <p class="text-center text-gray">Enter number of days for trial</p>
                                 <hr class="w-100px">
-                                @if(isset($plans->data))
-                                    @foreach($plans->data as $key=>$plan)
-                                        <div class="flexbox">
-                                            <div>
-                                                <label class="custom-control custom-radio">
-                                                    <input type="radio" class="custom-control-input" name="subscription[plan]" value="{{$plan->id}}" {{$key==0 ? 'checked' : ''}}>
-                                                    <span class="custom-control-indicator"></span>
-                                                    <span class="custom-control-description"><strong>Plan {{$key}}</strong></span>
-                                                </label>
-                                                <p class="small lh-14 ml-24">7 days free trial</p>
-                                            </div>
-                                            <div>
-                                                <strong>{{($plan->amount/100)}} {{$plan->currency}}/{{$plan->interval}}</strong>
-                                            </div>
-                                        </div>
-                                        <br>
-                                    @endforeach
-                                @endif
 
                                 <div class="form-group">
-                                    <label>Name on card</label>
-                                    <input class="form-control" type="text" name="subscription[name_on_card]" value="{{ old('subscription.name_on_card') }}">
+                                    <label>Trial Days</label>
+                                    <input class="form-control" type="text" name="subscription[trial]" value="{{ old('subscription.trial') }}">
                                 </div>
-
-                                <div class="row">
-                                    <div class="form-group col-lg-6">
-                                        <label>Card Number</label>
-                                        <input type="text" class="form-control" name="subscription[number]" value="{{ old('subscription.number') }}" size='20'>
-                                    </div>
-
-                                    <div class="form-group col-lg-3">
-                                        <label>CVC Code</label>
-                                        <input class="form-control" type="text" name="subscription[cvc]" value="{{ old('subscription.cvc') }}" size='4'>
-                                    </div>
-
-                                    <div class="form-group col-lg-3">
-                                        <label>Expiry Date</label>
-                                        <div class="row">
-                                            <div class="col-md-6 pr-0">
-                                                <input type="text" class="form-control" name="subscription[exp_month]" value="{{ old('subscription.exp_month') }}" size='2' maxlength="2" placeholder="MM">
-                                            </div>
-                                            <div class="col-md-6 pl-0">
-                                                <input type="text" class="form-control" name="subscription[exp_year]" value="{{ old('subscription.exp_year') }}" size='2' maxlength="2" placeholder="YY">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
                             </div>
 
                         </div>

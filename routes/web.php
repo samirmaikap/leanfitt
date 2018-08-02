@@ -61,6 +61,8 @@ Route::group(['domain' => '{organization}' . config('session.domain'), 'namespac
         Route::get('organizations/subscription/resume','OrganizationController@resumeSubscription');
         Route::put('organizations/{organization_id}','OrganizationController@update');
 
+        Route::post('organizations/add/subscription','OrganizationController@addSubscription');
+
         Route::get('departments', 'DepartmentController@index');
         Route::post('departments', 'DepartmentController@store');
         Route::get('departments/{id}', 'DepartmentController@show');
@@ -146,6 +148,7 @@ Route::group(['namespace' => 'Web','middleware'=>'auth:web'], function () {
     Route::post('organizations/create','OrganizationController@store');
     Route::post('organizations/create/custom','OrganizationController@customOrganization');
     Route::delete('organizations/{organization_id}','OrganizationController@deleteOrganization');
+    Route::post('organizations/add/subscription','OrganizationController@addSubscription');
 
     Route::get('users', 'UserController@index');
     Route::put('users/{id}', 'UserController@update');

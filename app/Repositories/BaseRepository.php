@@ -132,6 +132,12 @@ abstract class BaseRepository implements BaseRepositoryInterface
 
     }
 
+    public function firstOrCreate($attributes){
+
+        return $this->model->firstOrCreate($attributes);
+
+    }
+
     public function update($id,$attributes)
     {
         return $this->model->find($id)->update($attributes);

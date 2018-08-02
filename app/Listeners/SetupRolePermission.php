@@ -35,6 +35,17 @@ class SetupRolePermission
         Log::debug("Event: Setting up roles");
 
         $organization = $event->organization;
+        Log::info($organization->name);
+
+        if(isSuperadmin()){
+            $user=$organization->users()->first();
+        }
+        else{
+            $user= auth()->user();
+        }
+
+        if(empty($user))
+            return;
 
         // Create an Admin role for the organization
         $data = [
@@ -46,7 +57,8 @@ class SetupRolePermission
         Log::debug("Event: Admin role created");
 
         // Assign current user to the Admin role
-        auth()->user()->attachRole($admin, $organization);
+        $user->attachRole($admin, $organization);
+
         Log::debug("Event: Admin role assigned to user");
     }
 }

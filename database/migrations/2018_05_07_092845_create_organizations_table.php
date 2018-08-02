@@ -20,7 +20,6 @@ class CreateOrganizationsTable extends Migration
             $table->string('phone')->nullable();
             $table->string('contact_person');
             $table->string('featured_image')->nullable();
-//            $table->tinyInteger('is_archived')->default(0);
             $table->text('subdomain');
 
             // Stripe subscription fields
@@ -28,6 +27,7 @@ class CreateOrganizationsTable extends Migration
             $table->string('card_brand')->nullable();
             $table->string('card_last_four')->nullable();
             $table->timestamp('trial_ends_at')->nullable();
+//            $table->tinyInteger('self_subscription')->default(1);
 
             $table->timestamps();
             $table->softDeletes();

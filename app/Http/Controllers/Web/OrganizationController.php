@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Repositories\OrganizationRepository;
 use App\Services\RoleService;
+use App\Services\SubscriptionService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -16,19 +17,22 @@ class OrganizationController extends Controller
     protected $service;
     protected $userService;
     protected $roleService;
+    protected $subscriptionService;
 
-    public function __construct(OrganizationService $organizationService, UserService $userService, RoleService $roleService)
+    public function __construct(OrganizationService $organizationService,
+                                UserService $userService,
+                                RoleService $roleService,
+                                SubscriptionService $subscriptionService)
     {
         $this->service=$organizationService;
         $this->userService = $userService;
         $this->roleService = $roleService;
+        $this->subscriptionService=$subscriptionService;
     }
 
     public function index(){
         $data['page']='organizations';
         $data['organizations'] = $this->service->all();
-        Stripe::setApiKey(env('STRIPE_SECRET'));
-        $data['plans']=Plan::all();
         return view('app.organizations.index', $data);
     }
 
@@ -74,11 +78,12 @@ class OrganizationController extends Controller
         }
     }
 
-
     public function show($organization_id){
         $data['page']='organizations';
         $data['organization'] =$this->service->show($organization_id);
-        $data['stripe']=$data['organization']->asStripeCustomer();
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+        $data['plans']=Plan::all();
+        $data['stripe']=isset($data['organization']['stripe_id']) ? $data['organization']->asStripeCustomer() : null;
         return view('app.organizations.view', $data);
     }
 
@@ -113,15 +118,26 @@ class OrganizationController extends Controller
         }
     }
 
+    public function addSubscription(Request $request){
+        try{
+            $this->subscriptionService->create($request->all());
+            return redirect()->back()->with('success', 'Subscription has been added');
+        }catch (\Exception $e){
+            return redirect()->back()->withErrors([$e->getMessage()]);
+        }
+    }
+
+    public function updateCard(){
+
+    }
+
     public function customOrganization(Request $request){
-        $this->service->createCustom($request->all());
         try{
             $this->service->createCustom($request->all());
             return redirect()->back()->with('success', 'Organization has been added');
         }catch (\Exception $e){
             return redirect()->back()->withInput()->withErrors([$e->getMessage()]);
         }
-
     }
 
     public function deleteOrganization($organization_id){
