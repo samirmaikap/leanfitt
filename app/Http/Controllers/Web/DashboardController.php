@@ -51,7 +51,6 @@ class DashboardController extends Controller
         $data['assessment']=$this->service->assessmentTaken($organization);
         $data['action_items']=$this->service->getActionItems($organization);
         $data['tangibles']=$this->service->getTangible($organization);
-        dd($data['tangibles']);
 
         return $data;
     }
@@ -63,7 +62,7 @@ class DashboardController extends Controller
         $data['quiz']=$this->service->quizTaken($organization,$user);
         $data['assessment']=$this->service->assessmentTaken($organization,$user);
         $data['action_items']=$this->service->getActionItems($organization,$user);
-        $data['tangibles']=$this->service->userTangible($user);
+        $data['tangibles']=$this->service->getTangible($organization,$user);
 
         return $data;
     }

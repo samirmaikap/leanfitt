@@ -72,16 +72,15 @@ class ProjectRepository extends BaseRepository //implements ProjectRepositoryInt
     }
 
     public function getTangibles($organization,$user){
-//        $query=$this->model()->with(['tangibleIntangible'=>function($query){
-//            $query->where('type','tangible')->get();
-//        }])->where('organization_id',empty($organization) ? '!=' : '=', empty($organization) ? null : $organization );
-//
-//        if(!empty($user)){
-//            $query=$query->whereHas('members',function ($query) use($user) {
-//                $query->where('user_id', $user);
-//            });
-//        }
-        $query=$this->model()->select(['name'])->with('tangibleIntangible')->get();
-        return $query;
+        $query=$this->model()->with(['tangibleIntangible'=>function($query){
+            $query->where('type','tangible')->get();
+        }])->where('organization_id',empty($organization) ? '!=' : '=', empty($organization) ? null : $organization );
+
+        if(!empty($user)){
+            $query=$query->whereHas('members',function ($query) use($user) {
+                $query->where('user_id', $user);
+            });
+        }
+        return $query->get();
     }
 }

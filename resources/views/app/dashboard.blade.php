@@ -154,7 +154,6 @@
                 var calendar = $('#calendar');
                 var events=[];
                 var items=JSON.parse('{!!json_encode($action_items->values(),JSON_HEX_APOS) !!}');
-                console.log(items);
                 for(var i=0; i<items.length;i++){
                     if(items[i].process=='Backlog'){
                         var color = '#dc3545';
@@ -245,35 +244,76 @@
 
             /* handle change view
         -----------------------------------------------------------------*/
-
-
-
-            var value=JSON.parse('{!!$tangibles->pluck('value')->toJson() !!}')
-            var label=JSON.parse('{!!$tangibles->pluck('created_at')->toJson() !!}')
-            var date_arr=[];
-            for (var j=0;j<label.length;j++){
-                var date=moment(label[j].date, "YYYY-MM-DD");
-                date_arr.push(date.format('MM/DD/YYYY'));
-            }
-            var default_options={
-                maintainAspectRatio: false,
-                scales: {
-                    yAxes: [{
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Value'
-                        }
-                    }],
-                    xAxes: [{
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Date'
-                        }
-                    }]
-                },
-            };
-            lineChart('tangible-chart',date_arr,value,'Date','Value',default_options);
+            renderChart();
         }
 
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        function renderChart(){
+            var dataset=[];
+                    @if(count($tangibles) > 0)
+                    @foreach($tangibles as $key=>$tangible)
+            var value=JSON.parse('{!!$tangible->tangibleIntangible->pluck('value')->toJson() !!}')
+            var label=JSON.parse('{!!$tangible->tangibleIntangible->pluck('created_at')->toJson() !!}')
+            var data_points=[];
+            for (var j=0;j<label.length;j++){
+                var date=moment(label[j].date, "YYYY-MM-DD HH:mm:ss");
+                var formatted_date=date.format('MM/DD/YYYY HH:mm:ss');
+                data_points.push({
+                    x: formatted_date,
+                    y:  value[j]
+                });
+            }
+            var color=getRandomColor();
+            dataset.push({
+                label: "{{$tangible->name}}",
+                backgroundColor: color,
+                borderColor: color,
+                fill: false,
+                data:  data_points
+            });
+            @endforeach
+            @endif
+            var ctx = document.getElementById('tangible-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: label,
+                    datasets: dataset
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Value'
+                            }
+                        }],
+                        xAxes: [{
+                            type: 'time',
+                            time: {
+                                unit: 'day',
+                                unitStepSize: 1,
+                                displayFormats: {
+                                    'day': 'MM/DD/YYYY'
+                                }
+                            },
+                            scaleLabel: {
+                                display:     true,
+                                labelString: 'Date'
+                            }
+                        }]
+                    },
+                }
+            });
+        }
     </script>
 @endsection
