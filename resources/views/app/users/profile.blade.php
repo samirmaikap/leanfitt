@@ -88,6 +88,15 @@
                                         </select>
                                     </div>
                                     @endpermission
+                                @else
+                                    <div class="form-group">
+                                        <label class="d-block">Departments</label>
+                                        <label class="d-block text-fade">{{implode(', ',$departments->pluck('name')->toArray())}}</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="d-block">Roles</label>
+                                        <label class="d-block text-fade">{{implode(', ',$roles->pluck('name')->toArray())}}</label>
+                                    </div>
                                 @endif
 
                             </div>
