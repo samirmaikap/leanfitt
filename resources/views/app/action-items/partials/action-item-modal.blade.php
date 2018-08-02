@@ -65,13 +65,14 @@
                                     <div class="col-md-6">
                                          <label class="col-form-label">Assignees</label>
                                             <select name="assignees[]" class="form-control selectpicker" multiple>
-                                                @if(isset($project->members) && count($project->members))
+{{--                                                @if(isset($project->members) && count($project->members))--}}
+                                                {{--@if(!empty(session()->get('organization')) && count(session()->get('organization')->users))--}}
                                                     @foreach(session()->get('organization')->users as $user)
                                                         <option value="{{ $user->id }}" @if(in_array($user->id, $actionItem->assignees()->pluck('user_id')->toArray())) {{ 'selected' }} @endif>
                                                             {{ $user->full_name }}
                                                         </option>
                                                     @endforeach
-                                                @endif
+                                                {{--@endif--}}
                                             </select>
                                     </div>        
                                 </div>

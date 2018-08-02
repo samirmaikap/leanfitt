@@ -30,6 +30,8 @@ class SendActionItemUpdatedNotification
     {
         $actionItem = $event->actionItem;
 
+        Mail::to($actionItem->assignor->email)->send(new ActionItemUpdatedMail($actionItem));
+
         foreach ($actionItem->assignees as $assignee)
         {
             Mail::to($assignee->user->email)->send(new ActionItemUpdatedMail($actionItem));
