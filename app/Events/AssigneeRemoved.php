@@ -14,14 +14,15 @@ class AssigneeRemoved
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public $actionItem;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($item)
     {
-        //
+        $this->actionItem = $item;
     }
 
     /**

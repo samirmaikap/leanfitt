@@ -7,19 +7,18 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ActionItemUpdatedMail extends Mailable
+class AssigneeAddedMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $actionItem;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($actionItem)
+    public function __construct()
     {
-        $this->actionItem = $actionItem;
+        //
     }
 
     /**
@@ -29,6 +28,6 @@ class ActionItemUpdatedMail extends Mailable
      */
     public function build()
     {
-        return $this->subject("Action Item Updated")->view('emails.action-items.updated');
+        return $this->subject("Action Item Assigned")->view('emails.action-items.assigned');
     }
 }

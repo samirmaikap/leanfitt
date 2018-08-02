@@ -4,6 +4,8 @@ namespace App\Services;
 
 
 use App\Events\ActionItemUpdated;
+use App\Events\AssigneeAdded;
+use App\Events\AssigneeRemoved;
 use App\Repositories\ActionItemAssigneeRepository;
 use App\Repositories\ActionItemAssignmentRepository;
 use App\Repositories\ActionItemRepository;
@@ -17,12 +19,17 @@ use App\Validators\ActionItemAssigneeValidator;
 use App\Validators\ActionItemValidator;
 use App\Validators\CommentValidator;
 use App\Validators\ItemAssignmentValidator;
+use function array_diff;
+use function dd;
 use function event;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use function in_array;
+use function print_r;
+use function var_dump;
 
 class ActionItemService //implements ActionItemServiceInterface
 {
@@ -137,17 +144,31 @@ class ActionItemService //implements ActionItemServiceInterface
         DB::beginTransaction();
         $data['due_date']=empty($data['due_date']) ? null : Carbon::parse($data['due_date'])->format('Y-m-d');
         $query=$this->itemRepo->update($item_id,$data);
+        $item = $this->itemRepo->getItem($item_id);
 
         if(!empty($data['assignees']))
         {
-            $item = $this->itemRepo->getItem($item_id);
-            $item->assignees()->delete();
-            foreach ($data['assignees'] as $assignee)
+//            $item->assignees()->delete();
+            $oldAssignees = $item->assignees()->pluck('user_id')->toArray();
+            $newAssignees = count(array_diff($data['assignees'], $oldAssignees)) ? array_diff($data['assignees'], $oldAssignees) : $data['assignees'];
+            $removedAssignees = array_diff($oldAssignees, $data['assignees']);
+//            print_r($oldAssignees);
+//            print_r($newAssignees);
+//            print_r($removedAssignees);
+//            die;
+            foreach ($newAssignees as $assignee)
             {
                 $this->addAssignee([
                     'user_id' => $assignee,
                     'action_item_id' => $item_id
                 ]);
+                event(new AssigneeAdded($item));
+            }
+
+            foreach ($removedAssignees as $assignee)
+            {
+                $this->removeAssignee($item_id, $assignee);
+                event(new AssigneeRemoved($item));
             }
         }
         if($query){

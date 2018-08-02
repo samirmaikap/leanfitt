@@ -64,7 +64,7 @@
                                     </div>
                                     <div class="col-md-6">
                                          <label class="col-form-label">Assignees</label>
-                                            <select name="assignees[]" class="form-control selectpicker" multiple>
+                                            <select name="assignees[]" class="form-control" data-provide="selectpicker" multiple>
 {{--                                                @if(isset($project->members) && count($project->members))--}}
                                                 {{--@if(!empty(session()->get('organization')) && count(session()->get('organization')->users))--}}
                                                     @foreach(session()->get('organization')->users as $user)
