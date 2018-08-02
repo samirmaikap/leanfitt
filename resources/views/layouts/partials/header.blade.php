@@ -2,10 +2,10 @@
 <nav class="topbar #topbar-expand-lg topbar-inverse bg-primary" id="app-topbar">
     <div class="topbar-left">
         {{--<span class="topbar-btn topbar-menu-toggler"><i>&#9776;</i></span>--}}
-        @if(auth()->user()->is_superadmin==1)
+        @if(session()->get('user')->is_superadmin==1)
             <span class="topbar-btn sidebar-toggler #sidebar-toggle-fold"><i>&#9776;</i></span>
         @else
-            @if(auth()->user() && !empty(pluckOrganization('id')))
+            @if(session()->get('user') && !empty(pluckOrganization('id')))
                 <span class="topbar-btn sidebar-toggler #sidebar-toggle-fold"><i>&#9776;</i></span>
             @endif
         @endif
@@ -35,11 +35,11 @@
                         $user_role=isset($crole) ? $crole->name : 'User';
                         }
                     @endphp
-                    <img class="avatar" src="{{ auth()->user()->avatar }}" alt="{{ auth()->user()->initials }}">
+                    <img class="avatar" src="{{ session()->get('user')->avatar }}" alt="{{ session()->get('user')->initials }}">
                     <span class="ml-1 fs-14">Welcome, {{ucfirst($user_role)}}</span>
                 </span>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item text-truncate w-180px" href="{{url('users')}}/{{auth()->user()->id}}/profile"><i class="ti-user"></i> {{auth()->user()->full_name}}</a>
+                    <a class="dropdown-item text-truncate w-180px" href="{{url('users')}}/{{session()->get('user')->id}}/profile"><i class="ti-user"></i> {{session()->get('user')->full_name}}</a>
                     @if(!isSuperadmin())
                     @permission('update.organization')
                     <a class="dropdown-item" href="{{url('organizations')}}/{{pluckOrganization('id')}}/view"><i class="ti-briefcase"></i> My Organization</a>

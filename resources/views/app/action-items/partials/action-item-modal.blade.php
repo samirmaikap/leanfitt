@@ -117,7 +117,7 @@
                         @if(!isSuperadmin())
                         <form class="comment-form publisher publisher-multi b-1" method="post">
                             {{ csrf_field() }}
-                            <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                            <input type="hidden" name="user_id" value="{{ session()->get('user')->id }}">
                             <input type="hidden" name="type" value="action_item">
                             <input type="hidden" name="action_item_id" value="{{ $actionItem->id }}">
                             <textarea name="comment" class="publisher-input comment" rows="3"

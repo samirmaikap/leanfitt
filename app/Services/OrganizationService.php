@@ -13,6 +13,7 @@ use App\Repositories\OrganizationRepository;
 use App\Repositories\UserRepository;
 use App\Validators\CardValidator;
 use App\Validators\OrganizationValidator;
+use App\Validators\UserValidator;
 use function auth;
 use function dd;
 use Illuminate\Support\Facades\DB;
@@ -109,6 +110,67 @@ class OrganizationService
         return $organization;
     }
 
+    public function createCustom($data){
+        $subdomain = str_slug(arrayValue($data['organization'],'name'));
+        $data['organization']['subdomain'] = $subdomain;
+        $data['organization']['featured_image']=env('UI_AVATAR').arrayValue($data['organization'],'name');
+
+        DB::beginTransaction();
+        $organization = $this->organizationRepository->create(arrayValue($data,'organization'));
+        if(!$organization){
+            DB::rollBack();
+            throw new \Exception(config("messages.common_error"));
+        }
+
+        $subscription=$organization->newSubscription( 'main', arrayValue($data['subscription'],'plan'))
+            ->trialDays(7);
+//            ->create(null,[
+//            'email' => $organization->email,
+//            'description' => $organization->name
+//        ]);
+        if(!$subscription){
+            DB::rollBack();
+            throw new \Exception(config("messages.common_error"));
+        }
+
+        $data['admin']['password']=$data['admin']['password_confirmation']='password';
+        $data['admin']['avatar']=env('UI_AVATAR').urlencode(arrayValue($data['admin'],'first_name').' '.arrayValue($data['admin'],'last_name'));
+        $validator = new UserValidator($data['admin'], 'create');
+
+        if($validator->fails()){
+            throw new \Exception($validator->messages());
+        }
+
+        $admin = $this->userRepository->create($data['admin']);
+        dd($admin);
+        $user=$this->userRepository->find($admin->id);
+        dd($user);
+        $user->organizations()->attach([ $organization->id => ['is_default' => $isDefault]]);
+        if(isset($organization))
+        {
+            $user->organizations()->attach($organization);
+        }
+
+        if(isset($data['admin']['departments']))
+        {
+            $user->departments()->sync($data['admin']['departments']);
+        }
+
+        if(isset($data['admin']['roles']))
+        {
+            $user->syncRoles($data['admin']['roles']);
+        }
+
+        if($user){
+            DB::commit();
+            return;
+        }
+        else{
+            DB::rollBack();
+            throw new \Exception(config("messages.common_error"));
+        }
+    }
+
     public function updateOrganization($data,$image,$org)
     {
         if(empty($org)){
@@ -188,7 +250,6 @@ class OrganizationService
         $pro_actions=count($actonitems) > 0 ? $actonitems->map(function($action){
             return $action->id;
         })->toArray() : [];
-
         if(count($pro_actions) > 0){
             for ($i=0;$i<count($pro_actions);$i++){
                 $proDel=$this->deleteRepo->deleteActionItems('project',$pro_actions[$i]);
@@ -201,7 +262,7 @@ class OrganizationService
             $proDelCount++;
         }
 
-        if($proDelCount > 0 && $organization->forceDelete()){
+        if($proDelCount > 0 && $this->organizationRepository->forceDeleteRecord($organization)){
            return;
         }
 

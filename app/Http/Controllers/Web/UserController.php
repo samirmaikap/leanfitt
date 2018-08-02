@@ -45,17 +45,16 @@ class UserController extends Controller
         $data['orglist']=$this->orgService->list();
         $orglist=empty($data['orglist']) ? null : $data['orglist']->pluck('id')->toArray();
         $firstOrg=array_shift($orglist);
-
-        if($request->query('organization'))
-        {
+        if($request->query('organization')){
             $organizationId = $request->query('organization');
         }
-        elseif (!empty($activeOrganization))
-        {
-            $organizationId = $activeOrganization->id;
-        }
         else{
-            $organizationId=$firstOrg;
+            if(!empty(pluckOrganization('id'))){
+                $organizationId =pluckOrganization('id');
+            }
+            else{
+                $organizationId =$firstOrg;
+            }
         }
 
         if($request->query('department'))
@@ -71,16 +70,13 @@ class UserController extends Controller
 
 
         $data['users'] = $this->userService->all($organizationId, $departmentId, $roleId);
-//        $data['departments'] = $this->departmentService->allDepartments();
         $data['rolelist'] = $this->roleService->all($organizationId);
-        $sessionOrg=$request->query('organization') ? $request->get('organization') : $firstOrg;
-        $data['activeorg']=empty($sessionOrg) ? pluckOrganization('id') : $sessionOrg;
+        $data['activeorg']=$organizationId;
         $data['activedep']=$request->get('department');
         $data['activerole']=$request->get('role');
+        $req['organization']=$organizationId;
 
-        //$data['users']=$this->userService->all($request->all()); //Fetch from the earlier service method
-
-        $data['deplist']=$this->departmentService->list($request->all());
+        $data['deplist']=$this->departmentService->list($req);
 
         return view('app.users.index', $data);
 
@@ -111,10 +107,22 @@ class UserController extends Controller
 
     public function profile(Request $request,$user_id)
     {
+        $data['page']='profile';
         $organizationId=$request->has('organization') ? $request->get('organization') : pluckOrganization('id');
+        $data['organization_id']=$organizationId;
+        $data['user_id']=$user_id;
         $data['user']=$this->userService->profile($user_id);
         $data['departments']=$this->departmentService->list($request->all());
         $data['roles']=$this->roleService->all($organizationId);
+
+        if(isSuperadmin() && session()->get('user')->id==$data['user']->id){
+            $data['superadmin_profile']=true;
+            $data['evaluations']=null;
+        }
+        else{
+            $data['superadmin_profile']= false;
+            $data['evaluations']=$this->userService->getEvaluation($user_id,$organizationId);
+        }
         return view('app.users.profile', $data);
     }
 
@@ -134,14 +142,12 @@ class UserController extends Controller
         {
             $image=$request->hasFile('image') ? $request->file('image') : null;
             $this->userService->update($request->all(),$image,$id);
-            session()->forget('user');
-            session()->put('user',auth()->user());
             if(session()->get('user')->id==$id){
                 $roleRepo=new RoleRepository();
-                session()->forget('currentRole');
-                $currentRole=$roleRepo->currentRoles(pluckOrganization('id'),$id)->first();
-                session()->put('currentRole',$currentRole);
+                session()->forget(['user','currentRole']);
+                session()->put(['user'=>auth()->user(),'currentRole'=>$roleRepo->currentRoles(pluckOrganization('id'),$id)->first()]);
             }
+
             return redirect()->back()->with(['success' => 'Profile has been updated successfully']);
         }
         catch(\Exception $e)
@@ -191,5 +197,18 @@ class UserController extends Controller
         {
             return redirect()->back()->withErrors([$e->getMessage()]);
         }
+    }
+
+    public function evaluation(Request $request){
+        try
+        {
+            $this->userService->evaluation($request->all());
+            return redirect()->back()->with(['success' => 'Evaluation has been updated']);
+        }
+        catch(\Exception $e)
+        {
+            return redirect()->back()->withErrors([$e->getMessage()]);
+        }
+
     }
 }

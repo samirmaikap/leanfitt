@@ -15,12 +15,12 @@
     @php $page=isset($page) ? $page : null; @endphp
 
     <nav class="sidebar-navigation">
-        @if(auth()->user() && session()->get('user')->is_superadmin==0 && auth()->user()->organizations()->count())
+        @if(!empty(session()->get('user')) && session()->get('user')->is_superadmin==0 && count(session('relatedOrganizations')) > 0)
             <div class="sidebar-profile bg-pale-gray">
                 <div class="dropdown">
                 <span class="dropdown-toggle no-caret" data-toggle="dropdown">
                     <div class="profile-info">
-                        <img class="avatar" src="{{empty(auth()->user()->avatar) ? env('UI_AVATAR').session()->get('user')->full_name : auth()->user()->avatar}}" alt="...">
+                        <img class="avatar" src="{{session()->get('user')->avatar}}" alt="...">
                         <h4 class="mb-0">
                             @php $defaultOrganization = session()->get('organization')  @endphp
                             {{ isset($defaultOrganization->name) ? $defaultOrganization->name : null }}
@@ -57,7 +57,7 @@
                     </a>
                 </li>
 
-                @if(auth()->user()->is_superadmin==1)
+                @if(session()->get('user')->is_superadmin==1)
                     <li class="menu-item {{$page=='organizations' ? 'active' : ''}}">
                         <a class="menu-link" href="{{ url('organizations') }}">
                             <span class="icon fa fa-building"></span>

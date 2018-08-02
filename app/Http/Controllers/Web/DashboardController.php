@@ -51,6 +51,7 @@ class DashboardController extends Controller
         $data['assessment']=$this->service->assessmentTaken($organization);
         $data['action_items']=$this->service->getActionItems($organization);
         $data['tangibles']=$this->service->getTangible($organization);
+        dd($data['tangibles']);
 
         return $data;
     }

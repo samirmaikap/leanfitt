@@ -26,6 +26,11 @@
         <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/luizbills/feather-icon-font/v4.7.0/dist/feather.css">
 
+        @if(isset($page) && $page=='profile')
+            <link href="{{ asset('assets/ion/css/ion.rangeSlider.css') }}" rel="stylesheet">
+            <link href="{{ asset('assets/ion/css/ion.rangeSlider.skinModern.css') }}" rel="stylesheet">
+            <link href="{{ asset('assets/ion/css/normalize.css') }}" rel="stylesheet">
+        @endif
     </head>
     <body class="#sidebar-folded">
         @include('layouts.partials.preloader')
@@ -67,6 +72,9 @@
         <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
     @endif
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    @if(isset($page) && $page=='profile')
+        <script src="{{ asset('assets/ion/js/ion.rangeSlider.min.js') }}"></script>
+    @endif
 
     <script>
         function submitForm(selector, method) {

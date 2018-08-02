@@ -25,9 +25,7 @@ Route::post('password/change', 'Web\AuthController@updatePassword');
 Route::get('invitaion/accept', 'Web\AuthController@invitation');
 
 Route::get('test', function(){
-//    $roleRepo=new \App\Repositories\RoleRepository();
-//    dd(($roleRepo->currentRoles(pluckOrganization('id'),session('user')->id))->first()->name);
-//    dd(session()->get('user'));
+
 });
 
 Route::view('abort/suspend', 'errors.suspend');
@@ -41,7 +39,7 @@ Route::get('dashboard/export/pdf', 'Web\DashboardController@makePdf');
 
 // User routes
 Route::group(['domain' => '{organization}' . config('session.domain'), 'namespace' => 'Web'], function () {
-    Route::group(['middleware' => ['checkDomain','hasAccess']], function() {
+    Route::group(['middleware' => ['checkDomain','hasAccess','auth:web']], function() {
         Route::get('/dashboard', 'DashboardController@index');
 
         Route::get('users', 'UserController@index');
@@ -53,6 +51,8 @@ Route::group(['domain' => '{organization}' . config('session.domain'), 'namespac
         Route::get('users/{id}/invitation/resend', 'UserController@reInvitation');
         Route::put('users/{id}', 'UserController@update');
         Route::delete('users/{id}', 'UserController@delete');
+
+        Route::post('users/profile/evaluation', 'UserController@evaluation');
 
         Route::get('organizations/{organization_id}/view','OrganizationController@show');
         Route::get('organizations/create', 'OrganizationController@create');
@@ -136,7 +136,7 @@ Route::group(['domain' => '{organization}' . config('session.domain'), 'namespac
 
 });
 
-Route::group(['namespace' => 'Web'], function () {
+Route::group(['namespace' => 'Web','middleware'=>'auth:web'], function () {
 
     Route::get('/dashboard', 'DashboardController@index');
 
@@ -144,6 +144,8 @@ Route::group(['namespace' => 'Web'], function () {
     Route::get('organizations/{organization_id}/view','OrganizationController@show');
     Route::get('organizations/create', 'OrganizationController@create');
     Route::post('organizations/create','OrganizationController@store');
+    Route::post('organizations/create/custom','OrganizationController@customOrganization');
+    Route::delete('organizations/{organization_id}','OrganizationController@deleteOrganization');
 
     Route::get('users', 'UserController@index');
     Route::put('users/{id}', 'UserController@update');
@@ -166,4 +168,6 @@ Route::group(['namespace' => 'Web'], function () {
     Route::get('assessment', 'AssessmentController@index');
 
     Route::get('awards', 'AwardController@index');
+
+    Route::post('settings/intangibles', 'SettingsController@intangibles');
 });

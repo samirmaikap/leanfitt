@@ -56,6 +56,6 @@ class Project extends Model
     }
 
     public function tangibleIntangible(){
-        return $this->hasOne(TangibleIntangible::class);
+        return $this->hasMany(TangibleIntangible::class,'project_id','id');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 
+use App\Models\Project;
 use App\Repositories\ActionItemAssignmentRepository;
 use App\Repositories\ActionItemRepository;
 use App\Repositories\AssessmentRepository;
@@ -90,12 +91,12 @@ class DashboardService
 
 
     public function getProjects($organization=null){
-        $query=$this->projectRepo
-            ->where('organization_id',empty($organization) ? null : $organization, empty($organization) ? '!=' : '=')
-            ->select(['is_completed','is_archived'])->get();
-        $data['completed']=count($query->where('is_completed',1));
-        $data['active']=count($query->where('is_completed',0)->where('is_archived',0));
-        return renderCollection($data);
+//        $query=$this->projectRepo
+//            ->where('organization_id',empty($organization) ? null : $organization, empty($organization) ? '!=' : '=')
+//            ->select(['is_completed','is_archived'])->get();
+//        $data['completed']=count($query->where('is_completed',1));
+//        $data['active']=count($query->where('is_completed',0)->where('is_archived',0));
+//        return renderCollection($data);
     }
 
 
@@ -121,29 +122,40 @@ class DashboardService
           return $query;
     }
 
-    public function getTangible($organization=null){
-        $query=$this->savingsRepo
-            ->whereHas('project',function($query) use ($organization) {
-                $query->where('organization_id',empty($organization) ? '!=' : '=', empty($organization) ? null : $organization );
-            })
-            ->where('type','tangible')
-            ->select(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d") as created_at,value'))
-            ->get();
+    public function getTangible($organization=null,$user=null){
+//        $query=$this->savingsRepo
+//            ->whereHas('project',function($query) use ($organization) {
+//                $query->where('organization_id',empty($organization) ? '!=' : '=', empty($organization) ? null : $organization );
+//            })
+//            ->where('type','tangible')
+//            ->select(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d") as created_at,value'))
+//            ->get();
+//        $query=$this->projectRepo
+//            ->where('organization_id',empty($organization) ? null : $organization, empty($organization) ? '!=' : '=')
+//            ->with('tangibleIntangible')
+//            ->all();
+//        $query=$this->savingsRepo->getTangibles($organization,null);
+//        dd($query);
+//        return $query;
+
+        $query=$this->projectRepo->getTangibles($organization,$user);
+//        $query=Project::with('tangibleIntangible')->get();
+        dd($query);
         return $query;
     }
 
-    public function userTangible($user){
-        $query=$this->savingsRepo
-            ->whereHas('project',function($query) use ($user) {
-                $query->whereHas('members',function ($query) use($user) {
-                    $query->where('user_id', $user);
-                });
-            })
-            ->where('type','tangible')
-            ->select(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d") as created_at,value'))
-            ->get();
-        return $query;
-    }
+//    public function userTangible($user){
+//        $query=$this->savingsRepo
+//            ->whereHas('project',function($query) use ($user) {
+//                $query->whereHas('members',function ($query) use($user) {
+//                    $query->where('user_id', $user);
+//                });
+//            })
+//            ->where('type','tangible')
+//            ->select(DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d") as created_at,value'))
+//            ->get();
+//        return $query;
+//    }
 
 
 }
