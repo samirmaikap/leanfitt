@@ -27,6 +27,8 @@ class OrganizationController extends Controller
     public function index(){
         $data['page']='organizations';
         $data['organizations'] = $this->service->all();
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+        $data['plans']=Plan::all();
         return view('app.organizations.index', $data);
     }
 
@@ -106,6 +108,26 @@ class OrganizationController extends Controller
         try{
             $this->service->resumeSubscription($organization_id);
             return redirect()->back()->with('success', 'Subscription resumed');
+        }catch (\Exception $e){
+            return redirect()->back()->withErrors([$e->getMessage()]);
+        }
+    }
+
+    public function customOrganization(Request $request){
+        $this->service->createCustom($request->all());
+        try{
+            $this->service->createCustom($request->all());
+            return redirect()->back()->with('success', 'Organization has been added');
+        }catch (\Exception $e){
+            return redirect()->back()->withInput()->withErrors([$e->getMessage()]);
+        }
+
+    }
+
+    public function deleteOrganization($organization_id){
+        try{
+            $this->service->removeOrganization($organization_id);
+            return redirect()->back()->with('success', 'Organization has been deleted');
         }catch (\Exception $e){
             return redirect()->back()->withErrors([$e->getMessage()]);
         }

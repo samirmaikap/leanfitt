@@ -112,9 +112,19 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card ">
+                        {{--<div class="card-header">--}}
+                            {{--<h3 class="card-title pull-left">Action items due dates  </h3>--}}
+                            {{--<a class="pull-right fs-17" href="{{url('projects')}}"><i class="fe fe-external-link"></i></a>--}}
+                        {{--</div>--}}
+
                         <div class="card-header">
-                            <h3 class="card-title pull-left">Action items due dates  </h3>
-                            <a class="pull-right fs-17" href="{{url('projects')}}"><i class="fe fe-external-link"></i></a>
+                            <h4 class="pull-left">Action items due dates</h4>
+                            <div class="flexbox align-items-center  pull-right gap-items-4">
+                                <a class="text-dark" href="#" data-calendar="prev"><i class="ti-angle-left"></i></a>
+                                <span class="text-dark fs-16" id="calendar-title"></span>
+                                <a class="text-dark" href="#" data-calendar="next"><i class="ti-angle-right"></i></a>
+                            </div>
+
                         </div>
                         <div class="card-body">
                             <div id="calendar" data-provide="fullcalendar"></div>
@@ -133,7 +143,6 @@
                         <div class="card-body">
                             <canvas id="tangible-chart" width="400" height="400"></canvas>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -144,7 +153,8 @@
             $(function(){
                 var calendar = $('#calendar');
                 var events=[];
-                var items=JSON.parse('{!!$action_items->values()->toJson() !!}');
+                var items=JSON.parse('{!!json_encode($action_items->values(),JSON_HEX_APOS) !!}');
+                console.log(items);
                 for(var i=0; i<items.length;i++){
                     if(items[i].process=='Backlog'){
                         var color = '#dc3545';
@@ -182,7 +192,10 @@
                     events: events,
                     eventRender: function(event, element) {
                         $(element).tooltip({title: event.tooltip});
-                    }
+                    },
+                    viewRender: function(view, element) {
+                        $('#calendar-title').text( calendar.fullCalendar('getView').title );
+                    },
                     // dayClick: function(date, jsEvent, view) {
                     //     $('#modal-add-event').modal('show');
                     // },
@@ -190,7 +203,50 @@
                     //     $('#modal-view-event').modal('show');
                     // }
                 });
+
+                $('[data-calendar-view]').on('click', function(){
+                    var view = $(this).data('calendar-view');
+                    calendar.fullCalendar('changeView', view);
+
+                    makeViewActive($(this));
+                });
+
+                var makeViewActive = function(e) {
+                    $(e).closest('.nav').find('.nav-link.active, .dropdown-item.active').removeClass('active');
+                    $(e).addClass('active');
+                    if ( $(e).hasClass('dropdown-item') ) {
+                        $(e).closest('.dropdown').children('.nav-link').addClass('active');
+                    }
+                }
+
+
+
+                /* handle caledar actions
+                -----------------------------------------------------------------*/
+
+                $('[data-calendar]').on('click', function(){
+                    var action = $(this).data('calendar');
+
+                    switch(action) {
+                        case 'today':
+                            calendar.fullCalendar('today');
+                            break;
+
+                        case 'next':
+                            calendar.fullCalendar('next');
+                            break;
+
+                        case 'prev':
+                            calendar.fullCalendar('prev');
+                            break;
+                    }
+                });
             })
+
+            /* handle change view
+        -----------------------------------------------------------------*/
+
+
 
             var value=JSON.parse('{!!$tangibles->pluck('value')->toJson() !!}')
             var label=JSON.parse('{!!$tangibles->pluck('created_at')->toJson() !!}')

@@ -78,14 +78,14 @@
                                                 </div>
                                             @endforeach
                                         @endif
-
                                     </div>
-                                    <div class="card-footer text-center">
-                                        <button type="button" class="btn btn-round btn-outline-info add-tangible">Add New</button>
-                                        <button class="btn btn-round btn-outline-success">Update</button>
-                                    </div>
+                                    @if(!isSuperadmin())
+                                        <div class="card-footer text-center">
+                                            <button type="button" class="btn btn-round btn-outline-info add-tangible">Add New</button>
+                                            <button class="btn btn-round btn-outline-success">Update</button>
+                                        </div>
+                                    @endif
                                 </form>
-
                             </div>
                         </div>
 
@@ -98,7 +98,8 @@
                                         @php $intangibles_arr=$intangibles->pluck('value')->toArray(); @endphp
                                         @php
                                             $diff_arr=array_diff($intangibles_arr,$default_savings_arr);
-                                            $other_name=array_pop($diff_arr) @endphp
+                                            $other_name=array_pop($diff_arr)
+                                        @endphp
 
                                         @foreach($default_savings as $key3=>$int_value)
                                             @if(next($default_savings))
@@ -123,9 +124,11 @@
                                             @endif
                                         @endforeach
                                     </div>
-                                    <div class="card-footer text-center">
-                                        <button class="btn btn-round btn-outline-success update-intangible">Update</button>
-                                    </div>
+                                    @if(!isSuperadmin())
+                                        <div class="card-footer text-center">
+                                            <button class="btn btn-round btn-outline-success update-intangible">Update</button>
+                                        </div>
+                                    @endif
                                 </form>
                             </div>
                         </div>
@@ -157,7 +160,6 @@
                                     @if(!isSuperadmin())
                                         <div class="avatar avatar-add avatar-lg hover-white cursor-pointer" data-toggle="modal" data-target="#modal-member"></div>
                                     @endif
-
                                 </div>
                             </div>
                         </div>
@@ -490,6 +492,7 @@
                        '                                                            <span class="badge badge-pill cursor-pointer fs-15 text-success"><i class="ti-trash"></i></span>\n' +
                        '                                                        </div>'
                    $('.tangible-container').append(html);
+                   $('#tangible-input').val('');
                }
                else{
                    $('#tangible-'+key).find('.title').html(value);

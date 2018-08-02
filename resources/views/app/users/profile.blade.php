@@ -112,7 +112,7 @@
                             @foreach($evaluations as $key=>$evaluation_col)
                                 @foreach($evaluation_col as $evaluation)
                                     <div class="card">
-                                        <h4 class="card-title py-20"><strong>Evaluation {{isSuperadmin() ? ' on '.ucwords($key) : ''}}</strong></h4>
+                                        <h4 class="card-title py-20"><strong>Evaluation {{isSuperadmin() ? ' for '.ucwords($key) : ''}}</strong></h4>
                                         <form method="post" action="{{url('users/profile/evaluation')}}" enctype="multipart/form-data">
                                             {{csrf_field()}}
                                             <div class="card-body">
@@ -150,13 +150,17 @@
                                                 <input type="hidden" name="evaluated_by" value="{{session()->get('user')->id}}">
                                                 <input type="hidden" name="evaluation_id" value="{{isset($evaluation->id) ? $evaluation->id : ''}}">
                                             </div>
-                                            @if(session()->get('user')->id != $user->id)
-                                                @permission('create.evaluation')
-                                                <div class="card-body text-center py-20">
-                                                    <button class="btn btn-success btn-round w-200px mb-20">Save</button>
+
+                                            <div class="card-body text-center py-20">
+                                                <div class="float-left align-middle">
+                                                    <span class="">Last update By Samir Maikap</span>
                                                 </div>
-                                                @endpermission
-                                            @endif
+                                                @if(session()->get('user')->id != $user->id)
+                                                    @permission('create.evaluation')
+                                                    <button class="btn align-middle float-right btn-success btn-round w-200px mb-20">Save</button>
+                                                    @endpermission
+                                                @endif
+                                            </div>
                                         </form>
                                     </div>
                                 @endforeach

@@ -6,6 +6,7 @@ use App\Models\ActionItem;
 use App\Models\Project;
 use App\Repositories\Contracts\ProjectRepositoryInterface;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class ProjectRepository extends BaseRepository //implements ProjectRepositoryInterface
 {
@@ -32,6 +33,7 @@ class ProjectRepository extends BaseRepository //implements ProjectRepositoryInt
             ->withCount('members')
             ->withCount('attachments')
             ->withCount('comments')
+            ->distinct()
             ->get();
         return $query;
     }
@@ -66,6 +68,20 @@ class ProjectRepository extends BaseRepository //implements ProjectRepositoryInt
             ->where('projects.id', $project_id)
             ->select('u.avatar', 'u.id', 'u.first_name', 'u.last_name')
             ->distinct()->get();
+        return $query;
+    }
+
+    public function getTangibles($organization,$user){
+//        $query=$this->model()->with(['tangibleIntangible'=>function($query){
+//            $query->where('type','tangible')->get();
+//        }])->where('organization_id',empty($organization) ? '!=' : '=', empty($organization) ? null : $organization );
+//
+//        if(!empty($user)){
+//            $query=$query->whereHas('members',function ($query) use($user) {
+//                $query->where('user_id', $user);
+//            });
+//        }
+        $query=$this->model()->select(['name'])->with('tangibleIntangible')->get();
         return $query;
     }
 }

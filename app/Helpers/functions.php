@@ -39,6 +39,7 @@ function pluckOrganization($key){
     if($session){
         return $session->$key;
     }
+
     return null;
 }
 

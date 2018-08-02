@@ -45,17 +45,16 @@ class UserController extends Controller
         $data['orglist']=$this->orgService->list();
         $orglist=empty($data['orglist']) ? null : $data['orglist']->pluck('id')->toArray();
         $firstOrg=array_shift($orglist);
-
-        if($request->query('organization'))
-        {
+        if($request->query('organization')){
             $organizationId = $request->query('organization');
         }
-        elseif (!empty($activeOrganization))
-        {
-            $organizationId = $activeOrganization->id;
-        }
         else{
-            $organizationId=$firstOrg;
+            if(!empty(pluckOrganization('id'))){
+                $organizationId =pluckOrganization('id');
+            }
+            else{
+                $organizationId =$firstOrg;
+            }
         }
 
         if($request->query('department'))
@@ -71,16 +70,13 @@ class UserController extends Controller
 
 
         $data['users'] = $this->userService->all($organizationId, $departmentId, $roleId);
-//        $data['departments'] = $this->departmentService->allDepartments();
         $data['rolelist'] = $this->roleService->all($organizationId);
-        $sessionOrg=$request->query('organization') ? $request->get('organization') : $firstOrg;
-        $data['activeorg']=empty($sessionOrg) ? pluckOrganization('id') : $sessionOrg;
+        $data['activeorg']=$organizationId;
         $data['activedep']=$request->get('department');
         $data['activerole']=$request->get('role');
+        $req['organization']=$organizationId;
 
-        //$data['users']=$this->userService->all($request->all()); //Fetch from the earlier service method
-
-        $data['deplist']=$this->departmentService->list($request->all());
+        $data['deplist']=$this->departmentService->list($req);
 
         return view('app.users.index', $data);
 
