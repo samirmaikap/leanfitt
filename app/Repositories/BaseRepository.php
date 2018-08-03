@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use App\Repositories\Contracts\BaseRepositoryInterface;
 
-abstract class BaseRepository implements BaseRepositoryInterface
+abstract class BaseRepository //implements BaseRepositoryInterface
 {
     /**
      * @var Model
@@ -22,9 +22,9 @@ abstract class BaseRepository implements BaseRepositoryInterface
      */
     abstract public function model();
 
-    public function all()
+    public function all($cols=null)
     {
-        return $this->model->get();
+        return $this->model->get($cols);
     }
 
     public function __construct()

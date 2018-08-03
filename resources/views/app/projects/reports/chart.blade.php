@@ -62,6 +62,8 @@
                         </td>
                     </tr>
                 @endforeach
+            @else
+                <tr><td></td><td>No data found</td><td></td></tr>
             @endif
 
             </tbody>

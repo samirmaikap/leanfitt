@@ -3,7 +3,7 @@
 namespace App\Services;
 
 
-use App\Repositories\ReportCategoryRepository;
+use App\Repositories\LeantoolRepository;
 use App\Repositories\ReportChartAxesRepository;
 use App\Repositories\ReportChartRepository;
 use App\Repositories\ReportDefaultAssignmentRepository;
@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\DB;
 class ReportService //implements ReportServiceInterface
 {
     protected $reportRepo;
-    protected $categoryRepo;
+    protected $leanRepo;
     protected $chartRepo;
     protected $chartAxisRepo;
     protected $gridRepo;
@@ -38,7 +38,7 @@ class ReportService //implements ReportServiceInterface
     protected $problemRepo;
     protected $reasonRepo;
     public function __construct(ReportRepository $reportRepository,
-                                ReportCategoryRepository $categoryRepository,
+                                LeantoolRepository $leantoolRepository,
                                 ReportChartRepository $reportChartRepository,
                                 ReportChartAxesRepository $chartAxesRepository,
                                 ReportGridRepository $gridRepository,
@@ -50,7 +50,7 @@ class ReportService //implements ReportServiceInterface
                                 ReportReasonRepository $reasonRepository)
     {
         $this->reportRepo=$reportRepository;
-        $this->categoryRepo=$categoryRepository;
+        $this->leanRepo=$leantoolRepository;
         $this->chartRepo=$reportChartRepository;
         $this->chartAxisRepo=$chartAxesRepository;
         $this->gridRepo=$gridRepository;
@@ -80,13 +80,8 @@ class ReportService //implements ReportServiceInterface
 
     public function names()
     {
-        $query=$this->categoryRepo->all();
-        if(count($query) > 0){
-            return $query;
-        }
-        else{
-            throw new \Exception("No category found");
-        }
+        $query=$this->leanRepo->all(['id','name','description']);
+        return $query;
 
     }
 

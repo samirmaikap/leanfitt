@@ -24,21 +24,21 @@ class ReportController extends Controller
     }
 
     public function view($project_id,$report_id){
+        $data['page']='projects';
         $report=$this->service->show($report_id);
         $data['project_id']=$project_id;
         $data['report']=$report;
-        $data['report_category']=$report->report_category_id;
+        $data['report_category']=$report->lean_tool_id;
         $data['report_data']=$this->getReport($data['report_category'],$report_id);
         return view('app.projects.reports.view',$data);
     }
 
     protected function getReport($report_category,$report_id){
         switch($report_category){
-            case 14:
-            case 11:
-            case 12:
-            case 6:
-            case 15:
+            case 16:
+            case 18:
+            case 19:
+            case 20:
                return $this->service->showChartData($report_id);
                break;
             default:

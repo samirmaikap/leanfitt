@@ -21,5 +21,6 @@ class DatabaseSeeder extends Seeder
 //        }
         $this->call(ModelSeeder::class);
         $this->call(PermissionSeeder::class);
+        $this->call(LeantoolSeeder::class);
     }
 }

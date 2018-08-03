@@ -16,6 +16,8 @@ class CreateLeanToolsTable extends Migration
         Schema::create('lean_tools', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->string('category')->nullable();
+            $table->longText('description')->nullable();
             $table->text('featured_image')->nullable();
             $table->longText('overview')->nullable();
             $table->longText('steps')->nullable();

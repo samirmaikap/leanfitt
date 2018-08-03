@@ -14,7 +14,7 @@ class ReportRepository extends BaseRepository //implements ReportRepositoryInter
 
     public function allReports($project){
         return $this->model()->join('projects as p','p.id','=','reports.project_id')
-            ->join('report_categories as cat','cat.id','reports.report_category_id')
+            ->join('lean_tools as cat','cat.id','reports.lean_tool_id')
             ->where('p.id',empty($project) ? '!=':'=',empty($project) ? null : $project)
             ->select(['reports.*','cat.id as category_id','cat.name as report_category'])->get();
     }
@@ -22,7 +22,7 @@ class ReportRepository extends BaseRepository //implements ReportRepositoryInter
     public function showReport($report_id)
     {
         return $this->model()->join('projects as p','p.id','=','reports.project_id')
-            ->join('report_categories as cat','cat.id','reports.report_category_id')
+            ->join('lean_tools as cat','cat.id','reports.lean_tool_id')
             ->where('reports.id',$report_id)
             ->select([
                 'reports.*',
@@ -39,6 +39,6 @@ class ReportRepository extends BaseRepository //implements ReportRepositoryInter
     public function getCategory($report_id)
     {
         $query=$this->model()->find($report_id);
-        return count($query) > 0 ? $query->report_category_id : null;
+        return count($query) > 0 ? $query->lean_tool_id : null;
     }
 }

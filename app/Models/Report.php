@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Report extends Model
 {
     protected $fillable=[
-        'report_category_id',
+        'lean_tool_id',
         'project_id',
     ];
 
     public function category(){
-        return $this->hasOne(ReportCategory::class,'id','report_category_id');
+        return $this->belongsTo(LeanTool::class,'lean_tool_id','id');
     }
 
     public function project(){

@@ -88,7 +88,7 @@ class OrganizationService
 
         if(!empty($stripe_token)){
             $organization->newSubscription( 'main', arrayValue($data['subscription'],'plan'))
-                ->withCoupon(arrayValue($data['subscription']['coupon']))
+                ->withCoupon(arrayValue($data['subscription'],'coupon'))
                 ->create($stripe_token, [
                     'email' => $organization->email,
                     'description' => $organization->name

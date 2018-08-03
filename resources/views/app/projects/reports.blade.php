@@ -48,7 +48,7 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="input-normal">Module Name</label>
-                            <select id="report-category" name="report_category_id" data-provide="selectpicker" data-width="100%">
+                            <select id="report-category" name="lean_tool_id" data-provide="selectpicker" data-width="100%">
                                 @if(count($categories) > 0)
                                     @foreach($categories as $category)
                                         <option value="{{$category->id}}" data-info="{{$category->description}}">{{$category->name}}</option>
@@ -78,6 +78,19 @@
                 var info=$('select option:selected').data('info');
                 $('.category-info').text(info);
             })
+
+            @if(session()->has('success') || session('success'))
+            setTimeout(function () {
+                toastr.success('{{ session('success') }}');
+            }, 500);
+            @endif
+            @if(isset($errors) && count($errors->all()) > 0 && $timeout = 700)
+            @foreach ($errors->all() as $key => $error)
+            setTimeout(function () {
+                toastr.error("{{ $error }}");
+            }, {{ $timeout * $key }});
+            @endforeach
+            @endif
         }
     </script>
 @endsection

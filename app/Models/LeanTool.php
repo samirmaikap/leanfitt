@@ -8,6 +8,8 @@ class LeanTool extends Model
 {
     protected  $fillable=[
         'name',
+        'category',
+        'description',
         'featured_image',
         'overview',
         'steps',
@@ -26,5 +28,9 @@ class LeanTool extends Model
 
     public function assessmentResult(){
         return $this->hasMany(AssessmentResult::class,'lean_tool_id','id');
+    }
+
+    public function reports(){
+        return $this->hasMany(Report::class);
     }
 }

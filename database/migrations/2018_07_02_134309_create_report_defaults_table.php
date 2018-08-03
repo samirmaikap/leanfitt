@@ -15,13 +15,13 @@ class CreateReportDefaultsTable extends Migration
     {
         Schema::create('report_defaults', function (Blueprint $table) {
             $table->increments('id')->unsigned()->index();
-            $table->integer('report_category_id')->unsigned();
+            $table->integer('lean_tool_id')->unsigned();
             $table->string('type')->nullable();
             $table->string('label');
             $table->integer('level')->default(1);
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('report_category_id')->references('id')->on('report_categories')->onDelete('cascade');
+            $table->foreign('lean_tool_id')->references('id')->on('lean_tools')->onDelete('cascade');
         });
     }
 

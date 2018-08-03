@@ -15,12 +15,12 @@ class CreateReportDefaultElementsTable extends Migration
     {
         Schema::create('report_default_elements', function (Blueprint $table) {
             $table->increments('id')->unsigned()->index();
-            $table->integer('report_default_id')->unsigned();
+            $table->integer('lean_tool_id')->unsigned();
             $table->string('sort')->nullable();
             $table->text('label');
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('report_default_id')->references('id')->on('report_defaults')->onDelete('cascade');
+            $table->foreign('lean_tool_id')->references('id')->on('lean_tools')->onDelete('cascade');
         });
     }
 
