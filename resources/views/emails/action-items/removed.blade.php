@@ -303,22 +303,8 @@
                                 <tr><td><img class="logo" src="{{env('APP_URL').(env('APP_LOGO_PATH'))}}"></td></tr>
                                 <tr>
                                     <td>
-                                        <p> An action item named <strong>"{{ $actionItem->title }}"</strong> has been updated. To go to your action item board please follow the link below.</p>
-                                        <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
-                                            <tbody>
-                                            <tr>
-                                                <td align="center">
-                                                    <table border="0" cellpadding="0" cellspacing="0">
-                                                        <tbody>
-                                                        <tr>
-                                                            <td> <a href="{{ url( "http://" . $actionItem->process->board->project->organization->subdomain . env('SESSION_DOMAIN'). "/projects/". $actionItem->process->board->project->id . "/action-items") }}" target="_blank">Go</a> </td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
+                                        <p> <strong>{{ $user->full_name }}</strong> has removed you from the action item  <strong>{{ $actionItem->title }}</strong>. </p>
+                                        <p>You'll no longer be notified for activities on aforementioned action item. </p>
                                     </td>
                                 </tr>
                             </table>

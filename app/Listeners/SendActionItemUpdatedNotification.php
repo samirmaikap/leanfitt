@@ -29,10 +29,20 @@ class SendActionItemUpdatedNotification
     public function handle(ActionItemUpdated $event)
     {
         $actionItem = $event->actionItem;
+        $user = $event->user;
+
+        if($user->id != $actionItem->user_id)
+        {
+            Mail::to($actionItem->assignor->email)->send(new ActionItemUpdatedMail($actionItem));
+        }
+
 
         foreach ($actionItem->assignees as $assignee)
         {
-            Mail::to($assignee->user->email)->send(new ActionItemUpdatedMail($actionItem));
+            if($user->id != $assignee->id)
+            {
+                Mail::to($assignee->email)->send(new ActionItemUpdatedMail($actionItem));
+            }
         }
     }
 }

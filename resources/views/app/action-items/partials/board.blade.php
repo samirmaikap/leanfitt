@@ -40,11 +40,11 @@
                                             @foreach($actionItem->assignees as $assignee)
 
                                             @php 
-                                                $class = (session('user')->id == $assignee->user->id)? 'border-primary' : 'border-light' ;
+                                                $class = (session('user')->id == $assignee->id)? 'border-primary' : 'border-light' ;
                                             @endphp
                                              <span class="avatar avatar-sm b-2 {{ $class }}" >
-                                                <img src="https://ui-avatars.com/api/?name={{ $assignee->user->full_name }}"
-                                                     alt="{{ $assignee->user->initails }}">
+                                                <img src="https://ui-avatars.com/api/?name={{ $assignee->full_name }}"
+                                                     alt="{{ $assignee->initails }}">
                                             </span>
                                             @endforeach
                                         </p>
