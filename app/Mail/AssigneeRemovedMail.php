@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class AssigneeAddedMail extends Mailable
+class AssigneeRemovedMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -33,6 +33,6 @@ class AssigneeAddedMail extends Mailable
      */
     public function build()
     {
-        return $this->subject("Action Item Assigned")->view('emails.action-items.assigned');
+        return $this->view('emails.action-items.removed');
     }
 }

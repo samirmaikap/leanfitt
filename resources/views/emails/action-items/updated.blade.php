@@ -303,7 +303,8 @@
                                 <tr><td><img class="logo" src="{{env('APP_URL').(env('APP_LOGO_PATH'))}}"></td></tr>
                                 <tr>
                                     <td>
-                                        <p> An action item named <strong>"{{ $actionItem->title }}"</strong> has been updated. To go to your action item board please follow the link below.</p>
+                                        <p> <strong>{{ $user->full_name }}</strong> has updated the action item  <strong>{{ $actionItem->title }}</strong>. </p>
+                                        <p>To go to your action item board please follow the link below.</p>
                                         <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                                             <tbody>
                                             <tr>

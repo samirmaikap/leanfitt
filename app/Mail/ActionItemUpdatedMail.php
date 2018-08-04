@@ -12,14 +12,16 @@ class ActionItemUpdatedMail extends Mailable
     use Queueable, SerializesModels;
 
     public $actionItem;
+    public $user;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($actionItem)
+    public function __construct($actionItem, $user)
     {
         $this->actionItem = $actionItem;
+        $this->user = $user;
     }
 
     /**

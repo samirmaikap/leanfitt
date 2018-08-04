@@ -39,7 +39,7 @@ class ActionItem extends Model
     }
 
     public function assignees(){
-        return $this->hasMany(ActionItemAssignee::class);
+        return $this->belongsToMany(User::class, 'action_item_assignees');
     }
 
     public function project()

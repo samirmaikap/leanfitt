@@ -161,7 +161,7 @@
                         }
                     },
                     error: function (response, error) {
-                        console.log(response, error);
+                        console.log(response.responseText, error);
                         toastr.error("Something went wrong! Please try again later.");
                     }
                 });

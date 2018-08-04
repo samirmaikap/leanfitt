@@ -29,7 +29,7 @@ class ActionItemRepository extends BaseRepository //implements ActionItemReposit
 
     public function getItem($id)
     {
-        $query=$this->model()->with(['assignor','assignees.user','comments.user','attachments'])->where('id',$id)->where('is_archived',0)->first();
+        $query=$this->model()->with(['assignor','assignees','comments.user','attachments'])->where('id',$id)->where('is_archived',0)->first();
         return $query;
     }
 

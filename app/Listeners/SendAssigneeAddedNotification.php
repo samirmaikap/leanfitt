@@ -29,7 +29,9 @@ class SendAssigneeAddedNotification
     public function handle(AssigneeAdded $event)
     {
         $actionItem = $event->actionItem;
+        $assignee = $event->assignee;
+        $user = $event->user;
 
-        Mail::to($actionItem->assignor->email)->send(new AssigneeAddedMail($actionItem));
+        Mail::to($assignee->email)->send(new AssigneeAddedMail($actionItem, $assignee, $user));
     }
 }
