@@ -174,3 +174,22 @@ Route::group(['namespace' => 'Web','middleware'=>'auth:web'], function () {
 
     Route::post('settings/intangibles', 'SettingsController@intangibles');
 });
+
+Route::get('/support', function (){
+
+    $html = "<html>
+    <head>
+    <style>
+    #atlwdg-trigger{
+    top: 45%!important;
+    }
+</style>
+</head>
+    <body>
+        <h1 style='text-align: center;margin-top: 200px;'>Found an issue ? Help up make LeanFITT&trade; better!</h1>
+       <script type=\"text/javascript\" src=\"https://astakyuta.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/-nuco74/b/0/a44af77267a987a660377e5c46e0fb64/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-US&collectorId=f07a7413\"></script>
+    </body>
+</html>";
+
+    return $html;
+});

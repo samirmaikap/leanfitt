@@ -31,6 +31,7 @@ use Illuminate\Validation\ValidationException;
 use function in_array;
 use function json_encode;
 use function print_r;
+use function session;
 use function var_dump;
 
 class ActionItemService //implements ActionItemServiceInterface
@@ -146,6 +147,8 @@ class ActionItemService //implements ActionItemServiceInterface
         $data['due_date']=empty($data['due_date']) ? null : Carbon::parse($data['due_date'])->format('Y-m-d');
         $query=$this->itemRepo->update($item_id,$data);
         $item = $this->itemRepo->getItem($item_id);
+//        var_dump(session()->get('user'));
+//        die;
         event(new ActionItemUpdated($item, auth()->user()));
 
         if(!empty($data['assignees']))

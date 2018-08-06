@@ -125,6 +125,13 @@
                         <span class="title">Awards</span>
                     </a>
                 </li>
+                <li class="menu-divider"></li>
+                <li class="menu-item {{$page=='support' ? 'active' : ''}}">
+                    <a class="menu-link" href="{{ url("awards") }}">
+                        <span class="icon fa fa-home"></span>
+                        <span class="title">Support</span>
+                    </a>
+                </li>
             </ul>
         @endif
     </nav>
