@@ -127,7 +127,7 @@
                 </li>
                 <li class="menu-divider"></li>
                 <li class="menu-item {{$page=='support' ? 'active' : ''}}">
-                    <a class="menu-link" href="{{ url("awards") }}">
+                    <a class="menu-link" href="{{ url("support") }}">
                         <span class="icon fa fa-home"></span>
                         <span class="title">Support</span>
                     </a>
