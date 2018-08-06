@@ -33,7 +33,7 @@ class SendActionItemUpdatedNotification
 
         if($user->id != $actionItem->user_id)
         {
-            Mail::to($actionItem->assignor->email)->send(new ActionItemUpdatedMail($actionItem));
+            Mail::to($actionItem->assignor->email)->send(new ActionItemUpdatedMail($actionItem, $user));
         }
 
 
@@ -41,7 +41,7 @@ class SendActionItemUpdatedNotification
         {
             if($user->id != $assignee->id)
             {
-                Mail::to($assignee->email)->send(new ActionItemUpdatedMail($actionItem));
+                Mail::to($assignee->email)->send(new ActionItemUpdatedMail($actionItem, $user));
             }
         }
     }
