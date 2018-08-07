@@ -18,6 +18,7 @@
                             <p>Start Date: {{date('m/d/Y',strtotime($project->start_date))}}</p>
                             <p>End Date: {{date('m/d/Y',strtotime($project->end_date))}}</p>
                             <p>Report Date: {{date('m/d/Y',strtotime($project->report_date))}}</p>
+                            <p>Owner: {{isset($project->owner) ? $project->owner->full_name : 'Not avaliable'}}</p>
                             @if($project->is_completed==1)
                                 <p>Status: <span class="text-success">Completed</span></p>
                             @elseif($project->is_archived==1)

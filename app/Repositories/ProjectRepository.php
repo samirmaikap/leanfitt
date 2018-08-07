@@ -33,6 +33,7 @@ class ProjectRepository extends BaseRepository //implements ProjectRepositoryInt
             ->withCount('members')
             ->withCount('attachments')
             ->withCount('comments')
+            ->with('owner')
             ->distinct()
             ->get();
         return $query;
@@ -54,7 +55,7 @@ class ProjectRepository extends BaseRepository //implements ProjectRepositoryInt
                         'comments.user' => function ($query) {
                             return $query->orderBy('created_at', 'DESC');
                         }])->orderBy('position', 'ASC');
-                }])
+                },'owner'])
             ->where('id', $project_id)
             ->first();
         return $query;

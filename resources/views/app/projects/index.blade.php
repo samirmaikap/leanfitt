@@ -91,6 +91,7 @@
                                 <div class="card-body h-250px">
                                     <h3 class="text-white">{{$project->name}}</h3>
                                     <p class="">{{$project->note}}</p>
+                                    <p class="">Owner: {{isset($project->owner) ? $project->owner->full_name : 'Not avaliable'}}</p>
                                     <p>Start Date: {{date('m/d/Y',strtotime($project->start_date))}}</p>
                                     <p>End Date: {{date('m/d/Y',strtotime($project->end_date))}}</p>
                                     <p>Report Date: {{date('m/d/Y',strtotime($project->report_date))}}</p>

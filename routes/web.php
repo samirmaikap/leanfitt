@@ -37,6 +37,8 @@ Route::get('users/{id}/profile', 'Web\UserController@profile');
 
 Route::get('dashboard/export/pdf', 'Web\DashboardController@makePdf');
 
+Route::get('evaluations', 'Web\UserController@allEvaluations');
+
 // User routes
 Route::group(['domain' => '{organization}' . config('session.domain'), 'namespace' => 'Web'], function () {
     Route::group(['middleware' => ['checkDomain','hasAccess','auth:web']], function() {
