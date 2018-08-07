@@ -24,6 +24,7 @@ class CreateProjectsTable extends Migration
             $table->date('report_date')->nullable();
             $table->tinyInteger('is_archived')->default(0);
             $table->tinyInteger('is_completed')->default(0);
+            $table->integer('owner_id')->unsigned();
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('organization_id')

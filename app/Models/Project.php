@@ -16,6 +16,7 @@ class Project extends Model
         'note',
         'is_archived',
         'is_completed',
+        'owner_id',
     ];
 
     public function kpi(){
@@ -57,5 +58,9 @@ class Project extends Model
 
     public function tangibleIntangible(){
         return $this->hasMany(TangibleIntangible::class,'project_id','id');
+    }
+
+    public function owner(){
+        return $this->belongsTo(User::class,'owner_id','id');
     }
 }
