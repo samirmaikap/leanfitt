@@ -3,6 +3,7 @@
 namespace App\Events;
 
 use App\Models\ActionItem;
+use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -23,7 +24,7 @@ class ActionItemUpdated
      *
      * @return void
      */
-    public function __construct(ActionItem $actionItem, $user)
+    public function __construct(ActionItem $actionItem, User $user)
     {
         $this->actionItem = $actionItem;
         $this->user = $user;

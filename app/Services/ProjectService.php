@@ -10,6 +10,7 @@ use App\Repositories\SavingsRepository;
 use App\Validators\ProjectValidator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use function session;
 
 class ProjectService //implements ProjectServiceInterface
 {
@@ -57,6 +58,8 @@ class ProjectService //implements ProjectServiceInterface
 
     public function create($data)
     {
+        $user = session()->get('user');
+
         $data['organization_id']=pluckOrganization('id');
         $validator=new ProjectValidator($data,'create');
         if($validator->fails()){
@@ -65,9 +68,14 @@ class ProjectService //implements ProjectServiceInterface
         $data['start_date']=Carbon::parse($data['start_date'])->format('Y-m-d');
         $data['end_date']=Carbon::parse($data['end_date'])->format('Y-m-d');
         $data['report_date']=Carbon::parse($data['report_date'])->format('Y-m-d');
+        $data['owner_id'] = $user->id;
 
         $query=$this->projectRepo->create($data);
         if($query){
+            $this->memberService->create([
+                'user_id' => $user->id,
+                'project_id' => $query->id
+            ]);
             $this->activityRepo->create(['added_by'=>auth()->user()->id,'project_id'=>$query->id,'log'=>'Project created']);
             return;
         }
