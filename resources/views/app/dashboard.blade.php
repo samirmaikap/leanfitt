@@ -258,6 +258,7 @@
 
         function renderChart(){
             var dataset=[];
+            var label='';
                     @if(count($tangibles) > 0)
                     @foreach($tangibles as $key=>$tangible)
             var value=JSON.parse('{!!$tangible->tangibleIntangible->pluck('value')->toJson() !!}')
