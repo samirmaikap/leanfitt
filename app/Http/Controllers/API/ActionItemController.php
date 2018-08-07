@@ -47,7 +47,7 @@ class ActionItemController extends Controller
             $result=$this->service->update($request->all(),$item_id);
             return renderSuccess($result,'Action item has been updated',200);
         }catch(\Exception $e){
-            return renderError($e->getMessage());
+            return renderError($e->getTraceAsString());
         }
     }
 

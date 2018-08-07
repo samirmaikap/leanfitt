@@ -16,15 +16,17 @@ class ActionItemUpdated
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $actionItem;
+    public $user;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(ActionItem $actionItem)
+    public function __construct(ActionItem $actionItem, $user)
     {
         $this->actionItem = $actionItem;
+        $this->user = $user;
     }
 
     /**

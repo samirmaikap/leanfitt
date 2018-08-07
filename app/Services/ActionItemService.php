@@ -4,6 +4,8 @@ namespace App\Services;
 
 
 use App\Events\ActionItemUpdated;
+use App\Events\AssigneeAdded;
+use App\Events\AssigneeRemoved;
 use App\Repositories\ActionItemAssigneeRepository;
 use App\Repositories\ActionItemAssignmentRepository;
 use App\Repositories\ActionItemRepository;
@@ -17,12 +19,19 @@ use App\Validators\ActionItemAssigneeValidator;
 use App\Validators\ActionItemValidator;
 use App\Validators\CommentValidator;
 use App\Validators\ItemAssignmentValidator;
+use function array_diff;
+use function auth;
+use function dd;
 use function event;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use function in_array;
+use function json_encode;
+use function print_r;
+use function var_dump;
 
 class ActionItemService //implements ActionItemServiceInterface
 {
@@ -129,7 +138,6 @@ class ActionItemService //implements ActionItemServiceInterface
 
     public function update($data, $item_id)
     {
-
         if(empty($item_id)){
             throw new \Exception('Item id field is required');
         }
@@ -137,22 +145,41 @@ class ActionItemService //implements ActionItemServiceInterface
         DB::beginTransaction();
         $data['due_date']=empty($data['due_date']) ? null : Carbon::parse($data['due_date'])->format('Y-m-d');
         $query=$this->itemRepo->update($item_id,$data);
+        $item = $this->itemRepo->getItem($item_id);
+        event(new ActionItemUpdated($item, auth()->user()));
 
         if(!empty($data['assignees']))
         {
-            $item = $this->itemRepo->getItem($item_id);
-            $item->assignees()->delete();
-            foreach ($data['assignees'] as $assignee)
+//            $item->assignees()->delete();
+            $oldAssignees = $item->assignees()->pluck('user_id')->toArray();
+//            $newAssignees = count(array_diff($data['assignees'], $oldAssignees)) ? array_diff($data['assignees'], $oldAssignees) : $data['assignees'];
+            $newAssignees = array_diff($data['assignees'], $oldAssignees);
+            $removedAssignees = array_diff($oldAssignees, $data['assignees']);
+//            print_r($oldAssignees);
+//            print_r($newAssignees);
+//            print_r($removedAssignees);
+//            die;
+            foreach ($newAssignees as $assignee)
             {
-                $this->addAssignee([
-                    'user_id' => $assignee,
-                    'action_item_id' => $item_id
-                ]);
+//                $this->addAssignee([
+//                    'user_id' => $assignee,
+//                    'action_item_id' => $item_id
+//                ]);
+                $item->assignees()->attach($assignee);
+                $assignee = $item->assignees()->where('id', 1)->first();
+                event(new AssigneeAdded($item, $assignee, auth()->user()));
+            }
+
+            foreach ($removedAssignees as $assignee)
+            {
+                $assignee = $item->assignees()->where('id', 1)->first();
+                $item->assignees()->detach($assignee);
+//                $this->removeAssignee($item_id, $assignee);
+                event(new AssigneeRemoved($item, $assignee, auth()->user()));
             }
         }
         if($query){
             DB::commit();
-            event(new ActionItemUpdated($item));
             return true;
         }
         else{
@@ -189,9 +216,11 @@ class ActionItemService //implements ActionItemServiceInterface
 
     public function removeAssignee($item_id,$assignee_id)
     {
-
+//        var_dump($item_id, $assignee_id);
+        DB::enableQueryLog();
         DB::beginTransaction();
         $assignee=$this->assigneeRepo->where('user_id',$assignee_id)->where('action_item_id',$item_id)->first();
+        var_dump(DB::getQueryLog());
         if($assignee){
             $query=$this->assigneeRepo->deleteRecord($assignee);
             if($query){
