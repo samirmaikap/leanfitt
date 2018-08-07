@@ -27,8 +27,9 @@
                             <td><a href="{{ url("users?organization=". $organization->id) }}">{{ $organization->name }}</a></td>
                             <td>{{ $organization->contact_person }}</td>
                             <td>{{ $organization->users_count }}</td>
-                            <td>@if(isset($organization))
-                                    @if($organization->trial_ends_at && !$organization->trial_ends_at->isPast())
+                            <td>
+                                @if(isset($organization))
+                                    @if($organization->trial_ends_at && !date('Y-m-d',strtotime($organization->trial_ends_at))->isPast())
                                         <span class="text-warning">On Trial</span>
                                     @else
                                         @if($organization->subscriptions[0]->ends_at && $organization->subscriptions[0]->ends_at->isPast())
