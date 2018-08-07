@@ -11,6 +11,7 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use function json_encode;
 
 class ActionItemUpdated
 {
@@ -24,7 +25,7 @@ class ActionItemUpdated
      *
      * @return void
      */
-    public function __construct(ActionItem $actionItem, User $user)
+    public function __construct(ActionItem $actionItem, $user)
     {
         $this->actionItem = $actionItem;
         $this->user = $user;

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use App\Services\ActionItemService;
+use function auth;
 use Dompdf\Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use function var_dump;
 
 class ActionItemController extends Controller
 {
@@ -47,7 +49,7 @@ class ActionItemController extends Controller
             $result=$this->service->update($request->all(),$item_id);
             return renderSuccess($result,'Action item has been updated',200);
         }catch(\Exception $e){
-            return renderError($e->getTraceAsString());
+            return renderError($e->getMessage());
         }
     }
 
