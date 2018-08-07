@@ -23,6 +23,7 @@ class LeanToolService
            return [
                'id'=>$item['id'],
                'name'=>$item['name'],
+               'description'=>$item['description'],
                'quiz_count'=>count(json_decode($item['quiz'])),
            ];
         });

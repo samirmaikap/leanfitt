@@ -18,25 +18,18 @@
                 @if(count($tools) > 0)
                     @foreach($tools as $tool)
                         <div class="col-md-12 col-lg-6">
-                            <div class="card card-inverse bg-img" style="background-image:{{url('/assets/img/gallery/2.jpg')}}; padding-top: 275px">
-                                <div class="flexbox align-items-center px-20" data-overlay="4">
-                                    <div class="flexbox align-items-center mr-auto">
-                                        <div class="pl-12 d-none d-md-block">
-                                            <h5 class="mb-0"><a class="hover-primary text-white" href="#">{{ucfirst($tool->name)}}</a></h5>
-                                            <span>{{$tool->quiz_count}} Questions</span>
-                                        </div>
-                                    </div>
-
-                                    <ul class="flexbox flex-justified text-center py-20">
-                                        <li class="px-10">
-                                            <a href="{{url('/lean-tools/view').'/'.$tool->id}}" class="btn btn-round btn-primary">View</a>
-                                        </li>
-                                        @if(isSuperadmin())
-                                            <li class="px-10">
-                                                <a href="{{url('lean-tools/edit').'/'.$tool->id}}" class="btn btn-round btn-primary">Edit</a>
-                                            </li>
-                                        @endif
-                                    </ul>
+                            <div class="card card-inverse">
+                                <h4 class="card-title">{{ucfirst($tool->name)}}</h4>
+                                <div class="card-body" style="min-height: 350px">
+                                    <img class="w-70px h-70px mb-20" src="{{asset('assets')}}/icons/light/{{str_slug(strtolower($tool->name),'_')}}.png">
+                                    <p>{{$tool->description}}</p>
+                                    <span>{{$tool->quiz_count}} Questions</span>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <a href="{{url('/lean-tools/view').'/'.$tool->id}}" class="btn btn-round btn-primary">View</a>
+                                    @if(isSuperadmin())
+                                        <a href="{{url('lean-tools/edit').'/'.$tool->id}}" class="btn btn-round btn-primary">Edit</a>
+                                    @endif
                                 </div>
                             </div>
                         </div>

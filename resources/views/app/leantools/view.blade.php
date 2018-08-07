@@ -59,5 +59,20 @@
                 </div>
 
             </div>
+            @if(!isSuperadmin() && !isAdmin())
+                <div class="fab fab-fixed">
+                    <button class="btn btn-float btn-danger" data-toggle="button">
+                        <i class="fab-icon-default ti-arrow-up"></i>
+                        <i class="fab-icon-active ti-close"></i>
+                    </button>
+
+                    <ul class="fab-buttons">
+                        @if($tool->id==7)
+                            <li><a  href="{{url('assessment/take')}}" class="btn btn-float btn-sm btn-info" title="Assessment"><i class="ti-book"></i></a></li>
+                        @endif
+                        <li><a href="{{url('quizzes/take/')}}/{{$tool->id}}" class="btn btn-float btn-sm btn-info" title="Quiz"><i class="ti-crown"></i></a></li>
+                    </ul>
+                </div>
+            @endif
         </div>
 @endsection
