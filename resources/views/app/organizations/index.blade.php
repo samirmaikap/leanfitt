@@ -28,7 +28,7 @@
                             <td>{{ $organization->contact_person }}</td>
                             <td>{{ $organization->users_count }}</td>
                             <td>@if(isset($organization->subscriptions[0]))
-                                    @if($organization->subscriptions[0]->trial_ends_at && $organization->subscriptions[0]->trial_ends_at->isPast())
+                                    @if($organization->subscriptions[0]->trial_ends_at && !$organization->subscriptions[0]->trial_ends_at->isPast())
                                         {{$organization->subscriptions[0]->quantity}} <span class="text-warning">(On Trial)</span>
                                     @else
                                         @if($organization->subscriptions[0]->ends_at && $organization->subscriptions[0]->ends_at->isPast())
