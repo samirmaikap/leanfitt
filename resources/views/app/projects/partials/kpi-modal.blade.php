@@ -71,11 +71,11 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label>Start Date</label>
-                                <input class="form-control" type="text" name="start_date"  value="{{ old('start_date', isset($kpi) ? $kpi->start_date : '') }}" data-provide="datepicker">
+                                <input class="form-control" type="text" name="start_date"  value="{{ old('start_date', isset($kpi) ? date('m/d/Y', strtotime($kpi->start_date)) : '') }}" data-provide="datepicker">
                             </div>
                             <div class="col-md-6">
                                 <label>End Date</label>
-                                <input class="form-control" type="text" name="end_date"  value="{{ old('end_date', isset($kpi) ? $kpi->end_date : '') }}" data-provide="datepicker">
+                                <input class="form-control" type="text" name="end_date"  value="{{ old('end_date', isset($kpi) ? date('m/d/Y', strtotime($kpi->end_date)) : '') }}" data-provide="datepicker">
                             </div>
                         </div>
                     </div>

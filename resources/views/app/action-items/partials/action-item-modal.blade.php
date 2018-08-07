@@ -23,6 +23,8 @@
                             {{ csrf_field() }}
                             {{ method_field('put') }}
 
+                            <input type="hidden" name="auth_user_id" value="{{ session()->get('user')->id }}">
+
                             <input type="hidden" name="id" value="{{ $actionItem->id }}">
                             <input type="hidden" name="user_id" value="{{ $actionItem->user_id }}">
                             <input type="hidden" name="process_id" value="{{ $process->id }}">

@@ -30,7 +30,7 @@
                                       <strong>{{ $percentage }}% of target achieved</strong>
                                   </div>
                                 </div>
-                                <div class="#kpi-chart-container" style="margin: 20px;height: 600px;">
+                                <div class="#kpi-chart-container" style="margin: 20px;">
                                     <canvas id="kpi-{{ $kpi->id }}-chart"></canvas>
 
                                     @php
@@ -399,7 +399,7 @@
                 // new Chart($("#kpi-" + kpi.id + "-chart"), {
                 
                     type: 'scatter',
-//                responsive: true,
+                responsive: true,
 //                maintainAspectRatio: true,
                     // Data
                     //

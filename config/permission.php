@@ -13,6 +13,7 @@ return [
         'report',
         'attachment',
         'comment',
+        'evaluation',
     ],
 
     'actions' => [
