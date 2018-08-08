@@ -63,8 +63,8 @@
                                 @if(!isSuperadmin())
                                     @permission('update.user')
                                     <div class="form-group">
-                                        <label class="d-block">Departments</label>
-                                        <select class="disabled-picker" name="departments[]" id="" data-width="100%" data-provide="selectpicker" multiple >
+                                        <label class="d-block">Department</label>
+                                        <select class="disabled-picker" name="departments" id="" data-width="100%" data-provide="selectpicker">
                                             <option value="">None</option>
                                             @if($departments->count())
                                                 @foreach($departments as $department)

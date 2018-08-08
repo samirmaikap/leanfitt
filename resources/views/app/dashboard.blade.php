@@ -110,13 +110,8 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-6">
                     <div class="card ">
-                        {{--<div class="card-header">--}}
-                            {{--<h3 class="card-title pull-left">Action items due dates  </h3>--}}
-                            {{--<a class="pull-right fs-17" href="{{url('projects')}}"><i class="fe fe-external-link"></i></a>--}}
-                        {{--</div>--}}
-
                         <div class="card-header">
                             <h4 class="pull-left">Action items due dates</h4>
                             <div class="flexbox align-items-center  pull-right gap-items-4">
@@ -124,24 +119,20 @@
                                 <span class="text-dark fs-16" id="calendar-title"></span>
                                 <a class="text-dark" href="#" data-calendar="next"><i class="ti-angle-right"></i></a>
                             </div>
-
                         </div>
                         <div class="card-body">
                             <div id="calendar" data-provide="fullcalendar"></div>
                         </div>
-
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-6">
                     <div class="card ">
                         <div class="card-header">
                             <h3 class="card-title pull-left">Tangible Savings</h3>
                             <a class="pull-right fs-17" href="{{url('projects')}}"><i class="fe fe-external-link"></i></a>
                         </div>
                         <div class="card-body">
-                            <canvas id="tangible-chart" width="400" height="400"></canvas>
+                            <canvas id="tangible-chart" width="400" height="445"></canvas>
                         </div>
                     </div>
                 </div>

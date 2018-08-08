@@ -20,7 +20,7 @@
                 <div class="dropdown">
                 <span class="dropdown-toggle no-caret" data-toggle="dropdown">
                     <div class="profile-info">
-                        <img class="avatar" src="{{session()->get('user')->avatar}}" alt="...">
+                        <img class="avatar" src="{{session()->get('organization')->featured_image}}" alt="...">
                         <h4 class="mb-0">
                             @php $defaultOrganization = session()->get('organization')  @endphp
                             {{ isset($defaultOrganization->name) ? $defaultOrganization->name : null }}

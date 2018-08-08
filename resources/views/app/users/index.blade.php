@@ -106,7 +106,13 @@
         <!-- END Page aside -->
         <header class="header no-border">
             <div class="header-bar">
-                <h4>Users</h4>
+                <h4>Users
+                    @if(!isSuperadmin())
+                        @if($activedep || $activerole)
+                            <a href="{{url('users')}}" class="badge badge-danger badge-sm">Reset</a>
+                        @endif
+                    @endif
+                </h4>
                 @if(!isSuperadmin())
                     @permission('create.user')
                     <button class="btn btn-round btn-success" data-toggle="modal" data-target="#modal-invite">Invite</button>

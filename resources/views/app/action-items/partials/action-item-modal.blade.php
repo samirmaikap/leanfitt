@@ -76,10 +76,10 @@
                                                     @endforeach
                                                 {{--@endif--}}
                                             </select>
-                                    </div>        
+                                    </div>
                                 </div>
-                                
-                               
+
+
                             </div>
 
                         </form>
@@ -147,7 +147,7 @@
                                                 </time>
                                             </a>
                                         </p>
-                                    
+
                                         <p class="">{{ $comment->comment }}</p>
                                     </div>
                                 </div>
@@ -161,7 +161,7 @@
                 @if(!isSuperadmin())
                     </div>
                 </div>
-                
+
                 <div class="modal-footer">
                     <button type="submit" class="update-action-item btn btn-block btn-primary">Update</button>
                 </div>
