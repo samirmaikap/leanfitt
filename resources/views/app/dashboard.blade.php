@@ -35,8 +35,8 @@
                         </a>
                     </div>
                 @endif
+                @permission('index.departments')
                 <div class="col-lg-3">
-
                     <a href="{{url('users')}}/{{session()->get('user')->id}}/profile">
                         <div class="card">
                             <div class="card-body">
@@ -48,6 +48,8 @@
                         </div>
                     </a>
                 </div>
+                @endpermission
+                @permission('index.users')
                 <div class="col-lg-3">
                     <a href="{{url('users')}}/{{session()->get('user')->id}}/profile">
                         <div class="card">
@@ -60,6 +62,7 @@
                         </div>
                     </a>
                 </div>
+                @endpermission
                 <div class="col-lg-3">
                     <a href="{{url('projects')}}">
                         <div class="card">
@@ -276,8 +279,8 @@
                 fill: false,
                 data:  data_points
             });
-            @endforeach
-            @endif
+                    @endforeach
+                    @endif
             var ctx = document.getElementById('tangible-chart').getContext('2d');
             new Chart(ctx, {
                 type: 'line',
