@@ -191,7 +191,7 @@ class ActionItemService //implements ActionItemServiceInterface
         }
         if($query){
             DB::commit();
-            return true;
+            return $item->load(['assignees']);
         }
         else{
             DB::rollBack();

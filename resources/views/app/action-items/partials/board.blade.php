@@ -36,7 +36,7 @@
                                         </p>
                                         @if(count($actionItem->assignees))
                                         <small class="text-fader">Assignees</small>
-                                        <p>
+                                        <p class="assignees">
                                             @foreach($actionItem->assignees as $assignee)
 
                                             @php 
