@@ -320,7 +320,7 @@
     height: 75vh !important}
 .section.is-skewed-sm {
     transform: skew(0deg, -3deg) translate(0, -45px);
-    padding-top: 140px}
+    padding-top: 70px}
 .section .container {
     z-index: 1}
 .section .container.is-reverse-skewed-sm {
@@ -420,7 +420,7 @@
     padding: 5px 0;
     margin-bottom: 0 !important}
 .section .section-feature-description {
-    color: #878787}
+    color: #545454}
 .section .media.icon-box {
     border-top: none !important}
 .section .media.icon-box .media-content .content p span.icon-box-title {
@@ -1704,7 +1704,7 @@ to {
 .feature-card .card-feature-description {
     padding: 5px 30px !important}
 .feature-card .card-feature-description span {
-    color: #878787;
+    color: #545454;
     margin-top: 20px}
 .feature-card .card-img-description {
     padding-bottom: 10px}
@@ -2248,7 +2248,7 @@ to {
     margin-bottom: 10px;
     font-weight: 500}
 .icon-box .box-text {
-    color: #A9ABAC;
+    color: #545454;
     font-size: 13px}
 .icon-box.primary .box-icon {
     color: #00b289}
@@ -3309,7 +3309,7 @@ to {
     padding: 20px;
     background: #fff}
 .flat-testimonials .flat-testimonial-item .testimonial-text .quoted-text {
-    color: #878787}
+    color: #545454}
 .flat-testimonials .flat-testimonial-item .testimonial-text .client-name {
     margin-top: 20px;
     font-family: 'Nexa Bold', sans-serif;
@@ -6581,7 +6581,7 @@ figure.team-slanted:hover .member-position {
     font-weight: 900}
 .section-title-wrapper .subtitle {
     font-family: 'Nexa Light', sans-serif;
-    color: #A9ABAC}
+    color: #545454}
 .clean-section-title {
     font-family: 'Nexa Bold', sans-serif;
     font-size: 2.6rem;
@@ -6784,6 +6784,8 @@ figure.team-slanted:hover .member-position {
     padding: 90px}
 .padding-100 {
     padding: 100px}
+.pt-0 {
+    padding-top: 0px !important;}    
 .pt-5 {
     padding-top: 5px}
 .pt-10 {
@@ -7269,4 +7271,23 @@ to {
 .phone-slide.is-fourth {
     background-image: url(../images/screenshots/phone-slide-4.png)
 }
+.phone-slide.is-fifth {
+    background-image: url(../images/screenshots/phone-slide-5.png)
+}
+.phone-slide.is-sixth {
+    background-image: url(../images/screenshots/phone-slide-6.png)
+}
+.phone-slide.is-seventh {
+    background-image: url(../images/screenshots/phone-slide-7.png)
+}
 
+
+.fitt-text-font {
+    font-size: 1.25rem !important;
+}
+.fitt-header-fix {
+    text-shadow: 1px 0;
+}
+.lean-icon-fix {
+    width: 13% !important;
+}
