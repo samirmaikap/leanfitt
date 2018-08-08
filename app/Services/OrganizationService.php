@@ -290,6 +290,10 @@ class OrganizationService
         if(empty($organization))
             throw new \Exception('Organization not found');
 
+        if(!$organization->subscribed('main')){
+            throw new \Exception('No subscription available');
+        }
+
         $query=$organization->subscription('main')->resume();
         if(!$query){
             throw new \Exception(config('messages.common_error'));

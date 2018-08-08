@@ -42,20 +42,20 @@ class AssessmentService
         $tool=$this->toolRepo->toolAssessment();
         $collection=new Collection();
         $assessments = json_decode($tool->assessment);
-        shuffle($assessments);
+        if(count($assessments) > 0){
+            shuffle($assessments);
 //        $assessments=array_slice($assessments, 0, 3);
-        foreach ($assessments as $assess){
-            $data['tool_name']=$tool->name;
-            $data['assessment']=$assess;
-            $collection->push(new Collection($data));
-        }
+            foreach ($assessments as $assess){
+                $data['tool_name']=$tool->name;
+                $data['assessment']=$assess;
+                $collection->push(new Collection($data));
+            }
 
-        if(count($collection) > 0){
             return renderCollection($collection->shuffle());
         }
-        else{
-            throw new \Exception("No assessment found");
-        }
+
+        return;
+
     }
 
     public function create($data)

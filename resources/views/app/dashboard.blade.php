@@ -35,9 +35,9 @@
                         </a>
                     </div>
                 @endif
+                @permission('read.user')
                 <div class="col-lg-3">
-
-                    <a href="{{url('users')}}/{{session()->get('user')->id}}/profile">
+                    <a href="{{url('users')}}">
                         <div class="card">
                             <div class="card-body">
                                 <div class="text-center my-2">
@@ -49,7 +49,7 @@
                     </a>
                 </div>
                 <div class="col-lg-3">
-                    <a href="{{url('users')}}/{{session()->get('user')->id}}/profile">
+                    <a href="{{url('users')}}">
                         <div class="card">
                             <div class="card-body">
                                 <div class="text-center my-2">
@@ -60,6 +60,7 @@
                         </div>
                     </a>
                 </div>
+                @endpermission
                 <div class="col-lg-3">
                     <a href="{{url('projects')}}">
                         <div class="card">
@@ -97,7 +98,7 @@
                     </a>
                 </div>
                 <div class="col-lg-3">
-                    <a href="{{url('assessments')}}">
+                    <a href="{{url('lean-tools/view/7')}}">
                         <div class="card">
                             <div class="card-body">
                                 <div class="text-center my-2">
@@ -276,8 +277,8 @@
                 fill: false,
                 data:  data_points
             });
-            @endforeach
-            @endif
+                    @endforeach
+                    @endif
             var ctx = document.getElementById('tangible-chart').getContext('2d');
             new Chart(ctx, {
                 type: 'line',

@@ -35,11 +35,15 @@
                                             </div>
                                         </div>
                                     @endforeach
+                                @else
+                                    <h3 class="py-20">No assessment found</h3>
                                 @endif
                             </div>
-                            <div class="card-footer text-right">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </div>
+                            @if(count($assessments) > 0)
+                                <div class="card-footer text-right">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            @endif
                         </form>
                     </div>
                 </div>

@@ -72,8 +72,10 @@
                                 @else
                                     @if(isset($organization->subscriptions[0]) && empty(isset($organization->subscriptions[0]->ends_at)))
                                         <button type="button" class="btn btn-danger revoke-subscription">Cancel Subscription</button>
-                                    @else
+                                    @elseif(isset($organization->subscriptions[0]) && !empty(isset($organization->subscriptions[0]->ends_at)))
                                         <button type="button" class="btn btn-primary resume-subscription">Resume Subscription</button>
+                                    @else
+                                        <button type="button" class="btn btn-info add-subscription" data-toggle="modal" data-target="#modal-subscription">Add Subscription</button>
                                     @endif
                                 @endif
                                 <button type="submit" class="btn btn-success">Update</button>
