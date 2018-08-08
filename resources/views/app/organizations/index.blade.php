@@ -32,7 +32,7 @@
                                     @if($organization->trial_ends_at && !date('Y-m-d',strtotime($organization->trial_ends_at))->isPast())
                                         <span class="text-warning">On Trial</span>
                                     @else
-                                        @if($organization->subscriptions[0]->ends_at && $organization->subscriptions[0]->ends_at->isPast())
+                                        @if($organization->subscriptions[0]->ends_at && date('Y-m-d',strtotime($organization->subscriptions[0]->ends_at))->isPast())
                                             <span class="text-danger">Stopped</span>
                                         @else
                                             <span class="text-success">Active</span>
