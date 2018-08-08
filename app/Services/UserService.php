@@ -139,9 +139,9 @@ class UserService
 
         $user = $this->userRepo->find($user_id);
 
-        if(isset($data['departments']))
+        if(isset($data['department']))
         {
-            $user->departments()->sync($data['departments']);
+            $user->departments()->sync($data['department']);
         }
 
         if(isset($data['roles']))
