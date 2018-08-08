@@ -770,7 +770,7 @@
                     <div class="feature-card card-md hover-inset has-text-centered mb-20">
                         <div class="brand-logo">
                             <div class="coloured-bg3">
-                                <img src="landing/images/leantools/Value_Stream_Mapping.png" alt="">
+                                <img src="landing/images/leantools/Value_Stream_Mapping.png" style="margin-top: 20% !important;">
                             </div>
                         </div>
                         <div class="card-title">
@@ -899,7 +899,7 @@
                     <div class="feature-card card-md hover-inset has-text-centered mb-20">
                         <div class="brand-logo">
                             <div class="coloured-bg3">
-                                <img src="landing/images/leantools/Fishbone.png" alt="">
+                                <img src="landing/images/leantools/Fishbone.png" style="margin-top: 17% !important; margin-left: 15%;">
                             </div>
                         </div>
                         <div class="card-title">
@@ -1312,7 +1312,7 @@
             <!-- Content -->
             <div class="column slide-description">
                 <div class="icon-subtitle">
-                    <img src="landing/images/icons/tools_and_training.png" class="img-responsive lean-icon-fix">
+                    <img src="landing/images/feature_icons/tools.png" class="img-responsive lean-icon-fix">
                 </div>
                 <div class="title quick-feature is-handwritten text-bold">
                     <h2>Tools and Training</h2>
@@ -1344,7 +1344,7 @@
 
             <div class="column slide-description">
                 <div class="icon-subtitle">
-                    <img src="landing/images/icons/strengthen_leaders.png" class="img-responsive lean-icon-fix">
+                    <img src="landing/images/feature_icons/Strengthen_Leaders.png" class="img-responsive lean-icon-fix">
                 </div>
                 <div class="title quick-feature is-handwritten text-bold">
                     <h2>Strengthen Leaders</h2>
@@ -1376,7 +1376,7 @@
 
             <div class="column slide-description">
                 <div class="icon-subtitle">
-                    <img src="landing/images/icons/success.png" class="img-responsive lean-icon-fix">
+                    <img src="landing/images/feature_icons/team-success.png" class="img-responsive lean-icon-fix">
                 </div>
                 <div class="title quick-feature is-handwritten text-bold">
                     <h2>Success</h2>
@@ -1408,7 +1408,7 @@
 
             <div class="column slide-description">
                 <div class="icon-subtitle">
-                    <img src="landing/images/icons/customised_content.png" class="img-responsive lean-icon-fix">
+                    <img src="landing/images/feature_icons/content-management.png" class="img-responsive lean-icon-fix">
                 </div>
                 <div class="title quick-feature is-handwritten text-bold">
                     <h2>Customized Content</h2>
@@ -1417,7 +1417,7 @@
                 <div class="title-divider is-small"></div>
                 <span class="section-feature-description">Everyone’s approach to continuous improvement is different. One-size-fits-all doesn’t always fit you. With the Gold subscription, you can add your case studies, logos, colors, president’s message, etc. Allow <i>Lean</i><b>FITT™</b> the freedom to fit exactly your organization’s culture and uniqueness.</span>
                 <div class="pt-10 pb-10">
-                    <a href="#fourth-feature" class="button button-cta btn-align btn-outlined is-bold raised light-btn rounded is-hidden-touch">
+                    <a href="#fifth-feature" class="button button-cta btn-align btn-outlined is-bold raised light-btn rounded is-hidden-touch">
                         Next feature
                     </a>
                 </div>
@@ -1435,13 +1435,13 @@
 
         <div class="columns is-gapless is-vcentered mt-80 mb-80">
             <div class="column is-7 is-hidden-touch">
-                <div class="phone-slide is-first">
+                <div class="phone-slide is-fifth">
                 </div>
             </div>
 
             <div class="column slide-description">
                 <div class="icon-subtitle">
-                    <img src="landing/images/icons/sustain_improvements.jpg" class="img-responsive lean-icon-fix">
+                    <img src="landing/images/feature_icons/sustain_improvements.png" class="img-responsive lean-icon-fix">
                 </div>
                 <div class="title quick-feature is-handwritten text-bold">
                     <h2>Sustain Improvements</h2>
@@ -1450,7 +1450,7 @@
                 <div class="title-divider is-small"></div>
                 <span class="section-feature-description">No project is truly successful unless continuous improvements are sustained.  This can only be accomplished by engaging your employee throughout the improvement process.  Allow <i>Lean</i><b>FITT™</b> to be your visual management system for all phases of continuous improvement projects.</span>
                 <div class="pt-10 pb-10">
-                    <a href="#fourth-feature" class="button button-cta btn-align btn-outlined is-bold raised light-btn rounded is-hidden-touch">
+                    <a href="#sixth-feature" class="button button-cta btn-align btn-outlined is-bold raised light-btn rounded is-hidden-touch">
                         Next feature
                     </a>
                 </div>
@@ -1467,13 +1467,13 @@
 
         <div class="columns is-gapless is-vcentered mt-80 mb-80">
             <div class="column is-7 is-hidden-touch">
-                <div class="phone-slide is-second">
+                <div class="phone-slide is-sixth">
                 </div>
             </div>
 
             <div class="column slide-description">
                 <div class="icon-subtitle">
-                    <img src="landing/images/icons/inspire_employee.png" class="img-responsive lean-icon-fix">
+                    <img src="landing/images/feature_icons/inspire_employees.png" class="img-responsive lean-icon-fix">
                 </div>
                 <div class="title quick-feature is-handwritten text-bold">
                     <h2>Inspire Employees</h2>
@@ -1482,7 +1482,7 @@
                 <div class="title-divider is-small"></div>
                 <span class="section-feature-description">Encourage employees join the continuous improvement journey.  Employees desire their work to be of the highest quality as well as for it to flow smoothly. Allow <i>Lean</i><b>FITT™</b> to intensively engage your employees at all levels of the organization.</span>
                 <div class="pt-10 pb-10">
-                    <a href="#fifth-feature" class="button button-cta btn-align btn-outlined is-bold raised light-btn rounded is-hidden-touch">
+                    <a href="#seventh-feature" class="button button-cta btn-align btn-outlined is-bold raised light-btn rounded is-hidden-touch">
                         Next feature
                     </a>
                 </div>
@@ -1494,18 +1494,18 @@
 <!-- /Phone scroller section 6 -->
 
 <!-- Phone scroller section 7 -->
-<section id="fourth-feature" class="section no-margin">
+<section id="seventh-feature" class="section no-margin">
     <div class="container">
 
         <div class="columns is-gapless is-vcentered mt-80 mb-80">
             <div class="column is-7 is-hidden-touch">
-                <div class="phone-slide is-third">
+                <div class="phone-slide is-seventh">
                 </div>
             </div>
 
             <div class="column slide-description">
                 <div class="icon-subtitle">
-                    <img src="landing/images/icons/real_time_tracking.png" class="img-responsive lean-icon-fix">
+                    <img src="landing/images/feature_icons/real_time_tracking.png" class="img-responsive lean-icon-fix">
                 </div>
                 <div class="title quick-feature is-handwritten text-bold">
                     <h2>Real-Time Tracking</h2>
@@ -1513,11 +1513,6 @@
                 </div>
                 <div class="title-divider is-small"></div>
                 <span class="section-feature-description">Stay on track with online and mobile tools that show your progress with real-time charts and graphs on the on your organizations Fitness Dashboard. Reach your goals by seeing progress notifications. Allow <i>Lean</i><b>FITT™</b> to track improvements real-time.</span>
-                <div class="pt-10 pb-10">
-                    <a href="#sixth-feature" class="button button-cta btn-align btn-outlined is-bold raised light-btn rounded is-hidden-touch">
-                        Next feature
-                    </a>
-                </div>
             </div>
 
         </div>
