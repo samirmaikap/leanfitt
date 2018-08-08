@@ -15,6 +15,7 @@ use App\Repositories\DeleteRepository;
 use App\Repositories\DeleteService;
 use App\Repositories\MediaRepository;
 //use App\Services\Contracts\ActionItemServiceInterface;
+use App\Repositories\UserRepository;
 use App\Validators\ActionItemAssigneeValidator;
 use App\Validators\ActionItemValidator;
 use App\Validators\CommentValidator;
@@ -36,6 +37,7 @@ use function var_dump;
 
 class ActionItemService //implements ActionItemServiceInterface
 {
+    protected $userRepo;
     protected $itemRepo;
     protected $assigneeRepo;
     protected $attachmentRepo;
@@ -43,7 +45,8 @@ class ActionItemService //implements ActionItemServiceInterface
     protected $commentRepo;
     protected $deleteRepo;
     protected $assignmentRepo;
-    public function __construct(ActionItemAssigneeRepository $actionItemAssigneeRepository,
+    public function __construct(UserRepository $userRepository,
+                                ActionItemAssigneeRepository $actionItemAssigneeRepository,
                                 ActionItemRepository $actionItemRepository,
                                 AttachmentRepository $attachmentRepository,
                                 CommentRepository $commentRepository,
@@ -51,6 +54,7 @@ class ActionItemService //implements ActionItemServiceInterface
                                 DeleteRepository $deleteRepository,
                                 ActionItemAssignmentRepository $itemAssignmentRepository)
     {
+        $this->userRepo = $userRepository;
         $this->itemRepo=$actionItemRepository;
         $this->assigneeRepo=$actionItemAssigneeRepository;
         $this->attachmentRepo=$attachmentRepository;
@@ -144,12 +148,14 @@ class ActionItemService //implements ActionItemServiceInterface
         }
 
         DB::beginTransaction();
+        
+        $user = $this->userRepo->find($data['auth_user_id']);
+        
         $data['due_date']=empty($data['due_date']) ? null : Carbon::parse($data['due_date'])->format('Y-m-d');
         $query=$this->itemRepo->update($item_id,$data);
         $item = $this->itemRepo->getItem($item_id);
-//        var_dump(session()->get('user'));
-//        die;
-        event(new ActionItemUpdated($item, auth()->user()));
+        
+        event(new ActionItemUpdated($item, $user));
 
         if(!empty($data['assignees']))
         {
@@ -169,16 +175,18 @@ class ActionItemService //implements ActionItemServiceInterface
 //                    'action_item_id' => $item_id
 //                ]);
                 $item->assignees()->attach($assignee);
-                $assignee = $item->assignees()->where('id', 1)->first();
-                event(new AssigneeAdded($item, $assignee, auth()->user()));
+//                $assignee = $item->assignees()->where('id', 1)->first();
+                $assignee = $this->userRepo->find($assignee);
+                event(new AssigneeAdded($item, $assignee, $user));
             }
 
             foreach ($removedAssignees as $assignee)
             {
-                $assignee = $item->assignees()->where('id', 1)->first();
+//                $assignee = $item->assignees()->where('id', 1)->first();
                 $item->assignees()->detach($assignee);
 //                $this->removeAssignee($item_id, $assignee);
-                event(new AssigneeRemoved($item, $assignee, auth()->user()));
+                $assignee = $this->userRepo->find($assignee);
+                event(new AssigneeRemoved($item, $assignee, $user));
             }
         }
         if($query){

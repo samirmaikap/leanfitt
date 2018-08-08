@@ -39,7 +39,7 @@ class ActionItem extends Model
     }
 
     public function assignees(){
-        return $this->belongsToMany(User::class, 'action_item_assignees');
+        return $this->belongsToMany(User::class, 'action_item_assignees', 'action_item_id', 'user_id');
     }
 
     public function project()

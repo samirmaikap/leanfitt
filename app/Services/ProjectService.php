@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repositories\DeleteRepository;
 use App\Repositories\ProjectActivityRepository;
+use App\Repositories\ProjectMemberRepository;
 use App\Repositories\ProjectRepository;
 //use App\Services\Contracts\ProjectServiceInterface;
 use App\Repositories\SavingsRepository;
@@ -19,8 +20,11 @@ class ProjectService //implements ProjectServiceInterface
     protected $activityRepo;
     protected $deleteRepo;
     protected $savingsRepo;
+    protected $memberRepo;
+
     public function __construct(ProjectRepository $projectRepository,
                                 ProjectActivityRepository $projectActivityRepository,
+                                ProjectMemberRepository $memberRepository,
                                 DeleteRepository $deleteRepository,
                                 SavingsRepository $savingsRepository)
     {
@@ -28,6 +32,8 @@ class ProjectService //implements ProjectServiceInterface
         $this->activityRepo=$projectActivityRepository;
         $this->deleteRepo=$deleteRepository;
         $this->savingsRepo=$savingsRepository;
+        $this->savingsRepo=$savingsRepository;
+        $this->memberRepo=$memberRepository;
     }
 
     public function index($organization=null,$department=null,$user=null)
@@ -72,7 +78,7 @@ class ProjectService //implements ProjectServiceInterface
 
         $query=$this->projectRepo->create($data);
         if($query){
-            $this->memberService->create([
+            $this->memberRepo->create([
                 'user_id' => $user->id,
                 'project_id' => $query->id
             ]);
