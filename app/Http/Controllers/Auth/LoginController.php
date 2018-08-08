@@ -71,7 +71,7 @@ class LoginController extends Controller
             session(['relatedOrganizations' => $relatedOrganizations]);
 
             // Redirect to first related organization
-            $url = 'http://' . $relatedOrganizations[0]->subdomain . "." . $request->getHost() . $this->redirectTo;
+            $url = 'http://' . $relatedOrganizations[0]->subdomain  . config('session.domain') . $this->redirectTo;
         }
         else
         {
