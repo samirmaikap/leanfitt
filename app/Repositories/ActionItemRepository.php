@@ -39,6 +39,7 @@ class ActionItemRepository extends BaseRepository //implements ActionItemReposit
             ->join('boards as b','b.id','p.board_id')
             ->join('projects as pr','pr.id','=','b.project_id')
             ->leftJoin('action_item_assignees as aia','action_items.id','=','aia.action_item_id')
+            ->where('pr.is_archived',0)
             ->where('pr.organization_id',empty($organization) ? '!=' : '=',empty($organization) ? null : $organization);
         if(!empty($user)){
             $query->where('action_items.user_id',empty($user) ? '!=':'=',empty($user) ? null : $user)
