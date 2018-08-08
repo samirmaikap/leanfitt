@@ -89,7 +89,6 @@ class ProjectController extends Controller
         else{
             $data['members']=$members;
         }
-
         $project_members=$this->memberService->allMembers($project_id);
         $data['project_members']=$project_members->groupBy('role');
 

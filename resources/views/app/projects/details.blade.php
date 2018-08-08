@@ -144,14 +144,14 @@
                                         @foreach($project_members as $key=>$pmems)
                                             <label class="d-block my-20">{{$key}}</label>
                                             @foreach($pmems as $pmem)
-                                                <a class="avatar avatar-pill avatar-lg" href="{{url('users')}}/{{$pmem->member_id}}/profile">
+                                                <a class="avatar avatar-pill avatar-lg" href="{{url('users')}}/{{$pmem->id}}/profile">
                                                     <img src="{{$pmem->avatar}}" alt="...">
                                                     <span>{{ucfirst($pmem->first_name)}} {{ucfirst($pmem->last_name)}}</span>
                                                     @if(!isSuperadmin())
                                                         <form id="memberRemoveForm" method="post" action="{{url('projects')}}/{{$project->id}}/member/{{$pmem->member_id}}/remove">
                                                             {{csrf_field()}}
                                                             {{method_field('delete')}}
-                                                            <button type="submit" class="close cursor-pointer remove-member">&times;</button>
+                                                            <button type="submit"  class="close cursor-pointer remove-member">&times;</button>
                                                         </form>
                                                     @endif
                                                 </a>
@@ -406,21 +406,21 @@
                 })
             })
 
-            $('.members-container').on('click','.remove-member',function(e){
-                e.preventDefault();
-                e.stopImmediatePropagation();
-                swal({
-                    title: 'Are you sure?',
-                    text: "You can revert this later!",
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes'
-                }).then(function() {
-                    $('#memberRemoveForm').submit();
-                })
-            })
+            // $('.members-container').on('click','.remove-member',function(e){
+            //     e.preventDefault();
+            //     e.stopImmediatePropagation();
+            //     swal({
+            //         title: 'Are you sure?',
+            //         text: "You can revert this later!",
+            //         type: 'warning',
+            //         showCancelButton: true,
+            //         confirmButtonColor: '#3085d6',
+            //         cancelButtonColor: '#d33',
+            //         confirmButtonText: 'Yes'
+            //     }).then(function() {
+            //         $('#memberRemoveForm').;
+            //     })
+            // })
 
             $('.attachments-container').on('click','.remove-attachment',function(e){
                 e.preventDefault();
