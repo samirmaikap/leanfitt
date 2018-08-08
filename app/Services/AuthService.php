@@ -143,11 +143,11 @@ class AuthService
 
     public function updatePassword($data)
     {
-        if(empty(arrayValue($data,'token'))){
+        if(empty(arrayValue($data,'ref'))){
             throw new \Exception('Invalid token provided');
         }
 
-        $log=$this->recoveryRepo->where('token',$data['token'])->first();
+        $log=$this->recoveryRepo->where('token',$data['ref'])->first();
         if(!$log){
             throw new \Exception('The request does not exist');
         }

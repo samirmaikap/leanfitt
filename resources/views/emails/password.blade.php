@@ -311,7 +311,7 @@
                           <table border="0" cellpadding="0" cellspacing="0">
                             <tbody>
                             <tr>
-                              <td> <a href="{{env('APP_URL').'password/change?token='.$data['token'] }}" target="_blank">Reset Password</a> </td>
+                              <td> <a href="{{env('APP_URL').'/password/change?ref='.$data['token'] }}" target="_blank">Reset Password</a> </td>
                             </tr>
                             </tbody>
                           </table>

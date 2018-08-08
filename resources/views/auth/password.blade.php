@@ -46,12 +46,13 @@
                             {{ method_field('post') }}
                             <div class="form-group">
                                 <label for="username">Password</label>
-                                <input type="password" class="form-control" name="password" value="{{ old('password') }}">
+                                <input type="password" class="form-control" name="password">
                             </div>
                             <div class="form-group">
                                 <label for="username">Re-type Password</label>
                                 <input type="password" class="form-control" name="password_confirmation">
                             </div>
+                            <input type="hidden" name="ref" value="{{$v_token}}">
                             <div class="form-group">
                                 <button class="btn btn-bold btn-block btn-primary" type="submit">Proceed</button>
                             </div>

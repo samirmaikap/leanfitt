@@ -144,7 +144,7 @@
                                         @foreach($project_members as $key=>$pmems)
                                             <label class="d-block my-20">{{$key}}</label>
                                             @foreach($pmems as $pmem)
-                                                <a class="avatar avatar-pill avatar-lg" href="{{url('users')}}/{{$pmem->id}}/profile">
+                                                <a class="avatar avatar-pill avatar-lg" href="{{url('users')}}/{{$pmem->member_id}}/profile">
                                                     <img src="{{$pmem->avatar}}" alt="...">
                                                     <span>{{ucfirst($pmem->first_name)}} {{ucfirst($pmem->last_name)}}</span>
                                                     @if(!isSuperadmin())
