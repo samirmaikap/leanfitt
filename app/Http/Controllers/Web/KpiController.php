@@ -82,7 +82,7 @@ class KpiController extends Controller
             $result=$this->service->addDataPoint($request->all());
             return redirect()->back();
         }catch(\Exception $e){
-            dd($e->getMessage());
+//            dd($e->getMessage());
             return redirect()->back()->withErrors([$e->getMessage()]);
         }
     }
