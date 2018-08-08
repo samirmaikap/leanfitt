@@ -63,19 +63,19 @@
                             $default_savings=$default_savings_content->values;
                             $default_savings_arr=$default_savings_content->values;
                         @endphp
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="card">
                                 <div class="card-header"><h4>Tangible Savings</h4></div>
                                 <form method="post" action="{{url('projects')}}/{{$project->id}}/savings/tangibles" enctype="multipart/form-data">
                                     {{csrf_field()}}
-                                    <div class="media-list media-list-hover media-list-divided tangible-container">
+                                    <div class="media-list media-list-hover media-list-divided tangible-container scrollable h-250px">
                                         @if(count($tangibles) > 0)
                                             @foreach($tangibles as $key2=>$tangible)
                                                 <div class="media media-single" id="tangible-{{$key2+1}}" data-id="{{$tangible->id}}">
                                                     <span class="title">{{$tangible->value}}</span>
                                                     <input type="hidden" id="tangible-input-value" name="values[]" value="{{$tangible->value}}">
-                                                    <span class="badge badge-pill cursor-pointer fs-15 text-success edit-tangible" data-toggle="modal" data-target="#modal-tangible"><i class="ti-pencil"></i></span>
-                                                    <span class="badge badge-pill cursor-pointer fs-15 text-success remove-tangible"><i class="ti-trash"></i></span>
+                                                    <span class="badge badge-pill cursor-pointer fs-15 text-dark hover-info edit-tangible" data-toggle="modal" data-target="#modal-tangible"><i class="ti-pencil"></i></span>
+                                                    <span class="badge badge-pill cursor-pointer fs-15 text-dark hover-danger remove-tangible"><i class="ti-trash"></i></span>
                                                 </div>
                                             @endforeach
                                         @endif
@@ -90,12 +90,12 @@
                             </div>
                         </div>
 
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="card">
                                 <div class="card-header"><h4>Intangible Benefits</h4></div>
                                 <form method="post" action="{{url('projects')}}/{{$project->id}}/savings/intangibles" enctype="multipart/form-data">
                                     {{csrf_field()}}
-                                    <div class="media-list media-list-hover media-list-divided intangible-container">
+                                    <div class="media-list media-list-hover media-list-divided intangible-container scrollable h-250px">
                                         @php $intangibles_arr=$intangibles->pluck('value')->toArray(); @endphp
                                         @php
                                             $diff_arr=array_diff($intangibles_arr,$default_savings_arr);

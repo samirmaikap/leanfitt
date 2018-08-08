@@ -145,6 +145,7 @@
                 var calendar = $('#calendar');
                 var events=[];
                 var items=JSON.parse('{!!json_encode($action_items->values(),JSON_HEX_APOS) !!}');
+                console.log(items);
                 for(var i=0; i<items.length;i++){
                     if(items[i].process=='Backlog'){
                         var color = '#dc3545';
@@ -164,6 +165,7 @@
 
                     var event = {
                         title: items[i].title,
+                        project_id:items[i].project_id,
                         start: (new Date(items[i].due_date)),
                         allDay: true,
                         color: color,
@@ -189,9 +191,12 @@
                     // dayClick: function(date, jsEvent, view) {
                     //     $('#modal-add-event').modal('show');
                     // },
-                    // eventClick: function(date, jsEvent, view) {
-                    //     $('#modal-view-event').modal('show');
-                    // }
+                    eventClick: function(calEvent, jsEvent, view) {
+                        @if(!isSuperadmin())
+                            window.location.href="{{url('projects')}}/"+calEvent.project_id+"/action-items";
+                        @endif
+
+                    }
                 });
 
                 $('[data-calendar-view]').on('click', function(){
@@ -301,6 +306,11 @@
                             scaleLabel: {
                                 display:     true,
                                 labelString: 'Date'
+                            },
+                            ticks: {
+                                autoSkip: false,
+                                maxRotation: 45,
+                                minRotation: 45
                             }
                         }]
                     },

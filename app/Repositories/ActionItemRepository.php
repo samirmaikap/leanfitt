@@ -45,7 +45,7 @@ class ActionItemRepository extends BaseRepository //implements ActionItemReposit
             $query->where('action_items.user_id',empty($user) ? '!=':'=',empty($user) ? null : $user)
                 ->orWhere('aia.user_id',empty($user) ? '!=':'=',empty($user) ? null : $user);
         }
-        return $query->select(['action_items.title','action_items.due_date','action_items.is_archived','p.name as process'])
+        return $query->select(['pr.id as project_id','action_items.title','action_items.due_date','action_items.is_archived','p.name as process'])
             ->get();
     }
 }
