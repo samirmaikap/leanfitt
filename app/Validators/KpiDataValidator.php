@@ -9,8 +9,8 @@ class KpiDataValidator extends BaseValidator
       'create'=>[
           'kpi_chart_id'=>'required',
           'x_value'=>'required',
-          'y_value'=>'required',
-//          'target_date'=>'required',
+          'y_value'=>'required|numeric',
+          'date'=>'required|date',
 
       ]
     ];

@@ -157,18 +157,27 @@
                             var assignees = response.data.assignees;
                             var $parent = $this.parents('.action-item');
 
-                            if($parent.find('.assignees').length){
-                                $this.parents('.action-item').find('.assignees').html('');
+//                            if($parent.find('.assignees').length){
+                            if(assignees.length){
+//                                $parent.find('.assignees').prev('small').remove();
+                                $parent.find('.assignees').prev('small').show();
+                                $parent.find('.assignees').html('');
                             }else{
-                                $parent.find('.media-body').append('<small class="text-fader">Assignees</small><p></p>');
+//                                $parent.children('.media').find('.media-body').append('<small class="text-fader">Assignees</small><p class="assignees"></p>');
+                                $parent.find('.assignees').prev('small').hide();
+                                $parent.find('.assignees').html('');
                             }
 
                             for(var i=0; i< assignees.length; i++){
                                 console.log("assignees " + i);
-                                var html = ' <span class="avatar avatar-sm b-2 border-primary">' +
+                                var borderClass = '';
+                                if(userId == assignees[i].id){
+                                    borderClass = 'border-primary';
+                                }
+                                var html = ' <span class="avatar avatar-sm b-2 ' + borderClass + '">' +
                                     '<img src="https://ui-avatars.com/api/?name=' + assignees[i].full_name + '" alt="">'+
                                     '</span> ';
-                                $parent.find('p:last').append(html);
+                                $parent.children('.media').find('p.assignees').append(html);
                             }
 //                            location.reload();
 

@@ -12,9 +12,9 @@ class KpiValidator extends BaseValidator
             'title'=>'required',
             'x_label'=>'required',
             'y_label'=>'required',
-            'start_date'=>'required',
-            'end_date'=>'required',
-            'target'=>'required',
+            'start_date'=>'required|date',
+            'end_date'=>'required|date',
+            'target'=>'required|numeric',
             'trend'=>'required'
         ]
     ];

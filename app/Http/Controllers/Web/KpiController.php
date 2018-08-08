@@ -49,6 +49,7 @@ class KpiController extends Controller
         }catch(\Exception $e){
             $response['success']=false;
             $response['message']=$e->getMessage();
+            return redirect()->back()->withInput($request->all())->withErrors([$e->getMessage()]);
             return response()->json($response);
         }
     }
@@ -61,6 +62,7 @@ class KpiController extends Controller
         }catch(\Exception $e){
             $response['success']=false;
             $response['message']=$e->getMessage();
+            return redirect()->back()->withInput($request->all())->withErrors([$e->getMessage()]);
             return response()->json($response);
         }
     }
@@ -72,6 +74,7 @@ class KpiController extends Controller
         }catch(\Exception $e){
             $response['success']=false;
             $response['message']=$e->getMessage();
+            return redirect()->back()->withErrors([$e->getMessage()]);
             return response()->json($response);
         }
     }
@@ -82,8 +85,8 @@ class KpiController extends Controller
             $result=$this->service->addDataPoint($request->all());
             return redirect()->back();
         }catch(\Exception $e){
-            dd($e->getMessage());
-            return redirect()->back()->withErrors([$e->getMessage()]);
+//            dd($e->getMessage());
+            return redirect()->back()->withInput($request->all())->withErrors([$e->getMessage()]);
         }
     }
 
@@ -94,7 +97,7 @@ class KpiController extends Controller
             return redirect()->back();
         }catch(\Exception $e){
             dd($e->getMessage());
-            return redirect()->back()->withErrors([$e->getMessage()]);
+            return redirect()->back()->withInput($request->all())->withErrors([$e->getMessage()]);
         }
     }
 
@@ -119,6 +122,7 @@ class KpiController extends Controller
         }catch(\Exception $e){
             $response['success']=false;
             $response['message']=$e->getMessage();
+            return redirect()->back()->withErrors([$e->getMessage()]);
             return response()->json($response);
         }
     }
