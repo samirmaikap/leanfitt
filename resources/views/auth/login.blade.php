@@ -60,7 +60,7 @@
                                     <span class="custom-control-description">Remember me</span>
                                 </label>
 
-                                <a class="text-muted hover-primary fs-13" href="#">Forgot password?</a>
+                                <a class="text-muted hover-primary fs-13" href="{{url('recovery')}}">Forgot password?</a>
                             </div>
 
                             <div class="form-group">
