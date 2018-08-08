@@ -98,7 +98,7 @@
                     </a>
                 </div>
                 <div class="col-lg-3">
-                    <a href="{{url('assessments')}}">
+                    <a href="{{url('lean-tools/view/7')}}">
                         <div class="card">
                             <div class="card-body">
                                 <div class="text-center my-2">
