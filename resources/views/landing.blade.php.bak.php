@@ -6,7 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>LeanFITT™</title>
-        <link rel="icon" type="image/png" href="{{asset('assets')}}/img/favicon.png" />
+        <link rel="icon" type="image/png" href="landing/images/leanfitt/FITT/logo.png" />
         <!-- Core css -->
         <link rel="stylesheet" id="bulma" href="landing/css/main.css" />
         <link rel="stylesheet" id="bulma" href="landing/css/bulma.css" />
@@ -144,7 +144,7 @@
                                     
                                   
 
-                                    <a href="#main-hero" class="nav-item color-black is-tab nav-inner is-not-mobile">
+                                    <a href="#" class="nav-item color-black is-tab nav-inner is-not-mobile">
                                         Home
                                     </a>
                                     
@@ -281,7 +281,7 @@
 
         <!-- Feature -->
         <section id="start-features" class="section is-medium is-skewed-sm">
-            <div class="container is-reverse-skewed-sm pb-70">
+            <div class="container is-reverse-skewed-sm">
                 <div class="section-title-wrapper has-text-centered">
                     <div class="clean-bg-symbol"><i class="fa fa-gg"></i></div>
                     <div>
@@ -296,12 +296,12 @@
                         <div class="column is-4 is-offset-1">
                             <!-- Title -->
                             <div class="title quick-feature">
-                                <h2 class="clean-text fitt-header-fix"><b>Functional</b></h2>
+                                <h2 class="title is-3 clean-text">Functional</h2>
                                 <div class="bg-number is-fat">1</div>
                             </div>
                             <!-- /Title -->
                             <div class="title-divider"></div>
-                            <span class="section-feature-description fitt-text-font">The functionality of <i>Lean</i><b>FITT™</b> comes from the powerful web and device based user friendly customizable tools that track and guide users through improvements.</span>
+                            <span class="section-feature-description">The functionality of <i>Lean</i><b>FITT™</b> comes from the powerful web and device based user friendly customizable tools that track and guide users through improvements.</span>
                             <div class="pt-10 pb-10">
                                 <!-- <a href="#" class="button btn-align btn-more is-link color-primary">
                                     Learn more about our plans <i class="sl sl-icon-arrow-right"></i>
@@ -322,7 +322,7 @@
         <!-- /Feature -->
 
         <!-- Feature -->
-        <section class="section section-feature-grey is-medium is-skewed-sm" style="padding-top: 0%;">
+        <section class="section section-feature-grey is-medium is-skewed-sm">
             <div class="container is-reverse-skewed-sm">
 
                 <div class="columns is-vcentered">
@@ -336,12 +336,12 @@
                     <div class="column is-4 is-offset-1">
                         <!-- Title -->
                         <div class="title quick-feature">
-                            <h2 class="clean-text fitt-header-fix"><b>Integrated</b></h2>
+                            <h2 class="clean-text">Integrated</h2>
                             <div class="bg-number is-fat">2</div>
                         </div>
                         <!-- /Title -->
                         <div class="title-divider"></div>
-                        <span class="section-feature-description fitt-text-font"><i>Lean</i><b>FITT™</b> is a web-based complete Lean program management system. LeanFITT allows the complete oversight, management, and tracking of an organization’s Lean initiatives and transformation.</span>
+                        <span class="section-feature-description"><i>Lean</i><b>FITT™</b> is a web-based complete Lean program management system. LeanFITT allows the complete oversight, management, and tracking of an organization’s Lean initiatives and transformation.</span>
                         <div class="pt-10 pb-10">
                             <!-- <a href="#" class="button btn-align btn-more is-link color-primary">
                                 Learn more about our plans <i class="sl sl-icon-arrow-right"></i>
@@ -355,7 +355,7 @@
         <!-- /Feature -->
 
         <!-- Feature -->
-        <section class="section is-medium is-skewed-sm" style="padding-top: 0%;">
+        <section class="section is-medium is-skewed-sm">
             <div class="container is-reverse-skewed-sm">
 
                 <div class="columns is-vcentered">
@@ -363,12 +363,12 @@
                     <div class="column is-4 is-offset-1">
                         <!-- Title -->
                         <div class="title quick-feature">
-                            <h2 class="clean-text fitt-header-fix"><b>Training</b></h2>
+                            <h2 class="clean-text">Training</h2>
                             <div class="bg-number is-fat">3</div>
                         </div>
                         <!-- /Title -->
                         <div class="title-divider"></div>
-                        <span class="section-feature-description fitt-text-font"><i>Lean</i><b>FITT™</b> includes training content, case studies, base and customizable interactive Lean forms and reports to support training initiatives.</span>
+                        <span class="section-feature-description"><i>Lean</i><b>FITT™</b> includes training content, case studies, base and customizable interactive Lean forms and reports to support training initiatives.</span>
                         <div class="pb-10 pt-10">
                             <!-- <a href="#" class="button btn-align btn-more is-link color-primary">
                                 Learn more about our plans <i class="sl sl-icon-arrow-right"></i>
@@ -388,7 +388,7 @@
         <!-- /Feature -->
 
         <!-- /Feature -->
-        <section class="section section-feature-grey is-medium is-skewed-sm" style="padding-bottom: 8%; padding-top: 3%;">
+        <section class="section section-feature-grey is-medium is-skewed-sm" style="padding-bottom: 15%;">
             <div class="container is-reverse-skewed-sm">
 
                 <div class="columns is-vcentered">
@@ -402,12 +402,12 @@
                     <div class="column is-4 is-offset-1">
                         <!-- Title -->
                         <div class="title quick-feature">
-                            <h2 class="clean-text fitt-header-fix"><b>Technology</b></h2>
+                            <h2 class="clean-text">Technology</h2>
                             <div class="bg-number is-fat">4</div>
                         </div>
                         <!-- /Title -->
                         <div class="title-divider"></div>
-                        <span class="section-feature-description fitt-text-font"><i>Lean</i><b>FITT™</b> is mobile, and can be accessed and used anywhere by smart phone, tablet or laptop/desktop. It makes completing improvement projects fun on your smart devices.</span>
+                        <span class="section-feature-description"><i>Lean</i><b>FITT™</b> is mobile, and can be accessed and used anywhere by smart phone, tablet or laptop/desktop. It makes completing improvement projects fun on your smart devices.</span>
                         <div class="pt-10 pb-10">
                             <!-- <a href="#" class="button btn-align btn-more is-link color-primary">
                                 Learn more about our plans <i class="sl sl-icon-arrow-right"></i>
@@ -424,7 +424,7 @@
        
 
         <!-- Card Section -->
-        <section id="tools" class="section section-light-grey is-medium" style="transform: skew(0deg, 0deg) translate(0, -82px); padding-bottom: 8%;">
+        <section id="tools" class="section section-light-grey is-medium" style="transform: skew(0deg, 0deg) translate(0, -82px); padding-bottom: 15%;">
             <div class="container">
                 <div class="section-title-wrapper">
                     <div class="bg-number">4</div>
@@ -448,9 +448,7 @@
                         <div class="column">
                             <div class="feature-card card-md hover-inset has-text-centered mb-20">
                                 <div class="brand-logo">
-                                    <div class="coloured-bg1">
-                                        <img src="landing/images/leantools/5S.png" alt="">
-                                    </div>
+                                    <img src="landing/images/leantools/5S.png" alt="">
                                 </div>
                                 <div class="card-title">
                                     <h4>5S</h4>
@@ -479,9 +477,7 @@
                         <div class="column">
                             <div class="feature-card card-md hover-inset has-text-centered mb-20">
                                 <div class="brand-logo">
-                                    <div class="coloured-bg2">
-                                        <img src="landing/images/leantools/a3projectreport.png" alt="">
-                                    </div>
+                                    <img src="landing/images/leantools/a3projectreport.png" alt="">
                                 </div>
                                 <div class="card-title">
                                     <h4>A3 Project</h4>
@@ -508,9 +504,7 @@
                         <div class="column">
                             <div class="feature-card card-md hover-inset has-text-centered mb-20">
                                 <div class="brand-logo">
-                                    <div class="coloured-bg3">
-                                        <img src="landing/images/leantools/DMAIC.png" alt="">
-                                    </div>
+                                    <img src="landing/images/leantools/DMAIC.png" alt="">
                                 </div>
                                 <div class="card-title">
                                     <h4>DMAIC</h4>
@@ -539,9 +533,7 @@
                         <div class="column">
                             <div class="feature-card card-md hover-inset has-text-centered mb-20">
                                 <div class="brand-logo">
-                                    <div class="coloured-bg4">
-                                        <img src="landing/images/leantools/gembawalk.png" alt="">
-                                    </div>
+                                    <img src="landing/images/leantools/gembawalk.png" alt="">
                                 </div>
                                 <div class="card-title">
                                     <h4>Gemba Walk</h4>
@@ -571,9 +563,7 @@
                         <div class="column">
                             <div class="feature-card card-md hover-inset has-text-centered mb-20">
                                 <div class="brand-logo">
-                                    <div class="coloured-bg1">    
-                                        <img src="landing/images/leantools/Kaizen.png" alt="">
-                                    </div>
+                                    <img src="landing/images/leantools/Kaizen.png" alt="">
                                 </div>
                                 <div class="card-title">
                                     <h4>Kaizen Project</h4>
@@ -604,9 +594,7 @@
                         <div class="column">
                             <div class="feature-card card-md hover-inset has-text-centered mb-20">
                                 <div class="brand-logo">
-                                    <div class="coloured-bg2">
-                                        <img src="landing/images/leantools/Leadership.png" alt="">
-                                    </div>
+                                    <img src="landing/images/leantools/Leadership.png" alt="">
                                 </div>
                                 <div class="card-title">
                                     <h4>Leadership</h4>
@@ -638,9 +626,7 @@
                         <div class="column">
                             <div class="feature-card card-md hover-inset has-text-centered mb-20">
                                 <div class="brand-logo">
-                                    <div class="coloured-bg3">
-                                        <img src="landing/images/leantools/leaoverview.png" alt="">
-                                    </div>
+                                    <img src="landing/images/leantools/leaoverview.png" alt="">
                                 </div>
                                 <div class="card-title">
                                     <h4>Lean Overview and Assessment</h4>
@@ -673,9 +659,7 @@
                         <div class="column">
                             <div class="feature-card card-md hover-inset has-text-centered mb-20">
                                 <div class="brand-logo">
-                                    <div class="coloured-bg4">
-                                        <img src="landing/images/leantools/mistakeproofing.png" alt="">
-                                    </div>
+                                    <img src="landing/images/leantools/mistakeproofing.png" alt="">
                                 </div>
                                 <div class="card-title">
                                     <h4>Mistake Proofing</h4>
@@ -705,9 +689,7 @@
                         <div class="column">
                             <div class="feature-card card-md hover-inset has-text-centered mb-20">
                                 <div class="brand-logo">
-                                    <div class="coloured-bg1">
-                                        <img src="landing/images/leantools/PDCA.png" alt="">
-                                    </div>
+                                    <img src="landing/images/leantools/PDCA.png" alt="">
                                 </div>
                                 <div class="card-title">
                                     <h4>PDCA</h4>
@@ -737,9 +719,7 @@
                         <div class="column">
                             <div class="feature-card card-md hover-inset has-text-centered mb-20">
                                 <div class="brand-logo">
-                                    <div class="coloured-bg2">
-                                        <img src="landing/images/leantools/Standard_Work.png" alt="">
-                                    </div>
+                                    <img src="landing/images/leantools/Standard_Work.png" alt="">
                                 </div>
                                 <div class="card-title">
                                     <h4>Standard Work</h4>
@@ -769,9 +749,7 @@
                         <div class="column">
                             <div class="feature-card card-md hover-inset has-text-centered mb-20">
                                 <div class="brand-logo">
-                                    <div class="coloured-bg3">
-                                        <img src="landing/images/leantools/Value_Stream_Mapping.png" style="margin-top: 20% !important;">
-                                    </div>
+                                    <img src="landing/images/leantools/Value_Stream_Mapping.png" alt="">
                                 </div>
                                 <div class="card-title">
                                     <h4>Value Stream Mapping</h4>
@@ -802,9 +780,7 @@
                         <div class="column">
                             <div class="feature-card card-md hover-inset has-text-centered mb-20">
                                 <div class="brand-logo">
-                                    <div class="coloured-bg4">
-                                        <img src="landing/images/leantools/wastewalk.png" alt="">
-                                    </div>
+                                    <img src="landing/images/leantools/wastewalk.png" alt="">
                                 </div>
                                 <div class="card-title">
                                     <h4>Waste Walk</h4>
@@ -836,9 +812,7 @@
                         <div class="column">
                             <div class="feature-card card-md hover-inset has-text-centered mb-20">
                                 <div class="brand-logo">
-                                    <div class="coloured-bg1">
-                                        <img src="landing/images/leantools/5_Why_Analysis.png" alt="">
-                                    </div>
+                                    <img src="landing/images/leantools/5_Why_Analysis.png" alt="">
                                 </div>
                                 <div class="card-title">
                                     <h4>5 Whys Analysis</h4>
@@ -867,9 +841,7 @@
                         <div class="column">
                             <div class="feature-card card-md hover-inset has-text-centered mb-20">
                                 <div class="brand-logo">
-                                    <div class="coloured-bg2">
-                                        <img src="landing/images/leantools/Brainstorming.png" alt="">
-                                    </div>
+                                    <img src="landing/images/leantools/Brainstorming.png" alt="">
                                 </div>
                                 <div class="card-title">
                                     <h4>Brainstorming</h4>
@@ -898,9 +870,7 @@
                         <div class="column">
                             <div class="feature-card card-md hover-inset has-text-centered mb-20">
                                 <div class="brand-logo">
-                                    <div class="coloured-bg3">
-                                        <img src="landing/images/leantools/Fishbone.png" style="margin-top: 17% !important; margin-left: 15%;">
-                                    </div>
+                                    <img src="landing/images/leantools/Fishbone.png" alt="">
                                 </div>
                                 <div class="card-title">
                                     <h4>Fishbone Diagram</h4>
@@ -929,9 +899,7 @@
                         <div class="column">
                             <div class="feature-card card-md hover-inset has-text-centered mb-20">
                                 <div class="brand-logo">
-                                    <div class="coloured-bg4">
-                                        <img src="landing/images/leantools/Histogram.png" alt="">
-                                    </div>
+                                    <img src="landing/images/leantools/Histogram.png" alt="">
                                 </div>
                                 <div class="card-title">
                                     <h4>Histogram</h4>
@@ -960,9 +928,7 @@
                         <div class="column">
                             <div class="feature-card card-md hover-inset has-text-centered mb-20">
                                 <div class="brand-logo">
-                                    <div class="coloured-bg1">
-                                        <img src="landing/images/leantools/Impact_Map.png" alt="">
-                                    </div>
+                                    <img src="landing/images/leantools/Impact_Map.png" alt="">
                                 </div>
                                 <div class="card-title">
                                     <h4>Impact Map</h4>
@@ -991,9 +957,7 @@
                         <div class="column">
                             <div class="feature-card card-md hover-inset has-text-centered mb-20">
                                 <div class="brand-logo">
-                                    <div class="coloured-bg2">
-                                        <img src="landing/images/leantools/Pareto_Chart.png" alt="">
-                                    </div>
+                                    <img src="landing/images/leantools/Pareto_Chart.png" alt="">
                                 </div>
                                 <div class="card-title">
                                     <h4>Pareto Chart</h4>
@@ -1023,9 +987,7 @@
                         <div class="column">
                             <div class="feature-card card-md hover-inset has-text-centered mb-20">
                                 <div class="brand-logo">
-                                    <div class="coloured-bg3">
-                                        <img src="landing/images/leantools/Run_Chart.png" alt="">
-                                    </div>
+                                    <img src="landing/images/leantools/Run_Chart.png" alt="">
                                 </div>
                                 <div class="card-title">
                                     <h4>Run Chart</h4>
@@ -1054,9 +1016,7 @@
                         <div class="column">
                             <div class="feature-card card-md hover-inset has-text-centered mb-20">
                                 <div class="brand-logo">
-                                    <div class="coloured-bg4">
-                                        <img src="landing/images/leantools/Scatterplot.png" alt="">
-                                    </div>
+                                    <img src="landing/images/leantools/Scatterplot.png" alt="">
                                 </div>
                                 <div class="card-title">
                                     <h4>Scatter Plot</h4>
@@ -1085,9 +1045,7 @@
                         <div class="column">
                             <div class="feature-card card-md hover-inset has-text-centered mb-20">
                                 <div class="brand-logo">
-                                    <div class="coloured-bg1">
-                                        <img src="landing/images/leantools/Stakeholder_Analysis.png" alt="">
-                                    </div>
+                                    <img src="landing/images/leantools/Stakeholder_Analysis.png" alt="">
                                 </div>
                                 <div class="card-title">
                                     <h4>Stakeholder Analysis</h4>
@@ -1131,7 +1089,7 @@
 
 
 
-        <section id="hiw" class="section is-medium" style="padding-top: 3% !important;">
+        <section id="hiw" class="section is-medium">
             <div class="container">
                 <div class="section-title-wrapper has-text-centered">
                     <div class="clean-bg-symbol"><i class="fa fa-gg"></i></div>
@@ -1141,42 +1099,44 @@
                 </div>
                 <p class="p-t-1 desc has-text-centered"><b class="theme-font-color" style="font-size: 1.5em;">4 Eye-Opening and Easy to Follow Phases</b>
             <br>
-            A <b class="theme-font-color">simple, effective, and fun way to engage employees</b> and get your processes FITT!
+            1 Career-Changing Way to Engage Employees for Getting Processes FITT!
             <br>
-            Achieve <b class="theme-font-color">Positive Behaviors Changes</b> to a <b class="theme-font-color">Continuous Improvement Mindset</b>
+            With <i>Lean</i><b>FITT™</b>, <b class="theme-font-color"><i>POSITIVE BEHAVIORS</i></b> are introduced <br> &amp; <br> reinforced day-to-day
             <br>
-            Making a high level of <b class="theme-font-color">discipline and standardization simple and easy</b> to follow
+            ensuring a change in <b class="theme-font-color"><i>EMPLOYEE ATTITUDES</i></b> and performance; contributing
             <br>
-            A <b class="theme-font-color">Positive Shift in Organizational Culture and Profitability!</b>
+            greatly to a <b class="theme-font-color"><i>CHANGE IN ORGANIZATONAL CULTURE</i></b>.
 
         </p>
 
                 <!-- Feature -->
-                <div class="columns is-vcentered pt-80 ">
+                <div class="columns is-vcentered pt-80 pb-80">
                     <!-- Content -->
                     <div class="column is-4 is-offset-1">
                         <div class="minimal-feature">
                             <h2 class="title is-5 minimal-title theme-font-color">Phase 1</h2>
-                            <h3 class="theme-font-color"><b>GET PEOPLE TRAINED AND ENGAGED – See the wastes</b></h3>
+                            <h3 class="theme-font-color"><b>GET TO KNOW YOUR PROCESSES BETTTER – IDENTIFY WASTES</b></h3>
                             <div class="feature-content">
                                 <br/>
                                 <div>
-                                    <i class="fa fa-rocket gradient-color" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;&nbsp;Identify the key users 
+                                    <i class="fa fa-rocket gradient-color" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp; Regularly conduct a <b class="theme-font-color"><i>Lean Assessment</i></b>
                                     <br/>
                                     <br/>
                                 </div>
                                 
                                 
                                     <i class="fa fa-rocket gradient-color" aria-hidden="true"></i>
-                                    <div class="text-align-fix"> Develop and implement individual and team or group development and training plans</div>
+                                    <div class="text-align-fix"> Review a prioritized list of <b class="theme-font-color"><i>suggested Lean and Six Sigma tools</i></b> based on your Assessment score.?????We need to see if we want to do this or not…..????</div>
                                     <br/>
                                     
 
-                                <i class="fa fa-rocket gradient-color" aria-hidden="true"></i>&nbsp;&nbsp;<div class="text-align-fix">Understand the business case and identify wastes and improvement opportunities</div><br/>
+                                <i class="fa fa-rocket gradient-color" aria-hidden="true"></i>&nbsp;&nbsp; Conduct a <b class="theme-font-color"><i>Waste Walk.</i></b><br/><br/>
 
 
-                                <i class="fa fa-rocket gradient-color" aria-hidden="true"></i>&nbsp;&nbsp;<div class="text-align-fix">Test your knowledge and receive feedback and earn rewards</div><br/>
+                                <i class="fa fa-rocket gradient-color" aria-hidden="true"></i>&nbsp;&nbsp; Create a <b class="theme-font-color"><i>Value Stream Map.</i></b><br/><br/>
 
+
+                                <i class="fa fa-rocket gradient-color" aria-hidden="true"></i>&nbsp;&nbsp; Your goal will be <b class="theme-font-color"><i>SPECIFIC!</i></b>
                             </div>
                         </div>
                     </div>
@@ -1190,7 +1150,7 @@
                 <!-- /Feature -->
                 
                 <!-- Feature -->
-                <div class="columns is-vcentered pt-60">
+                <div class="columns is-vcentered pt-80 pb-80">
                     <!-- Featured image -->
                     <div class="column is-6 is-offset-1">
                         <div class="minimal-feature-image">
@@ -1201,23 +1161,20 @@
                     <div class="column is-4 is-offset-1">
                         <div class="minimal-feature">
                             <h2 class="title is-5 minimal-title theme-font-color">Phase 2</h2>
-                            <h4 class="theme-font-color"><b>STANDARDIZE THE IMPROVEMENT PROCESS AND APPLY <i>Lean</i><b>FITT™</b> Tools – Eliminate Wastes</b></h4>
+                            <h4 class="theme-font-color"><b>STANDARDIZE LEARNING AND HOW TO USE THE TOOLS –ELIMINATE WASTES</b></h4>
                             <div class="feature-content">
                                 <br/>
 
-                                <i class="fa fa-rocket gradient-color" aria-hidden="true"></i>&nbsp;&nbsp; <div class="text-align-fix">Implement targeted – results focused improvement projects</div>
+                                <i class="fa fa-rocket gradient-color" aria-hidden="true"></i>&nbsp;&nbsp;  <div class="text-align-fix">Learn and apply from the 21 tools to broaden the learner's knowledge.</div>
                                 <br/>
 
-                                <i class="fa fa-rocket gradient-color" aria-hidden="true"></i>&nbsp;&nbsp; <div class="text-align-fix">Apply <i>Lean</i><b>FITT™</b> tools for improvements</div>
+                                <i class="fa fa-rocket gradient-color" aria-hidden="true"></i>&nbsp;&nbsp; <div class="text-align-fix">Ensure knowledge attainment by completing the <b class="theme-font-color"><i>Quizzes.</i></b></div>
                                 <br/>
 
-                                <i class="fa fa-rocket gradient-color" aria-hidden="true"></i>&nbsp;&nbsp; <div class="text-align-fix">Measure and track your improvement progress</div>
+                                <i class="fa fa-rocket gradient-color" aria-hidden="true"></i>&nbsp;&nbsp; <div class="text-align-fix"> Embrace a standard approach to implementing a Lean tool and connecting it to a <b class="theme-font-color"><i>KPI.</i></b></div>
                                 <br/>
 
-                                <i class="fa fa-rocket gradient-color" aria-hidden="true"></i>&nbsp;&nbsp; <div class="text-align-fix">Share your results with others</div>
-                                <br/>
-
-                                                         
+                                <i class="fa fa-rocket gradient-color" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp; Your goal will be <b class="theme-font-color"><i>MEASURABLE!</i></b>                         
                             </div>
                         </div>
                     </div>
@@ -1225,26 +1182,24 @@
                 <!-- /Feature -->
                 
                 <!-- Feature -->
-                <div class="columns is-vcentered pt-60">
+                <div class="columns is-vcentered pt-80 pb-80">
                     <!-- Content -->
                     <div class="column is-4 is-offset-1">
                         <div class="minimal-feature dark-text">
                             <h2 class="title is-5 minimal-title theme-font-color">Phase 3</h2>
-                            <h4 class="theme-font-color"><b>ENERGIZE YOUR TEAM WITH ACTIVE INVOLVEMENT AND TRANSPARENCY –Create Flow</b></h4>
+                            <h4 class="theme-font-color"><b>ENERGIZE YOUR TEAM WITH ACTIVE INVOLVEMENT AND TRANSPARENCY –ELIMINATE WASTES</b></h4>
                             <div class="feature-content">
                                 <br/>
+                                <i class="fa fa-rocket gradient-color" aria-hidden="true"></i>&nbsp;&nbsp; Change behavior with team <b class="theme-font-color"><i>Connectivity.</i></b>
+                                <br/><br/>
 
-                                <i class="fa fa-rocket gradient-color" aria-hidden="true"></i>&nbsp;&nbsp; <div class="text-align-fix">See the results from <i>Lean</i><b>FITT™</b> tool applications and projects</div>
-                                <br/>
+                                <i class="fa fa-rocket gradient-color" aria-hidden="true"></i>&nbsp;&nbsp; Visualized you and your team <b class="theme-font-color"><i>Tickets or Action Items.</i></b>
+                                <br/><br/>
 
-                                <i class="fa fa-rocket gradient-color" aria-hidden="true"></i>&nbsp;&nbsp; <div class="text-align-fix">Track and share your improvement project progress and action items</div>
-                                <br/>
-
-                                <i class="fa fa-rocket gradient-color" aria-hidden="true"></i>&nbsp;&nbsp; <div class="text-align-fix">Standardize and expand training throughout the organization</div>
-                                <br/>
+                                <i class="fa fa-rocket gradient-color" aria-hidden="true"></i>&nbsp;&nbsp; Communicate with team members via <b class="theme-font-color"><i>Notifications</b></i>.
+                                <br/><br/>
                                 
-                                <i class="fa fa-rocket gradient-color" aria-hidden="true"></i>&nbsp;&nbsp; <div class="text-align-fix">Share success stories</div>
-                                <br/>                         
+                                <i class="fa fa-rocket gradient-color" aria-hidden="true"></i>&nbsp;&nbsp; Your goal will be <b class="theme-font-color"><i>ASSIGNABLE!</i></b>                         
                             </div>
                         </div>
                     </div>
@@ -1258,7 +1213,7 @@
                 <!-- /Feature -->
 
                 <!-- Feature -->
-                <div class="columns is-vcentered pt-60 ">
+                <div class="columns is-vcentered pt-80 pb-80">
                     <!-- Featured image -->
                     <div class="column is-6 is-offset-1">
                         <div class="minimal-feature-image">
@@ -1269,19 +1224,19 @@
                     <div class="column is-4 is-offset-1">
                         <div class="minimal-feature">
                             <h2 class="title is-5 minimal-title theme-font-color">Phase 4</h2>
-                            <h4 class="theme-font-color"><b>MAKE IT ROUTINE AND SUSTAINABLE – Strive for perfection!</b></h4>
+                            <h4 class="theme-font-color"><b>MAKE IT ROUTINE, TRACK PROGRESS, AND BE REWARDED - ELIMINATE WASTES FOREVER!</b></h4>
                             <div class="feature-content">
                                 <br/>
-                                <i class="fa fa-rocket gradient-color" aria-hidden="true"></i>&nbsp;&nbsp; <div class="text-align-fix">Continually monitor and adjust your progress and activities to address current needs.</div>
+                                <i class="fa fa-rocket gradient-color" aria-hidden="true"></i>&nbsp;&nbsp; <div class="text-align-fix">Receive feeds from the <b class="theme-font-color"><i>Awards and Notifications</i></b> on a regular basis.</div>
                                 <br/>
 
-                                <i class="fa fa-rocket gradient-color" aria-hidden="true"></i>&nbsp;&nbsp; <div class="text-align-fix">Be accountable to action items to drive continual improvements.</div>
+                                <i class="fa fa-rocket gradient-color" aria-hidden="true"></i>&nbsp;&nbsp; Track team’s progress with the <b class="theme-font-color"><i>Action Item Board.</i></b>
+                                <br/><br/>
+
+                                <i class="fa fa-rocket gradient-color" aria-hidden="true"></i>&nbsp;&nbsp; <div class="text-align-fix">Continually adjust and monitor your activities to meet everyday issues – making <i><i>Lean</i><b>FITT™</b></i> relevant.</div>
                                 <br/>
 
-                                <i class="fa fa-rocket gradient-color" aria-hidden="true"></i>&nbsp;&nbsp; <div class="text-align-fix">Measure and share tangible dollar savings and intangible savings such as improved communications and teamwork.</div>
-                                <br/>
-
-                                <i class="fa fa-rocket gradient-color" aria-hidden="true"></i>&nbsp;&nbsp; <div class="text-align-fix">Make continual improvement and <i>Lean</i><b>FITT™</b> your organizations culture!</div>             
+                                <i class="fa fa-rocket gradient-color" aria-hidden="true"></i>&nbsp;&nbsp; Your goal will be <b class="theme-font-color"><i>REALISTIC AND TIMELY!</i></b>               
                             </div>
                         </div>
                     </div>
@@ -1312,7 +1267,7 @@
                     <!-- Content -->
                     <div class="column slide-description">
                         <div class="icon-subtitle">
-                            <img src="landing/images/feature_icons/tools.png" class="img-responsive lean-icon-fix">
+                            <img src="http://web.leanfitt.com/wp-content/uploads/2017/03/Tools-and-Training-.png" class="img-responsive">
                         </div>
                         <div class="title quick-feature is-handwritten text-bold">
                             <h2>Tools and Training</h2>
@@ -1344,7 +1299,7 @@
 
                     <div class="column slide-description">
                         <div class="icon-subtitle">
-                            <img src="landing/images/feature_icons/Strengthen_Leaders.png" class="img-responsive lean-icon-fix">
+                            <img src="http://web.leanfitt.com/wp-content/uploads/2017/01/Strengthen-Leaders.png" class="img-responsive">
                         </div>
                         <div class="title quick-feature is-handwritten text-bold">
                             <h2>Strengthen Leaders</h2>
@@ -1376,7 +1331,7 @@
 
                     <div class="column slide-description">
                         <div class="icon-subtitle">
-                            <img src="landing/images/feature_icons/team-success.png" class="img-responsive lean-icon-fix">
+                            <img src="http://web.leanfitt.com/wp-content/uploads/2017/03/success_icon.png" class="img-responsive">
                         </div>
                         <div class="title quick-feature is-handwritten text-bold">
                             <h2>Success</h2>
@@ -1408,7 +1363,7 @@
 
                     <div class="column slide-description">
                         <div class="icon-subtitle">
-                            <img src="landing/images/feature_icons/content-management.png" class="img-responsive lean-icon-fix">
+                            <img src="http://web.leanfitt.com/wp-content/uploads/2017/01/Specialized-Content.png" class="img-responsive">
                         </div>
                         <div class="title quick-feature is-handwritten text-bold">
                             <h2>Customized Content</h2>
@@ -1417,7 +1372,7 @@
                         <div class="title-divider is-small"></div>
                         <span class="section-feature-description">Everyone’s approach to continuous improvement is different. One-size-fits-all doesn’t always fit you. With the Gold subscription, you can add your case studies, logos, colors, president’s message, etc. Allow <i>Lean</i><b>FITT™</b> the freedom to fit exactly your organization’s culture and uniqueness.</span>
                         <div class="pt-10 pb-10">
-                            <a href="#fifth-feature" class="button button-cta btn-align btn-outlined is-bold raised light-btn rounded is-hidden-touch">
+                            <a href="#fourth-feature" class="button button-cta btn-align btn-outlined is-bold raised light-btn rounded is-hidden-touch">
                                 Next feature
                             </a>
                         </div> 
@@ -1435,13 +1390,13 @@
 
                 <div class="columns is-gapless is-vcentered mt-80 mb-80">
                     <div class="column is-7 is-hidden-touch">
-                        <div class="phone-slide is-fifth">
+                        <div class="phone-slide is-first">
                         </div>
                     </div>
 
                     <div class="column slide-description">
                         <div class="icon-subtitle">
-                            <img src="landing/images/feature_icons/sustain_improvements.png" class="img-responsive lean-icon-fix">
+                            <img src="http://web.leanfitt.com/wp-content/uploads/2017/01/Sustain-Your-Improvements.png" class="img-responsive">
                         </div>
                         <div class="title quick-feature is-handwritten text-bold">
                             <h2>Sustain Improvements</h2>
@@ -1450,7 +1405,7 @@
                         <div class="title-divider is-small"></div>
                         <span class="section-feature-description">No project is truly successful unless continuous improvements are sustained.  This can only be accomplished by engaging your employee throughout the improvement process.  Allow <i>Lean</i><b>FITT™</b> to be your visual management system for all phases of continuous improvement projects.</span>
                         <div class="pt-10 pb-10">
-                            <a href="#sixth-feature" class="button button-cta btn-align btn-outlined is-bold raised light-btn rounded is-hidden-touch">
+                            <a href="#fourth-feature" class="button button-cta btn-align btn-outlined is-bold raised light-btn rounded is-hidden-touch">
                                 Next feature
                             </a>
                         </div> 
@@ -1467,13 +1422,13 @@
 
                 <div class="columns is-gapless is-vcentered mt-80 mb-80">
                     <div class="column is-7 is-hidden-touch">
-                        <div class="phone-slide is-sixth">
+                        <div class="phone-slide is-second">
                         </div>
                     </div>
 
                     <div class="column slide-description">
                         <div class="icon-subtitle">
-                            <img src="landing/images/feature_icons/inspire_employees.png" class="img-responsive lean-icon-fix">
+                            <img src="http://web.leanfitt.com/wp-content/uploads/2017/01/Inspire-Employees.png" class="img-responsive">
                         </div>
                         <div class="title quick-feature is-handwritten text-bold">
                             <h2>Inspire Employees</h2>
@@ -1482,7 +1437,7 @@
                         <div class="title-divider is-small"></div>
                         <span class="section-feature-description">Encourage employees join the continuous improvement journey.  Employees desire their work to be of the highest quality as well as for it to flow smoothly. Allow <i>Lean</i><b>FITT™</b> to intensively engage your employees at all levels of the organization.</span>
                         <div class="pt-10 pb-10">
-                            <a href="#seventh-feature" class="button button-cta btn-align btn-outlined is-bold raised light-btn rounded is-hidden-touch">
+                            <a href="#fifth-feature" class="button button-cta btn-align btn-outlined is-bold raised light-btn rounded is-hidden-touch">
                                 Next feature
                             </a>
                         </div> 
@@ -1494,18 +1449,18 @@
         <!-- /Phone scroller section 6 -->
 
         <!-- Phone scroller section 7 -->
-        <section id="seventh-feature" class="section no-margin">
+        <section id="fourth-feature" class="section no-margin">
             <div class="container">
 
                 <div class="columns is-gapless is-vcentered mt-80 mb-80">
                     <div class="column is-7 is-hidden-touch">
-                        <div class="phone-slide is-seventh">
+                        <div class="phone-slide is-third">
                         </div>
                     </div>
 
                     <div class="column slide-description">
                         <div class="icon-subtitle">
-                            <img src="landing/images/feature_icons/real_time_tracking.png" class="img-responsive lean-icon-fix">
+                            <img src="http://web.leanfitt.com/wp-content/uploads/2017/01/Track-Performance-Improvements-Real-Time.png" class="img-responsive">
                         </div>
                         <div class="title quick-feature is-handwritten text-bold">
                             <h2>Real-Time Tracking</h2>
@@ -1513,6 +1468,11 @@
                         </div>
                         <div class="title-divider is-small"></div>
                         <span class="section-feature-description">Stay on track with online and mobile tools that show your progress with real-time charts and graphs on the on your organizations Fitness Dashboard. Reach your goals by seeing progress notifications. Allow <i>Lean</i><b>FITT™</b> to track improvements real-time.</span>
+                        <div class="pt-10 pb-10">
+                            <a href="#sixth-feature" class="button button-cta btn-align btn-outlined is-bold raised light-btn rounded is-hidden-touch">
+                                Next feature
+                            </a>
+                        </div> 
                     </div>
 
                 </div>
@@ -1526,7 +1486,7 @@
 
         <!-- Feature Matrix -->
         <section id="feature-matrix" class="section section-light-grey is-medium is-skewed-sm" style="margin-top: 4%;">
-            <div class="container has-text-centered is-reverse-skewed-sm pb-60">
+            <div class="container has-text-centered is-reverse-skewed-sm">
                 <div class="section-title-wrapper has-text-centered">
                     <div class="clean-bg-symbol"><i class="fa fa-gg"></i></div>
                     <div>
@@ -1730,7 +1690,7 @@
 
 
         <!-- Team section -->
-        <section id="consulting" class="section is-medium no-padding-bottom pt-0">
+        <section id="consulting" class="section is-medium no-padding-bottom">
             <div class="container">
                 <!-- Title -->
                 <!-- <div class="section-title-wrapper">
