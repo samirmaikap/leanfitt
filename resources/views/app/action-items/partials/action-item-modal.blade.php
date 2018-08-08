@@ -147,7 +147,6 @@
                                                 </time>
                                             </a>
                                         </p>
-
                                         <p class="">{{ $comment->comment }}</p>
                                     </div>
                                 </div>
@@ -158,10 +157,10 @@
                     {{--</div>--}}
                 </div>
                 <!-- Modal Body Ends -->
-                @if(!isSuperadmin())
                     </div>
                 </div>
 
+            @if(!isSuperadmin() || ($actionItem->aasignor_id == session('user')->id) || in_array(session('user')->id, $actionItem->assignees()->pluck('user_id')->toArray()) )
                 <div class="modal-footer">
                     <button type="submit" class="update-action-item btn btn-block btn-primary">Update</button>
                 </div>

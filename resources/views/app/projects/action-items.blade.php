@@ -153,8 +153,26 @@
 
                         if (response.success) {
                             $('.action-item[data-id="' + id + '"]').find('.title').text(title);
-                            toastr.success(response.message);
+
+                            var assignees = response.data.assignees;
+                            var $parent = $this.parents('.action-item');
+
+                            if($parent.find('.assignees').length){
+                                $this.parents('.action-item').find('.assignees').html('');
+                            }else{
+                                $parent.find('.media-body').append('<small class="text-fader">Assignees</small><p></p>');
+                            }
+
+                            for(var i=0; i< assignees.length; i++){
+                                console.log("assignees " + i);
+                                var html = ' <span class="avatar avatar-sm b-2 border-primary">' +
+                                    '<img src="https://ui-avatars.com/api/?name=' + assignees[i].full_name + '" alt="">'+
+                                    '</span> ';
+                                $parent.find('p:last').append(html);
+                            }
 //                            location.reload();
+
+                            toastr.success(response.message);
                             $this.parents('.modal').modal('hide');
                         } else {
                             toastr.error("Something went wrong! Please try again later.");

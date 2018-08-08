@@ -7,6 +7,7 @@ use App\Repositories\RoleRepository;
 // use Spatie\Permission\Models\Permission;
 // use Spatie\Permission\Models\Role;
 use App\Models\Permission;
+use function dd;
 
 
 class RoleService
@@ -61,7 +62,7 @@ class RoleService
     public function create($data, $organization = null)
     {
 
-        $permissions = isset($data['permissions']) ? $data['permissions'] : $this->getDefaultPermissions();
+        $permissions = isset($data['permissions']) ? $this->getPermissionsByName($data['permissions']) : $this->getDefaultPermissions();
 
         if(!isset($data['display_name']))
         {
@@ -84,7 +85,7 @@ class RoleService
     public function update($data, $id)
     {
         $role = $this->roleRepository->find($id);
-        $role->syncPermissions($data['permissions']);
+        $role->syncPermissions($this->getPermissionsByName($data['permissions']));
         $role->fill($data)
             ->save();
         return $role;
@@ -93,6 +94,18 @@ class RoleService
     public function delete($id)
     {
         return $this->roleRepository->delete($id);
+    }
+
+    public function getPermissionsByName(array $permissions)
+    {
+        $query = Permission::where('id', '>', 0);
+
+        foreach ($permissions as $permission)
+        {
+            $query->orWhere('name', '=', $permission);
+        }
+
+        return $query->get();
     }
 
 

@@ -7271,6 +7271,15 @@ to {
 .phone-slide.is-fourth {
     background-image: url(../images/screenshots/phone-slide-4.png)
 }
+.phone-slide.is-fifth {
+    background-image: url(../images/screenshots/phone-slide-5.png)
+}
+.phone-slide.is-sixth {
+    background-image: url(../images/screenshots/phone-slide-6.png)
+}
+.phone-slide.is-seventh {
+    background-image: url(../images/screenshots/phone-slide-7.png)
+}
 .fitt-text-font {
     font-size: 1.25rem !important;
 }
@@ -7278,5 +7287,5 @@ to {
     text-shadow: 1px 0;
 }
 .lean-icon-fix {
-    width: 20% !important;
+    width: 13% !important;
 }
