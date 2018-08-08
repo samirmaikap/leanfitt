@@ -16,6 +16,7 @@ class CreateReportsTable extends Migration
         Schema::create('reports', function (Blueprint $table) {
             $table->increments('id')->unsigned()->index();
             $table->integer('lean_tool_id');
+            $table->string('title')->nullable();
             $table->integer('project_id')->unsigned();
             $table->timestamps();
             $table->softDeletes();

@@ -110,13 +110,8 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-6">
                     <div class="card ">
-                        {{--<div class="card-header">--}}
-                            {{--<h3 class="card-title pull-left">Action items due dates  </h3>--}}
-                            {{--<a class="pull-right fs-17" href="{{url('projects')}}"><i class="fe fe-external-link"></i></a>--}}
-                        {{--</div>--}}
-
                         <div class="card-header">
                             <h4 class="pull-left">Action items due dates</h4>
                             <div class="flexbox align-items-center  pull-right gap-items-4">
@@ -124,24 +119,20 @@
                                 <span class="text-dark fs-16" id="calendar-title"></span>
                                 <a class="text-dark" href="#" data-calendar="next"><i class="ti-angle-right"></i></a>
                             </div>
-
                         </div>
                         <div class="card-body">
                             <div id="calendar" data-provide="fullcalendar"></div>
                         </div>
-
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-6">
                     <div class="card ">
                         <div class="card-header">
                             <h3 class="card-title pull-left">Tangible Savings</h3>
                             <a class="pull-right fs-17" href="{{url('projects')}}"><i class="fe fe-external-link"></i></a>
                         </div>
                         <div class="card-body">
-                            <canvas id="tangible-chart" width="400" height="400"></canvas>
+                            <canvas id="tangible-chart" width="400" height="445"></canvas>
                         </div>
                     </div>
                 </div>
@@ -154,6 +145,7 @@
                 var calendar = $('#calendar');
                 var events=[];
                 var items=JSON.parse('{!!json_encode($action_items->values(),JSON_HEX_APOS) !!}');
+                console.log(items);
                 for(var i=0; i<items.length;i++){
                     if(items[i].process=='Backlog'){
                         var color = '#dc3545';
@@ -173,6 +165,7 @@
 
                     var event = {
                         title: items[i].title,
+                        project_id:items[i].project_id,
                         start: (new Date(items[i].due_date)),
                         allDay: true,
                         color: color,
@@ -198,9 +191,12 @@
                     // dayClick: function(date, jsEvent, view) {
                     //     $('#modal-add-event').modal('show');
                     // },
-                    // eventClick: function(date, jsEvent, view) {
-                    //     $('#modal-view-event').modal('show');
-                    // }
+                    eventClick: function(calEvent, jsEvent, view) {
+                        @if(!isSuperadmin())
+                            window.location.href="{{url('projects')}}/"+calEvent.project_id+"/action-items";
+                        @endif
+
+                    }
                 });
 
                 $('[data-calendar-view]').on('click', function(){
@@ -258,6 +254,7 @@
 
         function renderChart(){
             var dataset=[];
+            var label='';
                     @if(count($tangibles) > 0)
                     @foreach($tangibles as $key=>$tangible)
             var value=JSON.parse('{!!$tangible->tangibleIntangible->pluck('value')->toJson() !!}')
@@ -309,6 +306,11 @@
                             scaleLabel: {
                                 display:     true,
                                 labelString: 'Date'
+                            },
+                            ticks: {
+                                autoSkip: false,
+                                maxRotation: 45,
+                                minRotation: 45
                             }
                         }]
                     },

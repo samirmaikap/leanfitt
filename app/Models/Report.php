@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Report extends Model
 {
     protected $fillable=[
+        'title',
         'lean_tool_id',
         'project_id',
     ];

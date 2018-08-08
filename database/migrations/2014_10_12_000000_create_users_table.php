@@ -21,11 +21,11 @@ class CreateUsersTable extends Migration
             $table->string('phone')->nullable();
             $table->text('avatar')->nullable();
             $table->string('password');
-            $table->string('verification_token', 60)->default(md5(time()));
+            $table->string('verification_token', 60)->nullable();
             $table->tinyInteger('is_verified')->default(0);
             $table->tinyInteger('is_superadmin')->default(0);
             $table->rememberToken();
-            $table->string('api_token',60)->default(bin2hex(random_bytes(16)));
+            $table->string('api_token',60)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

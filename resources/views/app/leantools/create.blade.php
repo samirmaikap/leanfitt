@@ -48,31 +48,34 @@
             </div>
 
             {{--Assessment--}}
-            <div class="card">
-                <h4 class="card-title"><strong>Assessments</strong></h4>
-                @php
-                   $assessments=isset($tool->assessment) ? json_decode($tool->assessment) : null;
-                        @endphp
-                <div class="media-list media-list-hover media-list-divided scrollable assessment-list-container" style="height: auto;max-height: 350px">
-                    @if(count($assessments) > 0)
-                        @foreach($assessments as $key=>$assessment)
-                            <div data-id="{{$key}}" class="media media-single assessment-list">
-                                <div class="media-body">
-                                    <p>{{$assessment}}</p>
+            @if(isset($tool->id) && strtolower($tool->id)== 7)
+                <div class="card">
+                    <h4 class="card-title"><strong>Assessments</strong></h4>
+                    @php
+                        $assessments=isset($tool->assessment) ? json_decode($tool->assessment) : null;
+                    @endphp
+                    <div class="media-list media-list-hover media-list-divided scrollable assessment-list-container" style="height: auto;max-height: 350px">
+                        @if(count($assessments) > 0)
+                            @foreach($assessments as $key=>$assessment)
+                                <div data-id="{{$key}}" class="media media-single assessment-list">
+                                    <div class="media-body">
+                                        <p>{{$assessment}}</p>
+                                    </div>
+                                    <div class="media-right">
+                                        <a class="btn btn-sm btn-bold btn-round btn-outline btn-secondary assessment-edit" href="#" data-toggle="modal" data-target="#assessment-modal"><i class="fe fe-edit-2"></i></a>
+                                        <a class="btn btn-sm btn-bold btn-round btn-outline btn-secondary assessment-delete" href="#"><i class="fe fe-trash-2"></i></a>
+                                    </div>
                                 </div>
-                                <div class="media-right">
-                                    <a class="btn btn-sm btn-bold btn-round btn-outline btn-secondary assessment-edit" href="#" data-toggle="modal" data-target="#assessment-modal"><i class="fe fe-edit-2"></i></a>
-                                    <a class="btn btn-sm btn-bold btn-round btn-outline btn-secondary assessment-delete" href="#"><i class="fe fe-trash-2"></i></a>
-                                </div>
-                            </div>
-                        @endforeach
-                    @endif
-                </div>
+                            @endforeach
+                        @endif
+                    </div>
 
-                <div class="text-center bt-1 border-light p-2">
-                    <a href="javascript:void(0)" class="d-block" id="new-assessment" data-toggle="modal" data-target="#assessment-modal">New Assessment</a>
+                    <div class="text-center bt-1 border-light p-2">
+                        <a href="javascript:void(0)" class="d-block" id="new-assessment" data-toggle="modal" data-target="#assessment-modal">New Assessment</a>
+                    </div>
                 </div>
-            </div>
+            @endif
+
 
             {{--Quiz--}}
             <div class="card">
@@ -113,15 +116,18 @@
                         <textarea style="display: none;" name="case_studies" id="case-studies-input"></textarea>
                         <input type="hidden" name="tool_id" value="{{isset($tool_id) ? $tool_id : null}}">
 
-                         <div class="assessment-input-container">
-                             @if(count($assessments) > 0)
-                                 @foreach($assessments as $key=>$assessment)
-                                     <div class="form-group hidden assessment-input-group" data-id="{{$key}}">
-                                         <input type="hidden" name="assessment[]" value="{{$assessment}}">
-                                     </div>
-                                 @endforeach
-                             @endif
-                         </div>
+                        @if(isset($tool->id) && strtolower($tool->id)== 7)
+                            <div class="assessment-input-container">
+                                @if(count($assessments) > 0)
+                                    @foreach($assessments as $key=>$assessment)
+                                        <div class="form-group hidden assessment-input-group" data-id="{{$key}}">
+                                            <input type="hidden" name="assessment[]" value="{{$assessment}}">
+                                        </div>
+                                    @endforeach
+                                @endif
+                            </div>
+                        @endif
+
                          <div class="quiz-input-container">
                              @if(count($quizs) > 0)
                                  @foreach($quizs as $key=>$quiz)

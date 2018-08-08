@@ -68,3 +68,7 @@ function makeSubdomain($domain=null){
     $url=str_replace('http://','',env('APP_URL'));
     return 'http://'.$domain.$url;
 }
+
+function makeToken(){
+    return md5(time());
+}

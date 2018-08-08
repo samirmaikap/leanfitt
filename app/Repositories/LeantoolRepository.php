@@ -35,6 +35,6 @@ class LeantoolRepository extends BaseRepository //implements LeanToolsRepository
 
     public function toolAssessment()
     {
-        return $this->model()->all(['name','assessment']);
+        return $this->model()->where('id',7)->first(['name','assessment']);
     }
 }

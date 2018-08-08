@@ -18,6 +18,7 @@
                             <p>Start Date: {{date('m/d/Y',strtotime($project->start_date))}}</p>
                             <p>End Date: {{date('m/d/Y',strtotime($project->end_date))}}</p>
                             <p>Report Date: {{date('m/d/Y',strtotime($project->report_date))}}</p>
+                            <p>Owner: {{isset($project->owner) ? $project->owner->full_name : 'Not avaliable'}}</p>
                             @if($project->is_completed==1)
                                 <p>Status: <span class="text-success">Completed</span></p>
                             @elseif($project->is_archived==1)
@@ -62,19 +63,19 @@
                             $default_savings=$default_savings_content->values;
                             $default_savings_arr=$default_savings_content->values;
                         @endphp
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="card">
                                 <div class="card-header"><h4>Tangible Savings</h4></div>
                                 <form method="post" action="{{url('projects')}}/{{$project->id}}/savings/tangibles" enctype="multipart/form-data">
                                     {{csrf_field()}}
-                                    <div class="media-list media-list-hover media-list-divided tangible-container">
+                                    <div class="media-list media-list-hover media-list-divided tangible-container scrollable h-250px">
                                         @if(count($tangibles) > 0)
                                             @foreach($tangibles as $key2=>$tangible)
                                                 <div class="media media-single" id="tangible-{{$key2+1}}" data-id="{{$tangible->id}}">
                                                     <span class="title">{{$tangible->value}}</span>
                                                     <input type="hidden" id="tangible-input-value" name="values[]" value="{{$tangible->value}}">
-                                                    <span class="badge badge-pill cursor-pointer fs-15 text-success edit-tangible" data-toggle="modal" data-target="#modal-tangible"><i class="ti-pencil"></i></span>
-                                                    <span class="badge badge-pill cursor-pointer fs-15 text-success remove-tangible"><i class="ti-trash"></i></span>
+                                                    <span class="badge badge-pill cursor-pointer fs-15 text-dark hover-info edit-tangible" data-toggle="modal" data-target="#modal-tangible"><i class="ti-pencil"></i></span>
+                                                    <span class="badge badge-pill cursor-pointer fs-15 text-dark hover-danger remove-tangible"><i class="ti-trash"></i></span>
                                                 </div>
                                             @endforeach
                                         @endif
@@ -89,12 +90,12 @@
                             </div>
                         </div>
 
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="card">
                                 <div class="card-header"><h4>Intangible Benefits</h4></div>
                                 <form method="post" action="{{url('projects')}}/{{$project->id}}/savings/intangibles" enctype="multipart/form-data">
                                     {{csrf_field()}}
-                                    <div class="media-list media-list-hover media-list-divided intangible-container">
+                                    <div class="media-list media-list-hover media-list-divided intangible-container scrollable h-250px">
                                         @php $intangibles_arr=$intangibles->pluck('value')->toArray(); @endphp
                                         @php
                                             $diff_arr=array_diff($intangibles_arr,$default_savings_arr);
@@ -196,9 +197,10 @@
                                 <div class="card-header"><h4>Comments</h4></div>
                                 <div class="card-body">
                                     <div class="media-list media-list-divided">
-                                        <div class="media">
-                                            @if(isset($project->comments) && count($project->comments) > 0)
-                                                @foreach($project->comments as $comment)
+
+                                        @if(isset($project->comments) && count($project->comments) > 0)
+                                            @foreach($project->comments as $comment)
+                                                <div class="media">
                                                     <a class="avatar" href="#">
                                                         <img src="{{isset($comment->user) ? $comment->user->avatar : null}}" alt="...">
                                                     </a>
@@ -219,11 +221,11 @@
                                                             @endif
                                                             </p>
                                                     </div>
-                                                @endforeach
-                                            @else
-                                                <h4>No comments</h4>
-                                            @endif
-                                        </div>
+                                                </div>
+                                            @endforeach
+                                        @else
+                                            <h4>No comments</h4>
+                                        @endif
                                     </div>
                                     @if(!isSuperadmin())
                                         <form class="publisher bg-transparent bt-1 border-fade" method="post" action="{{url('projects/comment')}}">
@@ -483,22 +485,22 @@
             $('.update-tangible').click(function(){
                 var value=$('#tangible-input').val();
                 var key=$('#tangible-key').val();
-               if(!key){
-                   var len=parseInt($('.tangible-container .media-single').length)+1;
-                   var html=' <div class="media media-single" id="tangible-'+len+'" data-id="">\n' +
-                       '                                                            <span class="title">'+value+'</span>\n' +
-                       '                                                            <input type="hidden" id="tangible-input-value" name="values[]" value="'+value+'">\n' +
-                       '                                                            <span class="badge badge-pill cursor-pointer fs-15 text-success edit-tangible" data-toggle="modal" data-target="#modal-tangible"><i class="ti-pencil"></i></span>\n' +
-                       '                                                            <span class="badge badge-pill cursor-pointer fs-15 text-success"><i class="ti-trash"></i></span>\n' +
-                       '                                                        </div>'
-                   $('.tangible-container').append(html);
-                   $('#tangible-input').val('');
-               }
-               else{
-                   $('#tangible-'+key).find('.title').html(value);
-                   $('#tangible-'+key).find('input').val(value);
-                   $('#modal-tangible').modal('hide');
-               }
+                if(!key){
+                    var len=parseInt($('.tangible-container .media-single').length)+1;
+                    var html=' <div class="media media-single" id="tangible-'+len+'" data-id="">\n' +
+                        '                                                            <span class="title">'+value+'</span>\n' +
+                        '                                                            <input type="hidden" id="tangible-input-value" name="values[]" value="'+value+'">\n' +
+                        '                                                            <span class="badge badge-pill cursor-pointer fs-15 text-success edit-tangible" data-toggle="modal" data-target="#modal-tangible"><i class="ti-pencil"></i></span>\n' +
+                        '                                                            <span class="badge badge-pill cursor-pointer fs-15 text-success"><i class="ti-trash"></i></span>\n' +
+                        '                                                        </div>'
+                    $('.tangible-container').append(html);
+                    $('#tangible-input').val('');
+                }
+                else{
+                    $('#tangible-'+key).find('.title').html(value);
+                    $('#tangible-'+key).find('input').val(value);
+                    $('#modal-tangible').modal('hide');
+                }
             })
 
 

@@ -211,4 +211,15 @@ class UserController extends Controller
         }
 
     }
+
+    public function allEvaluations(Request $request){
+        $data['page']='evaluation';
+        $data['organization']=pluckOrganization('id');
+        $data['user_id']=$request->query('user') ? $request->get('user') : null;
+        $data['evaluator_id']=$request->query('evaluator') ? $request->get('evaluator') : null;
+        $data['evaluations']=$this->userService->allEvaluations($data['organization'],$data['user_id'],$data['evaluator_id']);
+        $data['evaluators']=$this->userService->getEvaluators($data['organization']);
+        $data['users']=$this->userService->all($data['organization']);
+        return view('app.users.evaluation', $data);
+    }
 }

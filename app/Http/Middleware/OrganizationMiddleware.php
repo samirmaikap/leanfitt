@@ -52,23 +52,7 @@ class OrganizationMiddleware
         session()->forget('is_admin');
         session()->put('is_admin',in_array('Admin',$currentRoles->pluck('name')->toArray()));
 
-        $subscribed=$organization->subscribed('main');
-        if(!$subscribed){
-            session()->put(['not_accessible'=>'subscription']);
-            return redirect(url('users').'/'.$orgUser->user_id.'/profile');
-        }
-
-        if($orgUser->is_suspended==1){
-            session()->put(['not_accessible'=>'suspended']);
-            return redirect(url('users').'/'.$orgUser->user_id.'/profile');
-        }
-
-        if($orgUser->is_invited==1){
-            session()->put(['not_accessible'=>'invited']);
-            return redirect(url('users').'/'.$orgUser->user_id.'/profile');
-        }
-
-        session()->forget('not_accessible');
+        session()->put('organization_user',$orgUser);
 
         return $next($request);
     }

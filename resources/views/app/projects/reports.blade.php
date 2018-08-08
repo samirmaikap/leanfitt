@@ -9,11 +9,14 @@
                         <div class="col-lg-3 col-md-4 col-sm-12">
                             <a href="{{url('projects')}}/{{$project->id}}/reports/{{$report->id}}">
                                 <div class="card">
-                                    <div class="card-body text-center pt-50">
+                                    <div class="card-body text-center pt-50 h-250px">
                                         <div class="mb-20">
-                                            <img class="avatar avatar-xxl" src="../assets/img/avatar/1.jpg">
+                                            <img class="avatar avatar-xxl avatar-square bg-white" src="{{asset('assets')}}/icons/dark/{{str_slug(strtolower($report->report_category),'_')}}.png">
                                         </div>
-                                        <span class="fs-15 mt-3 mb-1"><strong>{{$report->report_category}}</strong></span>
+                                        <span class="fs-15 "><strong>{{$report->report_category}}</strong></span>
+                                        @if(!empty($report->title))
+                                            <p class="d-block mt-1 mb-1">{{$report->title}}</p>
+                                        @endif
                                         <p class="text-fade">Created : {{date('m/d/Y',strtotime($report->created_at))}}</p>
                                     </div>
                                     <div class="card-body text-center pb-20">
@@ -46,6 +49,10 @@
                 <form method="post" action="{{url('projects')}}/reports" enctype="multipart/form-data">
                     {{csrf_field()}}
                     <div class="modal-body">
+                        <div class="form-group">
+                            <label for="input-normal">Title</label>
+                            <input type="text" name="title" class="form-control" id="input-normal" >
+                        </div>
                         <div class="form-group">
                             <label for="input-normal">Module Name</label>
                             <select id="report-category" name="lean_tool_id" data-provide="selectpicker" data-width="100%">

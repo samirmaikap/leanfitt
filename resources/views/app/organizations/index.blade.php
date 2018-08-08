@@ -27,14 +27,15 @@
                             <td><a href="{{ url("users?organization=". $organization->id) }}">{{ $organization->name }}</a></td>
                             <td>{{ $organization->contact_person }}</td>
                             <td>{{ $organization->users_count }}</td>
-                            <td>@if(isset($organization->subscriptions[0]))
-                                    @if($organization->subscriptions[0]->trial_ends_at && $organization->subscriptions[0]->trial_ends_at->isPast())
-                                        {{$organization->subscriptions[0]->quantity}} <span class="text-warning">(On Trial)</span>
+                            <td>
+                                @if(isset($organization))
+                                    @if(!empty($organization->trial_ends_at) && strtotime($organization->trial_ends_at)>strtotime(date('Y-m-d')))
+                                        <span class="text-warning">On Trial</span>
                                     @else
-                                        @if($organization->subscriptions[0]->ends_at && $organization->subscriptions[0]->ends_at->isPast())
-                                            {{$organization->subscriptions[0]->quantity}} <span class="text-danger">(Stopped)</span>
+                                        @if($organization->subscriptions[0]->ends_at && strtotime($organization->subscriptions[0]->ends_at) < strtotime(date('Y-m-d')))
+                                            <span class="text-danger">Stopped</span>
                                         @else
-                                            {{$organization->subscriptions[0]->quantity}} <span class="text-success">(Active)</span>
+                                            <span class="text-success">Active</span>
                                         @endif
                                     @endif
                                 @endif

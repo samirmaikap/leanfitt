@@ -39,20 +39,15 @@ class AssessmentService
 
     public function show()
     {
-        $tools=$this->toolRepo->toolAssessment();
+        $tool=$this->toolRepo->toolAssessment();
         $collection=new Collection();
-        foreach($tools as $num=>$tool){
-            $assessments = json_decode($tool->assessment);
-            shuffle($assessments);
-            if(!is_array($assessments)){
-                break;
-            }
-            $assessments=array_slice($assessments, 0, 3);
-            foreach ($assessments as $assess){
-                $data['tool_name']=$tool->name;
-                $data['assessment']=$assess;
-                $collection->push(new Collection($data));
-            }
+        $assessments = json_decode($tool->assessment);
+        shuffle($assessments);
+//        $assessments=array_slice($assessments, 0, 3);
+        foreach ($assessments as $assess){
+            $data['tool_name']=$tool->name;
+            $data['assessment']=$assess;
+            $collection->push(new Collection($data));
         }
 
         if(count($collection) > 0){

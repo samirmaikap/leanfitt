@@ -36,7 +36,7 @@ class AuthController extends Controller
     public function updatePassword(Request $request){
         try{
             $this->service->updatePassword($request->all());
-            return redirect(url('login'));
+            return redirect(url('/login'));
         }catch(\Exception $e){
             return redirect()->back()->withInput($request->all())->withErrors($e->getMessage());
         }

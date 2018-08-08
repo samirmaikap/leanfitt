@@ -15,15 +15,31 @@ class HasAcessToOrganization
      */
     public function handle($request, Closure $next)
     {
-        if(session()->has('not_accessible')){
-            if(session()->get('not_accessible')=='invited')
-                return redirect(url('abort/invited'));
-            elseif(session()->get('not_accessible')=='subscription')
-                return redirect(url('abort/subscription'));
-            else
-                return redirect(url('abort/suspend'));
+
+        $organization_user=session()->get('organization_user');
+        $user_id=session()->get('user')->id;
+//        $subscribed=session()->get('organization')->subscribed('main');
+//        if(!$subscribed){
+//            session()->put('not_accessible',true);
+//            if(isAdmin()){
+//                return redirect(url('organizations').'/'.$organization_user->id.'/view');
+//            }
+//            else{
+//                return redirect(url('users').'/'.$user_id.'/profile');
+//            }
+//        }
+
+        if($organization_user->is_suspended==1){
+            session()->put('not_accessible',true);
+            return redirect(url('users').'/'.$user_id.'/profile');
         }
 
+        if($organization_user->is_invited==1){
+            session()->put('not_accessible',true);
+            return redirect(url('users').'/'.$user_id.'/profile');
+        }
+
+        session()->forget('not_accessible');
         return $next($request);
     }
 }

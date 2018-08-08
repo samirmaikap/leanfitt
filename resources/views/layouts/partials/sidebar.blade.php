@@ -20,7 +20,7 @@
                 <div class="dropdown">
                 <span class="dropdown-toggle no-caret" data-toggle="dropdown">
                     <div class="profile-info">
-                        <img class="avatar" src="{{session()->get('user')->avatar}}" alt="...">
+                        <img class="avatar" src="{{session()->get('organization')->featured_image}}" alt="...">
                         <h4 class="mb-0">
                             @php $defaultOrganization = session()->get('organization')  @endphp
                             {{ isset($defaultOrganization->name) ? $defaultOrganization->name : null }}
@@ -107,24 +107,28 @@
                         <span class="title">Lean Tools</span>
                     </a>
                 </li>
-                <li class="menu-item {{$page=='quizzes' ? 'active' : ''}}">
-                    <a class="menu-link" href="{{ url("quizzes") }}">
-                        <span class="icon fa fa-home"></span>
-                        <span class="title">Quizzes</span>
-                    </a>
-                </li>
-                <li class="menu-item {{$page=='assessment' ? 'active' : ''}}">
-                    <a class="menu-link" href="{{ url("assessment") }}">
-                        <span class="icon fa fa-home"></span>
-                        <span class="title">Assessments</span>
-                    </a>
-                </li>
-                <li class="menu-item {{$page=='awards' ? 'active' : ''}}">
-                    <a class="menu-link" href="{{ url("awards") }}">
-                        <span class="icon fa fa-home"></span>
-                        <span class="title">Awards</span>
-                    </a>
-                </li>
+
+                {{--<li class="menu-item {{$page=='assessment' ? 'active' : ''}}">--}}
+                    {{--<a class="menu-link" href="{{ url("assessment") }}">--}}
+                        {{--<span class="icon fa fa-home"></span>--}}
+                        {{--<span class="title">Assessments</span>--}}
+                    {{--</a>--}}
+                {{--</li>--}}
+                @if(!isSuperadmin())
+                    <li class="menu-item {{$page=='quizzes' ? 'active' : ''}}">
+                        <a class="menu-link" href="{{ url("quizzes") }}">
+                            <span class="icon fa fa-home"></span>
+                            <span class="title">Quizzes</span>
+                        </a>
+                    </li>
+                    <li class="menu-item {{$page=='awards' ? 'active' : ''}}">
+                        <a class="menu-link" href="{{ url("awards") }}">
+                            <span class="icon fa fa-home"></span>
+                            <span class="title">Awards</span>
+                        </a>
+                    </li>
+                @endif
+
                 <li class="menu-divider"></li>
                 <li class="menu-item {{$page=='support' ? 'active' : ''}}">
                     <a class="menu-link" href="{{ url("support") }}">

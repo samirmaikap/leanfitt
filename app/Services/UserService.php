@@ -178,6 +178,9 @@ class UserService
             throw new \Exception($validator->messages());
         }
 
+        $data['api_token']=makeToken();
+        $data['verification_token']=makeToken();
+
         $user = $this->userRepo->create($data);
         if(isset($data['organization']))
         {
@@ -216,6 +219,8 @@ class UserService
         }
         else{
             $data['password']=$data['password_confirmation']='password';
+            $data['api_token']=makeToken();
+            $data['verification_token']=makeToken();
             $validator=new UserValidator($data,'create');
             if($validator->fails()){
                 DB::rollBack();
@@ -361,17 +366,27 @@ class UserService
         }
 
         $data['organization_user_id']=$orguser->id;
-        if(empty(arrayValue($data,'evaluation_id'))){
-            $query=$this->evRepo->create($data);
-        }
-        else{
-            $query=$this->evRepo->update(arrayValue($data,'evaluation_id'),$data);
-        }
+        $query=$this->evRepo->create($data);
 
         if(!$query){
             throw new \Exception(config('messages.common_error'));
         }
 
         return;
+    }
+
+    public function allEvaluations($organization,$user,$evaluator){
+        $orguser=$this->orgUserRepo->where('organization_id',$organization)->pluck('id')->toArray();
+        $query=$this->evRepo->getEvaluation($orguser,$user,$evaluator);
+        return $query;
+    }
+
+    public function getEvaluators($organization){
+          if(empty($organization)){
+              throw new \Exception('Organization id field is required');
+          }
+
+          $qurery=$this->evRepo->getEvaluators($organization);
+          return $qurery;
     }
 }

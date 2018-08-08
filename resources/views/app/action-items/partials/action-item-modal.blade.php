@@ -76,10 +76,10 @@
                                                     @endforeach
                                                 {{--@endif--}}
                                             </select>
-                                    </div>        
+                                    </div>
                                 </div>
-                                
-                               
+
+
                             </div>
 
                         </form>
