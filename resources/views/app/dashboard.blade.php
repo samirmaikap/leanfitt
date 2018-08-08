@@ -37,7 +37,7 @@
                 @endif
                 @permission('read.user')
                 <div class="col-lg-3">
-                    <a href="{{url('users')}}/{{session()->get('user')->id}}/profile">
+                    <a href="{{url('users')}}">
                         <div class="card">
                             <div class="card-body">
                                 <div class="text-center my-2">
@@ -49,7 +49,7 @@
                     </a>
                 </div>
                 <div class="col-lg-3">
-                    <a href="{{url('users')}}/{{session()->get('user')->id}}/profile">
+                    <a href="{{url('users')}}">
                         <div class="card">
                             <div class="card-body">
                                 <div class="text-center my-2">
