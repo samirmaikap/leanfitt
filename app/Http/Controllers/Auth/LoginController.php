@@ -85,7 +85,7 @@ class LoginController extends Controller
     public function logout(Request $request)
     {
         $this->performLogout($request);
-        return redirect()->route('login');
+        return redirect()->route(env('APP_URL').'/login');
     }
 
     public function unauthorized()
