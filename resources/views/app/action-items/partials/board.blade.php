@@ -34,9 +34,9 @@
                                                      alt="{{ $actionItem->assignor->initails }}">
                                             </span>
                                         </p>
-                                        @if(count($actionItem->assignees))
-                                        <small class="text-fader">Assignees</small>
-                                        <p class="assignees">
+                                        {{--@if(count($actionItem->assignees))--}}
+                                        <small class="text-fader" {{ count($actionItem->assignees) == 0 ? 'style="display:none"' : '' }}>Assignees</small>
+                                        <p class="assignees" {{ count($actionItem->assignees) == 0 ? 'style="display:none"' : '' }}>
                                             @foreach($actionItem->assignees as $assignee)
 
                                             @php 
@@ -48,7 +48,7 @@
                                             </span>
                                             @endforeach
                                         </p>
-                                        @endif
+                                        {{--@endif--}}
                                     </div>
                                 </a>
                                 @include('app.action-items.partials.action-item-modal')

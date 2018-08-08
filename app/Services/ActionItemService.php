@@ -154,6 +154,7 @@ class ActionItemService //implements ActionItemServiceInterface
         $data['due_date']=empty($data['due_date']) ? null : Carbon::parse($data['due_date'])->format('Y-m-d');
         $query=$this->itemRepo->update($item_id,$data);
         $item = $this->itemRepo->getItem($item_id);
+        $item->load(['assignees']);
         
         event(new ActionItemUpdated($item, $user));
 
@@ -189,9 +190,20 @@ class ActionItemService //implements ActionItemServiceInterface
                 event(new AssigneeRemoved($item, $assignee, $user));
             }
         }
+        else
+        {
+            $assignees = $item->assignees;
+            foreach ($assignees as $assignee)
+            {
+                $item->assignees()->detach($assignee);
+                event(new AssigneeRemoved($item, $assignee, $user));
+            }
+
+        }
         if($query){
             DB::commit();
-            return $item->load(['assignees']);
+            $item->load(['assignees']);
+            return $item;
         }
         else{
             DB::rollBack();
