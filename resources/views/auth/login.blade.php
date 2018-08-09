@@ -59,7 +59,6 @@
                                     <span class="custom-control-indicator"></span>
                                     <span class="custom-control-description">Remember me</span>
                                 </label>
-
                                 <a class="text-muted hover-primary fs-13" href="{{url('recovery')}}">Forgot password?</a>
                             </div>
 
@@ -68,7 +67,7 @@
                             </div>
                         </form>
 
-                        <p class="text-center text-muted fs-13 mt-20">Don't have an account? <a class="text-primary fw-500" href="{{ url('register') }}">Register</a></p>
+                        <p class="text-center text-muted fs-13 mt-20">Don't have an account? <a class="text-primary fw-500" href="{{ url(config('app.url') . '/register' ) }}">Register</a></p>
                     </div>
                 </div>
             </div>

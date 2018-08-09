@@ -160,7 +160,7 @@
                     </div>
                 </div>
 
-            @if(!isSuperadmin() || ($actionItem->aasignor_id == session('user')->id) || in_array(session('user')->id, $actionItem->assignees()->pluck('user_id')->toArray()) )
+            @if( $actionItem->assignor->id == session()->get('user')->id || in_array(session()->get('user')->id, $actionItem->assignees()->pluck('user_id')->toArray()) )
                 <div class="modal-footer">
                     <button type="submit" class="update-action-item btn btn-block btn-primary">Update</button>
                 </div>

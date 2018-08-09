@@ -184,6 +184,20 @@
 
         window.onload = function () {
 
+
+            @if(session()->has('success') || session('success'))
+            setTimeout(function () {
+                toastr.success('{{ session('success') }}');
+            }, 500);
+            @endif
+            @if(isset($errors) && count($errors->all()) > 0 && $timeout = 700)
+            @foreach ($errors->all() as $key => $error)
+            setTimeout(function () {
+                toastr.error("{{ $error }}");
+            }, {{ $timeout * $key }});
+            @endforeach
+            @endif
+
             // injectScript("https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js");
             // injectScript("https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/0.5.7/chartjs-plugin-annotation.min.js");
 
