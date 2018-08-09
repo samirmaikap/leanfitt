@@ -46,6 +46,12 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\AssigneeRemoved' => [
             'App\Listeners\SendAssigneeRemovedNotification',
         ],
+        'App\Events\OrganizationInvited' => [
+            'App\Listeners\AlertOrganization',
+        ],
+        'App\Events\ProjectMemberUpdated' => [
+            'App\Listeners\AlertMember',
+        ],
     ];
 
     /**

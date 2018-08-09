@@ -4,7 +4,6 @@
         <header class="header no-border">
             <div class="header-bar">
                 <h4>Profile</h4>
-                {{--<button class="btn btn-round btn-success">Profile</button>--}}
             </div>
         </header>
         <div class="main-content">
@@ -64,7 +63,7 @@
                                     @permission('update.user')
                                     <div class="form-group">
                                         <label class="d-block">Department</label>
-                                        <select class="disabled-picker" name="departments" id="" data-width="100%" data-provide="selectpicker">
+                                        <select class="disabled-picker" name="department" id="" data-width="100%" data-provide="selectpicker">
                                             <option value="">None</option>
                                             @if($departments->count())
                                                 @foreach($departments as $department)
@@ -133,31 +132,31 @@
                         </div>
                     </div>
                     @if(!$superadmin_profile)
-                            <div class="card">
-                                <h3 class="card-title">Evaluation history <a href="{{url('evaluations')}}"><i class="ti-link"></i></a></h3>
-                                <div class="media-list media-list-hover media-list-divided">
-                                    <div class="media media-single" href="#">
-                                        <span class="title">Communication</span>
-                                        <span class="badge badge-pill badge-secondary">{{isset($comm_avg) ? $comm_avg : 0}}</span>
-                                    </div>
-                                    <div class="media media-single" href="#">
-                                        <span class="title">Enthusiasm</span>
-                                        <span class="badge badge-pill badge-secondary">{{isset($enth_avg) ? $enth_avg : 0}}</span>
-                                    </div>
-                                    <div class="media media-single" href="#">
-                                        <span class="title">Participation</span>
-                                        <span class="badge badge-pill badge-secondary">{{isset($part_avg) ? $part_avg : 0}}</span>
-                                    </div>
-                                    <div class="media media-single" href="#">
-                                        <span class="title">Quality Work</span>
-                                        <span class="badge badge-pill badge-secondary">{{isset($work_avg) ? $work_avg : 0}}</span>
-                                    </div>
-                                    <div class="media media-single" href="#">
-                                        <span class="title">Dependability</span>
-                                        <span class="badge badge-pill badge-secondary">{{isset($depend_avg) ? $depend_avg : 0}}</span>
-                                    </div>
+                        <div class="card">
+                            <h3 class="card-title">Evaluation history <a href="{{url('evaluations')}}{{isset($organization_id) ? '?organization='.$organization_id : null}}"><i class="ti-link"></i></a></h3>
+                            <div class="media-list media-list-hover media-list-divided">
+                                <div class="media media-single" href="#">
+                                    <span class="title">Communication</span>
+                                    <span class="badge badge-pill badge-secondary">{{isset($comm_avg) ? $comm_avg : 0}}</span>
+                                </div>
+                                <div class="media media-single" href="#">
+                                    <span class="title">Enthusiasm</span>
+                                    <span class="badge badge-pill badge-secondary">{{isset($enth_avg) ? $enth_avg : 0}}</span>
+                                </div>
+                                <div class="media media-single" href="#">
+                                    <span class="title">Participation</span>
+                                    <span class="badge badge-pill badge-secondary">{{isset($part_avg) ? $part_avg : 0}}</span>
+                                </div>
+                                <div class="media media-single" href="#">
+                                    <span class="title">Quality Work</span>
+                                    <span class="badge badge-pill badge-secondary">{{isset($work_avg) ? $work_avg : 0}}</span>
+                                </div>
+                                <div class="media media-single" href="#">
+                                    <span class="title">Dependability</span>
+                                    <span class="badge badge-pill badge-secondary">{{isset($depend_avg) ? $depend_avg : 0}}</span>
                                 </div>
                             </div>
+                        </div>
                     @endif
 
                     <div class="card">

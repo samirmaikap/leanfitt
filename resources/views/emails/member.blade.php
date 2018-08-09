@@ -303,9 +303,10 @@
                                 <tr><td><img class="logo" src="{{env('APP_URL').(env('APP_LOGO_PATH'))}}"></td></tr>
                                 <tr>
                                     <td>
-                                        <p>Hi {{isset($data['first_name']) ? ucfirst($data['first_name']) : 'User'}}, Thank you for joining {{ucfirst(config('app.name'))}}.We will try our best to
-                                            provide you, your required services and statisfaction.Feel free to contact our customer care service for any queries.</p>
-                                        <p>Customer Care: {{env('CUSTOMER_SUPPORT')}}</p>
+                                        <p>Hi {{isset($data['first_name']) ? ucfirst($data['first_name']) : 'User'}},
+                                            You've been @if(isset($data['type']) && $data['type'] =='added') added to  @else removed from @endif
+                                            project <b>{{ucwords($data['project'])}}</b> by the organization <b>{{ucwords($data['organization'])}}</b>.Please follow the link below to goto your projects
+                                        </p>
                                         <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                                             <tbody>
                                             <tr>
@@ -313,7 +314,7 @@
                                                     <table border="0" cellpadding="0" cellspacing="0">
                                                         <tbody>
                                                         <tr>
-                                                            <td> <a href="{{env('APP_URL').'/login'}}" target="_blank">My Account</a> </td>
+                                                            <td> <a href="{{url('projects')}}/{{$data['project_id']}}/details" target="_blank">My Projects</a> </td>
                                                         </tr>
                                                         </tbody>
                                                     </table>

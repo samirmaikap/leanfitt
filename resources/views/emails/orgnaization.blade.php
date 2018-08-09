@@ -303,8 +303,9 @@
                                 <tr><td><img class="logo" src="{{env('APP_URL').(env('APP_LOGO_PATH'))}}"></td></tr>
                                 <tr>
                                     <td>
-                                        <p>Hi {{isset($data['first_name']) ? ucfirst($data['first_name']) : 'User'}}, Thank you for joining {{ucfirst(config('app.name'))}}.We will try our best to
-                                            provide you, your required services and statisfaction.Feel free to contact our customer care service for any queries.</p>
+                                        <p>Hi {{isset($data['first_name']) ? ucfirst($data['first_name']) : 'User'}},
+                                            You are invited to join the organization {{$data['organization']}} by {{ucfirst(config('app.name'))}}.Please follow the link below to get started.
+                                            For any information please contact our customer service.</p>
                                         <p>Customer Care: {{env('CUSTOMER_SUPPORT')}}</p>
                                         <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                                             <tbody>
@@ -318,6 +319,9 @@
                                                         </tbody>
                                                     </table>
                                                 </td>
+                                            </tr>
+                                            <tr>
+                                                <td><p>Please use the word <b>"password"</b> as your initial password for your account for your first sigin if you're not an existing member of the {{ucfirst(config('app.name'))}}.<br>We recommend you change your password under your Profile on your first login</p></td>
                                             </tr>
                                             <tr>
                                                 <td><p>Thanks.</p><br><p>Team {{config('app.name')}}.</p></td>

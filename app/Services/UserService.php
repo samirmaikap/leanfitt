@@ -263,10 +263,11 @@ class UserService
         }
 
         $organization_id=pluckOrganization('id');
-        $user=$this->orgUserRepo->with('user')->where('organization_id',$organization_id)->where('user_id',$user_id)->first();
+        $user=$this->orgUserRepo->with(['user','organization'])->where('organization_id',$organization_id)->where('user_id',$user_id)->first();
         if($user){
             $data['token']=$user->invitation_token;
             $data['first_name']=$user->user->first_name;
+            $data['organization']=$user->organization->name;
             Mail::to($user->user->email)->send(new InvitationMail($data));
             return;
         }

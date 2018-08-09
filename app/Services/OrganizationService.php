@@ -4,13 +4,17 @@ namespace App\Services;
 
 use App\Events\NotifySubscriptions;
 use App\Events\OrganizationCreated;
+use App\Events\OrganizationInvited;
 use App\Events\SubscriptionResumed;
 use App\Events\SubscriptionStopped;
+use App\Mail\InvitationMail;
+use App\Mail\SendOrganizationInvitation;
 use App\Repositories\AdminRepository;
 use App\Repositories\DeleteRepository;
 use App\Repositories\MediaRepository;
 use App\Repositories\OrganizationAdminRepository;
 use App\Repositories\OrganizationRepository;
+use App\Repositories\OrganizationUserRepository;
 use App\Repositories\UserRepository;
 use App\Validators\CardValidator;
 use App\Validators\OrganizationValidator;
@@ -30,16 +34,19 @@ class OrganizationService
     protected $mediaRepo;
     protected $deleteRepo;
     protected $userRepository;
+    protected $orgUser;
     
     public function __construct(OrganizationRepository $organizationRepository,
                                 MediaRepository $mediaRepository,
                                 DeleteRepository $deleteRepository,
-                                UserRepository $userRepository)
+                                UserRepository $userRepository,
+                                OrganizationUserRepository $organizationUserRepository)
     {
         $this->organizationRepository=$organizationRepository;
         $this->mediaRepo=$mediaRepository;
         $this->deleteRepo=$deleteRepository;
         $this->userRepository = $userRepository;
+        $this->orgUser=$organizationUserRepository;
     }
 
 
@@ -140,8 +147,7 @@ class OrganizationService
         }
 
         if($organization){
-            $user->organizations()->attach($organization);
-            event(new OrganizationCreated($organization));
+            $user->organizations()->attach([$organization=>['invitation_token'=>md5(time()),'is_invited'=>1]]);
             DB::commit();
             return;
         }
