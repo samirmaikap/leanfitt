@@ -52,6 +52,7 @@ class User extends Authenticatable
     protected $appends = [
         'full_name',
         'initials',
+        'roles',
     ];
 
     public function setPasswordAttribute($value)
@@ -112,6 +113,21 @@ class User extends Authenticatable
 
     public function evaluations(){
         return $this->hasMany(Evaluation::class);
+    }
+
+    public function getRolesAttribute($organizationId = null)
+    {
+        $query = $this->roles();
+
+        if($organizationId)
+        {
+            $query->whereHas('organization', function($organization) use($organizationId)
+            {
+                $organization->where('organization_id', '=', $organizationId);
+            });
+        }
+
+        return $query->get();
     }
 
 

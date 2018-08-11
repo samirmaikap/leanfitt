@@ -15,7 +15,7 @@ use function json_encode;
 
 class ActionItemUpdated
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use SerializesModels;
 
     public $actionItem;
     public $user;
@@ -38,6 +38,8 @@ class ActionItemUpdated
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('channel-name');
+//        return new PrivateChannel('action-item');
+        return new Channel('action-items');
+//        return new PrivateChannel('action-item-' . $this->actionItem->id);
     }
 }
