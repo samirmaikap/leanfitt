@@ -14,23 +14,46 @@ class ReportController extends Controller
         $this->service=$reportService;
     }
 
+    public function index(){
+        $data['page']='reports';
+        $data['page_origin']='external';
+        $data['reports']=$this->service->externalReports(pluckOrganization('id'));
+        $data['categories']=$this->service->names();
+        return view("app.projects.reports", $data);
+    }
+
     public function create(Request $request){
         try{
             $query=$this->service->create($request->all());
+            if(empty($request->get('project_id'))){
+                return redirect(url('reports').'/'.$query->id);
+            }
+
             return redirect(url('projects').'/'.$request->get('project_id').'/reports/'.$query->id);
         }catch(\Exception $e){
             return redirect()->back()->withErrors([$e->getMessage()]);
         }
     }
 
-    public function view($project_id,$report_id){
+    public function projectView($project_id,$report_id){
+        $data=$this->generateView($report_id,$project_id);
+        return view('app.projects.reports.view',$data);
+    }
+
+    public function externalView($report_id){
+        $data=$this->generateView($report_id);
+        return view('app.projects.reports.view',$data);
+    }
+
+    function generateView($report_id,$project_id=null){
         $data['page']='projects';
         $report=$this->service->show($report_id);
         $data['project_id']=$project_id;
         $data['report']=$report;
         $data['report_category']=$report->lean_tool_id;
         $data['report_data']=$this->getReport($data['report_category'],$report_id);
-        return view('app.projects.reports.view',$data);
+        return $data;
+
     }
 
     protected function getReport($report_category,$report_id){

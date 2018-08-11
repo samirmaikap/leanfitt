@@ -17,7 +17,7 @@ class CreateReportsTable extends Migration
             $table->increments('id')->unsigned()->index();
             $table->integer('lean_tool_id');
             $table->string('title')->nullable();
-            $table->integer('project_id')->unsigned();
+            $table->integer('project_id')->unsigned()->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');

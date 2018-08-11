@@ -107,7 +107,12 @@
                         <span class="title">Lean Tools</span>
                     </a>
                 </li>
-
+                <li class="menu-item" {{$page=='reports' ? 'active' : ''}}>
+                    <a class="menu-link" href="{{ url("reports") }}">
+                        <span class="icon fa fa-home"></span>
+                        <span class="title">Reports</span>
+                    </a>
+                </li>
                 {{--<li class="menu-item {{$page=='assessment' ? 'active' : ''}}">--}}
                     {{--<a class="menu-link" href="{{ url("assessment") }}">--}}
                         {{--<span class="icon fa fa-home"></span>--}}

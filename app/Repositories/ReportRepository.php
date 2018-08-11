@@ -12,17 +12,29 @@ class ReportRepository extends BaseRepository //implements ReportRepositoryInter
         return new Report();
     }
 
-    public function allReports($project){
+    public function projectReports($project){
         return $this->model()->join('projects as p','p.id','=','reports.project_id')
             ->join('lean_tools as cat','cat.id','reports.lean_tool_id')
+            ->where('reports.project_id','!=',null)
             ->where('p.id',empty($project) ? '!=':'=',empty($project) ? null : $project)
             ->select(['reports.*','cat.id as category_id','cat.name as report_category'])->get();
     }
 
+    public function externalReports($organization=null){
+        $query= $this->model()
+            ->join('lean_tools as cat','cat.id','reports.lean_tool_id')
+            ->leftJoin('projects as p',function($leftJoin) use ($organization) {
+                $leftJoin->on('reports.project_id','=','p.id')->where('p.organization_id',empty($organization) ? '!=' : '=',empty($organization) ? null : $organization);
+            })
+            ->select(['reports.*','cat.id as category_id','cat.name as report_category','p.id as project_id','p.name as project_name'])->get();
+        return $query;
+    }
+
     public function showReport($report_id)
     {
-        return $this->model()->join('projects as p','p.id','=','reports.project_id')
+        return $this->model()
             ->join('lean_tools as cat','cat.id','reports.lean_tool_id')
+            ->leftJoin('projects as p','reports.project_id','=','p.id')
             ->where('reports.id',$report_id)
             ->select([
                 'reports.*',
