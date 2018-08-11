@@ -68,7 +68,7 @@ class QuizController extends Controller
     public function create(Request $request){
         try{
             $query=$this->service->create($request->all());
-            return redirect()->back()->with(['success',$query->message]);
+            return redirect()->back()->with(['success' => 'Quiz has been updated']);
         }catch(\Exception $e){
             return redirect()->back()->withErrors($e->getMessage());
         }

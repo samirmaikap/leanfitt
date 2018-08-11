@@ -29,8 +29,9 @@ class AuthController extends Controller
 
     }
 
-    public function changePassword(){
-        return view('auth.password');
+    public function changePassword(Request $request){
+        $data['v_token']=$request->get('ref');
+        return view('auth.password',$data);
     }
 
     public function updatePassword(Request $request){

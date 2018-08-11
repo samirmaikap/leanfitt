@@ -151,6 +151,7 @@ Route::group(['namespace' => 'Web','middleware'=>'auth:web'], function () {
     Route::post('organizations/create/custom','OrganizationController@customOrganization');
     Route::delete('organizations/{organization_id}','OrganizationController@deleteOrganization');
     Route::post('organizations/add/subscription','OrganizationController@addSubscription');
+    Route::put('organizations/{organization_id}','OrganizationController@update');
 
     Route::get('users', 'UserController@index');
     Route::put('users/{id}', 'UserController@update');
