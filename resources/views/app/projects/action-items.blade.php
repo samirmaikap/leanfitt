@@ -40,6 +40,12 @@
         var userId = '{{ session()->get('user')->id }}';
         window.onload = function () {
 
+            Echo.channel('action-items')
+                .listen('.ActionItemUpdated', (e) => {
+                    console.log("pusher listened");
+                    console.log(e);
+                });
+
             var drake = dragula(
                 $('.board-scroller .media-list').get(),
                 {
@@ -381,6 +387,11 @@
         }, {{ $timeout * $key }});
         @endforeach
         @endif
+
+    </script>
+
+
+    <script>
 
     </script>
 @endsection

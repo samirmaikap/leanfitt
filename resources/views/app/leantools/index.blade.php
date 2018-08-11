@@ -21,7 +21,7 @@
                             <div class="card card-inverse">
                                 <h4 class="card-title">{{ucfirst($tool->name)}}</h4>
                                 <div class="card-body" style="min-height: 350px">
-                                    <img class="w-70px h-70px mb-20" src="{{asset('assets')}}/icons/light/{{str_slug(strtolower($tool->name),'_')}}.png">
+                                    <img class="w-70px h-70px mb-20" src="{{ url(asset('assets/icons/light/') . str_slug(strtolower($tool->name),'_') . '.png') }}">
                                     <p>{{$tool->description}}</p>
                                     <span>{{$tool->quiz_count}} Questions</span>
                                 </div>

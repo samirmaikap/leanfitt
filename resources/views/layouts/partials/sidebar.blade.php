@@ -1,5 +1,5 @@
 <!-- Sidebar -->
-<aside class="sidebar sidebar-light sidebar-expand-md">
+<aside class="sidebar sidebar-light #sidebar-expand-md">
     <header class="sidebar-header bg-white">
         {{--<a class="logo-icon" href="/">--}}
             {{--<img src="https://image.ibb.co/dAqOjy/logopng_3.png" alt="LeanFITT" width="200">--}}
@@ -89,7 +89,8 @@
                 @endpermission
 
                 @permission('index.project')
-                <li class="menu-category">Project</li>
+                {{--<li class="menu-category">Project</li>--}}
+                <li class="menu-divider"></li>
 
                 <li class="menu-item {{$page=='projects' ? 'active' : ''}}">
                     <a class="menu-link" href="{{ url("projects") }}">
@@ -99,7 +100,8 @@
                 </li>
                 @endpermission
 
-                <li class="menu-category">LeanFITT™</li>
+                {{--<li class="menu-category">LeanFITT™</li>--}}
+                <li class="menu-divider">™</li>
 
                 <li class="menu-item {{$page=='lean-tools' ? 'active' : ''}}">
                     <a class="menu-link" href="{{ url("lean-tools") }}">
