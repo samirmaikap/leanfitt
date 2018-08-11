@@ -303,7 +303,7 @@
                                 <tr><td><img class="logo" src="{{env('APP_URL').(env('APP_LOGO_PATH'))}}"></td></tr>
                                 <tr>
                                     <td>
-                                        <p>Welcome {{isset($data['first_name']) ? ucfirst($data['first_name']) : 'user'}}! You've invited to join the <b>{{isset($data['organziation']) ? ucwords($data['organziation']) : 'Organziation'}}</b> by {{ucfirst(config('app.name'))}}.To accept this invitation please follow the link below.</p>
+                                        <p>Welcome {{isset($data['first_name']) ? ucfirst($data['first_name']) : 'user'}}! You've invited to join the <b>{{isset($data['organization']) ? ucwords($data['organization']) : 'Organization'}}</b> by {{ucfirst(config('app.name'))}}.To accept this invitation please follow the link below.</p>
                                         <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                                             <tbody>
                                             <tr>

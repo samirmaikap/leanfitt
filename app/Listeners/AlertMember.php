@@ -3,8 +3,10 @@
 namespace App\Listeners;
 
 use App\Events\ProjectMemberUpdated;
+use App\Mail\SendProjectMemberEmail;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class AlertMember
@@ -27,7 +29,8 @@ class AlertMember
      */
     public function handle(ProjectMemberUpdated $event)
     {
+        Log::info('Member listener');
         $data=$event->data;
-        Mail::to($data['email'])->send(new AlertMember($data));
+        Mail::to($data['email'])->send(new SendProjectMemberEmail($data));
     }
 }

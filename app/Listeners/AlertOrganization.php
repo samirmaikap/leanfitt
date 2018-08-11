@@ -6,6 +6,7 @@ use App\Events\OrganizationInvited;
 use App\Mail\SendOrganizationInvitation;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class AlertOrganization
@@ -29,6 +30,7 @@ class AlertOrganization
     public function handle(OrganizationInvited $event)
     {
         $data=$event->data;
+        Log::info($data['email']);
         Mail::to($data['email'])->send(new SendOrganizationInvitation($data));
     }
 }

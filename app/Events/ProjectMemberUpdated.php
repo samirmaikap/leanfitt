@@ -9,6 +9,7 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Support\Facades\Log;
 
 class ProjectMemberUpdated
 {
@@ -23,6 +24,7 @@ class ProjectMemberUpdated
     public function __construct($data)
     {
         $this->data=$data;
+        Log::info('Memebr event');
     }
 
     /**

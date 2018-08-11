@@ -25,7 +25,7 @@ Route::post('password/change', 'Web\AuthController@updatePassword');
 Route::get('invitaion/accept', 'Web\AuthController@invitation');
 
 Route::get('test', function(){
-
+     dd(\App\Models\ProjectMember::where('id',1)->with('user')->first());
 });
 
 Route::view('abort/suspend', 'errors.suspend');

@@ -27,6 +27,7 @@ use function dd;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use function is_integer;
@@ -265,9 +266,11 @@ class UserService
         $organization_id=pluckOrganization('id');
         $user=$this->orgUserRepo->with(['user','organization'])->where('organization_id',$organization_id)->where('user_id',$user_id)->first();
         if($user){
+            Log::info('user foound');
             $data['token']=$user->invitation_token;
             $data['first_name']=$user->user->first_name;
             $data['organization']=$user->organization->name;
+            Log::info($data['organization']);
             Mail::to($user->user->email)->send(new InvitationMail($data));
             return;
         }

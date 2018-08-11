@@ -305,7 +305,7 @@
                                     <td>
                                         <p>Hi {{isset($data['first_name']) ? ucfirst($data['first_name']) : 'User'}},
                                             You've been @if(isset($data['type']) && $data['type'] =='added') added to  @else removed from @endif
-                                            project <b>{{ucwords($data['project'])}}</b> by the organization <b>{{ucwords($data['organization'])}}</b>.Please follow the link below to goto your projects
+                                            project <b>{{ucwords($data['project'])}}</b>.Please follow the link below to goto your projects
                                         </p>
                                         <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                                             <tbody>
