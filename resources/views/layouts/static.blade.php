@@ -22,12 +22,18 @@
     <link href="{{ asset('assets/css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
 
+    <style>
+        .h-fullscreen{
+            height: calc(100vh - 55px)!important;
+        }
+    </style>
+
 </head>
 <body>
 
 @yield('content')
 
-{{--@include('layouts.partials.footer')--}}
+@include('layouts.partials.footer')
 
 </body>
 
