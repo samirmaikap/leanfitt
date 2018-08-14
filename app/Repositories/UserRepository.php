@@ -65,7 +65,7 @@ class UserRepository extends BaseRepository //implements UserRepositoryInterface
 
     public function getUsers($organization = null, $department = null, $role = null){
         $query = $this->model()
-            ->with(['roles' => function($query) use($organization) {
+            ->with(['roles', function($query) use($organization) {
                 if(!empty($organization))
                 {
                     $query = $query->join('organization_role', function ($join) use($organization){
