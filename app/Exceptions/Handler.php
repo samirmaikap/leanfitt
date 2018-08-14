@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use function app;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Log;
@@ -42,7 +43,8 @@ class Handler extends ExceptionHandler
             $trace = $exception->getTraceAsString();
             $url = request()->url();
             Log::critical("Exception Occurred", [
-                "Action URL" =>  $url,
+                "Environment" => app()->environment(),
+                "Request URL" =>  $url,
                 "Exception" => $message ,
                 "Trace" => $trace,
             ]);
