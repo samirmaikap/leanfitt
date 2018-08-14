@@ -38,7 +38,7 @@ class OrganizationMiddleware
         session(['organization' => $organization]);
 
         $roleRepo=new \App\Repositories\RoleRepository();
-        $currentRoles=$roleRepo->currentRoles($organization->id,$orgUser->user_id);
+        $currentRoles=$roleRepo->currentRoles($orgUser->organization_id,$orgUser->user_id);
         $currentRole=$currentRoles->first();
         // First unset this domain group parameter 'organization'
         // Set it back again to the new value

@@ -96,12 +96,13 @@
                                                 <br>
                                             @endforeach
                                         @endif
-                                        <p class="text-center text-success d-block mt-5">Please note that when you register you will be subscribed for this plan for 1 user only.
-                                            When users will join or left, subscription quantity will be updated per user as 1 quantity automatically.
-                                        </p>
-                                        <p class="text-center text-grey  mb-5">
-                                            Eg. You + One user = 2 quantity for this plan
-                                        </p>
+                                        <div class="callout callout-success" role="alert">
+                                            <h5><i class="fa fa-exclamation-circle"></i> Note</h5>
+                                            <p>Please note that when you register you will be subscribed for this plan for 1 user only.
+                                                When users will join or left, subscription quantity will be updated per user as
+                                                1 quantity automatically.
+                                            </p>
+                                        </div>
 
                                         <div class="form-group">
                                             <label>Name on card</label>

@@ -63,7 +63,7 @@ class OrganizationController extends Controller
         }
         catch(\Exception $e)
         {
-            return redirect()->back()->withInput($request->all())->withErrors([$e->getMessage(), $e->getTraceAsString()]);
+            return redirect()->back()->withInput($request->all())->withErrors([$e->getMessage()]);
         }
     }
 

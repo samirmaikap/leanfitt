@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Mail\InvitationMail;
 use App\Models\User;
 use App\Models\OrganizationUser;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class OrganizationUserObserver
@@ -17,9 +18,12 @@ class OrganizationUserObserver
      */
     public function created(OrganizationUser $organizationUser)
     {
-        $user=User::find($organizationUser->user_id);
+        $orgUser=OrganizationUser::where('id',$organizationUser->id)->with(['user','organization'])->first();
         $data['token']=$organizationUser->invitation_token;
-        $data['first_name']=$user->first_name;
-        Mail::to($user->email)->send(new InvitationMail($data));
+        $data['first_name']= $orgUser->user->first_name;
+        $data['email']= $orgUser->user->email;
+        $data['organization']=$orgUser->organization->name;
+        Log::info($data['organization']);
+        Mail::to($orgUser->user->email)->send(new InvitationMail($data));
     }
 }

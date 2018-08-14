@@ -58,6 +58,7 @@
                     <table class="table table-striped table-bordered" cellspacing="0" data-provide="datatables">
                         <thead>
                         <tr>
+                            <td>Name</td>
                             <th>Communication</th>
                             <th>Enthusiasm</th>
                             <th>participation</th>
@@ -71,6 +72,7 @@
                         <tbody>
                         @foreach($evaluations as $evaluation)
                             <tr>
+                                <td>{{$evaluation->first_name}} {{$evaluation->last_name}}</td>
                                 <td>{{$evaluation->communication}}</td>
                                 <td>{{$evaluation->enthusiasm}}</td>
                                 <td>{{$evaluation->participation}}</td>

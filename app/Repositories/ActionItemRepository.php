@@ -38,14 +38,15 @@ class ActionItemRepository extends BaseRepository //implements ActionItemReposit
             ->join('processes as p','p.id','=','action_items.process_id')
             ->join('boards as b','b.id','p.board_id')
             ->join('projects as pr','pr.id','=','b.project_id')
-            ->leftJoin('action_item_assignees as aia','action_items.id','=','aia.action_item_id')
-            ->where('pr.is_archived',0)
-            ->where('pr.organization_id',empty($organization) ? '!=' : '=',empty($organization) ? null : $organization);
+            ->where('pr.organization_id',empty($organization) ? '!=' : '=',empty($organization) ? null : $organization)
+            ->where('pr.is_archived',0);
         if(!empty($user)){
-            $query->where('action_items.user_id',empty($user) ? '!=':'=',empty($user) ? null : $user)
-                ->orWhere('aia.user_id',empty($user) ? '!=':'=',empty($user) ? null : $user);
+            $query=$query->whereHas('assignees',function($query) use($user){
+                $query->where('user_id',$user);
+            });
         }
-        return $query->select(['pr.id as project_id','action_items.title','action_items.due_date','action_items.is_archived','p.name as process'])
-            ->get();
+        $query= $query->select(['pr.id as project_id','action_items.title','action_items.due_date','action_items.is_archived','p.name as process'])
+            ->distinct()->get();
+        return $query;
     }
 }
