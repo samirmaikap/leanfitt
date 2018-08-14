@@ -185,7 +185,6 @@
                                 Login
                             </a>
                             <span class="nav-item">
-
                                         @if(auth()->check())
                                     @if(session('organization'))
                                         <a id="signup-btn" href="{{ url( 'http://' . session('organization')->subdomain . config('session.domain') .  '/dashboard') }}" class="button button-signup btn-outlined is-bold btn-align light-btn font-18 primary-btn secondary-btn">
@@ -198,7 +197,7 @@
                                     @endif
 
                                 @else
-                                    <a id="signup-btn" href="{{ url('/login') }}" class="button button-signup btn-outlined is-bold btn-align light-btn font-18 primary-btn secondary-btn">
+                                    <a id="signup-btn" href="{{ request()->getHost() == "leanfitt.com" ? url('/coming-soon') : url('/login') }}" class="button button-signup btn-outlined is-bold btn-align light-btn font-18 primary-btn secondary-btn">
                                             Sign Up / Login
                                         </a>
                                 @endif

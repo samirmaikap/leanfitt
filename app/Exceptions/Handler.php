@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Log;
 
 class Handler extends ExceptionHandler
 {
@@ -13,7 +14,7 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        //
+//        HttpException::class,
     ];
 
     /**
@@ -34,6 +35,17 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
+        if(!$exception instanceof HttpException)
+        {
+            $message = $exception->getMessage();
+            $trace = $exception->getTraceAsString();
+            $url = request()->url();
+            Log::critical("Exception Occurred", [
+                "Action URL" =>  $url,
+                "Exception" => $message ,
+                "Trace" => $trace,
+            ]);
+        }
         parent::report($exception);
     }
 
@@ -46,6 +58,15 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if($request->ajax())
+        {
+            return response()->json(['error' => $exception->getMessage()]);
+        }
+        else if(app()->environment('production'))
+        {
+            return response()->view('static.500');
+        }
+
         return parent::render($request, $exception);
     }
 }

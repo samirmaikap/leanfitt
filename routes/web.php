@@ -200,6 +200,9 @@ Route::get('/support', function (){
        <script type=\"text/javascript\" src=\"https://astakyuta.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/-nuco74/b/0/a44af77267a987a660377e5c46e0fb64/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-US&collectorId=f07a7413\"></script>
     </body>
 </html>";
-
     return $html;
+});
+
+Route::get('coming-soon', function (){
+    return view('static.coming-soon');
 });
