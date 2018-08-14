@@ -1,6 +1,6 @@
 @extends("layouts.app")
 @section("content")
-
+    {{--{{dd(session()->all())}}--}}
     <main>
         {{--@include('app.organizations.partials.header')--}}
         <div class="main-content">
