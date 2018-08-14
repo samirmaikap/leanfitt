@@ -5,10 +5,12 @@ namespace App\Providers;
 use App\Models\Organization;
 use App\Models\OrganizationUser;
 use App\Models\Project;
+use App\Models\ProjectMember;
 use App\Models\Subscription;
 use App\Models\User;
 use App\Observers\OrganizationObserver;
 use App\Observers\OrganizationUserObserver;
+use App\Observers\ProjectMemberObserver;
 use App\Observers\ProjectObserver;
 use App\Observers\SubscriptionObserver;
 use App\Observers\UserObserver;
@@ -30,6 +32,7 @@ class AppServiceProvider extends ServiceProvider
         User::observe(UserObserver::class);
         Organization::observe(OrganizationObserver::class);
         Project::observe(ProjectObserver::class);
+        ProjectMember::observe(ProjectMemberObserver::class);
         OrganizationUser::observe(OrganizationUserObserver::class);
     }
 

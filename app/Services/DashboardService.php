@@ -75,8 +75,8 @@ class DashboardService
         return $query;
     }
 
-    public function userDepartments($user){
-        $query=$this->userRepo->find($user)->departments()->count();
+    public function userDepartments($organization,$user){
+        $query=1;
         return $query;
     }
 
@@ -84,9 +84,9 @@ class DashboardService
         return $this->organizationRepo->getRoles($organization);
     }
 
-    public function userRoles($user){
-        $query=$this->userRepo->find($user)->roles()->count();
-        return $query;
+    public function userRoles($organization,$user){
+        $query=$this->roleRepo->currentRoles($organization,$user);
+        return $query->count();
     }
 
 
@@ -100,10 +100,12 @@ class DashboardService
     }
 
 
-    public function userProjects($user){
-         $query=$this->projectRepo->whereHas('members',function ($query) use($user) {
-             $query->where('user_id', $user);
-         })->select(['is_completed','is_archived'])->get();
+    public function userProjects($organization,$user){
+        $query=$this->projectRepo
+            ->where('organization_id',empty($organization) ? null : $organization, empty($organization) ? '!=' : '=')
+            ->whereHas('members',function ($query) use($user) {
+                $query->where('user_id', $user);
+            })->select(['is_completed','is_archived'])->get();
         $data['completed']=count($query->where('is_completed',1));
         $data['active']=count($query->where('is_completed',0)->where('is_archived',0));
         return renderCollection($data);

@@ -304,7 +304,7 @@
                                 <tr>
                                     <td>
                                         <p>Hi {{isset($data['first_name']) ? ucfirst($data['first_name']) : 'User'}}, Thank you for joining {{ucfirst(config('app.name'))}}.We will try our best to
-                                            provide you required service and statisfaction.Feel free to contact our customer care service for any queries.</p>
+                                            provide you, your required services and statisfaction.Feel free to contact our customer care service for any queries.</p>
                                         <p>Customer Care: {{env('CUSTOMER_SUPPORT')}}</p>
                                         <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                                             <tbody>

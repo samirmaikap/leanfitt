@@ -14,12 +14,13 @@ class RoleRepository extends BaseRepository
     }
 
     public function currentRoles($organization,$user){
-        return $this->model()->join('role_user as ru','ru.role_id','=','roles.id')
+        return $this->model()
             ->join('organization_role as or','or.role_id','=','roles.id')
+            ->join('role_user as ru','ru.role_id','=','roles.id')
             ->select(['roles.name'])
             ->where('or.organization_id',$organization)
             ->where('ru.user_id',$user)
-            ->distinct()
             ->get();
     }
+
 }

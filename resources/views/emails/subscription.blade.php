@@ -305,21 +305,52 @@
                                     <td>
                                         <p>Hi {{isset($data['contact_person']) ? $data['contact_person'] : 'user'}}, Your subscription for {{ucfirst(config('app.name'))}} has been updated as per your request.To cancel please goto your account.
                                             Please download the invoice using following link</p>
+                                        <table class="invoice-table" border="0" cellpadding="0" cellspacing="0">
+                                            <tbody>
+                                            <tr>
+                                                <td>Plan Name:</td>
+                                                <td>{{$data['plan_name']}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Billing Type:</td>
+                                                <td>{{str_replace('_',' ',$data['billing'])}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Amount:</td>
+                                                <td>{{is_nan($data['amount']/100) ? 0  :($data['amount']/100)}} {{$data['currency']}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Quantity:</td>
+                                                <td>{{$data['quantity']}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Next Billing:</td>
+                                                <td>{{Carbon\Carbon::createFromTimestamp($data['current_period_end'])->format('d F Y')}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Status:</td>
+                                                <td>{{$data['status']}}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
                                         <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                                             <tbody>
+                                            <tr>
+                                                <td><p>To change or cancel the plan please goto your account or contact the admin.</p></td>
+                                            </tr>
                                             <tr>
                                                 <td align="center">
                                                     <table border="0" cellpadding="0" cellspacing="0">
                                                         <tbody>
                                                         <tr>
-                                                            <td> <a href="{{$data['invoice']}}" target="_blank">Download Invoice</a> </td>
+                                                            <td> <a href="{{url('login')}}" target="_blank">Goto Account</a> </td>
                                                         </tr>
                                                         </tbody>
                                                     </table>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td><p>Thanks.</p><br><p>Team {{config('app.name')}}.</p></td>
+                                                <td><p>Thank You. Team {{ucfirst(config('app.name'))}}</p></td>
                                             </tr>
                                             </tbody>
                                         </table>

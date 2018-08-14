@@ -56,9 +56,9 @@ class DashboardController extends Controller
     }
 
     protected function userDashboard($organization,$user=null){
-        $data['department']=$this->service->userDepartments($user);
-        $data['role']=$this->service->userRoles($user);
-        $data['project']=$this->service->userProjects($user);
+        $data['department']=$this->service->userDepartments($organization,$user);
+        $data['role']=$this->service->userRoles($organization,$user);
+        $data['project']=$this->service->userProjects($organization,$user);
         $data['quiz']=$this->service->quizTaken($organization,$user);
         $data['assessment']=$this->service->assessmentTaken($organization,$user);
         $data['action_items']=$this->service->getActionItems($organization,$user);

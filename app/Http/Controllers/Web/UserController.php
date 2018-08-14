@@ -214,7 +214,7 @@ class UserController extends Controller
 
     public function allEvaluations(Request $request){
         $data['page']='evaluation';
-        $data['organization']=pluckOrganization('id');
+        $data['organization']=$request->query('organization') ? $request->get('organization') : pluckOrganization('id');
         $data['user_id']=$request->query('user') ? $request->get('user') : null;
         $data['evaluator_id']=$request->query('evaluator') ? $request->get('evaluator') : null;
         $data['evaluations']=$this->userService->allEvaluations($data['organization'],$data['user_id'],$data['evaluator_id']);

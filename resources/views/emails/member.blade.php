@@ -303,7 +303,10 @@
                                 <tr><td><img class="logo" src="{{env('APP_URL').(env('APP_LOGO_PATH'))}}"></td></tr>
                                 <tr>
                                     <td>
-                                        <p>Welcome {{isset($data['first_name']) ? ucfirst($data['first_name']) : 'user'}}! You've invited to join the <b>{{isset($data['organization']) ? ucwords($data['organization']) : 'Organization'}}</b> by {{ucfirst(config('app.name'))}}.To accept this invitation please follow the link below.</p>
+                                        <p>Hi {{isset($data['first_name']) ? ucfirst($data['first_name']) : 'User'}},
+                                            You've been @if(isset($data['type']) && $data['type'] =='added') added to  @else removed from @endif
+                                            project <b>{{ucwords($data['project'])}}</b>.Please follow the link below to goto your projects
+                                        </p>
                                         <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                                             <tbody>
                                             <tr>
@@ -311,14 +314,14 @@
                                                     <table border="0" cellpadding="0" cellspacing="0">
                                                         <tbody>
                                                         <tr>
-                                                            <td> <a href="{{env('APP_URL').'/invitaion/accept?token='.$data['token'] }}" target="_blank">Accept Invitation</a> </td>
+                                                            <td> <a href="{{url('projects')}}/{{$data['project_id']}}/details" target="_blank">My Projects</a> </td>
                                                         </tr>
                                                         </tbody>
                                                     </table>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td><p>Please use the word <b>"password"</b> as your initial password for your account for your first sigin if you're not an existing member of the {{ucfirst(config('app.name'))}}.<br>We recommend you change your password under your Profile on your first login</p></td>
+                                                <td><p>Thanks.</p><br><p>Team {{config('app.name')}}.</p></td>
                                             </tr>
                                             </tbody>
                                         </table>
