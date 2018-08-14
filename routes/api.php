@@ -157,3 +157,7 @@ Route::group(['namespace' => 'API'], function () {
     Route::delete('reports/problem/{problem_id}', 'ReportController@deleteFive');
     Route::delete('reports/reason/{reason_id}', 'ReportController@deleteFiveWhy');
 });
+
+Route::get('test', function (){
+    return auth()->user()->id;
+});

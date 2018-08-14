@@ -41,6 +41,11 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
+//$app->loadEnvironmentFrom(realpath(__DIR__.'/../.env.testing'));
+//$v = file_get_contents(realpath(__DIR__.'/../.env.testing'));
+//var_dump($v);
+//die($app->environment());
+
 /*
 |--------------------------------------------------------------------------
 | Return The Application
