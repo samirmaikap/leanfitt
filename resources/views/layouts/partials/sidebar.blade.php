@@ -26,7 +26,7 @@
                             {{ isset($defaultOrganization->name) ? $defaultOrganization->name : null }}
                             <i class="fa fa-caret-down"></i>
                         </h4>
-                        <p>{{ isset(session('user')->roles) ? implode(', ',session('user')->roles->pluck('display_name')->toArray()) : '' }}</p>
+                        {{--<p>{{ isset(session('user')->roles) ? implode(', ',session('user')->roles->pluck('display_name')->toArray()) : '' }}</p>--}}
                     </div>
                 </span>
                     <div class="dropdown-menu">
