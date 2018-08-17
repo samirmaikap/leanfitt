@@ -68,7 +68,7 @@ class ReportService //implements ReportServiceInterface
             throw new \Exception("No report found");
         }
 
-        $query=$this->reportRepo->allReports($project_id);
+        $query=$this->reportRepo->projectReports($project_id);
 
         if(!$query){
             throw new \Exception("No report found");
@@ -76,6 +76,16 @@ class ReportService //implements ReportServiceInterface
 
         return $query;
 
+    }
+
+    public function externalReports(){
+        $query=$this->reportRepo->externalReports();
+
+        if(!$query){
+            throw new \Exception("No report found");
+        }
+
+        return $query;
     }
 
     public function names()
@@ -620,7 +630,7 @@ class ReportService //implements ReportServiceInterface
 
     public function createFiveWhy($data)
     {
-        
+
         if(empty($data)){
             throw new \Exception("Can't add the empty data");
         }

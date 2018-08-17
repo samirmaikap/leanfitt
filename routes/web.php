@@ -32,7 +32,6 @@ Route::view('abort/suspend', 'errors.suspend');
 Route::view('abort/invited', 'errors.invited');
 Route::view('abort/subscription', 'errors.subscription');
 
-Route::get('projects/{project_id}/reports/{report_id}', 'Web\ReportController@view');
 Route::get('users/{id}/profile', 'Web\UserController@profile');
 
 Route::get('dashboard/export/pdf', 'Web\DashboardController@makePdf');
@@ -110,6 +109,10 @@ Route::group(['domain' => '{organization}' . config('session.domain'), 'namespac
         Route::post('projects/comment', 'ProjectController@addComment');
         Route::delete('projects/comment/{comment_id}/remove', 'ProjectController@removeComment');
 
+        Route::get('reports','ReportController@index');
+        Route::get('projects/{project_id}/reports/{report_id}', 'ReportController@projectview');
+        Route::get('reports/{report_id}', 'ReportController@externalview');
+
         Route::get('/action-items', 'ActionItemController@index');
         Route::post('/action-items', 'ActionItemController@create');
         Route::put('/action-items/{id}', 'ActionItemController@update');
@@ -162,6 +165,10 @@ Route::group(['namespace' => 'Web','middleware'=>'auth:web'], function () {
     Route::get('/projects/{projectId}/action-items', 'ProjectController@actionItems');
     Route::get('/projects/{projectId}/reports', 'ProjectController@reports');
     Route::get('/projects/{project_id}/details', 'ProjectController@show');
+
+    Route::get('reports','ReportController@index');
+    Route::get('projects/{project_id}/reports/{report_id}', 'ReportController@projectview');
+    Route::get('reports/{report_id}', 'ReportController@externalview');
 
     Route::get('lean-tools', 'LeanToolController@index');
     Route::get('lean-tools/view/{tool_id}', 'LeanToolController@show');

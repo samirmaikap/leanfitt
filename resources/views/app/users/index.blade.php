@@ -135,7 +135,7 @@
                                     <h5 class="mt-3 mb-1 text-truncate">{{$user->full_name}}</h5>
                                     <span class="text-fade text-truncate d-block ">{{$user->email}}</span>
                                     <span class="text-fade d-block ">{{$user->phone}}</span>
-                                    <span class="text-success d-block ">{{ $user->roles->count()}} Roles</span>
+                                    <span class="text-success d-block ">{{ $user->roles_count}} Roles</span>
                                     <time>{{$user->is_invited==0 ? 'Joined' : 'Invited'}} {{\Illuminate\Support\Carbon::parse($user->created_at)->format('d F Y')}}</time>
                                 </div>
 

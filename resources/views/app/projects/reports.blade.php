@@ -7,15 +7,19 @@
                 @if(count($reports) > 0)
                     @foreach($reports as $report)
                         <div class="col-lg-3 col-md-4 col-sm-12">
-                            <a href="{{url('projects')}}/{{$project->id}}/reports/{{$report->id}}">
+                            @php $link=isset($report->project_id) ? url('projects')."/".$report->project_id."/reports/".$report->id : url('reports').'/'.$report->id  @endphp
+                            <a href="{{$link}}">
                                 <div class="card">
-                                    <div class="card-body text-center pt-50 h-250px">
+                                    <div class="card-body text-center pt-50 h-300px">
                                         <div class="mb-20">
                                             <img class="avatar avatar-xxl avatar-square bg-white" src="{{asset('assets')}}/icons/dark/{{str_slug(strtolower($report->report_category),'_')}}.png">
                                         </div>
                                         <span class="fs-15 "><strong>{{$report->report_category}}</strong></span>
                                         @if(!empty($report->title))
                                             <p class="d-block mt-1 mb-1">{{$report->title}}</p>
+                                        @endif
+                                        @if(isset($report->project->id))
+                                            <p class="text-truncate w-100 mt-1 mb-1">in <span class="text-info">{{ucwords($report->project_name)}}</span></p>
                                         @endif
                                         <p class="text-fade">Created : {{date('m/d/Y',strtotime($report->created_at))}}</p>
                                     </div>
@@ -68,7 +72,7 @@
                         <div class="form-group">
                             <p class="category-info"></p>
                         </div>
-                        <input type="hidden" name="project_id" value="{{$project->id}}">
+                        <input type="hidden" name="project_id" value="{{isset($project->id) ? $project->id : null}}">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Cancel</button>

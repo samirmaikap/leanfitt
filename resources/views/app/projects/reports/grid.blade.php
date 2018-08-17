@@ -286,6 +286,22 @@
             <form method="post" id="noteForm" action="{{url('projects')}}/reports/charts" enctype="multipart/form-data">
                 {{csrf_field()}}
                 <div class="modal-body">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#home-basic">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#profile-basic">Profile</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade active show" id="home-basic">
+                            Globally syndicate resource sucking ideas through interactive networks. Proactively underwhelm technically sound growth strategies after high-payoff customer service. Professionally provide.
+                        </div>
+                        <div class="tab-pane fade" id="profile-basic">
+                            Professionally embrace proactive value whereas customized solutions. Monotonectally formulate high standards in e-business with cost effective ideas. Objectively cultivate maintainable.
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-bold btn-pure btn-secondary" data-dismiss="modal">Cancel</button>

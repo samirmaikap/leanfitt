@@ -65,18 +65,21 @@ class UserRepository extends BaseRepository //implements UserRepositoryInterface
 
     public function getUsers($organization = null, $department = null, $role = null){
         $query = $this->model()
-            ->with(['roles' => function($query) use($organization) {
-                if(!empty($organization))
-                {
-                    $query = $query->join('organization_role', function ($join) use($organization){
-                        $join->on('organization_role.role_id', '=', 'roles.id')
-                            ->where('organization_role.organization_id', '=', $organization);
-                    });
-                }
-                return $query;
-            }])
+//            ->with(['roles', function($query) use($organization) {
+//                if(!empty($organization))
+//                {
+//                    $query = $query->join('organization_role', function ($join) use($organization){
+//                        $join->on('organization_role.role_id', '=', 'roles.id')
+//                            ->where('organization_role.organization_id', '=', $organization);
+//                    });
+//                }
+//                return $query;
+//            }])
             ->join('organization_user as ou','ou.user_id','users.id')
             ->leftJoin('department_user as du','users.id','=','du.user_id')
+            ->leftjoin('organization_role as or','ou.organization_id','=','or.organization_id')
+            ->leftjoin('role_user as ru','or.role_id','=','ru.role_id')
+            ->leftjoin('roles as r','ru.role_id','=','r.id')
             ->where('ou.organization_id',empty($organization) ? '!=' : '=',empty($organization) ? null : $organization );
 
         if(!empty($department)){
@@ -84,14 +87,24 @@ class UserRepository extends BaseRepository //implements UserRepositoryInterface
         }
 
         if(!empty($role)){
-            $query=$query->whereHas('roles',function($query) use($role) {
-                  $query->where('id',$role);
-            });
+            $query=$query->where('r.id',$role);
         }
 
-        $result=$query->select(['users.id','users.first_name','users.last_name','users.phone','users.avatar','users.email','users.created_at','ou.is_invited','ou.is_suspended'])
+        $result=$query->select([DB::raw('
+        count(r.id) as roles_count,
+        max(users.first_name) as first_name,
+        max(users.last_name) as last_name,
+        max(users.email) as email,
+        max(users.phone) as phone,
+        max(users.avatar) as avatar,
+        max(users.created_at) as created_at,
+        max(users.id) as id,
+        max(ou.is_suspended) as is_suspended,
+        max(ou.is_invited) as is_invited
+        ')])
             ->distinct()
-            ->orderBy('users.first_name')->get();
+            ->groupBy('users.id')
+            ->get();
         return $result;
     }
 
