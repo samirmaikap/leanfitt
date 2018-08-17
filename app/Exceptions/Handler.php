@@ -2,9 +2,11 @@
 
 namespace App\Exceptions;
 
+use function app;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -41,7 +43,8 @@ class Handler extends ExceptionHandler
             $trace = $exception->getTraceAsString();
             $url = request()->url();
             Log::critical("Exception Occurred", [
-                "Action URL" =>  $url,
+                "Environment" => app()->environment(),
+                "Request URL" =>  $url,
                 "Exception" => $message ,
                 "Trace" => $trace,
             ]);
@@ -62,7 +65,7 @@ class Handler extends ExceptionHandler
         {
             return response()->json(['error' => $exception->getMessage()]);
         }
-        else if(app()->environment('production'))
+        else if(app()->environment(['production', 'staging']))
         {
             return response()->view('static.500');
         }
